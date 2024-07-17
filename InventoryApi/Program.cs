@@ -1,12 +1,15 @@
 using InventoryApi.DataContext;
 using InventoryApi.Entities;
+using InventoryApi.Middlewares;
 using InventoryApi.Services.Implementation;
 using InventoryApi.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProjectApi;
+using System.Net;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -117,7 +120,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-//builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
+builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
 
 var app = builder.Build();
 
@@ -141,7 +144,7 @@ app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-//app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 app.MapControllers();
 
 app.Run();

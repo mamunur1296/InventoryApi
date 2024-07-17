@@ -6,7 +6,7 @@ namespace InventoryApi.DTOs
     {
         public bool Success { get; set; }
         public T Data { get; set; }
-        public string ErrorMessage { get; set; }
+        public string Detail { get; set; }
         public HttpStatusCode Status { get; set; }
         public ResponseDTOs()
         {

@@ -10,26 +10,47 @@ namespace InventoryApi.Services.Implementation
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UserService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public UserService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
-        public async Task<(bool isSucceed, string userId)> CreateUserAsync(string userName, string password, string email, string FirstName, string LastName, string phoneNumber, List<string> roles)
+        public async Task<(bool isSucceed, string userId)> CreateUserAsync(string userName, string password, string email, string firstName, string lastName, string phoneNumber, List<string> roles)
         {
+            if (roles == null || roles.Count == 0)
+            {
+                throw new ValidationException("Role names must be provided.");
+            }
+
             var user = new ApplicationUser()
             {
-                FirstName = FirstName,
-                LastName = LastName,
+                FirstName = firstName,
+                LastName = lastName,
                 UserName = userName,
                 Email = email,
                 PhoneNumber = phoneNumber,
             };
 
-            var result = await _userManager.CreateAsync(user, password);
+            var roleExists = true;
+            foreach (var role in roles)
+            {
+                if (await _roleManager.FindByNameAsync(role) == null)
+                {
+                    roleExists = false;
+                    break;
+                }
+            }
 
+            if (!roleExists)
+            {
+                throw new ValidationException("One or more roles are invalid.");
+            }
+
+            var result = await _userManager.CreateAsync(user, password);
             if (!result.Succeeded)
             {
                 throw new ValidationException(result.Errors);
@@ -40,8 +61,10 @@ namespace InventoryApi.Services.Implementation
             {
                 throw new ValidationException(addUserRole.Errors);
             }
-            return (result.Succeeded, user.Id);
+
+            return (true, user.Id);
         }
+
 
         public async Task<bool> DeleteUserAsync(string userId)
         {
@@ -133,18 +156,87 @@ namespace InventoryApi.Services.Implementation
         public async Task<bool> SigninUserAsync(string userName, string password)
         {
             var result = await _signInManager.PasswordSignInAsync(userName, password, true, false);
-            return result.Succeeded;
+            if (!result.Succeeded)
+            {
+                throw new ValidationException("Username or password does not match.");
+            }
+            return true;
         }
 
-        public async Task<bool> UpdateUserProfile(string id, string FirstName, string LastName, string email, IList<string> roles)
+
+        public async Task<bool> UpdateUserProfile(string id, string firstName, string lastName, string email, IList<string> roles)
         {
+            // Validate input data
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ValidationException("User ID must be provided.");
+            }
+
+            if (roles == null || roles.Count == 0)
+            {
+                throw new ValidationException("Role names must be provided.");
+            }
+
             var user = await _userManager.FindByIdAsync(id);
-            user.FirstName = FirstName;
-            user.LastName = LastName;
+            if (user == null)
+            {
+                throw new ValidationException("User not found.");
+            }
+
+            // Check if roles exist
+            var roleExists = true;
+            foreach (var role in roles)
+            {
+                if (await _roleManager.FindByNameAsync(role) == null)
+                {
+                    roleExists = false;
+                    break;
+                }
+            }
+
+            if (!roleExists)
+            {
+                throw new ValidationException("One or more roles are invalid.");
+            }
+
+            // Update user properties
+            user.FirstName = firstName;
+            user.LastName = lastName;
             user.Email = email;
+
+            // Perform update operation
             var result = await _userManager.UpdateAsync(user);
 
-            return result.Succeeded;
+            if (!result.Succeeded)
+            {
+                throw new ValidationException(result.Errors);
+            }
+
+            // Update user roles
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var rolesToRemove = userRoles.Except(roles).ToList();
+            var rolesToAdd = roles.Except(userRoles).ToList();
+
+            if (rolesToRemove.Any())
+            {
+                var removeResult = await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
+                if (!removeResult.Succeeded)
+                {
+                    throw new ValidationException(removeResult.Errors);
+                }
+            }
+
+            if (rolesToAdd.Any())
+            {
+                var addResult = await _userManager.AddToRolesAsync(user, rolesToAdd);
+                if (!addResult.Succeeded)
+                {
+                    throw new ValidationException(addResult.Errors);
+                }
+            }
+
+            return true;
         }
+
     }
 }
