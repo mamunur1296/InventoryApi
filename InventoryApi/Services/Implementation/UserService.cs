@@ -102,7 +102,7 @@ namespace InventoryApi.Services.Implementation
 
 
 
-        public async Task<(string userId, string FirstName, string LastName, string UserName, string email, IList<string> roles)> GetUserDetailsAsync(string userId)
+        public async Task<(string userId, string FirstName, string LastName, string UserName, string email, string img, string PhoneNumber, string NID, string Address, string Job, string Country, string About, IList<string> roles)> GetUserDetailsAsync(string userId)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null)
@@ -110,7 +110,7 @@ namespace InventoryApi.Services.Implementation
                 throw new NotFoundException("User not found");
             }
             var roles = await _userManager.GetRolesAsync(user);
-            return (user.Id, user.FirstName, user.LastName, user.UserName, user.Email, roles);
+            return (user.Id, user.FirstName, user.LastName, user.UserName, user.Email, user.UserImg, user.PhoneNumber , user.NID, user.Address, user.Job, user.Country,user.About, roles);
         }
 
 
@@ -164,7 +164,7 @@ namespace InventoryApi.Services.Implementation
         }
 
 
-        public async Task<bool> UpdateUserProfile(string id, string firstName, string lastName, string email, IList<string> roles)
+        public async Task<bool> UpdateUserProfile(string id, string firstName, string lastName, string email, string img, string PhoneNumber, string NID, string Address, string Job, string Country, string about, IList<string> roles)
         {
             // Validate input data
             if (string.IsNullOrEmpty(id))
@@ -203,6 +203,13 @@ namespace InventoryApi.Services.Implementation
             user.FirstName = firstName;
             user.LastName = lastName;
             user.Email = email;
+            user.PhoneNumber=PhoneNumber;
+            user.UserImg = img;
+            user.Job = Job;
+            user.Country = Country;
+            user.Address = Address;
+            user.NID=NID;
+            user.About=about;
 
             // Perform update operation
             var result = await _userManager.UpdateAsync(user);
@@ -238,5 +245,6 @@ namespace InventoryApi.Services.Implementation
             return true;
         }
 
+       
     }
 }

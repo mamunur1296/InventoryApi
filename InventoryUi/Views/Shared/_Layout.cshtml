@@ -5,6 +5,10 @@
     var userName = string.Empty;
     var userId = string.Empty;
     var userRole = string.Empty;
+    var fName = string.Empty;
+    var lName = string.Empty;
+    var email = string.Empty;
+    var img = string.Empty;
 
     if (User.Identity.IsAuthenticated)
     {
@@ -31,6 +35,34 @@
             {
                 userRole = userRoleClaim.Value;
             }
+
+            // Extract the first name from claims
+            var fNameClaim = claimsIdentity.FindFirst("FName");
+            if (fNameClaim != null)
+            {
+                fName = fNameClaim.Value;
+            }
+
+            // Extract the last name from claims
+            var lNameClaim = claimsIdentity.FindFirst("LName");
+            if (lNameClaim != null)
+            {
+                lName = lNameClaim.Value;
+            }
+
+            // Extract the email from claims
+            var emailClaim = claimsIdentity.FindFirst("Email");
+            if (emailClaim != null)
+            {
+                email = emailClaim.Value;
+            }
+
+            // Extract the image URL from claims
+            var imgClaim = claimsIdentity.FindFirst("Img");
+            if (imgClaim != null)
+            {
+                img = imgClaim.Value;
+            }
         }
     }
 }
@@ -43,17 +75,74 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/InventoryUi.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .profile-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .profile-header img {
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-bottom: 10px;
+            }
+
+            .profile-header h2 {
+                margin: 10px 0 5px;
+            }
+
+            .profile-header p {
+                color: #6c757d;
+                margin-bottom: 10px;
+            }
+
+        .profile-details {
+            margin-top: 20px;
+        }
+
+        .nav-tabs .nav-link {
+            color: #007bff;
+        }
+
+            .nav-tabs .nav-link.active {
+                color: #495057;
+                background-color: #fff;
+                border-color: #dee2e6 #dee2e6 #fff;
+            }
+
+        .tab-content {
+            padding-top: 20px;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #004085;
+            }
+
+    </style>
 </head>
-<body>
-    <header >
-        <nav class=" container navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+<body class="container">
+    <header>
+        <nav class=" navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary text-white me-5" aria-current="page" href="#">Logo</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
+                        <a class="nav-link" asp-action="Index" asp-controller="Home">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
@@ -64,41 +153,47 @@
                         if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Profile</a>
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                                    <img src="@Url.Content("~/images/" + img)" alt="Profile Image" class="rounded-circle me-2" width="30" height="30">
+                                    <span>@userName</span>
+                                </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="#">@User.Identity.Name</a></li>
-                                    <li><a class="dropdown-item" href="#">Edit Profile</a></li>
-                                    <li><a class="dropdown-item" href="#">dashboard</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Auth" asp-action="LogOut">Log Out</a></li>
+                                    <li class="dropdown-header text-center">
+                                        <img src="@Url.Content("~/images/" + img)" alt="Profile Image" class="rounded-circle mb-2" width="60" height="60">
+                                        <p class="dropdown-item-text">@fName @lName</p>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-action="Profile" asp-controller="User" asp-route-id="@userId">My Profile</a></li>
+                                    <li><a class="dropdown-item" asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
+                                    <li><a class="dropdown-item" href="#">Need Help?</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-controller="Auth" asp-action="LogOut">Sign Out</a></li>
                                 </ul>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Auth" asp-action="Register">Register</a>
+                                <a class="nav-link" asp-action="Login" asp-controller="Auth">Login</a>
                             </li>
                         }
                     }
                 </ul>
             </div>
         </nav>
-
     </header>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - InventoryUi - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+  
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

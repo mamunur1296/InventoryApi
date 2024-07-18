@@ -48,14 +48,13 @@ namespace InventoryApi.Controllers
             {
                 throw new Exception("Invalid username or password");
             }
+            var user = await _userService.GetUserDetailsAsync(await _userService.GetUserIdAsync(model.UserName));
 
-            var (userId, FirstName, LastName, userName, email, roles) = await _userService.GetUserDetailsAsync(await _userService.GetUserIdAsync(model.UserName));
-
-            string token = _tokenGenerator.GenerateJWTToken((userId, userName, roles));
+            string token = _tokenGenerator.GenerateJWTToken((user.userId, user.UserName, user.FirstName, user.LastName, user.email, user.img, user.roles));
             var auth =  new AuthDTO()
             {
-                UserId = userId,
-                Name = userName,
+                UserId = user.userId,
+                Name = user.UserName,
                 Token = token,
             };
 

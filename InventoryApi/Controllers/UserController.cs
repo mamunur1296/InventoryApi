@@ -1,5 +1,6 @@
 ﻿using InventoryApi.DTOs;
 using InventoryApi.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -57,7 +58,14 @@ namespace InventoryApi.Controllers
                 UserName = user.UserName,
                 Email = user.email,
                 FirstName = user.FirstName,
-                LastName = user.LastName
+                LastName = user.LastName,
+                PhoneNumber= user.PhoneNumber,
+                Job = user.Job,
+                Country = user.Country,
+                Address=user.Address,
+                NID = user.NID,
+                UserImg= user.img,
+                About=user.About,
             };
 
             var response = new ResponseDTOs<UserDTO>
@@ -98,7 +106,7 @@ namespace InventoryApi.Controllers
         public async Task<ActionResult> Edit(string id, UserDTO model)
         {
             // Attempt to update the user profile
-            var updateUser = await _userService.UpdateUserProfile(id, model.FirstName, model.LastName, model.Email, model.Roles);
+            var updateUser = await _userService.UpdateUserProfile(id, model.FirstName, model.LastName, model.Email,model.UserImg,model.PhoneNumber,model.NID,model.Address,model.Job,model.Country,model.About, model.Roles);
             if (updateUser)
             {
                 return StatusCode((int)HttpStatusCode.Created, new ResponseDTOs<string>

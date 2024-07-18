@@ -22,22 +22,26 @@ namespace InventoryApi.Services.Implementation
             _expiryMinutes = expiryMinutes;
         }
 
-        public string GenerateJWTToken((string userId, string userName, IList<string> roles) userDetails)
+        public string GenerateJWTToken((string userId, string userName, string FName, string LName, string email, string img, IList<string> roles) userDetails)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key));
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var (userId, userName, roles) = userDetails;
-
+            var (userId, userName, FName, LName, email, img, roles) = userDetails;
+            var imageUrl = string.IsNullOrEmpty(img) ? "https://via.placeholder.com/60" : img;
             var claims = new List<Claim>()
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userName),
-                new Claim(JwtRegisteredClaimNames.Jti, userId),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), // Jti should be a unique identifier, not userId
                 new Claim(ClaimTypes.Name, userName),
-                new Claim("UserId", userId)
+                new Claim("UserId", userId),
+                new Claim("FName", FName),
+                new Claim("LName", LName),
+                new Claim("Email", email),
+                new Claim("Img", imageUrl)
             };
-            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var token = new JwtSecurityToken(
                 issuer: _issuer,
@@ -45,11 +49,14 @@ namespace InventoryApi.Services.Implementation
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(Convert.ToDouble(_expiryMinutes)),
                 signingCredentials: signingCredentials
-           );
+            );
 
             var encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
             return encodedToken;
         }
+
+
+
     }
 
 }

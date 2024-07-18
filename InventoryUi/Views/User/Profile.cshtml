@@ -1,0 +1,148 @@
+﻿@model InventoryUi.Models.User
+@{
+    ViewData["Title"] = "Profile";
+}
+
+@if (ViewData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewData["ErrorMessage"]
+    </div>
+}
+else
+{
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="profile-header">
+                    <img src="@Url.Content("~/images/" + Model.UserImg)" alt="Profile Image">
+                    <h2>@Model?.UserName</h2>
+                    <p>@Model?.Job</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 offset-md-1">
+                <div class="profile-details">
+                    <ul class="nav nav-tabs" id="profileTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="overview-tab" data-bs-toggle="tab" href="#overview" role="tab" aria-controls="overview" aria-selected="true">Overview</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="edit-profile-tab" data-bs-toggle="tab" href="#edit-profile" role="tab" aria-controls="edit-profile" aria-selected="false">Edit Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="settings-tab" data-bs-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Settings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="change-password-tab" data-bs-toggle="tab" href="#change-password" role="tab" aria-controls="change-password" aria-selected="false">Change Password</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="profileTabContent">
+                        <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                            <h4>About</h4>
+                            @{
+                                if(Model?.About != null)
+                                {
+                                    <p>@Model?.About</p>
+                                }
+                                else
+                                {
+                                    <p>Please Update About Yourself </p>
+                                }
+                            }
+                            
+                            <h4>Profile Details</h4>
+                            <p><strong>Full Name:</strong> @Model?.FirstName @Model?.LastName</p>
+                            <p><strong>Job:</strong> @Model?.Job </p>
+                            <p><strong>Country:</strong> @Model?.Country </p>
+                            <p><strong>Address:</strong> @Model?.Address </p>
+                            <p><strong>Phone:</strong> @Model?.PhoneNumber </p>
+                            <p><strong>Email:</strong> @Model?.Email</p>
+                        </div>
+                        <div class="tab-pane fade" id="edit-profile" role="tabpanel" aria-labelledby="edit-profile-tab">
+                            <form asp-action="Update" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="Id" value="@Model?.Id">
+                                <input type="hidden" name="Email" value="@Model?.Email">
+                                <input type="hidden" name="UserName" value="@Model?.UserName">
+                                <div class="mb-3">
+                                    <label asp-for="About" class="form-label">About</label>
+                                    <textarea asp-for="About" class="form-control" id="about" name="About" placeholder="Enter something about yourself" rows="2" required>@Model?.About</textarea>
+                                    <span asp-validation-for="About" class="text-danger"></span>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="firstName" class="form-label">First Name</label>
+                                        <input type="text" class="form-control" id="firstName" name="FirstName" value="@Model?.FirstName" placeholder="Enter first name" required>
+                                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="lastName" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" id="lastName" name="LastName" value="@Model?.LastName" placeholder="Enter last name" required>
+                                        <span asp-validation-for="LastName" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="phoneNumber" class="form-label">Phone Number</label>
+                                        <input type="text" class="form-control" id="phoneNumber" name="PhoneNumber" value="@Model?.PhoneNumber" placeholder="Enter phone number" required>
+                                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="userImg" class="form-label">Profile Image</label>
+                                        <input type="file" class="form-control" id="userImg" name="FormFile">
+                                        <span asp-validation-for="FormFile" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="job" class="form-label">Job</label>
+                                        <input type="text" class="form-control" id="job" name="Job" value="@Model?.Job" placeholder="Enter job title">
+                                        <span asp-validation-for="Job" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="country" class="form-label">Country</label>
+                                        <input type="text" class="form-control" id="country" name="Country" value="@Model?.Country" placeholder="Enter country">
+                                        <span asp-validation-for="Country" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="address" class="form-label">Address</label>
+                                        <input type="text" class="form-control" id="address" name="Address" value="@Model?.Address" placeholder="Enter address">
+                                        <span asp-validation-for="Address" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="nid" class="form-label">NID</label>
+                                        <input type="text" class="form-control" id="nid" name="NID" value="@Model?.NID" placeholder="Enter NID">
+                                        <span asp-validation-for="NID" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Update Profile</button>
+                            </form>
+                        </div>
+
+                        <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                            <!-- Settings Content -->
+                        </div>
+                        <div class="tab-pane fade" id="change-password" role="tabpanel" aria-labelledby="change-password-tab">
+                            <!-- Change Password Content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
