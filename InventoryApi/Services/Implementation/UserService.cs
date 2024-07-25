@@ -19,6 +19,29 @@ namespace InventoryApi.Services.Implementation
             _roleManager = roleManager;
         }
 
+        public async Task<(bool Success, string ErrorMessage)> ChangePassword(string OldPassword, string newPassword, string Userid)
+        {
+            var user = await _userManager.FindByIdAsync(Userid);
+            if (user == null)
+            {
+                // Handle user not found
+                throw new NotFoundException("User not found.");
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, OldPassword, newPassword);
+            if (result.Succeeded)
+            {
+                // Password change successful
+                return (true, null);
+            }
+
+            // Collect error messages
+            var errors = result.Errors.Select(e => e.Description).ToList();
+            var errorMessage = string.Join("; ", errors);
+
+            return (false, errorMessage);
+        }
+
         public async Task<(bool isSucceed, string userId)> CreateUserAsync(string userName, string password, string email, string firstName, string lastName, string phoneNumber, List<string> roles)
         {
             if (roles == null || roles.Count == 0)

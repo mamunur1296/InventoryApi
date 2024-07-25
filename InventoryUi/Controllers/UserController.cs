@@ -4,18 +4,25 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using InventoryUi.ViewModel;
+using InventoryUi.DTOs;
+
 
 namespace InventoryUi.Controllers
 {
     public class UserController : Controller
     {
+        private readonly IClientServices<ChangePassword> _changePasswordServices;
         private readonly IClientServices<User> _userServices;
         private readonly IFileUploader _fileUploder;
+        private readonly ITokenService _tokenService;
 
-        public UserController(IClientServices<User> userServices, IFileUploader fileUploder)
+        public UserController(IClientServices<User> userServices, IClientServices<ChangePassword> changePasswordServices, IFileUploader fileUploder, ITokenService tokenService)
         {
             _userServices = userServices;
             _fileUploder = fileUploder;
+            _changePasswordServices = changePasswordServices;
+            _tokenService = tokenService;
         }
 
         public IActionResult Index()
@@ -28,18 +35,32 @@ namespace InventoryUi.Controllers
             if (string.IsNullOrEmpty(id))
             {
                 ViewData["ErrorMessage"] = "User ID is required.";
-                return View(); // Return the view even if there's an error, to show the message
+                return View(new ProfileViewModel());
             }
 
             var user = await _userServices.GetClientByIdAsync($"User/{id}");
-
             if (user.Data == null)
             {
                 ViewData["ErrorMessage"] = "User not found.";
-                return View(); // Return the view even if there's an error, to show the message
+                return View(new ProfileViewModel());
             }
 
-            return View(user.Data);
+            var model = new ProfileViewModel
+            {
+                User = user.Data
+            };
+
+            if (TempData["ErrorMessage"] != null)
+            {
+                ViewData["ErrorMessage"] = TempData["ErrorMessage"];
+            }
+
+            if (TempData["SuccessMessage"] != null)
+            {
+                ViewData["SuccessMessage"] = TempData["SuccessMessage"];
+            }
+
+            return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> Update(string id, User model)
@@ -56,7 +77,7 @@ namespace InventoryUi.Controllers
                 {
                     bool deleteImg = await _fileUploder.DeleteFile(user.Data.UserImg);
                 }
-                model.UserImg = await _fileUploder.ImgUploader(model.FormFile);
+                model.UserImg = await _fileUploder.ImgUploader(model?.FormFile);
             }
             else
             {
@@ -100,7 +121,26 @@ namespace InventoryUi.Controllers
         public async Task<IActionResult> GetallUser()
         {
             var users = await _userServices.GetAllClientsAsync("User/GetAll");
-            return Json(new { data = users });
+            return Json(users);
         }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> PasswordChange(ChangePassword model)
+        {
+            var result = await _changePasswordServices.PostClientAsync("User/ChangePassword", model);
+
+            if (result.Success)
+            {
+                TempData["SuccessMessage"] = "Password changed successfully.";
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                _tokenService.ClearToken();
+                return Ok(new { success = true, redirectUrl = Url.Action("Login", "Auth") });
+            }
+
+            return Ok(result); // Ensure result contains { success: false, detail: 'error message' }
+        }
+
     }
 }

@@ -2,6 +2,7 @@
 using InventoryUi.Models;
 using InventoryUi.Services.Implemettions;
 using InventoryUi.Services.Interface;
+using InventoryUi.ViewModel;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace InventoryUi.Extensions
@@ -19,6 +20,7 @@ namespace InventoryUi.Extensions
             services.AddScoped<IHttpService, HttpService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IFileUploader, FileUploader>();
+            services.AddScoped<IClientServices<ChangePassword>, ClientServices<ChangePassword>>();
             services.AddScoped<IClientServices<User>, ClientServices<User>>();
             services.AddScoped<IClientServices<Register>, ClientServices<Register>>();
             services.AddScoped<IClientServices<Login>, ClientServices<Login>>();

@@ -1,0 +1,60 @@
+﻿@model InventoryUi.ViewModel.ProfileViewModel
+
+<form asp-action="Update" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="Id" value="@Model?.User.Id">
+    <input type="hidden" name="Email" value="@Model?.User.Email">
+    <input type="hidden" name="UserName" value="@Model?.User.UserName">
+    <div class="mb-3">
+        <textarea asp-for="User.About" class="form-control" id="about" name="About" placeholder="Enter something about yourself" rows="2" required>@Model?.User.About</textarea>
+        <span asp-validation-for="User.About" class="text-danger"></span>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="firstName" name="FirstName" value="@Model?.User.FirstName" placeholder="Enter first name" required>
+            <span asp-validation-for="User.FirstName" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="lastName" name="LastName" value="@Model?.User.LastName" placeholder="Enter last name" required>
+            <span asp-validation-for="User.LastName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="phoneNumber" class="form-label">Phone Number</label>
+            <input type="text" class="form-control" id="phoneNumber" name="PhoneNumber" value="@Model?.User.PhoneNumber" placeholder="Enter phone number" required>
+            <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label for="userImg" class="form-label">Profile Image</label>
+            <input type="file" class="form-control" id="userImg" name="FormFile">
+            <span asp-validation-for="User.FormFile" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="job" class="form-label">Job</label>
+            <input type="text" class="form-control" id="job" name="Job" value="@Model?.User.Job" placeholder="Enter job title">
+            <span asp-validation-for="User.Job" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label for="country" class="form-label">Country</label>
+            <input type="text" class="form-control" id="country" name="Country" value="@Model?.User.Country" placeholder="Enter country">
+            <span asp-validation-for="User.Country" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="address" class="form-label">Address</label>
+            <input type="text" class="form-control" id="address" name="Address" value="@Model?.User.Address" placeholder="Enter address">
+            <span asp-validation-for="User.Address" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label for="nid" class="form-label">NID</label>
+            <input type="text" class="form-control" id="nid" name="NID" value="@Model?.User.NID" placeholder="Enter NID">
+            <span asp-validation-for="User.NID" class="text-danger"></span>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Update Profile</button>
+</form>

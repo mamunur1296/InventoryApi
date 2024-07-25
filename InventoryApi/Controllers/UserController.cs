@@ -126,5 +126,29 @@ namespace InventoryApi.Controllers
                 });
             }
         }
+        [HttpPost("ChangePassword")]
+        public async Task<ActionResult> ChangePassword(ChangePassword model)
+        {
+            var (success, errorMessage) = await _userService.ChangePassword(model.OldPassword, model.NewPassword, model.UserId);
+
+            if (success)
+            {
+                return Ok(new ResponseDTOs<string>
+                {
+                    Success = true,
+                    Status = HttpStatusCode.OK,
+                    Detail = "Password changed successfully."
+                });
+            }
+            else
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest, new ResponseDTOs<string>
+                {
+                    Success = false,
+                    Status = HttpStatusCode.BadRequest,
+                    Detail = errorMessage
+                });
+            }
+        }
     }
 }
