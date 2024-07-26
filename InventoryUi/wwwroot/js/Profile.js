@@ -1,7 +1,14 @@
-﻿import { ajaxCall } from './ajaxutility/ajaxutility.js';
+﻿
+import { loger } from './utility/helpers.js';
+import { SendRequest } from './utility/sendrequestutility.js';
 
-$(document).ready(function () {
-    $("#submitBtn").click(async function (event) {
+$(document).ready(async function () {
+    await changePassword();
+    await users();
+});
+
+const changePassword = async () => {
+    $("#submitBtn").click(async (event) => {
         event.preventDefault();
         debugger;
         const oldPassword = $("#OldPassword").val();
@@ -20,6 +27,7 @@ $(document).ready(function () {
         $("#newPasswordError").text("");
         $("#confirmPasswordError").text("");
         $("#oldPasswordError").text("");
+        $("#generalError").text("");
 
         // Client-side validation
         if (newPassword !== confirmPassword) {
@@ -28,8 +36,8 @@ $(document).ready(function () {
         }
 
         try {
-            const response = await ajaxCall({ endpoint: '/User/PasswordChange', method: 'POST', data: data,contentType: 'application/x-www-form-urlencoded'
-            });
+            // const response = await SendRequest({ endpoint: '/User/PasswordChange', method: 'POST', data: data, contentType: 'application/x-www-form-urlencoded' });
+            const response = await SendRequest({ endpoint: '/User/ChangePassword', method: 'POST', data: data });
 
             if (response.success) {
                 // Redirect to login page
@@ -50,6 +58,10 @@ $(document).ready(function () {
             $("#generalError").text("An unexpected error occurred. Please try again later.");
         }
     });
-});
+};
 
-
+const users = async () => {
+    debugger
+    const result = await SendRequest({ endpoint: '/User/GetallUser' });
+    loger(result);
+}

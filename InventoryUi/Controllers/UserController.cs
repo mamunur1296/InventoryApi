@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using InventoryUi.ViewModel;
 using InventoryUi.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace InventoryUi.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IClientServices<ChangePassword> _changePasswordServices;
@@ -49,16 +51,6 @@ namespace InventoryUi.Controllers
             {
                 User = user.Data
             };
-
-            if (TempData["ErrorMessage"] != null)
-            {
-                ViewData["ErrorMessage"] = TempData["ErrorMessage"];
-            }
-
-            if (TempData["SuccessMessage"] != null)
-            {
-                ViewData["SuccessMessage"] = TempData["SuccessMessage"];
-            }
 
             return View(model);
         }
@@ -127,7 +119,7 @@ namespace InventoryUi.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> PasswordChange(ChangePassword model)
+        public async Task<IActionResult> ChangePassword(ChangePassword model)
         {
             var result = await _changePasswordServices.PostClientAsync("User/ChangePassword", model);
 

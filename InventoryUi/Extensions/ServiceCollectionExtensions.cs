@@ -29,7 +29,7 @@ namespace InventoryUi.Extensions
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.LoginPath = "/Public/Login";
+                    options.LoginPath = "/Auth/Login";
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
                     options.ReturnUrlParameter = "ReturnUrl";
                 });
