@@ -62,6 +62,10 @@ namespace InventoryApi.Services.Implementation
         public async Task<(string id, string roleName)> GetRoleByIdAsync(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
+            if (role == null)
+            {
+                throw new NotFoundException($"{nameof(role)} does not exist");
+            }
             return (role.Id, role.Name);
         }
 
@@ -103,6 +107,10 @@ namespace InventoryApi.Services.Implementation
             if (roleName != null)
             {
                 var role = await _roleManager.FindByIdAsync(id);
+                if (role == null)
+                {
+                    throw new NotFoundException(" Role does not exist");
+                }
                 role.Name = roleName;
                 var result = await _roleManager.UpdateAsync(role);
                 return result.Succeeded;

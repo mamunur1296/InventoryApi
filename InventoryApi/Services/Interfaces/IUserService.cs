@@ -10,7 +10,8 @@
         Task<string> GetUserNameAsync(string userId);
         Task<bool> DeleteUserAsync(string userId);
         Task<bool> IsUniqueUserName(string userName);
-        Task<List<(string id, string FirstName, string LastName, string Phone, string userName, string email)>> GetAllUsersAsync();
+        Task<List<(string id, string FirstName, string LastName, string Phone, string UserName, string Email, string Img)>> GetAllUsersAsync();
+
 
         Task<bool> UpdateUserProfile(string id, string FirstName, string LastName, string email, string img, string PhoneNumber, string NID, string Address, string Job, string Country,string about, IList<string> roles);
 

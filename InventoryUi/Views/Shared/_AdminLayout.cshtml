@@ -97,9 +97,16 @@
     <link rel="stylesheet" href="~/admin/plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
     <link rel="stylesheet" href="~/admin/plugins/summernote/summernote-bs4.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
 
 
+    <style>
+        .modal-body {
+            max-height: calc(100vh - 210px);
+            overflow-y: auto;
+        }
 
+    </style>
 
 
 </head>
@@ -299,31 +306,21 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>ChartJS</p>
+                                    <a asp-action="Index" asp-controller="DashboardUser" class="nav-link">
+                                        <i class="fas fa-user-friends nav-icon"></i>
+                                        <p>Members</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Flot</p>
+                                    <a asp-action="Index" asp-controller="DashboardRole" class="nav-link">
+                                        <i class="fas fa-users-cog nav-icon"></i>
+                                        <p>User Roles</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Inline</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>uPlot</p>
-                                    </a>
-                                </li>
+                                
                             </ul>
                         </li>
+
                         <li class="nav-item">
                             <a asp-action="LogOut" asp-controller="Auth" class="nav-link ">
                                 <i class="fas fa-sign-out-alt nav-icon"></i>
@@ -392,13 +389,12 @@
     <script src="~/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="~/admin/dist/js/adminlte.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="~/admin/dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="~/admin/dist/js/pages/dashboard.js"></script>
-
-
-
+    <!-- DataTables JS -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+   
 </body>
 </html>

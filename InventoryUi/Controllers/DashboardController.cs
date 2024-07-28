@@ -6,7 +6,6 @@ namespace InventoryUi.Controllers
     [Authorize]
     public class DashboardController : Controller
     {
-        
         public IActionResult Index()
         {
             return View();

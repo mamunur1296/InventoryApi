@@ -1,5 +1,6 @@
 ﻿export const SendRequest = async ({ endpoint, method = 'GET', data = null, headers = {}, dataType = 'json' }) => {
     // Validate and set default method
+
     const validMethods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
     method = validMethods.includes(method.toUpperCase()) ? method.toUpperCase() : 'GET';
 
@@ -14,7 +15,10 @@
             contentType = 'multipart/form-data'; // FormData automatically sets its own content type
         } else if (method === 'POST') {
             contentType = 'application/x-www-form-urlencoded';
-        } else if (typeof data === 'object') {
+        } else if (method === 'PUT') {
+            contentType = 'application/x-www-form-urlencoded';
+        } 
+        else if (typeof data === 'object') {
             contentType = 'application/json;charset=utf-8';
         }
     }
@@ -67,4 +71,35 @@
 
 export function handleError(message) {
     console.error('Error:', message);
+}
+
+export const populateDropdown = async (endpoint, dropdownSelector, valueField, textField, defaultOption = '') => {
+    try {
+        const response = await SendRequest({ endpoint: endpoint });
+        const data = response.data;
+        
+        // Clear existing options
+        $(dropdownSelector).empty();
+
+        // Add default option
+        if (defaultOption !== null) {
+            $(dropdownSelector).append(`<option value="">${defaultOption}</option>`);
+        }
+
+        // Check if data is null or empty
+        if (!data || data.length === 0) {
+            $(dropdownSelector).append('<option value="">No data available</option>');
+            return;
+        }
+
+        // Add options from the fetched data
+        $.each(data, function (index, item) {
+            $(dropdownSelector).append(`<option value="${item[valueField]}">${item[textField]}</option>`);
+        });
+    } catch (error) {
+        console.error(`Error populating ${dropdownSelector}:`, error);
+        // Handle error
+        $(dropdownSelector).empty();
+        $(dropdownSelector).append('<option value="">Error fetching data</option>');
+    }
 }

@@ -75,7 +75,10 @@ namespace InventoryUi.Controllers
             {
                 model.UserImg = user.Data.UserImg;
             }
-            model.Roles = new List<string> { "User" };
+            if (model.Roles == null)
+            {
+              model.Roles = new List<string> { "User" };
+            }
             var result = await _userServices.UpdateClientAsync($"User/Edit/{id}", model);
 
             if (result.Success)
@@ -91,9 +94,16 @@ namespace InventoryUi.Controllers
                         new Claim("FName", UpdatedUser.Data.FirstName),
                         new Claim("LName", UpdatedUser.Data.LastName),
                         new Claim("Email", UpdatedUser.Data.Email),
-                        new Claim("Img", UpdatedUser.Data.UserImg ?? "https://via.placeholder.com/150")
+                        new Claim("Img", UpdatedUser.Data.UserImg ?? "https://via.placeholder.com/150"),
                     };
-
+                    // Add roles to the claims
+                    if (UpdatedUser.Data.Roles != null)
+                    {
+                        foreach (var role in UpdatedUser.Data.Roles)
+                        {
+                            claims.Add(new Claim(ClaimTypes.Role, role));
+                        }
+                    }
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(claimsIdentity);
 

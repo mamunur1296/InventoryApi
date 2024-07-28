@@ -12,7 +12,7 @@ namespace InventoryUi.Models
         public string? UserImg { get; set; }
         public IFormFile? FormFile { get; set; }
         public string Password { get; set; }
-        public string ConfirmPassword { get; set; }
+        public string ConfirmationPassword { get; set; }
         public string? NID { get; set; }
         public string? Address { get; set; }
         public string? Job { get; set; }

@@ -107,7 +107,7 @@ namespace InventoryApi.Services.Implementation
             return result.Succeeded;
         }
 
-        public async Task<List<(string id, string FirstName, string LastName, string Phone, string userName, string email)>> GetAllUsersAsync()
+        public async Task<List<(string id, string FirstName, string LastName, string Phone, string UserName, string Email, string Img)>> GetAllUsersAsync()
         {
             var users = await _userManager.Users.Select(x => new
             {
@@ -117,11 +117,12 @@ namespace InventoryApi.Services.Implementation
                 x.PhoneNumber,
                 x.UserName,
                 x.Email,
-
+                x.UserImg
             }).ToListAsync();
 
-            return users.Select(user => (user.Id, user.FirstName, user.LastName, user.PhoneNumber, user.UserName, user.Email)).ToList();
+            return users.Select(user => (user.Id, user.FirstName, user.LastName, user.PhoneNumber, user.UserName, user.Email, user.UserImg)).ToList();
         }
+
 
 
 
@@ -221,19 +222,17 @@ namespace InventoryApi.Services.Implementation
             {
                 throw new ValidationException("One or more roles are invalid.");
             }
-
             // Update user properties
-            user.FirstName = firstName;
-            user.LastName = lastName;
-            user.Email = email;
-            user.PhoneNumber=PhoneNumber;
-            user.UserImg = img;
-            user.Job = Job;
-            user.Country = Country;
-            user.Address = Address;
-            user.NID=NID;
-            user.About=about;
-
+            user.FirstName = !string.IsNullOrEmpty(firstName) ? firstName.Trim() : user.FirstName; // Update only if firstName has a value
+            user.LastName = !string.IsNullOrEmpty(lastName) ? lastName.Trim() : user.LastName; // Update only if lastName has a value
+            user.Email = !string.IsNullOrEmpty(email) ? email : user.Email;
+            user.PhoneNumber = !string.IsNullOrEmpty(PhoneNumber) ? PhoneNumber : user.PhoneNumber;
+            user.UserImg = !string.IsNullOrEmpty(img) ? img : user.UserImg;
+            user.Job = !string.IsNullOrEmpty(Job) ? Job : user.Job;
+            user.Country = !string.IsNullOrEmpty(Country) ? Country : user.Country;
+            user.Address = !string.IsNullOrEmpty(Address) ? Address : user.Address;
+            user.NID = !string.IsNullOrEmpty(NID) ? NID : user.NID;
+            user.About = !string.IsNullOrEmpty(about) ? about.Trim() : user.About;
             // Perform update operation
             var result = await _userManager.UpdateAsync(user);
 

@@ -45,7 +45,7 @@ namespace InventoryUi.Controllers
                 }
                 return RedirectToAction("Index", "Home");
             }
-
+            
             // Check for specific error messages and add model state errors
             if (register.Detail.Contains("DuplicateUserName"))
             {

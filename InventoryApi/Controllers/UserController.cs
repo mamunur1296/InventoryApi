@@ -1,6 +1,5 @@
 ﻿using InventoryApi.DTOs;
 using InventoryApi.Services.Interfaces;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -23,10 +22,12 @@ namespace InventoryApi.Controllers
             var result = users.Select(x => new UserDTO()
             {
                 Id = x.id, // Assuming correct property name
-                UserName = x.userName, // Assuming correct property name
-                Email = x.email, // Assuming correct property name
+                UserName = x.UserName, // Assuming correct property name
+                Email = x.Email, // Assuming correct property name
                 FirstName = x.FirstName,
                 LastName = x.LastName,
+                PhoneNumber=x.Phone,
+                UserImg=x.Img,
             }).ToList();
 
             var response =  new ResponseDTOs<IEnumerable<UserDTO>>

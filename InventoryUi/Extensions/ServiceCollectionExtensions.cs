@@ -24,6 +24,7 @@ namespace InventoryUi.Extensions
             services.AddScoped<IClientServices<User>, ClientServices<User>>();
             services.AddScoped<IClientServices<Register>, ClientServices<Register>>();
             services.AddScoped<IClientServices<Login>, ClientServices<Login>>();
+            services.AddScoped<IClientServices<Roles>, ClientServices<Roles>>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
