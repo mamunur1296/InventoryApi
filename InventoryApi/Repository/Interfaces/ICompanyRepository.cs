@@ -4,6 +4,6 @@ namespace InventoryApi.Repository.Interfaces
 {
     public interface ICompanyRepository : IRepository<Company>
     {
-        // Add specific command methods here if needed
+        // Add specific  methods here if needed
     }
 }

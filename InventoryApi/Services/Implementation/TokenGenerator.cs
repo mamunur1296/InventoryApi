@@ -28,7 +28,6 @@ namespace InventoryApi.Services.Implementation
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var (userId, userName, FName, LName, email, img, roles) = userDetails;
-            var imageUrl = string.IsNullOrEmpty(img) ? "https://via.placeholder.com/60" : img;
             var claims = new List<Claim>()
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userName),
@@ -38,7 +37,7 @@ namespace InventoryApi.Services.Implementation
                 new Claim("FName", FName),
                 new Claim("LName", LName),
                 new Claim("Email", email),
-                new Claim("Img", imageUrl)
+                new Claim("Img", img ?? string.Empty)
             };
 
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));

@@ -156,12 +156,12 @@
                         {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                                    <img src="@Url.Content("~/images/" + img)" alt="Profile Image" class="rounded-circle me-2" width="30" height="30">
+                                    <img src="@(img != "" ? Url.Content("~/images/" + img) : Url.Content("~/ProjectRootImg/default-user.png"))" alt="Profile Image" class="rounded-circle mb-2" width="60" height="60">
                                     <span>@userName</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li class="dropdown-header text-center">
-                                        <img src="@Url.Content("~/images/" + img)" alt="Profile Image" class="rounded-circle mb-2" width="60" height="60">
+                                        <img src="@(img != "" ? Url.Content("~/images/" + img) : Url.Content("~/ProjectRootImg/default-user.png"))" alt="Profile Image" class="rounded-circle mb-2" width="60" height="60">
                                         <p class="dropdown-item-text">@fName @lName</p>
                                     </li>
                                     <li><hr class="dropdown-divider"></li>

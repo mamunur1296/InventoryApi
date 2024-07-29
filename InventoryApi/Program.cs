@@ -29,10 +29,9 @@ var _expirtyMinutes = builder.Configuration["Jwt:ExpiryMinutes"];
 
 
 //Configer add Identity
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
-
 
 // Configuration for token
 builder.Services.AddAuthentication(x =>

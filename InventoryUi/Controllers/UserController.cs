@@ -94,7 +94,7 @@ namespace InventoryUi.Controllers
                         new Claim("FName", UpdatedUser.Data.FirstName),
                         new Claim("LName", UpdatedUser.Data.LastName),
                         new Claim("Email", UpdatedUser.Data.Email),
-                        new Claim("Img", UpdatedUser.Data.UserImg ?? "https://via.placeholder.com/150"),
+                        new Claim("Img", UpdatedUser?.Data.UserImg ?? null)
                     };
                     // Add roles to the claims
                     if (UpdatedUser.Data.Roles != null)

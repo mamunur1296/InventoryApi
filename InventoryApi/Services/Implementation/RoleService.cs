@@ -9,9 +9,9 @@ namespace InventoryApi.Services.Implementation
     public class RoleService : IRoleService
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public RoleService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public RoleService(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -31,7 +31,7 @@ namespace InventoryApi.Services.Implementation
 
         public async Task<bool> CreateRoleAsync(string roleName)
         {
-            var result = await _roleManager.CreateAsync(new IdentityRole(roleName));
+            var result = await _roleManager.CreateAsync(new ApplicationRole(roleName));
             if (!result.Succeeded)
             {
                 throw new ValidationException(result.Errors);

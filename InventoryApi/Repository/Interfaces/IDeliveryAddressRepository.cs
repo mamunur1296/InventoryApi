@@ -4,6 +4,6 @@ namespace InventoryApi.Repository.Interfaces
 {
     public interface IDeliveryAddressRepository : IRepository<DeliveryAddress>
     {
-        // Add specific command methods here if needed
+        // Add specific  methods here if needed
     }
 }

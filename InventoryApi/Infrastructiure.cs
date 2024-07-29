@@ -1,4 +1,7 @@
-﻿using InventoryApi.DataContext;
+﻿using InventoryApi.Controllers;
+using InventoryApi.DataContext;
+using InventoryApi.DTOs;
+using InventoryApi.Entities;
 using InventoryApi.Services.Implementation;
 using InventoryApi.Services.Interfaces;
 using InventoryApi.UnitOfWork;
@@ -36,6 +39,18 @@ namespace ProjectApi
             services.AddScoped<IUnitOfWorkRepository, UnitOfWorkRepository>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<RoleManager<ApplicationRole>>();
+            services.AddScoped<IBaseServices<CompanyDTOs>, CompanyService>();
+            services.AddScoped<IBaseServices<DeliveryAddressDTOs>, DeliveryAddressService>();
+            services.AddScoped<IBaseServices<WarehouseDTOs>, WarehouseService>();
+            services.AddScoped<IBaseServices<ProductDTOs>, ProductService>();
+            services.AddScoped<IBaseServices<CategoryDTOs>, CategoryService>();
+            services.AddScoped<IBaseServices<OrderDTOs>, OrderService>();
+            services.AddScoped<IBaseServices<OrderProductDTOs>, OrderProductService>();
+            services.AddScoped<IBaseServices<MenuDTOs>, MenuService>();
+            services.AddScoped<IBaseServices<SubMenuDTOs>, SubMenuService>();
+            services.AddScoped<IBaseServices<MenuRoleDTOs>, MenuRoleService>();
+            services.AddScoped<IBaseServices<SubMenuRoleDTOs>, SubMenuRoleService>();
             return services;
         }
     }
