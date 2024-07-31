@@ -51,6 +51,7 @@ namespace ProjectApi
             services.AddScoped<IBaseServices<SubMenuDTOs>, SubMenuService>();
             services.AddScoped<IBaseServices<MenuRoleDTOs>, MenuRoleService>();
             services.AddScoped<IBaseServices<SubMenuRoleDTOs>, SubMenuRoleService>();
+            services.AddScoped<RoleMenuMappingService>();
             return services;
         }
     }

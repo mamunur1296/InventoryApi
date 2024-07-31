@@ -73,7 +73,7 @@ namespace InventoryApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "companies",
+                name: "Companies",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -85,11 +85,11 @@ namespace InventoryApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_companies", x => x.Id);
+                    table.PrimaryKey("PK_Companies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "deliveryAddresses",
+                name: "DeliveryAddresses",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -108,7 +108,7 @@ namespace InventoryApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_deliveryAddresses", x => new { x.Id, x.UserId });
+                    table.PrimaryKey("PK_DeliveryAddresses", x => new { x.Id, x.UserId });
                 });
 
             migrationBuilder.CreateTable(
@@ -266,14 +266,14 @@ namespace InventoryApi.Migrations
                 {
                     table.PrimaryKey("PK_Warehouses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Warehouses_companies_CompanyId",
+                        name: "FK_Warehouses_Companies_CompanyId",
                         column: x => x.CompanyId,
-                        principalTable: "companies",
+                        principalTable: "Companies",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "MenuRole",
+                name: "MenuRoles",
                 columns: table => new
                 {
                     MenuId = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -281,15 +281,15 @@ namespace InventoryApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MenuRole", x => new { x.MenuId, x.RoleId });
+                    table.PrimaryKey("PK_MenuRoles", x => new { x.MenuId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_MenuRole_AspNetRoles_RoleId",
+                        name: "FK_MenuRoles_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MenuRole_Menus_MenuId",
+                        name: "FK_MenuRoles_Menus_MenuId",
                         column: x => x.MenuId,
                         principalTable: "Menus",
                         principalColumn: "Id",
@@ -349,7 +349,7 @@ namespace InventoryApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubMenuRole",
+                name: "SubMenuRoles",
                 columns: table => new
                 {
                     SubMenuId = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -357,15 +357,15 @@ namespace InventoryApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubMenuRole", x => new { x.SubMenuId, x.RoleId });
+                    table.PrimaryKey("PK_SubMenuRoles", x => new { x.SubMenuId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_SubMenuRole_AspNetRoles_RoleId",
+                        name: "FK_SubMenuRoles_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SubMenuRole_SubMenus_SubMenuId",
+                        name: "FK_SubMenuRoles_SubMenus_SubMenuId",
                         column: x => x.SubMenuId,
                         principalTable: "SubMenus",
                         principalColumn: "Id",
@@ -440,8 +440,8 @@ namespace InventoryApi.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MenuRole_RoleId",
-                table: "MenuRole",
+                name: "IX_MenuRoles_RoleId",
+                table: "MenuRoles",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
@@ -460,8 +460,8 @@ namespace InventoryApi.Migrations
                 column: "WarehouseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubMenuRole_RoleId",
-                table: "SubMenuRole",
+                name: "IX_SubMenuRoles_RoleId",
+                table: "SubMenuRoles",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
@@ -495,16 +495,16 @@ namespace InventoryApi.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "deliveryAddresses");
+                name: "DeliveryAddresses");
 
             migrationBuilder.DropTable(
-                name: "MenuRole");
+                name: "MenuRoles");
 
             migrationBuilder.DropTable(
                 name: "OrderProducts");
 
             migrationBuilder.DropTable(
-                name: "SubMenuRole");
+                name: "SubMenuRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
@@ -531,7 +531,7 @@ namespace InventoryApi.Migrations
                 name: "Menus");
 
             migrationBuilder.DropTable(
-                name: "companies");
+                name: "Companies");
         }
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240729045851_init")]
+    [Migration("20240730200108_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -191,7 +191,7 @@ namespace InventoryApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("companies");
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("InventoryApi.Entities.DeliveryAddress", b =>
@@ -241,7 +241,7 @@ namespace InventoryApi.Migrations
 
                     b.HasKey("Id", "UserId");
 
-                    b.ToTable("deliveryAddresses");
+                    b.ToTable("DeliveryAddresses");
                 });
 
             modelBuilder.Entity("InventoryApi.Entities.Menu", b =>
@@ -286,7 +286,7 @@ namespace InventoryApi.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("MenuRole");
+                    b.ToTable("MenuRoles");
                 });
 
             modelBuilder.Entity("InventoryApi.Entities.Order", b =>
@@ -427,7 +427,7 @@ namespace InventoryApi.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("SubMenuRole");
+                    b.ToTable("SubMenuRoles");
                 });
 
             modelBuilder.Entity("InventoryApi.Entities.Warehouse", b =>
