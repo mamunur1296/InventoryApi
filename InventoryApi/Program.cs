@@ -33,6 +33,8 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+
+
 // Configuration for token
 builder.Services.AddAuthentication(x =>
 {
