@@ -67,6 +67,7 @@ namespace InventoryApi.Controllers
                 NID = user.NID,
                 UserImg= user.img,
                 About=user.About,
+                Roles = (List<string>)(user.roles ?? new List<string>())
             };
 
             var response = new ResponseDTOs<UserDTO>

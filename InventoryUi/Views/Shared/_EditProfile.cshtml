@@ -5,7 +5,7 @@
     <input type="hidden" name="Email" value="@Model?.User.Email">
     <input type="hidden" name="UserName" value="@Model?.User.UserName">
     <div class="mb-3">
-        <textarea asp-for="User.About" class="form-control" id="about" name="About" placeholder="Enter something about yourself" rows="2" required>@Model?.User.About</textarea>
+        <textarea asp-for="User.About" class="form-control" id="about" name="About" placeholder="Enter something about yourself" rows="2" >@Model?.User.About</textarea>
         <span asp-validation-for="User.About" class="text-danger"></span>
     </div>
     <div class="row mb-3">

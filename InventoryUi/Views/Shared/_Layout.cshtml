@@ -1,11 +1,12 @@
-﻿@using System.Security.Claims
+﻿
+@using System.Security.Claims
 @using Microsoft.IdentityModel.JsonWebTokens
 
 @{
     var userName = string.Empty;
     var userId = string.Empty;
-    var userRole = string.Empty;
     var fName = string.Empty;
+    var userRole = string.Empty;
     var lName = string.Empty;
     var email = string.Empty;
     var img = string.Empty;
@@ -64,7 +65,9 @@
                 img = imgClaim.Value;
             }
         }
+
     }
+
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -154,6 +157,7 @@
                     @{
                         if (User.Identity.IsAuthenticated)
                         {
+                            
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
                                     <img src="@(img != "" ? Url.Content("~/images/" + img) : Url.Content("~/ProjectRootImg/default-user.png"))" alt="Profile Image" class="rounded-circle mb-2" width="60" height="60">

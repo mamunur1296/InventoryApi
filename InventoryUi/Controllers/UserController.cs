@@ -77,7 +77,7 @@ namespace InventoryUi.Controllers
             }
             if (model.Roles == null)
             {
-              model.Roles = new List<string> { "User" };
+                model.Roles = user.Data.Roles;
             }
             var result = await _userServices.UpdateClientAsync($"User/Edit/{id}", model);
 
@@ -89,12 +89,12 @@ namespace InventoryUi.Controllers
                 {
                     var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Name, UpdatedUser.Data.UserName),
-                        new Claim("UserId", UpdatedUser.Data.Id.ToString()),
-                        new Claim("FName", UpdatedUser.Data.FirstName),
-                        new Claim("LName", UpdatedUser.Data.LastName),
-                        new Claim("Email", UpdatedUser.Data.Email),
-                        new Claim("Img", UpdatedUser?.Data.UserImg ?? null)
+                        new Claim(ClaimTypes.Name, UpdatedUser.Data.UserName ?? string.Empty),
+                        new Claim("UserId", UpdatedUser.Data.Id.ToString() ?? string.Empty),
+                        new Claim("FName", UpdatedUser.Data.FirstName ?? string.Empty),
+                        new Claim("LName", UpdatedUser.Data.LastName ?? string.Empty),
+                        new Claim("Email", UpdatedUser.Data.Email ?? string.Empty),
+                        new Claim("Img", UpdatedUser?.Data.UserImg ?? string.Empty)
                     };
                     // Add roles to the claims
                     if (UpdatedUser.Data.Roles != null)

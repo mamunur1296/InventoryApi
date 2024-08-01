@@ -170,3 +170,13 @@ export const resetValidation = (validator, formSelector) => {
     $(formSelector + ' .form-group .invalid-feedback').remove(); // Remove error messages
     $(formSelector + ' input').removeClass('is-invalid'); // Remove error styling
 };
+
+
+
+export const dataToMap = (data, key) => {
+    return data.reduce((map, item) => {
+        map[item[key]] = item;
+        return map;
+    }, {});
+};
+

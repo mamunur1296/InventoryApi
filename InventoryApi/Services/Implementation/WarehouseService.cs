@@ -21,9 +21,9 @@ namespace InventoryApi.Services.Implementation
             var newWarehouse = new Warehouse
             {
                 Id = Guid.NewGuid().ToString(),
-                Location = entity.Location,
                 CompanyId = entity.CompanyId,
-                
+                Name=entity.Name,
+                Address= entity.Address,
             };
             await _unitOfWorkRepository.warehouseRepository.AddAsync(newWarehouse);
             await _unitOfWorkRepository.SaveAsync();
@@ -56,7 +56,8 @@ namespace InventoryApi.Services.Implementation
             {
                 id = x.Id,
                 CompanyId = x.CompanyId, 
-                Location = x.Location,
+                Address = x.Address,
+                Name=x.Name,
             });
             response.Data = result;
             response.Success = true;

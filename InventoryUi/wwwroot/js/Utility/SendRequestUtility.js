@@ -74,6 +74,7 @@ export function handleError(message) {
 }
 
 export const populateDropdown = async (endpoint, dropdownSelector, valueField, textField, defaultOption = '') => {
+    debugger
     try {
         const response = await SendRequest({ endpoint: endpoint });
         const data = response.data;

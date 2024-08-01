@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240729045851_init")]
-    partial class init
+    [Migration("20240801034151_init1")]
+    partial class init1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -174,13 +174,34 @@ namespace InventoryApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactPerson")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("EmailNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FaxNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdateDate")
@@ -436,6 +457,9 @@ namespace InventoryApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CompanyId")
                         .HasColumnType("nvarchar(450)");
 
@@ -445,7 +469,7 @@ namespace InventoryApi.Migrations
                     b.Property<DateTime?>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Location")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdateDate")
@@ -456,9 +480,7 @@ namespace InventoryApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId")
-                        .IsUnique()
-                        .HasFilter("[CompanyId] IS NOT NULL");
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("Warehouses");
                 });
@@ -614,7 +636,7 @@ namespace InventoryApi.Migrations
                         .HasForeignKey("CategoryId");
 
                     b.HasOne("InventoryApi.Entities.Warehouse", "Warehouse")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("WarehouseId");
 
                     b.Navigation("Category");
@@ -654,11 +676,9 @@ namespace InventoryApi.Migrations
 
             modelBuilder.Entity("InventoryApi.Entities.Warehouse", b =>
                 {
-                    b.HasOne("InventoryApi.Entities.Company", "Company")
-                        .WithOne("Warehouse")
-                        .HasForeignKey("InventoryApi.Entities.Warehouse", "CompanyId");
-
-                    b.Navigation("Company");
+                    b.HasOne("InventoryApi.Entities.Company", null)
+                        .WithMany("Warehouses")
+                        .HasForeignKey("CompanyId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -719,7 +739,7 @@ namespace InventoryApi.Migrations
 
             modelBuilder.Entity("InventoryApi.Entities.Company", b =>
                 {
-                    b.Navigation("Warehouse");
+                    b.Navigation("Warehouses");
                 });
 
             modelBuilder.Entity("InventoryApi.Entities.Menu", b =>
@@ -742,11 +762,6 @@ namespace InventoryApi.Migrations
             modelBuilder.Entity("InventoryApi.Entities.SubMenu", b =>
                 {
                     b.Navigation("SubMenuRoles");
-                });
-
-            modelBuilder.Entity("InventoryApi.Entities.Warehouse", b =>
-                {
-                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

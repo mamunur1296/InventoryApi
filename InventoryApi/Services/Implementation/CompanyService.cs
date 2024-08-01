@@ -23,6 +23,13 @@ namespace InventoryApi.Services.Implementation
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = entity.Name,
+                FullName=entity.FullName,
+                ContactPerson=entity.ContactPerson,
+                Address=entity.Address,
+                PhoneNo=entity.PhoneNo,
+                FaxNo=entity.FaxNo,
+                EmailNo=entity.EmailNo,
+                IsActive=true
             };
             await _unitOfWorkRepository.companyRepository.AddAsync(newCompany);
             await _unitOfWorkRepository.SaveAsync();
@@ -56,15 +63,21 @@ namespace InventoryApi.Services.Implementation
             {
                 Id=x.Id,
                 Name=x.Name,
+                IsActive = x.IsActive,
+                EmailNo=x.EmailNo,
+                FaxNo=x.FaxNo,
+                PhoneNo=x.PhoneNo,
+                Address=x.Address,
+                ContactPerson=x.ContactPerson,
+                FullName = x.FullName   
             });
             response.Data = result;
             response.Success=true;
             return response;
         }
 
-        public Task<ResponseDTOs<CompanyDTOs>> GetByIdAsync(string id)
+        public async Task<ResponseDTOs<CompanyDTOs>> GetByIdAsync(string id)
         {
-           
             throw new NotImplementedException();
         }
 

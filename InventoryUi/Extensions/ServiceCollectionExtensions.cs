@@ -20,11 +20,14 @@ namespace InventoryUi.Extensions
             services.AddScoped<IHttpService, HttpService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IFileUploader, FileUploader>();
+            services.AddScoped<IFileHelper, FileHelper>();
             services.AddScoped<IClientServices<ChangePassword>, ClientServices<ChangePassword>>();
             services.AddScoped<IClientServices<User>, ClientServices<User>>();
             services.AddScoped<IClientServices<Register>, ClientServices<Register>>();
             services.AddScoped<IClientServices<Login>, ClientServices<Login>>();
             services.AddScoped<IClientServices<Roles>, ClientServices<Roles>>();
+            services.AddScoped<IClientServices<Company>, ClientServices<Company>>();
+            services.AddScoped<IClientServices<Warehouse>, ClientServices<Warehouse>>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

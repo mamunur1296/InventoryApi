@@ -1,5 +1,5 @@
 ﻿using InventoryUi.Services.Interface;
-
+using System.IO;
 public class FileUploader : IFileUploader
 {
     private readonly IWebHostEnvironment _webHostEnvironment;
@@ -58,4 +58,6 @@ public class FileUploader : IFileUploader
         }
         return false;
     }
+
+   
 }
