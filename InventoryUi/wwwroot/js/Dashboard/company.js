@@ -16,25 +16,25 @@ const onSuccessUsers = async (companys) => {
         debugger
         const userSchema = [
             {
-                render: (data, type, row) => row.name
+                render: (data, type, row) => row.name ?? "No Data"
             },
             {
-                render: (data, type, row) => row.fullName 
+                render: (data, type, row) => row.fullName ?? "No Data"
             },
             {
-                render: (data, type, row) => row.contactPerson 
+                render: (data, type, row) => row.contactPerson ?? "No Data"
             },
             {
-                render: (data, type, row) => row.address
+                render: (data, type, row) => row.address ?? "No Address"
             },
             {
-                render: (data, type, row) => row.phoneNo  
+                render: (data, type, row) => row.phoneNo ?? "No Phone"
             },
             {
-                render: (data, type, row) => row.faxNo 
+                render: (data, type, row) => row.faxNo ?? "No Fax"
             },
             {
-                render: (data, type, row) => row.emailNo 
+                render: (data, type, row) => row.emailNo ?? "No Email"
             },
             {
                 render: (data, type, row) => createActionButtons(row, [

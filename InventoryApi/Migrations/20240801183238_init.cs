@@ -480,9 +480,7 @@ namespace InventoryApi.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Warehouses_CompanyId",
                 table: "Warehouses",
-                column: "CompanyId",
-                unique: true,
-                filter: "[CompanyId] IS NOT NULL");
+                column: "CompanyId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

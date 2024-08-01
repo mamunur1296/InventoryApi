@@ -5,6 +5,7 @@ $(document).ready(async function () {
     await getWarehouseList();
 });
 const getWarehouseList = async () => {
+    debugger
     const warehouse = await SendRequest({ endpoint: '/Warehouse/GetAll' });
     const company = await SendRequest({ endpoint: '/Company/GetAll' });
     if (warehouse.status === 200 && warehouse.success) {
@@ -17,13 +18,13 @@ const onSuccessUsers = async (warehouses, companys) => {
     const companyMap = dataToMap(companys, 'id');
     const warehouseitem = warehouses.map((warehouse) => {
         if (warehouse) {
-
+            debugger
             const company = companyMap[warehouse.companyId];
             return {
-                id: warehouse.id,
-                name: warehouse.name,
-                address: warehouse.address,
-                companyName: company.fullName,
+                id: warehouse?.id,
+                name: warehouse?.name ?? "No Name",
+                address: warehouse?.address ?? "No Address",
+                companyName: company?.fullName ?? "No Name",
             };
         }
         return null;
@@ -33,13 +34,13 @@ const onSuccessUsers = async (warehouses, companys) => {
         debugger
         const userSchema = [
             {
-                render: (data, type, row) => row.name
+                render: (data, type, row) => row?.name
             },
             {
-                render: (data, type, row) => row.address
+                render: (data, type, row) => row?.address
             },
             {
-                render: (data, type, row) => row.companyName
+                render: (data, type, row) => row?.companyName
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
@@ -49,7 +50,9 @@ const onSuccessUsers = async (warehouses, companys) => {
                 ])
             }
         ];
-        await initializeDataTable(warehouseitem, userSchema, 'WarehouseTable');
+        if (warehouses) {
+            await initializeDataTable(warehouseitem, userSchema, 'WarehouseTable');
+        }
     } catch (error) {
         console.error('Error processing company data:', error);
     }
@@ -96,6 +99,14 @@ const UsrValidae = $('#WarehouseForm').validate({
         Name: {
             required: true,
             checkDuplicateWarehouseName: true
+        },
+        CompanyId: {
+            required: true,
+            
+        },
+        Address: {
+            required: true,
+
         }
 
     },
@@ -103,6 +114,14 @@ const UsrValidae = $('#WarehouseForm').validate({
         Name: {
             required: " Warehouse Name is required.",
             checkDuplicateWarehouseName: "This Warehouse Name is already taken."
+        },
+        CompanyId: {
+            required: " Company Name is required.",
+            
+        },
+        Address: {
+            required: " Address is required.",
+
         }
     },
     errorElement: 'div',

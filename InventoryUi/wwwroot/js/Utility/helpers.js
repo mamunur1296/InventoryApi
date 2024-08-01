@@ -14,7 +14,12 @@ export const initializeDataTable = async (data, schema, tableId) => {
         if (!Array.isArray(data) || !Array.isArray(schema) || typeof tableId !== 'string') {
             throw new Error('Invalid arguments passed to initializeGenericDataTable');
         }
-
+        // Handle null values in schema
+        //schema.forEach(x => {
+        //    if (x.value === null) {
+        //        x.value = "No data";
+        //    }
+        //});
         const tableElement = $(`#${tableId}`);
         if (!tableElement.length) {
             throw new Error(`Table with ID ${tableId} not found`);

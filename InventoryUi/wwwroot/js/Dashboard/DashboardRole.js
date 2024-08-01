@@ -20,7 +20,7 @@ const onSuccessUsers = async (roles) => {
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
-                    { label: 'Edit', btnClass: 'btn-primary', callback: 'updateUser' },
+                    { label: 'Edit', btnClass: 'btn-primary', callback: 'updateUser', disabled: true },
                     { label: 'Details', btnClass: 'btn-info', callback: 'showDetails', disabled: true },
                     { label: 'Delete', btnClass: 'btn-danger', callback: 'deleteRole' }
                 ])

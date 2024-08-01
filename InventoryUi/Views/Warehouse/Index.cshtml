@@ -4,24 +4,6 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Warehouse</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li class="breadcrumb-item active">Warehouse</li>
-                </ol>
-            </div>
-        </div>
-    </div><!-- /.container-fluid -->
-</section>
-
-
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -94,12 +76,15 @@
                                 </div>
 
                             </div>
-                            <div class="form-group">
-                                <label asp-for="CompanyId"></label>
-                                <select class="form-control" asp-for="CompanyId" id="CompanyDropdown">
-                                    <option value="">Select Company</option>
-                                </select>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label" asp-for="CompanyId"></label>
+                                    <select class="form-control" asp-for="CompanyId" id="CompanyDropdown">
+                                        <option value="">Select Company</option>
+                                    </select>
+                                </div>
                             </div>
+                            
                         </div>
                     </div>
                 </form>
