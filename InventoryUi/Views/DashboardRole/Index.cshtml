@@ -12,8 +12,15 @@
             <div class="col-12">
                 <!-- /.card -->
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title font-weight-bold fs-1 color-primary">Roles List</h3>
+                    <div class="card-header ">
+                        <div class="row">
+                            <div class="col-md-6"> 
+                                <h3 class="card-title font-weight-bold fs-1 color-primary">Roles List</h3>
+                            </div>
+                            <div class="col-md-6 d-flex justify-content-end ">
+                                  <a id="CreateUserBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Roles</a>
+                            </div>
+                        </div>
                     </div>
                     <div id="successMessage" class="alert alert-success" role="alert" style="display: none;">
                         <button id="btnClose" type="button" class="btn-close" aria-label="Close"></button>
@@ -26,7 +33,7 @@
 
                     <div class="card-body">
                         <table id="RoleTable" class="table table-bordered table-striped">
-                            <p> <a id="CreateUserBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Roles</a> </p>
+                           
                             <thead>
                                 <tr>
                                     <th>Roles</th>

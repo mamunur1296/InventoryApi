@@ -3,6 +3,8 @@ using InventoryApi.Entities;
 using InventoryApi.Exceptions;
 using InventoryApi.Services.Interfaces;
 using InventoryApi.UnitOfWork;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace InventoryApi.Services.Implementation
@@ -51,6 +53,19 @@ namespace InventoryApi.Services.Implementation
             await _unitOfWorkRepository.SaveAsync();
             response.Success = true;
             return response;
+            //try
+            //{
+
+            //}
+            //catch (DbUpdateException ex)
+            //{
+            //    throw new BadRequestException("Unable to delete the company because it has related warehouses." + ex.Message);
+            //}
+            //catch (Exception ex)
+            //{
+
+            //    throw ;
+            //}
         }
 
         public async Task<ResponseDTOs<IEnumerable<CompanyDTOs>>> GetAllAsync()

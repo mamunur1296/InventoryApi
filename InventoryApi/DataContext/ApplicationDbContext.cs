@@ -32,11 +32,14 @@ namespace InventoryApi.DataContext
             builder.Entity<SubMenuRole>().HasKey(smr => new { smr.SubMenuId, smr.RoleId });
             builder.Entity<SubMenuRole>().HasOne(smr => smr.SubMenu).WithMany(sm => sm.SubMenuRoles).HasForeignKey(smr => smr.SubMenuId);
             builder.Entity<SubMenuRole>().HasOne(smr => smr.Role).WithMany().HasForeignKey(smr => smr.RoleId);
-            // Other configurations...
 
+
+            // Configure Company and Warehouse relationship
             builder.Entity<Company>()
-                  .HasMany(c => c.Warehouses);
-
+                .HasMany(c => c.Warehouses)
+                .WithOne(w => w.Company)
+                .HasForeignKey(w => w.CompanyId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Define a non-unique index on CompanyId
             builder.Entity<Warehouse>()
