@@ -1,7 +1,8 @@
-﻿using InventoryApi.Controllers;
-using InventoryApi.DataContext;
+﻿using InventoryApi.DataContext;
 using InventoryApi.DTOs;
 using InventoryApi.Entities;
+using InventoryApi.Repository.Implementation.RoleMenuMappingRepository;
+using InventoryApi.Repository.Interfaces.IRoleMenuMappingRepository;
 using InventoryApi.Services.Implementation;
 using InventoryApi.Services.Interfaces;
 using InventoryApi.UnitOfWork;
@@ -38,6 +39,13 @@ namespace ProjectApi
             });
             services.AddScoped<IUnitOfWorkRepository, UnitOfWorkRepository>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IRoleMenuService, RoleMenuService>();
+            services.AddScoped<IMenuSubmenuService, MenuSubmenuService>();
+            services.AddScoped<ISubmenuActionService, SubmenuActionService>();
+            services.AddScoped<IRoleMenuMappingRepository, RoleMenuMappingRepository>();
+            services.AddScoped<IMenuSubmenuMappingRepository, MenuSubmenuMappingRepository>();
+            services.AddScoped<ISubmenuActionMappingRepository, SubmenuActionMappingRepository>();
+
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<RoleManager<ApplicationRole>>();
             services.AddScoped<IBaseServices<CompanyDTOs>, CompanyService>();
@@ -51,6 +59,7 @@ namespace ProjectApi
             services.AddScoped<IBaseServices<SubMenuDTOs>, SubMenuService>();
             services.AddScoped<IBaseServices<MenuRoleDTOs>, MenuRoleService>();
             services.AddScoped<IBaseServices<SubMenuRoleDTOs>, SubMenuRoleService>();
+            services.AddScoped<IBaseServices<ActionNameDTOs>, ActionService>();
             services.AddScoped<RoleMenuMappingService>();
             return services;
         }

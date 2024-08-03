@@ -22,6 +22,53 @@ namespace InventoryApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("InventoryApi.Entities.ActionName", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ActionNames");
+                });
+
+            modelBuilder.Entity("InventoryApi.Entities.ActionRole", b =>
+                {
+                    b.Property<string>("ActionId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SubMenuId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ActionId", "SubMenuId");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("SubMenuId");
+
+                    b.ToTable("ActionRoles");
+                });
+
             modelBuilder.Entity("InventoryApi.Entities.ApplicationRole", b =>
                 {
                     b.Property<string>("Id")
@@ -567,6 +614,31 @@ namespace InventoryApi.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("InventoryApi.Entities.ActionRole", b =>
+                {
+                    b.HasOne("InventoryApi.Entities.ActionName", "Action")
+                        .WithMany()
+                        .HasForeignKey("ActionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InventoryApi.Entities.ApplicationRole", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId");
+
+                    b.HasOne("InventoryApi.Entities.SubMenu", "SubMenu")
+                        .WithMany("ActionRoles")
+                        .HasForeignKey("SubMenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Action");
+
+                    b.Navigation("Role");
+
+                    b.Navigation("SubMenu");
+                });
+
             modelBuilder.Entity("InventoryApi.Entities.MenuRole", b =>
                 {
                     b.HasOne("InventoryApi.Entities.Menu", "Menu")
@@ -739,6 +811,8 @@ namespace InventoryApi.Migrations
 
             modelBuilder.Entity("InventoryApi.Entities.SubMenu", b =>
                 {
+                    b.Navigation("ActionRoles");
+
                     b.Navigation("SubMenuRoles");
                 });
 

@@ -20,6 +20,8 @@ namespace InventoryApi.DataContext
         public DbSet<SubMenu> SubMenus { get; set; }
         public DbSet<MenuRole> MenuRoles { get; set; }
         public DbSet<SubMenuRole> SubMenuRoles { get; set; }
+        public DbSet<ActionName> ActionNames { get; set; }
+        public DbSet<ActionRole> ActionRoles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -40,32 +42,17 @@ namespace InventoryApi.DataContext
                 .HasOne(op => op.Product)
                 .WithMany(p => p.OrderProducts)
                 .HasForeignKey(op => op.ProductId);
-
             builder.Entity<MenuRole>()
-                .HasKey(mr => new { mr.MenuId, mr.RoleId });
-
-            builder.Entity<MenuRole>()
-                .HasOne(mr => mr.Menu)
-                .WithMany(m => m.MenuRoles)
-                .HasForeignKey(mr => mr.MenuId);
-
-            builder.Entity<MenuRole>()
-                .HasOne(mr => mr.Role)
-                .WithMany()
-                .HasForeignKey(mr => mr.RoleId);
+                        .HasKey(mr => new { mr.MenuId, mr.RoleId });
 
             builder.Entity<SubMenuRole>()
                 .HasKey(smr => new { smr.SubMenuId, smr.RoleId });
-
-            builder.Entity<SubMenuRole>()
-                .HasOne(smr => smr.SubMenu)
-                .WithMany(sm => sm.SubMenuRoles)
-                .HasForeignKey(smr => smr.SubMenuId);
-
-            builder.Entity<SubMenuRole>()
-                .HasOne(smr => smr.Role)
-                .WithMany()
-                .HasForeignKey(smr => smr.RoleId);
+            builder.Entity<ActionRole>()
+            .HasKey(ar => new { ar.ActionId, ar.SubMenuId });
+            builder.Entity<ActionRole>()
+             .HasOne(ar => ar.SubMenu)
+             .WithMany(sm => sm.ActionRoles)  // Ensure SubMenu has ActionRoles collection
+             .HasForeignKey(ar => ar.SubMenuId);
 
             builder.Entity<Company>()
                 .HasOne(c => c.Warehouse)

@@ -1,4 +1,5 @@
 ﻿using InventoryApi.DTOs;
+using InventoryApi.Entities;
 using InventoryApi.Services.Interfaces;
 using InventoryApi.UnitOfWork;
 
@@ -13,9 +14,18 @@ namespace InventoryApi.Services.Implementation
             _unitOfWorkRepository = unitOfWorkRepository;
         }
 
-        public Task<ResponseDTOs<string>> CreateAsync(ActionNameDTOs entity)
+        public async Task<ResponseDTOs<string>> CreateAsync(ActionNameDTOs entity)
         {
-            throw new NotImplementedException();
+            var response = new ResponseDTOs<string>();
+            var newCompany = new ActionName
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = entity.Name,
+            };
+            await _unitOfWorkRepository.actionRepository.AddAsync(newCompany);
+            await _unitOfWorkRepository.SaveAsync();
+            response.Success = true;
+            return response;
         }
 
         public Task<ResponseDTOs<string>> DeleteAsync(string id)
@@ -37,6 +47,7 @@ namespace InventoryApi.Services.Implementation
             response.Data = result;
             response.Success = true;
             return response;
+
         }
 
         public Task<ResponseDTOs<ActionNameDTOs>> GetByIdAsync(string id)
