@@ -15,9 +15,8 @@ namespace InventoryApi.Services.Implementation
             _unitOfWorkRepository = unitOfWorkRepository;
         }
 
-        public async Task<ResponseDTOs<string>> CreateAsync(MenuRoleDTOs entity)
+        public async Task<bool> CreateAsync(MenuRoleDTOs entity)
         {
-            var response = new ResponseDTOs<string>();
             var newMenuRole = new MenuRole
             {
                 MenuId = Guid.NewGuid().ToString(),
@@ -27,13 +26,11 @@ namespace InventoryApi.Services.Implementation
             };
             await _unitOfWorkRepository.menuRoleRepository.AddAsync(newMenuRole);
             await _unitOfWorkRepository.SaveAsync();
-            response.Success = true;
-            return response;
+            return true;
         }
 
-        public async Task<ResponseDTOs<string>> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(string id)
         {
-            var response = new ResponseDTOs<string>();
             var deleteItem = await _unitOfWorkRepository.menuRoleRepository.GetByIdAsync(id);
 
             if (deleteItem == null)
@@ -42,15 +39,11 @@ namespace InventoryApi.Services.Implementation
             }
             await _unitOfWorkRepository.menuRoleRepository.DeleteAsync(deleteItem);
             await _unitOfWorkRepository.SaveAsync();
-            response.Success = true;
-            return response;
+            return true;
         }
 
-        public async Task<ResponseDTOs<IEnumerable<MenuRoleDTOs>>> GetAllAsync()
+        public async Task<IEnumerable<MenuRoleDTOs>> GetAllAsync()
         {
-            var response = new ResponseDTOs<IEnumerable<MenuRoleDTOs>>();
-
-
             var companyList = await _unitOfWorkRepository.menuRoleRepository.GetAllAsync();
             var result = companyList.Select(x => new MenuRoleDTOs()
             {
@@ -59,17 +52,15 @@ namespace InventoryApi.Services.Implementation
                // Menu = x.Menu,
                 MenuId = x.MenuId   
             });
-            response.Data = result;
-            response.Success = true;
-            return response;
+            return result;
         }
 
-        public Task<ResponseDTOs<MenuRoleDTOs>> GetByIdAsync(string id)
+        public Task<MenuRoleDTOs> GetByIdAsync(string id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ResponseDTOs<string>> UpdateAsync(MenuRoleDTOs entity)
+        public Task<bool> UpdateAsync(MenuRoleDTOs entity)
         {
             throw new NotImplementedException();
         }

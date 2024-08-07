@@ -20,7 +20,7 @@ namespace InventoryApi.Controllers
         public async Task<IActionResult> Create(CategoryDTOs model)
         {
             var result = await _service.CreateAsync(model);
-            if (result.Success)
+            if (result)
             {
                 return StatusCode((int)HttpStatusCode.Created, new ResponseDTOs<string>
                 {
@@ -35,12 +35,12 @@ namespace InventoryApi.Controllers
         public async Task<IActionResult> getAll()
         {
             var result = await _service.GetAllAsync();
-            if (result.Success)
+            if (result != null)
             {
                 return StatusCode((int)HttpStatusCode.OK, new ResponseDTOs<IEnumerable<CategoryDTOs>>
                 {
                     Success = true,
-                    Data = result.Data,
+                    Data = result,
                     Status = HttpStatusCode.OK,
                     Detail = "Category List   successfully !!."
                 });
@@ -51,7 +51,7 @@ namespace InventoryApi.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             var result = await _service.DeleteAsync(id);
-            if (result.Success)
+            if (result)
             {
                 return StatusCode((int)HttpStatusCode.OK, new ResponseDTOs<string>
                 {

@@ -15,9 +15,8 @@ namespace InventoryApi.Services.Implementation
             _unitOfWorkRepository = unitOfWorkRepository;
         }
 
-        public async Task<ResponseDTOs<string>> CreateAsync(OrderProductDTOs entity)
+        public async Task<bool> CreateAsync(OrderProductDTOs entity)
         {
-            var response = new ResponseDTOs<string>();
             var newOrderProduct = new OrderProduct
             {
                 Id = Guid.NewGuid().ToString(),
@@ -27,13 +26,11 @@ namespace InventoryApi.Services.Implementation
             };
             await _unitOfWorkRepository.orderProductRepository.AddAsync(newOrderProduct);
             await _unitOfWorkRepository.SaveAsync();
-            response.Success = true;
-            return response;
+            return true;
         }
 
-        public async Task<ResponseDTOs<string>> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(string id)
         {
-            var response = new ResponseDTOs<string>();
             var deleteItem = await _unitOfWorkRepository.orderProductRepository.GetByIdAsync(id);
 
             if (deleteItem == null)
@@ -42,15 +39,11 @@ namespace InventoryApi.Services.Implementation
             }
             await _unitOfWorkRepository.orderProductRepository.DeleteAsync(deleteItem);
             await _unitOfWorkRepository.SaveAsync();
-            response.Success = true;
-            return response;
+            return true;
         }
 
-        public async Task<ResponseDTOs<IEnumerable<OrderProductDTOs>>> GetAllAsync()
+        public async Task<IEnumerable<OrderProductDTOs>> GetAllAsync()
         {
-            var response = new ResponseDTOs<IEnumerable<OrderProductDTOs>>();
-
-
             var OrderProductList = await _unitOfWorkRepository.orderProductRepository.GetAllAsync();
             var result = OrderProductList.Select(x => new OrderProductDTOs()
             {
@@ -58,17 +51,15 @@ namespace InventoryApi.Services.Implementation
                //Order=x.Order,
               // Product=x.Product,
             });
-            response.Data = result;
-            response.Success = true;
-            return response;
+            return result;
         }
 
-        public Task<ResponseDTOs<OrderProductDTOs>> GetByIdAsync(string id)
+        public Task<OrderProductDTOs> GetByIdAsync(string id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ResponseDTOs<string>> UpdateAsync(OrderProductDTOs entity)
+        public Task<bool> UpdateAsync(OrderProductDTOs entity)
         {
             throw new NotImplementedException();
         }

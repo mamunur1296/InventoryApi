@@ -16,9 +16,8 @@ namespace InventoryApi.Services.Implementation
             _unitOfWorkRepository = unitOfWorkRepository;
         }
 
-        public async Task<ResponseDTOs<string>> CreateAsync(CategoryDTOs entity)
+        public async Task<bool> CreateAsync(CategoryDTOs entity)
         {
-            var response = new ResponseDTOs<string>();
             var newCategory = new Category
             {
                 Id = Guid.NewGuid().ToString(),
@@ -28,13 +27,11 @@ namespace InventoryApi.Services.Implementation
             };
             await _unitOfWorkRepository.categoryRepository.AddAsync(newCategory);
             await _unitOfWorkRepository.SaveAsync();
-            response.Success = true;
-            return response;
+            return true;
         }
 
-        public async Task<ResponseDTOs<string>> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(string id)
         {
-            var response = new ResponseDTOs<string>();
             var deleteItem = await _unitOfWorkRepository.categoryRepository.GetByIdAsync(id);
 
             if (deleteItem == null)
@@ -43,15 +40,11 @@ namespace InventoryApi.Services.Implementation
             }
             await _unitOfWorkRepository.categoryRepository.DeleteAsync(deleteItem);
             await _unitOfWorkRepository.SaveAsync();
-            response.Success = true;
-            return response;
+            return true;
         }
 
-        public async Task<ResponseDTOs<IEnumerable<CategoryDTOs>>> GetAllAsync()
+        public async Task<IEnumerable<CategoryDTOs>> GetAllAsync()
         {
-            var response = new ResponseDTOs<IEnumerable<CategoryDTOs>>();
-
-
             var CatagoryList = await _unitOfWorkRepository.categoryRepository.GetAllAsync();
             var result = CatagoryList.Select(x => new CategoryDTOs()
             {
@@ -59,17 +52,15 @@ namespace InventoryApi.Services.Implementation
                Name = x.Name,
                //Products=x.Products,
             });
-            response.Data = result;
-            response.Success = true;
-            return response;
+            return result;
         }
 
-        public Task<ResponseDTOs<CategoryDTOs>> GetByIdAsync(string id)
+        public Task<CategoryDTOs> GetByIdAsync(string id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ResponseDTOs<string>> UpdateAsync(CategoryDTOs entity)
+        public Task<bool> UpdateAsync(CategoryDTOs entity)
         {
             throw new NotImplementedException();
         }

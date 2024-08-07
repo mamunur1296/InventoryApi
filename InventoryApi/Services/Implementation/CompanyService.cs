@@ -3,9 +3,6 @@ using InventoryApi.Entities;
 using InventoryApi.Exceptions;
 using InventoryApi.Services.Interfaces;
 using InventoryApi.UnitOfWork;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using System.Net;
 
 namespace InventoryApi.Services.Implementation
 {
@@ -18,9 +15,8 @@ namespace InventoryApi.Services.Implementation
             _unitOfWorkRepository = unitOfWorkRepository;
         }
 
-        public async Task<ResponseDTOs<string>> CreateAsync(CompanyDTOs entity)
+        public async Task<bool> CreateAsync(CompanyDTOs entity)
         {
-            var response = new ResponseDTOs<string>();
             var newCompany = new Company
             {
                 Id = Guid.NewGuid().ToString(),
@@ -35,14 +31,11 @@ namespace InventoryApi.Services.Implementation
             };
             await _unitOfWorkRepository.companyRepository.AddAsync(newCompany);
             await _unitOfWorkRepository.SaveAsync();
-            response.Success = true;
-            return response;
+            return true;
         }
 
-        public async Task<ResponseDTOs<string>> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(string id)
         {
-
-            var response = new ResponseDTOs<string>();
             var deleteCompany = await _unitOfWorkRepository.companyRepository.GetByIdAsync(id);
 
             if (deleteCompany == null)
@@ -51,28 +44,11 @@ namespace InventoryApi.Services.Implementation
             }
             await _unitOfWorkRepository.companyRepository.DeleteAsync(deleteCompany);
             await _unitOfWorkRepository.SaveAsync();
-            response.Success = true;
-            return response;
-            //try
-            //{
-
-            //}
-            //catch (DbUpdateException ex)
-            //{
-            //    throw new BadRequestException("Unable to delete the company because it has related warehouses." + ex.Message);
-            //}
-            //catch (Exception ex)
-            //{
-
-            //    throw ;
-            //}
+            return true;
         }
 
-        public async Task<ResponseDTOs<IEnumerable<CompanyDTOs>>> GetAllAsync()
+        public async Task<IEnumerable<CompanyDTOs>> GetAllAsync()
         {
-            var response = new ResponseDTOs<IEnumerable<CompanyDTOs>>();
-
-
             var companyList = await _unitOfWorkRepository.companyRepository.GetAllAsync();
             var result = companyList.Select(x => new CompanyDTOs()
             {
@@ -86,17 +62,15 @@ namespace InventoryApi.Services.Implementation
                 ContactPerson=x.ContactPerson,
                 FullName = x.FullName   
             });
-            response.Data = result;
-            response.Success=true;
-            return response;
+            return result;
         }
 
-        public async Task<ResponseDTOs<CompanyDTOs>> GetByIdAsync(string id)
+        public async Task<CompanyDTOs> GetByIdAsync(string id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ResponseDTOs<string>> UpdateAsync(CompanyDTOs entity)
+        public Task<bool> UpdateAsync(CompanyDTOs entity)
         {
             throw new NotImplementedException();
         }

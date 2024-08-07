@@ -14,9 +14,8 @@ namespace InventoryApi.Services.Implementation
         {
             _unitOfWorkRepository = unitOfWorkRepository;
         }
-        public async Task<ResponseDTOs<string>> CreateAsync(DeliveryAddressDTOs entity)
+        public async Task<bool> CreateAsync(DeliveryAddressDTOs entity)
         {
-            var response = new ResponseDTOs<string>();
             var newdelivaryAddress = new DeliveryAddress
             {
                 Id = Guid.NewGuid().ToString(),
@@ -26,13 +25,11 @@ namespace InventoryApi.Services.Implementation
             };
             await _unitOfWorkRepository.deliveryAddressRepository.AddAsync(newdelivaryAddress);
             await _unitOfWorkRepository.SaveAsync();
-            response.Success = true;
-            return response;
+            return true;
         }
 
-        public async Task<ResponseDTOs<string>> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(string id)
         {
-            var response = new ResponseDTOs<string>();
             var deleteItem = await _unitOfWorkRepository.deliveryAddressRepository.GetByIdAsync(id);
 
             if (deleteItem == null)
@@ -41,15 +38,11 @@ namespace InventoryApi.Services.Implementation
             }
             await _unitOfWorkRepository.deliveryAddressRepository.DeleteAsync(deleteItem);
             await _unitOfWorkRepository.SaveAsync();
-            response.Success = true;
-            return response;
+            return true;
         }
 
-        public async Task<ResponseDTOs<IEnumerable<DeliveryAddressDTOs>>> GetAllAsync()
+        public async Task<IEnumerable<DeliveryAddressDTOs>> GetAllAsync()
         {
-            var response = new ResponseDTOs<IEnumerable<DeliveryAddressDTOs>>();
-
-
             var itemList = await _unitOfWorkRepository.deliveryAddressRepository.GetAllAsync();
             var result = itemList.Select(x => new DeliveryAddressDTOs()
             {
@@ -58,17 +51,15 @@ namespace InventoryApi.Services.Implementation
                 Mobile = x.Mobile,
                 Phone = x.Phone,
             });
-            response.Data = result;
-            response.Success = true;
-            return response;
+            return result;
         }
 
-        public Task<ResponseDTOs<DeliveryAddressDTOs>> GetByIdAsync(string id)
+        public Task<DeliveryAddressDTOs> GetByIdAsync(string id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ResponseDTOs<string>> UpdateAsync(DeliveryAddressDTOs entity)
+        public Task<bool> UpdateAsync(DeliveryAddressDTOs entity)
         {
             throw new NotImplementedException();
         }
