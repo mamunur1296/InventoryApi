@@ -14,7 +14,19 @@ namespace InventoryApi.UnitOfWork
         IMenuRepository menuRepository { get; }
         ISubMenuRepository subMenuRepository { get; }
         IMenuRoleRepository menuRoleRepository { get; }
-        ISubMenuRoleRepository subMenuRoleRepository { get; }
+        ISubMenuRoleRepository subMenuRoleRepository { get; } //
+        ISupplierRepository supplierRepository { get; }
+        IStockRepository stockRepository { get; }
+        IShoppingCartRepository shoppingCartRepository { get; }
+        IShipperRepository shipperRepository { get; }
+        IReviewRepository reviewRepository { get; }
+        IPrescriptionRepository prescriptionRepository { get; }
+        IPaymentRepository paymentRepository { get; }
+        IOrderDetailRepository orderDetailRepository { get; }
+        IEmployeeRepository employeeRepository { get; } 
+        ICustomerRepository customerRepository { get; }
+        ICartItemRepository cartItemRepository { get; }
+
         Task SaveAsync();
     }
 }

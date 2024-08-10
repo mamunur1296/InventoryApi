@@ -1,4 +1,5 @@
-﻿using InventoryApi.DTOs;
+﻿using AutoMapper;
+using InventoryApi.DTOs;
 using InventoryApi.Entities;
 using InventoryApi.Exceptions;
 using InventoryApi.Services.Interfaces;
@@ -9,10 +10,12 @@ namespace InventoryApi.Services.Implementation
     public class SubMenuRoleService : IBaseServices<SubMenuRoleDTOs>
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
+        private readonly IMapper _mapper;
 
-        public SubMenuRoleService(IUnitOfWorkRepository unitOfWorkRepository)
+        public SubMenuRoleService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
+            _mapper = mapper;
         }
 
         public async Task<bool> CreateAsync(SubMenuRoleDTOs entity)
@@ -56,14 +59,32 @@ namespace InventoryApi.Services.Implementation
             return result;
         }
 
-        public Task<SubMenuRoleDTOs> GetByIdAsync(string id)
+        public async Task<SubMenuRoleDTOs> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            var item = await _unitOfWorkRepository.subMenuRoleRepository.GetByIdAsync(id);
+            if (item == null || item?.SubMenuId != id)
+            {
+                throw new NotFoundException($"Company with id = {id} not found");
+            }
+            var result = _mapper.Map<SubMenuRoleDTOs>(item);
+            return result;
         }
 
-        public Task<bool> UpdateAsync(SubMenuRoleDTOs entity)
+        public async Task<bool> UpdateAsync(string id, SubMenuRoleDTOs entity)
         {
-            throw new NotImplementedException();
+            var item = await _unitOfWorkRepository.subMenuRoleRepository.GetByIdAsync(id);
+            if (item == null || item?.SubMenuId != id)
+            {
+                throw new NotFoundException($"company with id = {id} not found");
+            }
+            // Update  properties
+            //item.Name = string.IsNullOrWhiteSpace(entity.Name) ? item.Name : entity.Name;
+
+            // Perform update operation
+            await _unitOfWorkRepository.subMenuRoleRepository.UpdateAsync(item);
+            await _unitOfWorkRepository.SaveAsync();
+
+            return true;
         }
     }
 }

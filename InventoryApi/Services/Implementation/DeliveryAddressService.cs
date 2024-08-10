@@ -1,27 +1,34 @@
-﻿using InventoryApi.DTOs;
+﻿using AutoMapper;
+using InventoryApi.DTOs;
 using InventoryApi.Entities;
 using InventoryApi.Exceptions;
 using InventoryApi.Services.Interfaces;
 using InventoryApi.UnitOfWork;
+using Microsoft.AspNetCore.Server.IISIntegration;
 
 namespace InventoryApi.Services.Implementation
 {
     public class DeliveryAddressService : IBaseServices<DeliveryAddressDTOs>
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
+        private readonly IMapper _mapper;
 
-        public DeliveryAddressService(IUnitOfWorkRepository unitOfWorkRepository)
+        public DeliveryAddressService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
+            _mapper = mapper;
         }
         public async Task<bool> CreateAsync(DeliveryAddressDTOs entity)
         {
             var newdelivaryAddress = new DeliveryAddress
             {
                 Id = Guid.NewGuid().ToString(),
-                Address = entity.Address,
-                Mobile = entity.Mobile,
-                Phone = entity.Phone,
+                Address = entity.Address.Trim(),
+                Mobile = entity.Mobile.Trim(),
+                Phone = entity.Phone.Trim(),
+                UserId = entity.UserId.Trim(),
+                IsActive = true,
+                IsDefault = true,
             };
             await _unitOfWorkRepository.deliveryAddressRepository.AddAsync(newdelivaryAddress);
             await _unitOfWorkRepository.SaveAsync();
@@ -44,24 +51,43 @@ namespace InventoryApi.Services.Implementation
         public async Task<IEnumerable<DeliveryAddressDTOs>> GetAllAsync()
         {
             var itemList = await _unitOfWorkRepository.deliveryAddressRepository.GetAllAsync();
-            var result = itemList.Select(x => new DeliveryAddressDTOs()
-            {
-                id= x.Id,
-                Address = x.Address,
-                Mobile = x.Mobile,
-                Phone = x.Phone,
-            });
+            var result = itemList.Select(item => _mapper.Map<DeliveryAddressDTOs>(item));
             return result;
         }
 
-        public Task<DeliveryAddressDTOs> GetByIdAsync(string id)
+        public async Task<DeliveryAddressDTOs> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            var item = await _unitOfWorkRepository.deliveryAddressRepository.GetByIdAsync(id);
+            if (item == null || item?.Id != id)
+            {
+                throw new NotFoundException($"delivery Address with id = {id} not found");
+            }
+            var result = _mapper.Map<DeliveryAddressDTOs>(item);
+            return result;
         }
 
-        public Task<bool> UpdateAsync(DeliveryAddressDTOs entity)
+        public async Task<bool> UpdateAsync(string id, DeliveryAddressDTOs entity)
         {
-            throw new NotImplementedException();
+            var item = await _unitOfWorkRepository.deliveryAddressRepository.GetByIdAsync(id);
+            if (item == null || item?.Id != id)
+            {
+                throw new NotFoundException($"Delivery Address with id = {id} not found");
+            }
+
+            // Update properties with validation and trimming
+            item.Address = string.IsNullOrWhiteSpace(entity.Address) ? item.Address : entity.Address.Trim();
+            item.Mobile = string.IsNullOrWhiteSpace(entity.Mobile) ? item.Mobile : entity.Mobile.Trim();
+            item.Phone = string.IsNullOrWhiteSpace(entity.Phone) ? item.Phone : entity.Phone.Trim();
+            item.UserId = string.IsNullOrWhiteSpace(entity.UserId) ? item.UserId : entity.UserId.Trim();
+            item.IsActive = entity.IsActive;
+            item.IsDefault = entity.IsDefault;
+
+            // Perform update operation
+            await _unitOfWorkRepository.deliveryAddressRepository.UpdateAsync(item);
+            await _unitOfWorkRepository.SaveAsync();
+
+            return true;
         }
+
     }
 }

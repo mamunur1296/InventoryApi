@@ -1,4 +1,4 @@
-﻿using InventoryApi.Controllers;
+﻿using InventoryApi;
 using InventoryApi.DataContext;
 using InventoryApi.DTOs;
 using InventoryApi.Entities;
@@ -46,11 +46,23 @@ namespace ProjectApi
             services.AddScoped<IBaseServices<ProductDTOs>, ProductService>();
             services.AddScoped<IBaseServices<CategoryDTOs>, CategoryService>();
             services.AddScoped<IBaseServices<OrderDTOs>, OrderService>();
+            services.AddScoped<IBaseServices<OrderDetailDTOs>, OrderDetailService>();
             services.AddScoped<IBaseServices<OrderProductDTOs>, OrderProductService>();
             services.AddScoped<IBaseServices<MenuDTOs>, MenuService>();
             services.AddScoped<IBaseServices<SubMenuDTOs>, SubMenuService>();
             services.AddScoped<IBaseServices<MenuRoleDTOs>, MenuRoleService>();
             services.AddScoped<IBaseServices<SubMenuRoleDTOs>, SubMenuRoleService>();
+            services.AddScoped<IBaseServices<CustomerDTOs>, CustomerService>();
+            services.AddScoped<IBaseServices<EmployeeDTOs>, EmployeeService>();
+            services.AddScoped<IBaseServices<ShoppingCartDTOs>, ShoppingCartService>();
+            services.AddScoped<IBaseServices<SupplierDTOs>, SupplierService>();
+            services.AddScoped<IBaseServices<CartItemDTOs>, CartItemService>();
+            services.AddScoped<IBaseServices<PrescriptionDTOs>, PrescriptionService>();
+            services.AddScoped<IBaseServices<PaymentDTOs>, PaymentService>();
+            services.AddScoped<IBaseServices<ReviewDTOs>, ReviewService>();
+            services.AddScoped<IBaseServices<ShipperDTOs>, ShipperService>();
+            services.AddScoped<IBaseServices<StockDTOs>, StockService>();
+            services.AddAutoMapper(typeof(MappingProfile));
             return services;
         }
     }

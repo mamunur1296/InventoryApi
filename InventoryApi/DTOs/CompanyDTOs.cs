@@ -4,7 +4,7 @@ namespace InventoryApi.DTOs
 {
     public class CompanyDTOs
     {
-        public string Id { get; set; }  
+        public string Id { get; set; }
         public string? Name { get; set; }
         public string? FullName { get; set; }
         public string? ContactPerson { get; set; }
@@ -13,5 +13,6 @@ namespace InventoryApi.DTOs
         public string? FaxNo { get; set; }
         public string? EmailNo { get; set; }
         public bool IsActive { get; set; }
+        //public Warehouse? Warehouse { get; set; }
     }
 }

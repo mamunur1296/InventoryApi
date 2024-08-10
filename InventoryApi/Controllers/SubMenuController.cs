@@ -62,5 +62,37 @@ namespace InventoryApi.Controllers
             }
             return StatusCode((int)HttpStatusCode.BadRequest, result);
         }
+        [HttpPut("Update/{id}")]
+        public async Task<IActionResult> Update(string id, SubMenuDTOs model)
+        {
+            var result = await _service.UpdateAsync(id, model);
+            if (result)
+            {
+                return StatusCode((int)HttpStatusCode.OK, new ResponseDTOs<string>
+                {
+                    Success = true,
+                    Status = HttpStatusCode.OK,
+                    Detail = "SubMenu  updated successfully"
+                });
+            }
+            return StatusCode((int)HttpStatusCode.BadRequest, result);
+        }
+        [HttpGet("get/{id}")]
+        public async Task<IActionResult> getById(string id)
+        {
+            var result = await _service.GetByIdAsync(id);
+            if (result != null)
+            {
+                return StatusCode((int)HttpStatusCode.OK, new ResponseDTOs<SubMenuDTOs>
+                {
+                    Success = true,
+                    Data = result,
+                    Status = HttpStatusCode.OK,
+                    Detail = "Sub Menu  get   successfully !!."
+                });
+            }
+            return StatusCode((int)HttpStatusCode.BadRequest, result);
+        }
+
     }
 }

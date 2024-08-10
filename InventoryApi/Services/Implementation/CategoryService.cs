@@ -1,19 +1,21 @@
-﻿using InventoryApi.DTOs;
+﻿using AutoMapper;
+using InventoryApi.DTOs;
 using InventoryApi.Entities;
 using InventoryApi.Exceptions;
 using InventoryApi.Services.Interfaces;
 using InventoryApi.UnitOfWork;
-using System.Data.Common;
 
 namespace InventoryApi.Services.Implementation
 {
     public class CategoryService : IBaseServices<CategoryDTOs>
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
+        private readonly IMapper _mapper;
 
-        public CategoryService(IUnitOfWorkRepository unitOfWorkRepository)
+        public CategoryService(IUnitOfWorkRepository unitOfWorkRepository,IMapper mapper)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
+            _mapper = mapper;
         }
 
         public async Task<bool> CreateAsync(CategoryDTOs entity)
@@ -21,9 +23,9 @@ namespace InventoryApi.Services.Implementation
             var newCategory = new Category
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = entity.Name,
-                //Products= entity.Products,
-
+                CategoryName = entity.CategoryName.Trim(),
+                Description = entity.Description.Trim(),
+                ParentCategoryID= entity.ParentCategoryID?.Trim(),
             };
             await _unitOfWorkRepository.categoryRepository.AddAsync(newCategory);
             await _unitOfWorkRepository.SaveAsync();
@@ -46,23 +48,37 @@ namespace InventoryApi.Services.Implementation
         public async Task<IEnumerable<CategoryDTOs>> GetAllAsync()
         {
             var CatagoryList = await _unitOfWorkRepository.categoryRepository.GetAllAsync();
-            var result = CatagoryList.Select(x => new CategoryDTOs()
-            {
-                id = x.Id,
-               Name = x.Name,
-               //Products=x.Products,
-            });
+            var result = CatagoryList.Select(item => _mapper.Map<CategoryDTOs>(item));
             return result;
         }
 
-        public Task<CategoryDTOs> GetByIdAsync(string id)
+        public async Task<CategoryDTOs> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            var catagory = await _unitOfWorkRepository.categoryRepository.GetByIdAsync(id);
+            if (catagory == null || catagory?.Id != id)
+            {
+                throw new NotFoundException($"catagory with id = {catagory?.Id} not found");
+            }
+            var result =  _mapper.Map<CategoryDTOs>(catagory);
+            return result;
         }
 
-        public Task<bool> UpdateAsync(CategoryDTOs entity)
+        public async Task<bool> UpdateAsync(string id, CategoryDTOs entity)
         {
-            throw new NotImplementedException();
+            var item = await _unitOfWorkRepository.categoryRepository.GetByIdAsync(id);
+            if (item == null || item?.Id != id )
+            {
+                throw new NotFoundException($"Catagory with id = {id} not found");
+            }
+            // Update  properties
+            item.CategoryName = string.IsNullOrWhiteSpace(entity.CategoryName) ? item.CategoryName : entity.CategoryName;
+            item.Description = string.IsNullOrWhiteSpace(entity.Description) ? item.Description : entity.Description;
+            item.ParentCategoryID = string.IsNullOrWhiteSpace(entity.ParentCategoryID) ? item.ParentCategoryID : entity.ParentCategoryID;
+            // Perform update operation
+            await _unitOfWorkRepository.categoryRepository.UpdateAsync(item);
+            await _unitOfWorkRepository.SaveAsync();
+
+            return true;
         }
     }
 }

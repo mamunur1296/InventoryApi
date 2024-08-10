@@ -4,7 +4,7 @@ namespace InventoryApi.DTOs
 {
     public class SubMenuDTOs
     {
-        public string id { get; set; }
+        public string SubMenuid { get; set; }
         public string Name { get; set; }
         public string? Url { get; set; }
         public string MenuId { get; set; }

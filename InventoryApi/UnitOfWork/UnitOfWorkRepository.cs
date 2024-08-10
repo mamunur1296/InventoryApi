@@ -26,7 +26,29 @@ namespace InventoryApi.UnitOfWork
 
         public IMenuRoleRepository menuRoleRepository { get; private set; }
 
-        public ISubMenuRoleRepository subMenuRoleRepository { get; private set; }
+        public ISubMenuRoleRepository subMenuRoleRepository { get; private set; }//
+
+        public ISupplierRepository supplierRepository { get; private set; }
+
+        public IStockRepository stockRepository { get; private set; }
+
+        public IShoppingCartRepository shoppingCartRepository { get; private set; }
+
+        public IShipperRepository shipperRepository { get; private set; }
+
+        public IReviewRepository reviewRepository { get; private set; }
+
+        public IPrescriptionRepository prescriptionRepository { get; private set; }
+
+        public IPaymentRepository paymentRepository { get; private set; }
+
+        public IOrderDetailRepository orderDetailRepository { get; private set; }
+
+        public IEmployeeRepository employeeRepository { get; private set; }
+
+        public ICustomerRepository customerRepository { get; private set; }
+
+        public ICartItemRepository cartItemRepository { get; private set; }
 
         public UnitOfWorkRepository(ApplicationDbContext applicationDbContext)
         {
@@ -41,7 +63,18 @@ namespace InventoryApi.UnitOfWork
             orderProductRepository = new OrderProductRepository(applicationDbContext);
             subMenuRepository = new SubMenuRepository(applicationDbContext);
             menuRoleRepository = new MenuRoleRepository(applicationDbContext);
-            subMenuRoleRepository = new SubMenuRoleRepository(applicationDbContext);
+            subMenuRoleRepository = new SubMenuRoleRepository(applicationDbContext);//
+            supplierRepository = new SupplierRepository(applicationDbContext);
+            stockRepository = new StockRepository(applicationDbContext);
+            shoppingCartRepository = new ShoppingCartRepository(applicationDbContext);
+            shipperRepository = new ShipperRepository(applicationDbContext);
+            reviewRepository = new ReviewRepository(applicationDbContext);
+            prescriptionRepository = new PrescriptionRepository(applicationDbContext);
+            paymentRepository = new PaymentRepository(applicationDbContext);
+            orderDetailRepository = new OrderDetailRepository(applicationDbContext);
+            employeeRepository = new EmployeeRepository(applicationDbContext);
+            customerRepository = new CustomerRepository(applicationDbContext);
+            cartItemRepository = new CartItemRepository(applicationDbContext);
 
         }
 

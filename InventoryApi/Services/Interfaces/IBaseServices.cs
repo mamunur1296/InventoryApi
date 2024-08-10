@@ -7,7 +7,7 @@ namespace InventoryApi.Services.Interfaces
         Task<IEnumerable<T>> GetAllAsync();
         Task<T> GetByIdAsync(string id);
         Task<bool> CreateAsync(T entity);
-        Task<bool> UpdateAsync(T entity);
+        Task<bool> UpdateAsync(string id,T entity);
         Task<bool> DeleteAsync(string id);
     }
 }

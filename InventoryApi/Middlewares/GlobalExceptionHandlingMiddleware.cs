@@ -1,5 +1,7 @@
 ﻿using InventoryApi.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace InventoryApi.Middlewares
@@ -85,6 +87,29 @@ namespace InventoryApi.Middlewares
                     message = timeoutException.Message;
                     status = HttpStatusCode.RequestTimeout;
                     title = "Timeout Exception Occurred";
+                    break;
+                // SQL-related Exception Cases
+                case DbUpdateException dbUpdateException:
+                    if (dbUpdateException.InnerException is SqlException sqlException)
+                    {
+                        // Specific SQL exception handling
+                        message = $"SQL Error: {sqlException.Message}";
+                        status = HttpStatusCode.InternalServerError;
+                        title = "Database Error Occurred";
+                    }
+                    else
+                    {
+                        // General database update error
+                        message = "An error occurred while updating the database.";
+                        status = HttpStatusCode.Conflict;
+                        title = "Database Update Error Occurred";
+                    }
+                    break;
+
+                case SqlException sqlExceptio:
+                    message = $"A SQL database error occurred: {sqlExceptio.Message}";
+                    status = HttpStatusCode.InternalServerError;
+                    title = "SQL Database Error Occurred";
                     break;
                 // Add other exception types as needed
                 default:

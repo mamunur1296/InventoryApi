@@ -1,4 +1,5 @@
-﻿using InventoryApi.DTOs;
+﻿using AutoMapper;
+using InventoryApi.DTOs;
 using InventoryApi.Entities;
 using InventoryApi.Exceptions;
 using InventoryApi.Services.Interfaces;
@@ -9,10 +10,12 @@ namespace InventoryApi.Services.Implementation
     public class MenuRoleService  : IBaseServices<MenuRoleDTOs>
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
+        private readonly IMapper _mapper;
 
-        public MenuRoleService(IUnitOfWorkRepository unitOfWorkRepository)
+        public MenuRoleService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
+            _mapper = mapper;
         }
 
         public async Task<bool> CreateAsync(MenuRoleDTOs entity)
@@ -60,7 +63,7 @@ namespace InventoryApi.Services.Implementation
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateAsync(MenuRoleDTOs entity)
+        public Task<bool> UpdateAsync(string id, MenuRoleDTOs entity)
         {
             throw new NotImplementedException();
         }

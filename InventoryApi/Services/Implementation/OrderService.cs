@@ -1,4 +1,5 @@
-﻿using InventoryApi.DTOs;
+﻿using AutoMapper;
+using InventoryApi.DTOs;
 using InventoryApi.Entities;
 using InventoryApi.Exceptions;
 using InventoryApi.Services.Interfaces;
@@ -9,10 +10,12 @@ namespace InventoryApi.Services.Implementation
     public class OrderService : IBaseServices<OrderDTOs>
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
+        private readonly IMapper _mapper;
 
-        public OrderService(IUnitOfWorkRepository unitOfWorkRepository)
+        public OrderService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
+            _mapper = mapper;
         }
 
         public async Task<bool> CreateAsync(OrderDTOs entity)
@@ -20,9 +23,22 @@ namespace InventoryApi.Services.Implementation
             var newOrder = new Order
             {
                 Id = Guid.NewGuid().ToString(),
+                CustomerID = entity.CustomerID.Trim(),
+                EmployeeID = entity.EmployeeID?.Trim(),
                 OrderDate = DateTime.Now,
-               // OrderProducts = entity.OrderProducts,
-
+                RequiredDate = entity.RequiredDate,
+                ShippedDate = entity.ShippedDate,
+                ShipVia = entity.ShipVia,
+                Freight= entity.Freight,
+                ShipName = entity.ShipName.Trim(),
+                ShipAddress = entity.ShipAddress.Trim(),
+                ShipCity = entity.ShipCity.Trim(),
+                ShipRegion = entity.ShipRegion.Trim(),
+                ShipPostalCode = entity.ShipPostalCode.Trim(),
+                ShipCountry = entity.ShipCountry.Trim(),
+                PrescriptionID=entity.PrescriptionID?.Trim(),
+                PaymentStatus=entity.PaymentStatus.Trim(),
+                OrderStatus=entity.OrderStatus.Trim(),
             };
             await _unitOfWorkRepository.orderRepository.AddAsync(newOrder);
             await _unitOfWorkRepository.SaveAsync();
@@ -47,21 +63,55 @@ namespace InventoryApi.Services.Implementation
             var OrderList = await _unitOfWorkRepository.orderRepository.GetAllAsync();
             var result = OrderList.Select(x => new OrderDTOs()
             {
-                Id=x.Id,
+                id = x.Id,
                // OrderProducts=x.OrderProducts,
                 OrderDate=x.OrderDate,  
             });
             return result;
         }
 
-        public Task<OrderDTOs> GetByIdAsync(string id)
+        public async Task<OrderDTOs> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            var item = await _unitOfWorkRepository.orderRepository.GetByIdAsync(id);
+            if (item == null || item?.Id != id)
+            {
+                throw new NotFoundException($"order with id = {id} not found");
+            }
+            var result = _mapper.Map<OrderDTOs>(item);
+            return result;
         }
 
-        public Task<bool> UpdateAsync(OrderDTOs entity)
+        public async Task<bool> UpdateAsync(string id, OrderDTOs entity)
         {
-            throw new NotImplementedException();
+            var item = await _unitOfWorkRepository.orderRepository.GetByIdAsync(id);
+            if (item == null || item?.Id != id)
+            {
+                throw new NotFoundException($"Order with id = {id} not found");
+            }
+
+            // Update properties with validation and trimming
+            item.CustomerID = string.IsNullOrWhiteSpace(entity.CustomerID) ? item.CustomerID : entity.CustomerID.Trim();
+            item.EmployeeID = string.IsNullOrWhiteSpace(entity.EmployeeID) ? item.EmployeeID : entity.EmployeeID.Trim();
+            item.RequiredDate = entity.RequiredDate != default ? entity.RequiredDate : item.RequiredDate;
+            item.ShippedDate = entity.ShippedDate ?? item.ShippedDate;
+            item.ShipVia = entity.ShipVia != default ? entity.ShipVia : item.ShipVia;
+            item.Freight = entity.Freight != default ? entity.Freight : item.Freight;
+            item.ShipName = string.IsNullOrWhiteSpace(entity.ShipName) ? item.ShipName : entity.ShipName.Trim();
+            item.ShipAddress = string.IsNullOrWhiteSpace(entity.ShipAddress) ? item.ShipAddress : entity.ShipAddress.Trim();
+            item.ShipCity = string.IsNullOrWhiteSpace(entity.ShipCity) ? item.ShipCity : entity.ShipCity.Trim();
+            item.ShipRegion = string.IsNullOrWhiteSpace(entity.ShipRegion) ? item.ShipRegion : entity.ShipRegion.Trim();
+            item.ShipPostalCode = string.IsNullOrWhiteSpace(entity.ShipPostalCode) ? item.ShipPostalCode : entity.ShipPostalCode.Trim();
+            item.ShipCountry = string.IsNullOrWhiteSpace(entity.ShipCountry) ? item.ShipCountry : entity.ShipCountry.Trim();
+            item.PrescriptionID = string.IsNullOrWhiteSpace(entity.PrescriptionID) ? item.PrescriptionID : entity.PrescriptionID.Trim();
+            item.PaymentStatus = string.IsNullOrWhiteSpace(entity.PaymentStatus) ? item.PaymentStatus : entity.PaymentStatus.Trim();
+            item.OrderStatus = string.IsNullOrWhiteSpace(entity.OrderStatus) ? item.OrderStatus : entity.OrderStatus.Trim();
+
+            // Perform update operation
+            await _unitOfWorkRepository.orderRepository.UpdateAsync(item);
+            await _unitOfWorkRepository.SaveAsync();
+
+            return true;
         }
+
     }
 }

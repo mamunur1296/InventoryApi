@@ -1,4 +1,5 @@
-﻿using InventoryApi.DTOs;
+﻿using AutoMapper;
+using InventoryApi.DTOs;
 using InventoryApi.Entities;
 using InventoryApi.Exceptions;
 using InventoryApi.Services.Interfaces;
@@ -9,10 +10,12 @@ namespace InventoryApi.Services.Implementation
     public class WarehouseService : IBaseServices<WarehouseDTOs>
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
+        private readonly IMapper _mapper;
 
-        public WarehouseService(IUnitOfWorkRepository unitOfWorkRepository)
+        public WarehouseService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
+            _mapper = mapper;
         }
 
         public async Task<bool> CreateAsync(WarehouseDTOs entity)
@@ -20,9 +23,8 @@ namespace InventoryApi.Services.Implementation
             var newWarehouse = new Warehouse
             {
                 Id = Guid.NewGuid().ToString(),
-                CompanyId = entity.CompanyId,
-                Name=entity.Name,
-                Address= entity.Address,
+                WarehouseName=entity.WarehouseName.Trim(),
+                Location = entity.Location.Trim(),
             };
             await _unitOfWorkRepository.warehouseRepository.AddAsync(newWarehouse);
             await _unitOfWorkRepository.SaveAsync();
@@ -44,25 +46,40 @@ namespace InventoryApi.Services.Implementation
 
         public async Task<IEnumerable<WarehouseDTOs>> GetAllAsync()
         {
-            var companyList = await _unitOfWorkRepository.warehouseRepository.GetAllAsync();
-            var result = companyList.Select(x => new WarehouseDTOs()
-            {
-                id = x.Id,
-                CompanyId = x.CompanyId, 
-                Address = x.Address,
-                Name=x.Name,
-            });
+            var itemList = await _unitOfWorkRepository.warehouseRepository.GetAllAsync();
+            var result = itemList.Select(item =>_mapper.Map<WarehouseDTOs>(item));
             return result;
         }
 
-        public Task<WarehouseDTOs> GetByIdAsync(string id)
+        public async Task<WarehouseDTOs> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            var item = await _unitOfWorkRepository.warehouseRepository.GetByIdAsync(id);
+            if (item == null || item?.Id != id)
+            {
+                throw new NotFoundException($"Company with id = {id} not found");
+            }
+            var result = _mapper.Map<WarehouseDTOs>(item);
+            return result;
         }
 
-        public Task<bool> UpdateAsync(WarehouseDTOs entity)
+        public async Task<bool> UpdateAsync(string id, WarehouseDTOs entity)
         {
-            throw new NotImplementedException();
+            var item = await _unitOfWorkRepository.warehouseRepository.GetByIdAsync(id);
+            if (item == null || item?.Id != id)
+            {
+                throw new NotFoundException($"Warehouse with id = {id} not found");
+            }
+
+            // Update properties with validation
+            item.WarehouseName = string.IsNullOrWhiteSpace(entity.WarehouseName) ? item.WarehouseName : entity.WarehouseName.Trim();
+            item.Location = string.IsNullOrWhiteSpace(entity.Location) ? item.Location : entity.Location.Trim();
+
+            // Perform update operation
+            await _unitOfWorkRepository.warehouseRepository.UpdateAsync(item);
+            await _unitOfWorkRepository.SaveAsync();
+
+            return true;
         }
+
     }
 }
