@@ -1,18 +1,17 @@
-﻿using System.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace InventoryUi.Models
 {
     public class Warehouse : BaseModel
     {
-        [DisplayName("Company")]
-        public string? CompanyId { get; set; }
-        [DisplayName("Name")]
-        public string? Name { get; set; }
-        [DisplayName("Address")]
-        public string? Address { get; set; }
-        [DisplayName("Company")]
-        public Company? Company { get; set; }
-        //public ICollection<Product>? Products { get; set; }
+        [Required(ErrorMessage = "Warehouse name is required.")]
+        [StringLength(255, ErrorMessage = "Warehouse name cannot be longer than 255 characters.")]
+        public string WarehouseName { get; set; }
+
+        [StringLength(255, ErrorMessage = "Location cannot be longer than 255 characters.")]
+        public string Location { get; set; }
+
+        public ICollection<Stock> Stocks { get; set; }
 
     }
 }

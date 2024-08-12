@@ -27,6 +27,7 @@ namespace InventoryApi.Services.Implementation
                 Mobile = entity.Mobile.Trim(),
                 Phone = entity.Phone.Trim(),
                 UserId = entity.UserId.Trim(),
+                DeactivatedDate = entity.DeactivatedDate,
                 IsActive = true,
                 IsDefault = true,
             };

@@ -7,24 +7,23 @@ $(document).ready(async function () {
 const getWarehouseList = async () => {
     debugger
     const warehouse = await SendRequest({ endpoint: '/Warehouse/GetAll' });
-    const company = await SendRequest({ endpoint: '/Company/GetAll' });
+   // const company = await SendRequest({ endpoint: '/Company/GetAll' });
     if (warehouse.status === 200 && warehouse.success) {
-        await onSuccessUsers(warehouse.data, company.data);
+        await onSuccessUsers(warehouse.data);
     }
 }
 
-const onSuccessUsers = async (warehouses, companys) => {
+const onSuccessUsers = async (warehouses) => {
     debugger
-    const companyMap = dataToMap(companys, 'id');
+    //const companyMap = dataToMap(companys, 'id');
     const warehouseitem = warehouses.map((warehouse) => {
         if (warehouse) {
             debugger
-            const company = companyMap[warehouse.companyId];
+            //const company = companyMap[warehouse.companyId];
             return {
                 id: warehouse?.id,
-                name: warehouse?.name ?? "No Name",
-                address: warehouse?.address ?? "No Address",
-                companyName: company?.fullName ?? "No Name",
+                warehouseName: warehouse?.warehouseName ?? "No Name",
+                location: warehouse?.location ?? "No Address",
             };
         }
         return null;
@@ -34,19 +33,16 @@ const onSuccessUsers = async (warehouses, companys) => {
         debugger
         const userSchema = [
             {
-                render: (data, type, row) => row?.name
+                render: (data, type, row) => row?.warehouseName
             },
             {
-                render: (data, type, row) => row?.address
-            },
-            {
-                render: (data, type, row) => row?.companyName
+                render: (data, type, row) => row?.location
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
-                    { label: 'Edit', btnClass: 'btn-primary', callback: 'updateUser', disabled: true },
+                    { label: 'Edit', btnClass: 'btn-primary', callback: 'updateWareHouse' },
                     { label: 'Details', btnClass: 'btn-info', callback: 'showDetails', disabled: true },
-                    { label: 'Delete', btnClass: 'btn-danger', callback: 'deleteRole' }
+                    { label: 'Delete', btnClass: 'btn-danger', callback: 'deleteWareHouse' }
                 ])
             }
         ];
@@ -81,8 +77,7 @@ const createDuplicateCheckValidator = (endpoint, key, errorMessage) => {
 
 $.validator.addMethod("checkDuplicateWarehouseName", createDuplicateCheckValidator(
     "/Warehouse/CheckDuplicate",
-    "Name",
-    "Warehouse Name already exists."
+    "WarehouseName"
 ));
 
 
@@ -96,30 +91,22 @@ const UsrValidae = $('#WarehouseForm').validate({
         $(element).valid();
     },
     rules: {
-        Name: {
+        WarehouseName: {
             required: true,
             checkDuplicateWarehouseName: true
         },
-        CompanyId: {
-            required: true,
-            
-        },
-        Address: {
+        Location: {
             required: true,
 
         }
 
     },
     messages: {
-        Name: {
+        WarehouseName: {
             required: " Warehouse Name is required.",
             checkDuplicateWarehouseName: "This Warehouse Name is already taken."
         },
-        CompanyId: {
-            required: " Company Name is required.",
-            
-        },
-        Address: {
+        Location: {
             required: " Address is required.",
 
         }
@@ -141,7 +128,7 @@ const UsrValidae = $('#WarehouseForm').validate({
 $('#CreateUserBtn').click(async () => {
     debugger
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
-    await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'fullName', "Select Company");
+    
 });
 
 // Save Button
@@ -172,35 +159,31 @@ $('#btnSave').click(async () => {
 
 
 
-//window.updateUser = async (id) => {
-//    debugger
-//    $('#myModalLabelUpdateEmployee').show();
-//    $('#myModalLabelAddEmployee').hide();
-//    await populateDropdown('/DashboardRole/GetAll', '#RolesDropdown', 'roleName', 'roleName', null);
-//    const result = await SendRequest({ endpoint: '/DashboardUser/GetById/' + id });
-//    if (result.success) {
-//        $('#btnSave').hide();
-//        $('#btnUpdate').show();
-//        $('#FirstName').val(result.data.firstName);
-//        $('#LastName').val(result.data.lastName);
-//        $('#UserName').val(result.data.userName);
-//        $('#Email').val(result.data.email);
-//        $('#PhoneNumber').val(result.data.phoneNumber);
-//        $('#RolesDropdown').val(result.data.roles);
-//        $('#modelCreate').modal('show');
-//        resetValidation(UsrValidae, '#UserForm');
-//        $('#btnUpdate').on('click', async () => {
-//            debugger
-//            const formData = $('#UserForm').serialize();
-//            const result = await SendRequest({ endpoint: '/DashboardUser/Update/' + id, method: "PUT", data: formData });
-//            if (result.success) {
-//                displayNotification({ formId: '#UserForm', modalId: '#modelCreate', message: ' User was successfully Updated....' });
-//                await getUserList(); // Update the user list
-//            }
-//        });
-//    }
-//    loger(result);
-//}
+window.updateWareHouse = async (id) => {
+    debugger
+    $('#myModalLabelUpdateEmployee').show();
+    $('#myModalLabelAddEmployee').hide();
+    
+    const result = await SendRequest({ endpoint: '/Warehouse/GetById/' + id });
+    if (result.success) {
+        $('#btnSave').hide();
+        $('#btnUpdate').show();
+        $('#WarehouseName').val(result.data.warehouseName);
+        $('#Location').val(result.data.location);
+        $('#modelCreate').modal('show');
+        resetValidation(UsrValidae, '#WarehouseForm');
+        $('#btnUpdate').on('click', async () => {
+            debugger
+            const formData = $('#WarehouseForm').serialize();
+            const result = await SendRequest({ endpoint: '/Warehouse/Update/' + id, method: "PUT", data: formData });
+            if (result.success) {
+                displayNotification({ formId: '#WarehouseForm', modalId: '#modelCreate', message: ' Warehouse was successfully Updated....' });
+                await getWarehouseList(); // Update the user list
+            }
+        });
+    }
+    loger(result);
+}
 
 
 
@@ -210,7 +193,7 @@ $('#btnSave').click(async () => {
 //}
 
 
-window.deleteRole = async (id) => {
+window.deleteWareHouse = async (id) => {
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();

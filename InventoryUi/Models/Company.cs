@@ -4,6 +4,7 @@ namespace InventoryUi.Models
 {
     public class Company : BaseModel
     {
+
         [DisplayName("Name")]
         public string? Name { get; set; }
         [DisplayName("Full Name")]

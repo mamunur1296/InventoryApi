@@ -1,0 +1,213 @@
+﻿@model InventoryUi.Models.Order
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <!-- /.card -->
+                <div class="card">
+                    <div class="card-header ">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title font-weight-bold fs-1 color-primary">Order List</h3>
+                            </div>
+                            <div class="col-md-6 d-flex justify-content-end ">
+                                <a id="CreateBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Order</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="successMessage" class="alert alert-success" role="alert" style="display: none;">
+                        <button id="btnClose" type="button" class="btn-close" aria-label="Close"></button>
+                    </div>
+                    <div id="globalErrorMessage" class="alert alert-success" role="alert" style="display: none;">
+                        <button id="btnClose" type="button" class="btn-close" aria-label="Close"></button>
+                    </div>
+
+                    <!-- /.card-header -->
+
+                    <div class="card-body">
+                        <table id="OrderTable" class="table table-bordered table-striped">
+
+                            <thead>
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Employee</th>
+                                    <th>Order Date</th>
+                                    <th>Required Date</th>
+                                    <th>Shipped Date</th>
+                                    <th>Address</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="modelCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAddEmployee" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="max-width: 65%; max-height: 80%;">
+        <div class="modal-content" style="height: 100%; overflow: hidden;">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabelAddEmployee">Add Order</h4>
+                <h4 class="modal-title" style="display:none;" id="myModalLabelUpdateEmployee">Update Order</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="height: calc(100% - 60px); overflow-y: auto;">
+                <form id="OrderForm">
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label" asp-for="CustomerID"></label>
+                                    <select class="form-control" asp-for="CustomerID" id="CustomerDropdown">
+                                        <option value="">Select Customer</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" asp-for="EmployeeID"></label>
+                                    <select class="form-control" asp-for="EmployeeID" id="EmployeeDropdown">
+                                        <option value="">Select Employee</option>
+                                    </select>
+                                </div> 
+                                <div class="form-group">
+                                    <label class="control-label" asp-for="PrescriptionID"></label>
+                                    <select class="form-control" asp-for="PrescriptionID" id="PrescriptionDropdown">
+                                        <option value="">Select Employee</option>
+                                    </select>
+                                </div>
+                                @* <div class="form-group">
+                                    <label asp-for="OrderDate" class="control-label"></label>
+                                    <input asp-for="OrderDate" placeholder="Enter Warehouse Name" class="form-control" name="OrderDate" />
+                                    <span asp-validation-for="OrderDate" class="text-danger"></span>
+                                </div> *@
+                                <div class="form-group">
+                                    <label asp-for="RequiredDate" class="control-label"></label>
+                                    <input asp-for="RequiredDate" placeholder="Enter Warehouse Address" class="form-control" name="RequiredDate" />
+                                    <span asp-validation-for="RequiredDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="ShippedDate" class="control-label"></label>
+                                    <input asp-for="ShippedDate" placeholder="Enter Warehouse Name" class="form-control" name="ShippedDate" />
+                                    <span asp-validation-for="ShippedDate" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ShipVia" class="control-label"></label>
+                                    <input asp-for="ShipVia" placeholder="Enter Warehouse Address" class="form-control" name="ShipVia" />
+                                    <span asp-validation-for="ShipVia" class="text-danger"></span>
+                                </div>
+                               
+                                <div class="form-group">
+                                    <label asp-for="Freight" class="control-label"></label>
+                                    <input asp-for="Freight" placeholder="Enter Warehouse Address" class="form-control" name="Freight" />
+                                    <span asp-validation-for="Freight" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="ShipName" class="control-label"></label>
+                                    <input asp-for="ShipName" placeholder="Enter Warehouse Name" class="form-control" name="ShipName" />
+                                    <span asp-validation-for="ShipName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ShipAddress" class="control-label"></label>
+                                    <input asp-for="ShipAddress" placeholder="Enter Warehouse Address" class="form-control" name="ShipAddress" />
+                                    <span asp-validation-for="ShipAddress" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ShipCity" class="control-label"></label>
+                                    <input asp-for="ShipCity" placeholder="Enter Warehouse Name" class="form-control" name="ShipCity" />
+                                    <span asp-validation-for="ShipCity" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ShipRegion" class="control-label"></label>
+                                    <input asp-for="ShipRegion" placeholder="Enter Warehouse Address" class="form-control" name="ShipRegion" />
+                                    <span asp-validation-for="ShipRegion" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ShipPostalCode" class="control-label"></label>
+                                    <input asp-for="ShipPostalCode" placeholder="Enter Warehouse Address" class="form-control" name="ShipPostalCode" />
+                                    <span asp-validation-for="ShipPostalCode" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ShipCountry" class="control-label"></label>
+                                    <input asp-for="ShipCountry" placeholder="Enter Warehouse Address" class="form-control" name="ShipCountry" />
+                                    <span asp-validation-for="ShipCountry" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="OrderStatus" class="control-label"></label>
+                                    <input asp-for="OrderStatus" placeholder="Enter Warehouse Address" class="form-control" name="OrderStatus" />
+                                    <span asp-validation-for="OrderStatus" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="PaymentStatus" class="control-label"></label>
+                                    <input asp-for="PaymentStatus" placeholder="Enter Warehouse Address" class="form-control" name="PaymentStatus" />
+                                    <span asp-validation-for="PaymentStatus" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnSave">Save</button>
+                <button type="button" class="btn btn-primary" id="btnUpdate">Update</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteAndDetailsModel" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                Are you sure you want to delete the following Order ?
+            </div>
+
+            <div class="modal-body" id="companyDetails">
+                <!-- Company details will be populated dynamically by jQuery -->
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="btnDelete">Delete</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script type="module" src="~/js/dashboard/order.js"></script>
+}

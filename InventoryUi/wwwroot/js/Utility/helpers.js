@@ -179,6 +179,7 @@ export const resetValidation = (validator, formSelector) => {
 
 
 export const dataToMap = (data, key) => {
+    debugger
     return data.reduce((map, item) => {
         map[item[key]] = item;
         return map;

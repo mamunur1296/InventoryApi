@@ -1,0 +1,214 @@
+﻿@model InventoryUi.Models.Employee
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <!-- /.card -->
+                <div class="card">
+                    <div class="card-header ">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title font-weight-bold fs-1 color-primary">Employee List</h3>
+                            </div>
+                            <div class="col-md-6 d-flex justify-content-end ">
+                                <a id="CreateBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Employee</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="successMessage" class="alert alert-success" role="alert" style="display: none;">
+                        <button id="btnClose" type="button" class="btn-close" aria-label="Close"></button>
+                    </div>
+                    <div id="globalErrorMessage" class="alert alert-success" role="alert" style="display: none;">
+                        <button id="btnClose" type="button" class="btn-close" aria-label="Close"></button>
+                    </div>
+
+                    <!-- /.card-header -->
+
+                    <div class="card-body">
+                        <table id="EmployeeTable" class="table table-bordered table-striped">
+
+                            <thead>
+                                <tr>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Title</th>
+                                    <th>Address</th>
+                                    <th>Phone</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="modelCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAddEmployee" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="max-width: 65%; max-height: 80%;">
+        <div class="modal-content" style="height: 100%; overflow: hidden;">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabelAddEmployee">Add Employee</h4>
+                <h4 class="modal-title" style="display:none;" id="myModalLabelUpdateEmployee">Update Employee</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="height: calc(100% - 60px); overflow-y: auto;">
+                <form id="EmployeeForm">
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="FirstName" class="control-label"></label>
+                                    <input asp-for="FirstName" placeholder="Enter Warehouse Name" class="form-control" name="FirstName" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="LastName" class="control-label"></label>
+                                    <input asp-for="LastName" placeholder="Enter Warehouse Address" class="form-control" name="LastName" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Title" class="control-label"></label>
+                                    <input asp-for="Title" placeholder="Enter Warehouse Name" class="form-control" name="Title" />
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="TitleOfCourtesy" class="control-label"></label>
+                                    <input asp-for="TitleOfCourtesy" placeholder="Enter Warehouse Address" class="form-control" name="TitleOfCourtesy" />
+                                    <span asp-validation-for="TitleOfCourtesy" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="BirthDate" class="control-label"></label>
+                                    <input asp-for="BirthDate" placeholder="Enter Warehouse Name" class="form-control" name="BirthDate" />
+                                    <span asp-validation-for="BirthDate" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="HireDate" class="control-label"></label>
+                                    <input asp-for="HireDate" placeholder="Enter Warehouse Address" class="form-control" name="HireDate" />
+                                    <span asp-validation-for="HireDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="Address" class="control-label"></label>
+                                    <input asp-for="Address" placeholder="Enter Warehouse Name" class="form-control" name="Address" />
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="City" class="control-label"></label>
+                                    <input asp-for="City" placeholder="Enter Warehouse Address" class="form-control" name="City" />
+                                    <span asp-validation-for="City" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Region" class="control-label"></label>
+                                    <input asp-for="Region" placeholder="Enter Warehouse Name" class="form-control" name="Region" />
+                                    <span asp-validation-for="Region" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="PostalCode" class="control-label"></label>
+                                    <input asp-for="PostalCode" placeholder="Enter Warehouse Address" class="form-control" name="PostalCode" />
+                                    <span asp-validation-for="PostalCode" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Country" class="control-label"></label>
+                                    <input asp-for="Country" placeholder="Enter Warehouse Name" class="form-control" name="Country" />
+                                    <span asp-validation-for="Country" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="HomePhone" class="control-label"></label>
+                                    <input asp-for="HomePhone" placeholder="Enter Warehouse Address" class="form-control" name="HomePhone" />
+                                    <span asp-validation-for="HomePhone" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="Extension" class="control-label"></label>
+                                    <input asp-for="Extension" placeholder="Enter Warehouse Address" class="form-control" name="Extension" />
+                                    <span asp-validation-for="Extension" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Notes" class="control-label"></label>
+                                    <input asp-for="Notes" placeholder="Enter Warehouse Name" class="form-control" name="Notes" />
+                                    <span asp-validation-for="Notes" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ReportsTo" class="control-label"></label>
+                                    <input asp-for="ReportsTo" placeholder="Enter Warehouse Address" class="form-control" name="ReportsTo" />
+                                    <span asp-validation-for="ReportsTo" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="PhotoPath" class="control-label"></label>
+                                    <input asp-for="PhotoPath" placeholder="Enter Warehouse Name" class="form-control" name="PhotoPath" />
+                                    <span asp-validation-for="PhotoPath" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" asp-for="ManagerId"></label>
+                                    <select class="form-control" asp-for="ManagerId" id="ManagerDropdown">
+                                        <option value="">Select Company</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnSave">Save</button>
+                <button type="button" class="btn btn-primary" id="btnUpdate">Update</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteAndDetailsModel" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                Are you sure you want to delete the following Employee ?
+            </div>
+
+            <div class="modal-body" id="companyDetails">
+                <!-- Company details will be populated dynamically by jQuery -->
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="btnDelete">Delete</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script type="module" src="~/js/dashboard/employee.js"></script>
+}

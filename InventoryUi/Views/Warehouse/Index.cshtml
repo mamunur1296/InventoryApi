@@ -35,8 +35,7 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Address</th>
-                                    <th>Company</th>
+                                    <th>Location</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -72,25 +71,24 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label asp-for="Name" class="control-label"></label>
-                                    <input asp-for="Name" placeholder="Enter Warehouse Name" class="form-control" name="Name" />
-                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                    <label asp-for="WarehouseName" class="control-label"></label>
+                                    <input asp-for="WarehouseName" placeholder="Enter Warehouse Name" class="form-control" name="WarehouseName" />
+                                    <span asp-validation-for="WarehouseName" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="Address" class="control-label"></label>
-                                    <input asp-for="Address" placeholder="Enter Warehouse Address" class="form-control" name="Address" />
-                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                    <label asp-for="Location" class="control-label"></label>
+                                    <input asp-for="Location" placeholder="Enter Warehouse Address" class="form-control" name="Location" />
+                                    <span asp-validation-for="Location" class="text-danger"></span>
                                 </div>
-
                             </div>
-                            <div class="col-md-6">
+                           @*  <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label" asp-for="CompanyId"></label>
                                     <select class="form-control" asp-for="CompanyId" id="CompanyDropdown">
                                         <option value="">Select Company</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div> *@
                             
                         </div>
                     </div>

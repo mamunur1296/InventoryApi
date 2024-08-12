@@ -7,10 +7,12 @@ namespace InventoryUi.Controllers
     public class WarehouseController : Controller
     {
         private readonly IClientServices<Warehouse> _warehouseServices;
+        private readonly IUtilityHelper _utilityHelper;
 
-        public WarehouseController(IClientServices<Warehouse> warehouseServices)
+        public WarehouseController(IClientServices<Warehouse> service, IUtilityHelper utilityHelper)
         {
-            _warehouseServices = warehouseServices;
+            _warehouseServices = service;
+            _utilityHelper = utilityHelper;
         }
         public IActionResult Index()
         {
@@ -19,36 +21,40 @@ namespace InventoryUi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Warehouse model)
         {
-            var register = await _warehouseServices.PostClientAsync("Warehouse/Create", model);
-            return Json(register);
+            var result = await _warehouseServices.PostClientAsync("Warehouse/Create", model);
+            return Json(result);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetById(string id)
+        {
+            var warehouse = await _warehouseServices.GetClientByIdAsync($"Warehouse/get/{id}");
+            return Json(warehouse);
+        }
+        [HttpPut]
+        public async Task<IActionResult> Update(string id, Warehouse model)
+        {
+            var result = await _warehouseServices.UpdateClientAsync($"Warehouse/Update/{id}", model);
+            return Json(result);
         }
         [HttpGet]
         public async Task<IActionResult> Getall()
         {
-            var roles = await _warehouseServices.GetAllClientsAsync("Warehouse/All");
-            return Json(roles);
+            var warehouses = await _warehouseServices.GetAllClientsAsync("Warehouse/All");
+            return Json(warehouses);
         }
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
-            var deleted = await _warehouseServices.DeleteClientAsync($"Warehouse/Delete/{id}");
-            return Json(deleted);
+            var result = await _warehouseServices.DeleteClientAsync($"Warehouse/Delete/{id}");
+            return Json(result);
         }
         [HttpGet]
         public async Task<IActionResult> CheckDuplicate(string key, string val)
         {
-            var usersResponse = await _warehouseServices.GetAllClientsAsync("Warehouse/All");
-            if (usersResponse.Success)
+            var warehouses = await _warehouseServices.GetAllClientsAsync("Warehouse/All");
+            if (warehouses.Success)
             {
-                bool isDuplicate = usersResponse.Data.Any(user =>
-                {
-                    var propertyInfo = user.GetType().GetProperty(key);
-                    if (propertyInfo == null) return false;
-                    var propertyValue = propertyInfo.GetValue(user, null)?.ToString();
-                    return propertyValue?.Trim().Equals(val.Trim(), StringComparison.OrdinalIgnoreCase) ?? false;
-                });
-
-                return Json(isDuplicate);
+                return Json(await _utilityHelper.IsDuplicate(warehouses?.Data, key, val));
             }
             return Json(false);
         }

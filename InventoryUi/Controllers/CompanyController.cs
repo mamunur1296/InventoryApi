@@ -8,9 +8,9 @@ namespace InventoryUi.Controllers
     {
         private readonly IClientServices<Company> _companyServices;
 
-        public CompanyController(IClientServices<Company> companyServices)
+        public CompanyController(IClientServices<Company> service)
         {
-            _companyServices = companyServices;
+            _companyServices = service;
         }
         public IActionResult Index()
         {
