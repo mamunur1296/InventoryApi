@@ -128,7 +128,7 @@ const UsrValidae = $('#WarehouseForm').validate({
 $('#CreateUserBtn').click(async () => {
     debugger
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
-    
+    //await populateDropdown('/DashboardUser/GetAll', '#UserDropdown', 'id', 'userName', "Select User");
 });
 
 // Save Button

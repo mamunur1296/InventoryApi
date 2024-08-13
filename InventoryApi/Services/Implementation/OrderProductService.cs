@@ -47,12 +47,7 @@ namespace InventoryApi.Services.Implementation
         public async Task<IEnumerable<OrderProductDTOs>> GetAllAsync()
         {
             var OrderProductList = await _unitOfWorkRepository.orderProductRepository.GetAllAsync();
-            var result = OrderProductList.Select(x => new OrderProductDTOs()
-            {
-                id = x.Id,
-               //Order=x.Order,
-              // Product=x.Product,
-            });
+            var result = OrderProductList.Select(item => _mapper.Map<OrderProductDTOs>(item));
             return result;
         }
 

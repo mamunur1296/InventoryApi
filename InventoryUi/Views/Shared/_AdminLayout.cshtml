@@ -189,6 +189,30 @@
                             {
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-laptop-code"></i>
+                                        <p>
+                                            Developers
+                                            <i class="right fas fa-angle-right"></i> <!-- Changed icon to fa-angle-right -->
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a asp-action="Index" asp-controller="Menu" class="nav-link">
+                                                <i class="fas fa-home nav-icon"></i>
+                                                <p>Menu</p>
+                                            </a>
+                                        </li>
+                                       
+
+                                    </ul>
+                                </li>
+                                
+
+                            }
+                            if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
                                         <i class="nav-icon fas fa-user"></i> <!-- Changed icon to fa-user -->
                                         <p>
                                             Administrator
@@ -212,54 +236,108 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a asp-action="Index" asp-controller="Company" class="nav-link ">
-                                        <i class="fas fa-building nav-icon"></i>
+                                    <a asp-action="Index" asp-controller="Company" class="nav-link">
+                                        <i class="fas fa-building nav-icon"></i> <!-- Company icon -->
                                         <p>Company</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a asp-action="Index" asp-controller="Warehouse" class="nav-link ">
-                                        <i class="fas fa-warehouse nav-icon"></i>
+                                    <a asp-action="Index" asp-controller="Warehouse" class="nav-link">
+                                        <i class="fas fa-warehouse nav-icon"></i> <!-- Warehouse icon -->
                                         <p>Warehouse</p>
                                     </a>
-                                </li> 
+                                </li>
                                 <li class="nav-item">
-                                    <a asp-action="Index" asp-controller="Category" class="nav-link ">
-                                        <i class="fas fa-warehouse nav-icon"></i>
+                                    <a asp-action="Index" asp-controller="Category" class="nav-link">
+                                        <i class="fas fa-tags nav-icon"></i> <!-- Category icon -->
                                         <p>Category</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a asp-action="Index" asp-controller="Customer" class="nav-link ">
-                                        <i class="fas fa-warehouse nav-icon"></i>
+                                    <a asp-action="Index" asp-controller="Customer" class="nav-link">
+                                        <i class="fas fa-users nav-icon"></i> <!-- Customer icon -->
                                         <p>Customer</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a asp-action="Index" asp-controller="DeliveryAddress" class="nav-link ">
-                                        <i class="fas fa-warehouse nav-icon"></i>
+                                    <a asp-action="Index" asp-controller="DeliveryAddress" class="nav-link">
+                                        <i class="fas fa-map-marker-alt nav-icon"></i> <!-- Delivery Address icon -->
                                         <p>Delivery Address</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a asp-action="Index" asp-controller="Employee" class="nav-link ">
-                                        <i class="fas fa-warehouse nav-icon"></i>
+                                    <a asp-action="Index" asp-controller="Employee" class="nav-link">
+                                        <i class="fas fa-user-tie nav-icon"></i> <!-- Employee icon -->
                                         <p>Employee</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a asp-action="Index" asp-controller="Order" class="nav-link ">
-                                        <i class="fas fa-warehouse nav-icon"></i>
+                                    <a asp-action="Index" asp-controller="Order" class="nav-link">
+                                        <i class="fas fa-shopping-cart nav-icon"></i> <!-- Order icon -->
                                         <p>Order</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a asp-action="Index" asp-controller="OrderDetail" class="nav-link ">
-                                        <i class="fas fa-warehouse nav-icon"></i>
-                                        <p>OrderDetail</p>
+                                    <a asp-action="Index" asp-controller="OrderDetail" class="nav-link">
+                                        <i class="fas fa-list-alt nav-icon"></i> <!-- Order Detail icon -->
+                                        <p>Order Detail</p>
                                     </a>
                                 </li>
-                                
+                                <li class="nav-item">
+                                    <a asp-action="Index" asp-controller="Supplier" class="nav-link">
+                                        <i class="fas fa-truck nav-icon"></i> <!-- Supplier icon -->
+                                        <p>Supplier</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-action="Index" asp-controller="Stock" class="nav-link">
+                                        <i class="fas fa-boxes nav-icon"></i> <!-- Stock icon -->
+                                        <p>Stock</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-action="Index" asp-controller="ShoppingCart" class="nav-link">
+                                        <i class="fas fa-shopping-cart nav-icon"></i> <!-- Shopping Cart icon -->
+                                        <p>Shopping Cart</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-action="Index" asp-controller="Shipper" class="nav-link">
+                                        <i class="fas fa-shipping-fast nav-icon"></i> <!-- Shipper icon -->
+                                        <p>Shipper</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-action="Index" asp-controller="Review" class="nav-link">
+                                        <i class="fas fa-star nav-icon"></i> <!-- Review icon -->
+                                        <p>Review</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-action="Index" asp-controller="Product" class="nav-link">
+                                        <i class="fas fa-box-open nav-icon"></i> <!-- Product icon -->
+                                        <p>Product</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-action="Index" asp-controller="Prescription" class="nav-link">
+                                        <i class="fas fa-prescription nav-icon"></i> <!-- Prescription icon -->
+                                        <p>Prescription</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-action="Index" asp-controller="Payment" class="nav-link">
+                                        <i class="fas fa-credit-card nav-icon"></i> <!-- Payment icon -->
+                                        <p>Payment</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-action="Index" asp-controller="OrderProduct" class="nav-link">
+                                        <i class="fas fa-box nav-icon"></i> <!-- Order Product icon -->
+                                        <p>Order Product</p>
+                                    </a>
+                                </li>
+
                             }
                            
                         }

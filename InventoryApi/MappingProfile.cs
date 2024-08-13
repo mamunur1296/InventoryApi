@@ -28,6 +28,7 @@ namespace InventoryApi
             CreateMap<Warehouse, WarehouseDTOs>().ReverseMap();
             CreateMap<ShoppingCart, ShoppingCartDTOs>().ReverseMap();
             CreateMap<Prescription, PrescriptionDTOs>().ReverseMap();
+            CreateMap<OrderProduct, OrderProductDTOs>().ReverseMap();
         } 
     }
 }
