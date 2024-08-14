@@ -67,8 +67,8 @@
     <div class="modal-dialog modal-sm" style="max-width: 65%; max-height: 80%;">
         <div class="modal-content" style="height: 100%; overflow: hidden;">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabelAddEmployee">Add Warehouse</h4>
-                <h4 class="modal-title" style="display:none;" id="myModalLabelUpdateEmployee">Update Warehouse</h4>
+                <h4 class="modal-title" id="myModalLabelAddEmployee">Add Customer</h4>
+                <h4 class="modal-title" style="display:none;" id="myModalLabelUpdateEmployee">Update Customer</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body" style="height: calc(100% - 60px); overflow-y: auto;">
@@ -79,85 +79,83 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label asp-for="CustomerName" class="control-label"></label>
-                                    <input asp-for="CustomerName" placeholder="Enter Warehouse Name" class="form-control" name="CustomerName" />
+                                    <input asp-for="CustomerName" placeholder="Enter Customer Name (e.g., Acme Corp)" class="form-control" name="CustomerName" />
                                     <span asp-validation-for="CustomerName" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="ContactName" class="control-label"></label>
-                                    <input asp-for="ContactName" placeholder="Enter Warehouse Address" class="form-control" name="ContactName" />
+                                    <input asp-for="ContactName" placeholder="Enter Contact Person Name (e.g., John )" class="form-control" name="ContactName" />
                                     <span asp-validation-for="ContactName" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="ContactTitle" class="control-label"></label>
-                                    <input asp-for="ContactTitle" placeholder="Enter Warehouse Address" class="form-control" name="ContactTitle" />
+                                    <input asp-for="ContactTitle" placeholder="Enter Contact Title (e.g., Sales Manager)" class="form-control" name="ContactTitle" />
                                     <span asp-validation-for="ContactTitle" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="Address" class="control-label"></label>
-                                    <input asp-for="Address" placeholder="Enter Warehouse Address" class="form-control" name="Address" />
+                                    <input asp-for="Address" placeholder="Enter Customer Address (e.g., 456 Main St)" class="form-control" name="Address" />
                                     <span asp-validation-for="Address" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="City" class="control-label"></label>
-                                    <input asp-for="City" placeholder="Enter Warehouse Address" class="form-control" name="City" />
+                                    <input asp-for="City" placeholder="Enter Customer City (e.g., Dhaka)" class="form-control" name="City" />
                                     <span asp-validation-for="City" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label asp-for="Region" class="control-label"></label>
-                                    <input asp-for="Region" placeholder="Enter Warehouse Address" class="form-control" name="Region" />
+                                    <input asp-for="Region" placeholder="Enter Customer Region (e.g., Dhaka)" class="form-control" name="Region" />
                                     <span asp-validation-for="Region" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="PostalCode" class="control-label"></label>
-                                    <input asp-for="PostalCode" placeholder="Enter Warehouse Address" class="form-control" name="PostalCode" />
+                                    <input asp-for="PostalCode" placeholder="Enter Customer Postal Code (e.g., 62704)" class="form-control" name="PostalCode" />
                                     <span asp-validation-for="PostalCode" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="Country" class="control-label"></label>
-                                    <input asp-for="Country" placeholder="Enter Warehouse Address" class="form-control" name="Country" />
+                                    <input asp-for="Country" placeholder="Enter Customer Country (e.g., Bangladesh)" class="form-control" name="Country" />
                                     <span asp-validation-for="Country" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="Phone" class="control-label"></label>
-                                    <input asp-for="Phone" placeholder="Enter Warehouse Address" class="form-control" name="Phone" />
+                                    <input asp-for="Phone" placeholder="Enter Customer Phone (e.g., +1234567890)" class="form-control" name="Phone" />
                                     <span asp-validation-for="Phone" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="Fax" class="control-label"></label>
-                                    <input asp-for="Fax" placeholder="Enter Warehouse Address" class="form-control" name="Fax" />
+                                    <input asp-for="Fax" placeholder="Enter Customer Fax (e.g., +1234567891)" class="form-control" name="Fax" />
                                     <span asp-validation-for="Fax" class="text-danger"></span>
                                 </div>
-                                
-
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label asp-for="PasswordHash" class="control-label"></label>
-                                    <input asp-for="PasswordHash" placeholder="Enter Warehouse Address" class="form-control" name="PasswordHash" />
+                                    <input asp-for="PasswordHash" type="password" placeholder="Enter Password (e.g., ********)" class="form-control" name="PasswordHash" />
                                     <span asp-validation-for="PasswordHash" class="text-danger"></span>
                                 </div>
-                                 <div class="form-group">
+                                <div class="form-group">
                                     <label asp-for="DateOfBirth" class="control-label"></label>
-                                    <input asp-for="DateOfBirth" placeholder="Enter Warehouse Address" class="form-control" name="DateOfBirth" />
+                                    <input asp-for="DateOfBirth" placeholder="Enter Customer Date Of Birth (e.g., 1990-01-01)" class="form-control" name="DateOfBirth" />
                                     <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                                 </div>
-                                 <div class="form-group">
+                                <div class="form-group">
                                     <label asp-for="MedicalHistory" class="control-label"></label>
-                                    <input asp-for="MedicalHistory" placeholder="Enter Warehouse Address" class="form-control" name="MedicalHistory" />
+                                    <input asp-for="MedicalHistory" placeholder="Enter Customer Medical History (e.g., No known conditions)" class="form-control" name="MedicalHistory" />
                                     <span asp-validation-for="MedicalHistory" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="Email" class="control-label"></label>
-                                    <input asp-for="Email" placeholder="Enter Warehouse Address" class="form-control" name="Email" />
+                                    <input asp-for="Email" placeholder="Enter Customer Email (e.g., example@domain.com)" class="form-control" name="Email" />
                                     <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </form>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="btnSave">Save</button>
@@ -183,7 +181,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                Are you sure you want to delete the following Warehouse ?
+                Are you sure you want to delete the following Customer ?
             </div>
 
             <div class="modal-body" id="companyDetails">

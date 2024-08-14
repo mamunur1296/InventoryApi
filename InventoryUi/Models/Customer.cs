@@ -43,9 +43,9 @@ namespace InventoryUi.Models
         [DisplayName("Phone")]
         public string Phone { get; set; }
 
-        [StringLength(255, ErrorMessage = "Fax number cannot be longer than 255 characters.")]
+
         [DisplayName("Fax")]
-        public string Fax { get; set; }
+        public string ? Fax { get; set; }
 
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Invalid email format.")]

@@ -80,89 +80,85 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label asp-for="ProductName" class="control-label"></label>
-                                    <input asp-for="ProductName" placeholder="Enter Warehouse Name" class="form-control" name="ProductName" />
+                                    <input asp-for="ProductName" placeholder="Enter product name" class="form-control" name="ProductName" />
                                     <span asp-validation-for="ProductName" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="Description" class="control-label"></label>
-                                    <input asp-for="Description" placeholder="Enter Warehouse Name" class="form-control" name="Description" />
+                                    <input asp-for="Description" placeholder="Enter product description" class="form-control" name="Description" />
                                     <span asp-validation-for="Description" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" asp-for="CategoryID"></label>
                                     <select class="form-control" asp-for="CategoryID" id="CategoryDropdown">
-                                        <option value="">Select Company</option>
+                                        <option value="">Select category</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" asp-for="SupplierID"></label>
                                     <select class="form-control" asp-for="SupplierID" id="SupplierDropdown">
-                                        <option value="">Select Company</option>
+                                        <option value="">Select supplier</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="QuantityPerUnit" class="control-label"></label>
-                                    <input asp-for="QuantityPerUnit" placeholder="Enter Warehouse Name" class="form-control" name="QuantityPerUnit" />
+                                    <input asp-for="QuantityPerUnit" placeholder="Enter quantity per unit (e.g., 10 boxes)" class="form-control" name="QuantityPerUnit" />
                                     <span asp-validation-for="QuantityPerUnit" class="text-danger"></span>
                                 </div>
-
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label asp-for="UnitPrice" class="control-label"></label>
-                                    <input asp-for="UnitPrice" placeholder="Enter Warehouse Name" class="form-control" name="UnitPrice" />
+                                    <input asp-for="UnitPrice" placeholder="Enter unit price (e.g., 25.00)" class="form-control" name="UnitPrice" />
                                     <span asp-validation-for="UnitPrice" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="UnitsInStock" class="control-label"></label>
-                                    <input asp-for="UnitsInStock" placeholder="Enter Warehouse Name" class="form-control" name="UnitsInStock" />
+                                    <input asp-for="UnitsInStock" placeholder="Enter units in stock (e.g., 100)" class="form-control" name="UnitsInStock" />
                                     <span asp-validation-for="UnitsInStock" class="text-danger"></span>
                                 </div>
-                                 <div class="form-group">
+                                <div class="form-group">
                                     <label asp-for="ReorderLevel" class="control-label"></label>
-                                    <input asp-for="ReorderLevel" placeholder="Enter Warehouse Name" class="form-control" name="ReorderLevel" />
+                                    <input asp-for="ReorderLevel" placeholder="Enter reorder level (e.g., 20)" class="form-control" name="ReorderLevel" />
                                     <span asp-validation-for="ReorderLevel" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="Discontinued" class="control-label"></label>
-                                    <input asp-for="Discontinued" placeholder="Enter Warehouse Name" class="form-control" name="Discontinued" />
+                                    <input asp-for="Discontinued" placeholder="Enter discontinued status (yes or no)" class="form-control" name="Discontinued" />
                                     <span asp-validation-for="Discontinued" class="text-danger"></span>
                                 </div>
-                               
                                 <div class="form-group">
                                     <label asp-for="BatchNumber" class="control-label"></label>
-                                    <input asp-for="BatchNumber" placeholder="Enter Warehouse Name" class="form-control" name="BatchNumber" />
+                                    <input asp-for="BatchNumber" placeholder="Enter batch number" class="form-control" name="BatchNumber" />
                                     <span asp-validation-for="BatchNumber" class="text-danger"></span>
                                 </div>
-
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label asp-for="ExpirationDate" class="control-label"></label>
-                                    <input asp-for="ExpirationDate" placeholder="Enter Warehouse Name" class="form-control" name="ExpirationDate" />
+                                    <input asp-for="ExpirationDate" placeholder="Enter expiration date (e.g., 2024-12-31)" class="form-control" name="ExpirationDate" />
                                     <span asp-validation-for="ExpirationDate" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="ImageURL" class="control-label"></label>
-                                    <input asp-for="ImageURL" placeholder="Enter Warehouse Name" class="form-control" name="ImageURL" />
+                                    <input asp-for="ImageURL" placeholder="Enter image URL" class="form-control" name="ImageURL" />
                                     <span asp-validation-for="ImageURL" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="Weight" class="control-label"></label>
-                                    <input asp-for="Weight" placeholder="Enter Warehouse Name" class="form-control" name="Weight" />
+                                    <input asp-for="Weight" placeholder="Enter weight (e.g., 1.5 kg)" class="form-control" name="Weight" />
                                     <span asp-validation-for="Weight" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="Dimensions" class="control-label"></label>
-                                    <input asp-for="Dimensions" placeholder="Enter Warehouse Name" class="form-control" name="Dimensions" />
+                                    <input asp-for="Dimensions" placeholder="Enter dimensions (e.g., 10x20x15 cm)" class="form-control" name="Dimensions" />
                                     <span asp-validation-for="Dimensions" class="text-danger"></span>
                                 </div>
                             </div>
-                            
-
                         </div>
                     </div>
                 </form>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="btnSave">Save</button>

@@ -76,35 +76,37 @@
                                 <div class="form-group">
                                     <label class="control-label" asp-for="CustomerID"></label>
                                     <select class="form-control" asp-for="CustomerID" id="CustomerDropdown">
-                                        <option value="">Select Company</option>
+                                        <option value="">Select customer</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="DoctorName" class="control-label"></label>
-                                    <input asp-for="DoctorName" placeholder="Enter Warehouse Name" class="form-control" name="DoctorName" />
+                                    <input asp-for="DoctorName" placeholder="Enter doctor's name" class="form-control" name="DoctorName" />
                                     <span asp-validation-for="DoctorName" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="PrescriptionDate" class="control-label"></label>
-                                    <input asp-for="PrescriptionDate" placeholder="Enter Warehouse Address" class="form-control" name="PrescriptionDate" />
+                                    <input asp-for="PrescriptionDate" placeholder="Enter prescription date (e.g., 2024-08-15)" class="form-control" name="PrescriptionDate" />
                                     <span asp-validation-for="PrescriptionDate" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="MedicationDetails" class="control-label"></label>
-                                    <input asp-for="MedicationDetails" placeholder="Enter Warehouse Address" class="form-control" name="MedicationDetails" />
+                                    <input asp-for="MedicationDetails" placeholder="Enter medication details (e.g., Amoxicillin 500mg)" class="form-control" name="MedicationDetails" />
                                     <span asp-validation-for="MedicationDetails" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="DosageInstructions" class="control-label"></label>
-                                    <input asp-for="DosageInstructions" placeholder="Enter Warehouse Address" class="form-control" name="DosageInstructions" />
+                                    <input asp-for="DosageInstructions" placeholder="Enter dosage instructions (e.g., 1 tablet twice a day)" class="form-control" name="DosageInstructions" />
                                     <span asp-validation-for="DosageInstructions" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
+
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="btnSave">Save</button>

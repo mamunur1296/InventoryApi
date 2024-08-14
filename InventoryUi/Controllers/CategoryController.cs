@@ -48,5 +48,15 @@ namespace InventoryUi.Controllers
             var result = await _categoryServices.DeleteClientAsync($"Category/Delete/{id}");
             return Json(result);
         }
+        [HttpGet]
+        public async Task<IActionResult> CheckDuplicate(string key, string val)
+        {
+            var categorys = await _categoryServices.GetAllClientsAsync("Category/All");
+            if (categorys.Success)
+            {
+                return Json(await _utilityHelper.IsDuplicate(categorys?.Data, key, val));
+            }
+            return Json(false);
+        }
     }
 }

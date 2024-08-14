@@ -74,28 +74,27 @@
                                 <div class="form-group">
                                     <label class="control-label" asp-for="ProductID"></label>
                                     <select class="form-control" asp-for="ProductID" id="ProductDropdown">
-                                        <option value="">Select Company</option>
+                                        <option value="">Select product</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" asp-for="WarehouseID"></label>
                                     <select class="form-control" asp-for="WarehouseID" id="WarehouseDropdown">
-                                        <option value="">Select Company</option>
+                                        <option value="">Select warehouse</option>
                                     </select>
                                 </div>
-                                
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="Quantity" class="control-label"></label>
-                                    <input asp-for="Quantity" placeholder="Enter Warehouse Address" class="form-control" name="Quantity" />
+                                    <input asp-for="Quantity" placeholder="Enter quantity (e.g., 100)" class="form-control" name="Quantity" />
                                     <span asp-validation-for="Quantity" class="text-danger"></span>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </form>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="btnSave">Save</button>

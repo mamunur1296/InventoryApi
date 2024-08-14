@@ -1,4 +1,5 @@
 ﻿using InventoryApi.Entities.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace InventoryApi.Entities
 {
@@ -13,6 +14,7 @@ namespace InventoryApi.Entities
         public DateTime? ShippedDate { get; set; }
         public int? ShipVia { get; set; }
         public Shipper Shipper { get; set; }
+        [Precision(18, 2)]
         public decimal Freight { get; set; }
         public string ShipName { get; set; }
         public string ShipAddress { get; set; }

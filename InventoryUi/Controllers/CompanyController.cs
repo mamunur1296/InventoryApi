@@ -28,6 +28,18 @@ namespace InventoryUi.Controllers
             var roles = await _companyServices.GetAllClientsAsync("Company/All");
             return Json(roles);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetById(string id)
+        {
+            var CompanyItem = await _companyServices.GetClientByIdAsync($"Company/get/{id}");
+            return Json(CompanyItem);
+        }
+        [HttpPut]
+        public async Task<IActionResult> Update(string id, Company model)
+        {
+            var result = await _companyServices.UpdateClientAsync($"Company/Update/{id}", model);
+            return Json(result);
+        }
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {

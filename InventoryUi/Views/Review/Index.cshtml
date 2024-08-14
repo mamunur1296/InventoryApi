@@ -75,33 +75,32 @@
                                 <div class="form-group">
                                     <label class="control-label" asp-for="ProductID"></label>
                                     <select class="form-control" asp-for="ProductID" id="ProductDropdown">
-                                        <option value="">Select Company</option>
+                                        <option value="">Select product</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" asp-for="CustomerID"></label>
                                     <select class="form-control" asp-for="CustomerID" id="CustomerDropdown">
-                                        <option value="">Select Company</option>
+                                        <option value="">Select customer</option>
                                     </select>
                                 </div>
-                                
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="Rating" class="control-label"></label>
-                                    <input asp-for="Rating" placeholder="Enter Warehouse Name" class="form-control" name="Rating" />
+                                    <input asp-for="Rating" placeholder="Enter rating (e.g., 5)" class="form-control" name="Rating" />
                                     <span asp-validation-for="Rating" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="ReviewText" class="control-label"></label>
-                                    <input asp-for="ReviewText" placeholder="Enter Warehouse Address" class="form-control" name="ReviewText" />
+                                    <input asp-for="ReviewText" placeholder="Enter review text" class="form-control" name="ReviewText" />
                                     <span asp-validation-for="ReviewText" class="text-danger"></span>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </form>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="btnSave">Save</button>

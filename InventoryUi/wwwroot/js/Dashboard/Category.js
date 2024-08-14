@@ -54,31 +54,32 @@ const onSuccessUsers = async (categorys) => {
     }
 }
 
-//// Fatch duplucate file 
+// Fatch duplucate file 
 
-//const createDuplicateCheckValidator = (endpoint, key, errorMessage) => {
-//    return function (value, element) {
-//        let isValid = false;
-//        $.ajax({
-//            type: "GET",
-//            url: endpoint,
-//            data: { key: key, val: value },
-//            async: false,
-//            success: function (response) {
-//                isValid = !response;
-//            },
-//            error: function () {
-//                isValid = false;
-//            }
-//        });
-//        return isValid;
-//    };
-//}
+const createDuplicateCheckValidator = (endpoint, key, errorMessage) => {
+    return function (value, element) {
+        let isValid = false;
+        $.ajax({
+            type: "GET",
+            url: endpoint,
+            data: { key: key, val: value },
+            async: false,
+            success: function (response) {
+                isValid = !response;
+            },
+            error: function () {
+                isValid = false;
+            }
+        });
+        return isValid;
+    };
+}
 
-//$.validator.addMethod("checkDuplicateWarehouseName", createDuplicateCheckValidator(
-//    "/Warehouse/CheckDuplicate",
-//    "WarehouseName"
-//));
+$.validator.addMethod("checkDuplicateCatagoryName", createDuplicateCheckValidator(
+    "/Category/CheckDuplicate",
+    "CategoryName",
+    "Message"
+));
 
 
 
@@ -93,6 +94,7 @@ const UsrValidae = $('#CategoryForm').validate({
     rules: {
         CategoryName: {
             required: true,
+            checkDuplicateCatagoryName: true
         },
         Description: {
             required: true,
@@ -103,6 +105,7 @@ const UsrValidae = $('#CategoryForm').validate({
     messages: {
         CategoryName: {
             required: " Category Name  is required.",
+            checkDuplicateCatagoryName: "This Category Name is already taken."
         },
         Description: {
             required: " Description is required.",

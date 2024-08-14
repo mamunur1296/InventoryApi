@@ -77,7 +77,7 @@ const UsrValidae = $('#RolesForm').validate({
     },
     messages: {
         RoleName: {
-            required: " first Name is required.",
+            required: " Role Name is required.",
             checkDuplicateRoleName:"This Role Name is already taken."
         }
     },

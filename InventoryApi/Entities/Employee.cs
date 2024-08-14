@@ -5,10 +5,7 @@ namespace InventoryApi.Entities
 {
     public class Employee : BaseEntity
     {
-
-        [Required]
         public string LastName { get; set; }
-        [Required]
         public string FirstName { get; set; }
         public string Title { get; set; }
         public string TitleOfCourtesy { get; set; }

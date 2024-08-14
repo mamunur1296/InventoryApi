@@ -72,27 +72,19 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="ShipperName" class="control-label"></label>
-                                    <input asp-for="ShipperName" placeholder="Enter Warehouse Name" class="form-control" name="ShipperName" />
+                                    <input asp-for="ShipperName" placeholder="Enter shipper name" class="form-control" name="ShipperName" />
                                     <span asp-validation-for="ShipperName" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="Phone" class="control-label"></label>
-                                    <input asp-for="Phone" placeholder="Enter Warehouse Address" class="form-control" name="Phone" />
+                                    <input asp-for="Phone" placeholder="Enter phone number" class="form-control" name="Phone" />
                                     <span asp-validation-for="Phone" class="text-danger"></span>
                                 </div>
                             </div>
-                            @*  <div class="col-md-6">
-                            <div class="form-group">
-                            <label class="control-label" asp-for="CompanyId"></label>
-                            <select class="form-control" asp-for="CompanyId" id="CompanyDropdown">
-                            <option value="">Select Company</option>
-                            </select>
-                            </div>
-                            </div> *@
-
                         </div>
                     </div>
                 </form>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="btnSave">Save</button>

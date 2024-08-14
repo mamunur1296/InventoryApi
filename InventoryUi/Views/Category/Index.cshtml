@@ -72,12 +72,12 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="CategoryName" class="control-label"></label>
-                                    <input asp-for="CategoryName" placeholder="Enter Catagory Name" class="form-control" name="CategoryName" />
+                                    <input asp-for="CategoryName" placeholder="Enter Category Name (e.g., Electronics)" class="form-control" name="CategoryName" />
                                     <span asp-validation-for="CategoryName" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="Description" class="control-label"></label>
-                                    <input asp-for="Description" placeholder="Enter Catagory Description" class="form-control" name="Description" />
+                                    <input asp-for="Description" placeholder="Enter Category Description (e.g., Devices and gadgets)" class="form-control" name="Description" />
                                     <span asp-validation-for="Description" class="text-danger"></span>
                                 </div>
                             </div>
@@ -85,13 +85,14 @@
                                 <div class="form-group">
                                     <label class="control-label" asp-for="ParentCategoryID"></label>
                                     <select class="form-control" asp-for="ParentCategoryID" id="ParentCategoryDropdown">
-                                        <option value="">Select Sub Catagory</option>
+                                        <option value="">Select Parent Category</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="btnSave">Save</button>

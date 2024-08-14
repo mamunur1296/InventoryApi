@@ -25,7 +25,7 @@ const onSuccessUsers = async (employeees) => {
                 fName: employee?.firstName ?? "No Name",
                 lName: employee?.lastName ?? "No Name",
                 title: employee?.title ?? "No title",
-                address: employee?.address + employee?.city + employee?.region + employee?.postalCode + employee?.country ?? "No title",
+                address: employee?.address + ", " + employee?.city + ", " + employee?.region + ", " + employee?.postalCode + ", " + employee?.country ?? "No title",
                 phone: employee?.homePhone ?? "No title",
                 
             };

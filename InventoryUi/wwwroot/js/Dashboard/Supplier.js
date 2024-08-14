@@ -25,7 +25,7 @@ const onSuccessUsers = async (suppliers) => {
                 name: supplier?.supplierName ?? "No Name",
                 contact: supplier?.contactName ?? "No Name",
                 title: supplier?.contactTitle ?? "No Name",
-                address: supplier?.address + supplier?.city + supplier?.Region + supplier?.postalCode + supplier?.country ?? "No Name",
+                address: supplier?.address + ", " + supplier?.city + ", " + supplier?.region + ", " + supplier?.postalCode + ", " + supplier?.country ?? "No Name",
                 phone: supplier?.phone ?? "No Name",
                 fax: supplier?.fax ?? "No Name",
                 homepage: supplier?.homePage ?? "No Name",

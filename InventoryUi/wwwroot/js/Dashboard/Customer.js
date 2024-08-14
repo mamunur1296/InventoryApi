@@ -25,7 +25,7 @@ const onSuccessUsers = async (customers) => {
                 name: customer?.customerName ?? "No Name",
                 contactName: customer?.contactName ?? "No Name",
                 contactTitle: customer?.contactTitle ?? "No Title",
-                address: customer?.address + customer?.City + customer?.region + customer?.postalCode + customer?.country  ?? "No Address",
+                address: customer?.address + ", " + customer?.city + ", " + customer?.region + ", " + customer?.postalCode + ", " + customer?.country  ?? "No Address",
                 phone: customer?.phone ?? "No Phone",
                 fax: customer?.fax ?? "No Fax",
                 email: customer?.email ?? "No Email",
@@ -124,27 +124,35 @@ const UsrValidae = $('#CustomerForm').validate({
             maxlength: 255
         },
         ContactName: {
+            required: true,
             maxlength: 255
         },
         ContactTitle: {
+            required: true,
             maxlength: 255
         },
         Address: {
+            required: true,
             maxlength: 255
         },
         City: {
+            required: true,
             maxlength: 255
         },
         Region: {
+            required: true,
             maxlength: 255
         },
         PostalCode: {
+            required: true,
             maxlength: 255
         },
         Country: {
+            required: true,
             maxlength: 255
         },
         Phone: {
+            required: true,
             maxlength: 255
         },
         Fax: {
@@ -160,7 +168,7 @@ const UsrValidae = $('#CustomerForm').validate({
             maxlength: 255
         },
         MedicalHistory: {
-            required: true
+            required: true,
         },
         DateOfBirth: {
             required: true,
@@ -173,32 +181,40 @@ const UsrValidae = $('#CustomerForm').validate({
             maxlength: "Customer name cannot be longer than 255 characters."
         },
         ContactName: {
+            required: "Contact name is required.",
             maxlength: "Contact name cannot be longer than 255 characters."
         },
         ContactTitle: {
+            required: "Contact title is required.",
             maxlength: "Contact title cannot be longer than 255 characters."
         },
         Address: {
+            required: "Address is required.",
             maxlength: "Address cannot be longer than 255 characters."
         },
         City: {
+            required: "City is required.",
             maxlength: "City cannot be longer than 255 characters."
         },
         Region: {
+            required: "Region is required.",
             maxlength: "Region cannot be longer than 255 characters."
         },
         PostalCode: {
+            required: "Postal code is required.",
             maxlength: "Postal code cannot be longer than 255 characters."
         },
         Country: {
+            required: "Country is required.",
             maxlength: "Country cannot be longer than 255 characters."
         },
         Phone: {
+            required: "Phone number is required.",
             maxlength: "Phone number cannot be longer than 255 characters."
         },
         Fax: {
-            maxlength: "Fax number cannot be longer than 255 characters.",
-            required: true
+            required: "Fax number is required.",
+            maxlength: "Fax number cannot be longer than 255 characters."
         },
         Email: {
             required: "Email is required.",

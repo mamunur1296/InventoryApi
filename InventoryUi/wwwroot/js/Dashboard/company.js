@@ -38,9 +38,9 @@ const onSuccessUsers = async (companys) => {
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
-                    { label: 'Edit', btnClass: 'btn-primary', callback: 'updateUser', disabled: true },
+                    { label: 'Edit', btnClass: 'btn-primary', callback: 'updateCompany' },
                     { label: 'Details', btnClass: 'btn-info', callback: 'showDetails', disabled: true },
-                    { label: 'Delete', btnClass: 'btn-danger', callback: 'deleteRole' }
+                    { label: 'Delete', btnClass: 'btn-danger', callback: 'deleteCompany' }
                 ])
             }
         ];
@@ -180,35 +180,39 @@ $('#btnSave').click(async () => {
 
 
 
-//window.updateUser = async (id) => {
-//    debugger
-//    $('#myModalLabelUpdateEmployee').show();
-//    $('#myModalLabelAddEmployee').hide();
-//    await populateDropdown('/DashboardRole/GetAll', '#RolesDropdown', 'roleName', 'roleName', null);
-//    const result = await SendRequest({ endpoint: '/DashboardUser/GetById/' + id });
-//    if (result.success) {
-//        $('#btnSave').hide();
-//        $('#btnUpdate').show();
-//        $('#FirstName').val(result.data.firstName);
-//        $('#LastName').val(result.data.lastName);
-//        $('#UserName').val(result.data.userName);
-//        $('#Email').val(result.data.email);
-//        $('#PhoneNumber').val(result.data.phoneNumber);
-//        $('#RolesDropdown').val(result.data.roles);
-//        $('#modelCreate').modal('show');
-//        resetValidation(UsrValidae, '#UserForm');
-//        $('#btnUpdate').on('click', async () => {
-//            debugger
-//            const formData = $('#UserForm').serialize();
-//            const result = await SendRequest({ endpoint: '/DashboardUser/Update/' + id, method: "PUT", data: formData });
-//            if (result.success) {
-//                displayNotification({ formId: '#UserForm', modalId: '#modelCreate', message: ' User was successfully Updated....' });
-//                await getUserList(); // Update the user list
-//            }
-//        });
-//    }
-//    loger(result);
-//}
+window.updateCompany = async (id) => {
+    debugger
+    $('#myModalLabelUpdateEmployee').show();
+    $('#myModalLabelAddEmployee').hide();
+    
+    const result = await SendRequest({ endpoint: '/Company/GetById/' + id });
+    if (result.success) {
+        $('#btnSave').hide();
+        $('#btnUpdate').show();
+
+        $('#Name').val(result.data.name);
+        $('#FullName').val(result.data.fullName);
+        $('#ContactPerson').val(result.data.contactPerson);
+        $('#Address').val(result.data.address);
+        $('#PhoneNo').val(result.data.phoneNo);
+        $('#FaxNo').val(result.data.faxNo);
+        $('#EmailNo').val(result.data.emailNo);
+        $('#IsActive').val(result.data.isActive);
+        
+        $('#modelCreate').modal('show');
+        resetValidation(UsrValidae, '#CompanyForm');
+        $('#btnUpdate').on('click', async () => {
+            debugger
+            const formData = $('#CompanyForm').serialize();
+            const result = await SendRequest({ endpoint: '/Company/Update/' + id, method: "PUT", data: formData });
+            if (result.success) {
+                displayNotification({ formId: '#CompanyForm', modalId: '#modelCreate', message: ' Company was successfully Updated....' });
+                await getCompanyList(); // Update the user list
+            }
+        });
+    }
+    loger(result);
+}
 
 
 
@@ -218,7 +222,7 @@ $('#btnSave').click(async () => {
 //}
 
 
-window.deleteRole = async (id) => {
+window.deleteCompany = async (id) => {
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();

@@ -35,8 +35,7 @@ namespace InventoryApi.DTOs
         [StringLength(255, ErrorMessage = "Phone number cannot be longer than 255 characters.")]
         public string Phone { get; set; }
 
-        [StringLength(255, ErrorMessage = "Fax number cannot be longer than 255 characters.")]
-        public string Fax { get; set; }
+        public string? Fax { get; set; }
 
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Invalid email format.")]
@@ -49,7 +48,7 @@ namespace InventoryApi.DTOs
 
         public DateTime DateOfBirth { get; set; }
 
-        public string MedicalHistory { get; set; }
+        public string? MedicalHistory { get; set; }
 
        // public ICollection<Order> Orders { get; set; }
        // public ICollection<Review> Reviews { get; set; }

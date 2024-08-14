@@ -76,36 +76,36 @@
                                 <div class="form-group">
                                     <label class="control-label" asp-for="OrderID"></label>
                                     <select class="form-control" asp-for="OrderID" id="Orderdropdown">
-                                        <option value="">select company</option>
+                                        <option value="">Select order</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="PaymentDate" class="control-label"></label>
-                                    <input asp-for="PaymentDate" placeholder="Enter Warehouse Name" class="form-control" name="PaymentDate" />
+                                    <input asp-for="PaymentDate" placeholder="Enter payment date (e.g., 2024-08-15)" class="form-control" name="PaymentDate" />
                                     <span asp-validation-for="PaymentDate" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="PaymentMethod" class="control-label"></label>
-                                    <input asp-for="PaymentMethod" placeholder="Enter Warehouse Address" class="form-control" name="PaymentMethod" />
+                                    <input asp-for="PaymentMethod" placeholder="Enter payment method (e.g., Credit Card)" class="form-control" name="PaymentMethod" />
                                     <span asp-validation-for="PaymentMethod" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="Amount" class="control-label"></label>
-                                    <input asp-for="Amount" placeholder="Enter Warehouse Name" class="form-control" name="Amount" />
+                                    <input asp-for="Amount" placeholder="Enter amount (e.g., 100.00)" class="form-control" name="Amount" />
                                     <span asp-validation-for="Amount" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="PaymentStatus" class="control-label"></label>
-                                    <input asp-for="PaymentStatus" placeholder="Enter Warehouse Address" class="form-control" name="PaymentStatus" />
+                                    <input asp-for="PaymentStatus" placeholder="Enter payment status (e.g., Paid)" class="form-control" name="PaymentStatus" />
                                     <span asp-validation-for="PaymentStatus" class="text-danger"></span>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </form>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="btnSave">Save</button>

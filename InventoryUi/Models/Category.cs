@@ -7,7 +7,7 @@ namespace InventoryUi.Models
     {
         [Required(ErrorMessage = "Category name is required.")]
         [StringLength(255, ErrorMessage = "Category name cannot be longer than 255 characters.")]
-        [DisplayName("Category Name ")]
+        [DisplayName("Name")]
         public string CategoryName { get; set; }
         [DisplayName("Description ")]
         public string Description { get; set; }

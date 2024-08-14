@@ -85,89 +85,83 @@
                                     <select class="form-control" asp-for="EmployeeID" id="EmployeeDropdown">
                                         <option value="">Select Employee</option>
                                     </select>
-                                </div> 
+                                </div>
                                 <div class="form-group">
                                     <label class="control-label" asp-for="PrescriptionID"></label>
                                     <select class="form-control" asp-for="PrescriptionID" id="PrescriptionDropdown">
-                                        <option value="">Select Employee</option>
+                                        <option value="">Select Prescription</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="RequiredDate" class="control-label"></label>
-                                    <input asp-for="RequiredDate" placeholder="Enter Warehouse Address" class="form-control" name="RequiredDate" />
+                                    <input asp-for="RequiredDate" placeholder="Enter required date (e.g., 2024-08-14)" class="form-control" name="RequiredDate" />
                                     <span asp-validation-for="RequiredDate" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="ShippedDate" class="control-label"></label>
-                                    <input asp-for="ShippedDate" placeholder="Enter Warehouse Name" class="form-control" name="ShippedDate" />
+                                    <input asp-for="ShippedDate" placeholder="Enter shipped date (e.g., 2024-08-15)" class="form-control" name="ShippedDate" />
                                     <span asp-validation-for="ShippedDate" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label asp-for="ShippedDate" class="control-label"></label>
-                                    <input asp-for="ShippedDate" placeholder="Enter Warehouse Name" class="form-control" name="ShippedDate" />
-                                    <span asp-validation-for="ShippedDate" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
                                     <label asp-for="ShipVia" class="control-label"></label>
-                                    <input asp-for="ShipVia" placeholder="Enter Warehouse Address" class="form-control" name="ShipVia" />
+                                    <input asp-for="ShipVia" placeholder="Enter ship via (e.g., DHL, FedEx)" class="form-control" name="ShipVia" />
                                     <span asp-validation-for="ShipVia" class="text-danger"></span>
                                 </div>
-                               
+
                                 <div class="form-group">
                                     <label asp-for="Freight" class="control-label"></label>
-                                    <input asp-for="Freight" placeholder="Enter Warehouse Address" class="form-control" name="Freight" />
+                                    <input asp-for="Freight" placeholder="Enter freight amount (e.g., 50.00)" class="form-control" name="Freight" />
                                     <span asp-validation-for="Freight" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="ShipName" class="control-label"></label>
-                                    <input asp-for="ShipName" placeholder="Enter Warehouse Name" class="form-control" name="ShipName" />
+                                    <input asp-for="ShipName" placeholder="Enter ship name (e.g., johan)" class="form-control" name="ShipName" />
                                     <span asp-validation-for="ShipName" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="ShipAddress" class="control-label"></label>
-                                    <input asp-for="ShipAddress" placeholder="Enter Warehouse Address" class="form-control" name="ShipAddress" />
+                                    <input asp-for="ShipAddress" placeholder="Enter ship address (e.g., 123 Main St)" class="form-control" name="ShipAddress" />
                                     <span asp-validation-for="ShipAddress" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ShipCity" class="control-label"></label>
+                                    <input asp-for="ShipCity" placeholder="Enter ship city (e.g., Dhaka)" class="form-control" name="ShipCity" />
+                                    <span asp-validation-for="ShipCity" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                
-                                <div class="form-group">
-                                    <label asp-for="ShipCity" class="control-label"></label>
-                                    <input asp-for="ShipCity" placeholder="Enter Warehouse Name" class="form-control" name="ShipCity" />
-                                    <span asp-validation-for="ShipCity" class="text-danger"></span>
-                                </div>
                                 <div class="form-group">
                                     <label asp-for="ShipRegion" class="control-label"></label>
-                                    <input asp-for="ShipRegion" placeholder="Enter Warehouse Address" class="form-control" name="ShipRegion" />
+                                    <input asp-for="ShipRegion" placeholder="Enter ship region (e.g., Dhaka)" class="form-control" name="ShipRegion" />
                                     <span asp-validation-for="ShipRegion" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="ShipPostalCode" class="control-label"></label>
-                                    <input asp-for="ShipPostalCode" placeholder="Enter Warehouse Address" class="form-control" name="ShipPostalCode" />
+                                    <input asp-for="ShipPostalCode" placeholder="Enter ship postal code (e.g., 10001)" class="form-control" name="ShipPostalCode" />
                                     <span asp-validation-for="ShipPostalCode" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="ShipCountry" class="control-label"></label>
-                                    <input asp-for="ShipCountry" placeholder="Enter Warehouse Address" class="form-control" name="ShipCountry" />
+                                    <input asp-for="ShipCountry" placeholder="Enter ship country (e.g., Bamgladesh)" class="form-control" name="ShipCountry" />
                                     <span asp-validation-for="ShipCountry" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="OrderStatus" class="control-label"></label>
-                                    <input asp-for="OrderStatus" placeholder="Enter Warehouse Address" class="form-control" name="OrderStatus" />
+                                    <input asp-for="OrderStatus" placeholder="Enter order status (e.g., Pending, Shipped)" class="form-control" name="OrderStatus" />
                                     <span asp-validation-for="OrderStatus" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="PaymentStatus" class="control-label"></label>
-                                    <input asp-for="PaymentStatus" placeholder="Enter Warehouse Address" class="form-control" name="PaymentStatus" />
+                                    <input asp-for="PaymentStatus" placeholder="Enter payment status (e.g., Paid, Unpaid)" class="form-control" name="PaymentStatus" />
                                     <span asp-validation-for="PaymentStatus" class="text-danger"></span>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </form>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="btnSave">Save</button>

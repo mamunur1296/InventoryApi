@@ -146,8 +146,8 @@ const UsrValidae = $('#ReviewForm').validate({
 $('#CreateBtn').click(async () => {
     debugger
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
-    await populateDropdown('/Product/GetAll', '#ProductDropdown', 'id', 'productName', "Select User");
-    await populateDropdown('/Customer/GetAll', '#CustomerDropdown', 'id', 'customerName', "Select User");
+    await populateDropdown('/Product/GetAll', '#ProductDropdown', 'id', 'productName', "Select Product");
+    await populateDropdown('/Customer/GetAll', '#CustomerDropdown', 'id', 'customerName', "Select Customer");
 });
 
 // Save Button

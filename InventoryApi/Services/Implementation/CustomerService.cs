@@ -32,7 +32,7 @@ namespace InventoryApi.Services.Implementation
                 PostalCode = entity.PostalCode.Trim(),
                 Country = entity.Country.Trim(),
                 Phone = entity.Phone.Trim(),
-                Fax = entity.Fax.Trim(),
+                Fax = entity?.Fax?.Trim(),
                 Email = entity.Email.Trim(),
                 PasswordHash = entity.PasswordHash.Trim(),
                 DateOfBirth = entity.DateOfBirth,
