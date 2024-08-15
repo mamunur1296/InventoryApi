@@ -169,12 +169,20 @@ window.deleteRole = async (id) => {
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
+    $('#DeleteErrorMessage').hide();
     $('#btnDelete').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/DashboardRole/Delete', method: "POST", data: { id: id } });
         if (result.success) {
-            displayNotification({ formId: '#RolesForm', modalId: '#deleteAndDetailsModel', message: ' Role was successfully Delete....' });
-            await getRoleList(); // Update the user list
+            displayNotification({
+                formId: '#RolesForm',
+                modalId: '#deleteAndDetailsModel',
+                message: 'Roles was successfully deleted....'
+            });
+            await getRoleList(); // Update the category list
+        } else {
+            // Display the error message in the modal
+            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
         }
     });
 }

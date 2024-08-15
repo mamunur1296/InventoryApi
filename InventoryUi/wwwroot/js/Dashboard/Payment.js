@@ -40,11 +40,11 @@ const onSuccessUsers = async (payments, orders) => {
             },
             {
                 render: (data, type, row) => row?.orderDate
-            },{
+            }, {
                 render: (data, type, row) => row?.method
-            },{
+            }, {
                 render: (data, type, row) => row?.amount
-            },{
+            }, {
                 render: (data, type, row) => row?.status
             },
             {
@@ -122,15 +122,23 @@ const UsrValidae = $('#PaymentForm').validate({
 
     },
     messages: {
-        WarehouseName: {
-            required: " Warehouse Name is required.",
-
+        OrderID: {
+            required: "Order  is required.",
         },
-        Location: {
-            required: " Address is required.",
-
+        PaymentDate: {
+            required: "Payment Date is required.",
+        },
+        PaymentMethod: {
+            required: "Payment Method is required.",
+        },
+        Amount: {
+            required: "Amount is required.",
+        },
+        PaymentStatus: {
+            required: "Payment Status is required.",
         }
     },
+
     errorElement: 'div',
     errorPlacement: function (error, element) {
         error.addClass('invalid-feedback');
@@ -222,12 +230,20 @@ window.deletePayment = async (id) => {
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
+    $('#DeleteErrorMessage').hide();
     $('#btnDelete').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/Payment/Delete', method: "POST", data: { id: id } });
         if (result.success) {
-            displayNotification({ formId: '#PaymentForm', modalId: '#deleteAndDetailsModel', message: ' Payment was successfully Delete....' });
-            await getPaymentList(); // Update the user list
+            displayNotification({
+                formId: '#PaymentForm',
+                modalId: '#deleteAndDetailsModel',
+                message: 'Payment was successfully deleted....'
+            });
+            await getPaymentList(); // Update the category list
+        } else {
+            // Display the error message in the modal
+            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
         }
     });
 }

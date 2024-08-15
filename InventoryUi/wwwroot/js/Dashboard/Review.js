@@ -120,13 +120,17 @@ const UsrValidae = $('#ReviewForm').validate({
 
     },
     messages: {
-        WarehouseName: {
-            required: " Warehouse Name is required.",
-            checkDuplicateWarehouseName: "This Warehouse Name is already taken."
+        ProductID: {
+            required: "Product  is required.",
         },
-        Location: {
-            required: " Address is required.",
-
+        CustomerID: {
+            required: "Customer  is required.",
+        },
+        Rating: {
+            required: "Rating is required.",
+        },
+        ReviewText: {
+            required: "Review Text is required.",
         }
     },
     errorElement: 'div',
@@ -223,12 +227,20 @@ window.deleteReview = async (id) => {
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
+    $('#DeleteErrorMessage').hide();
     $('#btnDelete').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/Review/Delete', method: "POST", data: { id: id } });
         if (result.success) {
-            displayNotification({ formId: '#ReviewForm', modalId: '#deleteAndDetailsModel', message: ' Review was successfully Delete....' });
-            await getReviewList(); // Update the user list
+            displayNotification({
+                formId: '#ReviewForm',
+                modalId: '#deleteAndDetailsModel',
+                message: 'Review was successfully deleted....'
+            });
+            await getReviewList(); // Update the category list
+        } else {
+            // Display the error message in the modal
+            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
         }
     });
 }

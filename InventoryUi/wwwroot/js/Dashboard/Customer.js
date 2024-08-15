@@ -332,12 +332,20 @@ window.deleteCustomer = async (id) => {
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
+    $('#DeleteErrorMessage').hide();
     $('#btnDelete').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/Customer/Delete', method: "POST", data: { id: id } });
         if (result.success) {
-            displayNotification({ formId: '#CustomerForm', modalId: '#deleteAndDetailsModel', message: ' Customer was successfully Delete....' });
-            await getCustomerList(); // Update the user list
+            displayNotification({
+                formId: '#CustomerForm',
+                modalId: '#deleteAndDetailsModel',
+                message: 'Customer was successfully deleted....'
+            });
+            await getCustomerList(); // Update the category list
+        } else {
+            // Display the error message in the modal
+            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
         }
     });
 }

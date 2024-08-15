@@ -95,13 +95,8 @@ const UsrValidae = $('#OrderProductForm').validate({
 
     },
     messages: {
-        WarehouseName: {
-            required: " Warehouse Name is required.",
-            checkDuplicateWarehouseName: "This Warehouse Name is already taken."
-        },
-        Location: {
-            required: " Address is required.",
-
+        ProductId: {
+            required: "Product  is required.",
         }
     },
     errorElement: 'div',
@@ -191,12 +186,20 @@ window.deleteOrderProduct = async (id) => {
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
+    $('#DeleteErrorMessage').hide();
     $('#btnDelete').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/OrderProduct/Delete', method: "POST", data: { id: id } });
         if (result.success) {
-            displayNotification({ formId: '#OrderProductForm', modalId: '#deleteAndDetailsModel', message: ' Order Product was successfully Delete....' });
-            await getOrderProductList(); // Update the user list
+            displayNotification({
+                formId: '#OrderProductForm',
+                modalId: '#deleteAndDetailsModel',
+                message: 'Order Product was successfully deleted....'
+            });
+            await getOrderProductList(); // Update the category list
+        } else {
+            // Display the error message in the modal
+            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
         }
     });
 }

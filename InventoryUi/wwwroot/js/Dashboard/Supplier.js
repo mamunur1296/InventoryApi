@@ -159,13 +159,38 @@ const UsrValidae = $('#SupplierForm').validate({
 
     },
     messages: {
-        WarehouseName: {
-            required: " Warehouse Name is required.",
-
+        SupplierName: {
+            required: "Supplier Name is required.",
         },
-        Location: {
-            required: " Address is required.",
-
+        ContactName: {
+            required: "Contact Name is required.",
+        },
+        ContactTitle: {
+            required: "Contact Title is required.",
+        },
+        Address: {
+            required: "Address is required.",
+        },
+        City: {
+            required: "City is required.",
+        },
+        Region: {
+            required: "Region is required.",
+        },
+        PostalCode: {
+            required: "Postal Code is required.",
+        },
+        Country: {
+            required: "Country is required.",
+        },
+        Phone: {
+            required: "Phone is required.",
+        },
+        Fax: {
+            required: "Fax is required.",
+        },
+        HomePage: {
+            required: "Home Page is required.",
         }
     },
     errorElement: 'div',
@@ -266,12 +291,20 @@ window.deleteSupplier = async (id) => {
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
+    $('#DeleteErrorMessage').hide();
     $('#btnDelete').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/Supplier/Delete', method: "POST", data: { id: id } });
         if (result.success) {
-            displayNotification({ formId: '#SupplierForm', modalId: '#deleteAndDetailsModel', message: ' Supplier was successfully Delete....' });
-            await getSupplierList(); // Update the user list
+            displayNotification({
+                formId: '#SupplierForm',
+                modalId: '#deleteAndDetailsModel',
+                message: 'Supplier was successfully deleted....'
+            });
+            await getSupplierList(); // Update the category list
+        } else {
+            // Display the error message in the modal
+            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
         }
     });
 }

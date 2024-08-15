@@ -168,10 +168,10 @@ const UsrValidae = $('#OrderForm').validate({
     },
     messages: {
         CustomerID: {
-            required: "Customer ID is required.",
+            required: "Customer  is required.",
         },
         EmployeeID: {
-            required: "Employee ID is required.",
+            required: "Employee  is required.",
         },
         OrderDate: {
             required: "Order Date is required.",
@@ -323,12 +323,20 @@ window.deleteOrder = async (id) => {
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
+    $('#DeleteErrorMessage').hide();
     $('#btnDelete').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/Order/Delete', method: "POST", data: { id: id } });
         if (result.success) {
-            displayNotification({ formId: '#OrderForm', modalId: '#deleteAndDetailsModel', message: ' Order was successfully Delete....' });
-            await getOrderList(); // Update the user list
+            displayNotification({
+                formId: '#OrderForm',
+                modalId: '#deleteAndDetailsModel',
+                message: 'Order was successfully deleted....'
+            });
+            await getOrderList(); // Update the category list
+        } else {
+            // Display the error message in the modal
+            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
         }
     });
 }

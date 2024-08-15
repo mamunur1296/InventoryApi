@@ -198,12 +198,20 @@ window.deleteMenu = async (id) => {
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
+    $('#DeleteErrorMessage').hide();
     $('#btnDelete').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/Menu/Delete', method: "POST", data: { id: id } });
         if (result.success) {
-            displayNotification({ formId: '#MenuForm', modalId: '#deleteAndDetailsModel', message: ' Menu was successfully Delete....' });
-            await getMenuList(); // Update the user list
+            displayNotification({
+                formId: '#MenuForm',
+                modalId: '#deleteAndDetailsModel',
+                message: 'Menu was successfully deleted....'
+            });
+            await getMenuList(); // Update the category list
+        } else {
+            // Display the error message in the modal
+            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
         }
     });
 }

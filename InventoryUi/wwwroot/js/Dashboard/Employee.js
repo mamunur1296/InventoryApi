@@ -312,12 +312,20 @@ window.deleteEmployee = async (id) => {
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
+    $('#DeleteErrorMessage').hide();
     $('#btnDelete').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/Employee/Delete', method: "POST", data: { id: id } });
         if (result.success) {
-            displayNotification({ formId: '#EmployeeForm', modalId: '#deleteAndDetailsModel', message: ' Employee was successfully Delete....' });
-            await getEmployeeList(); // Update the user list
+            displayNotification({
+                formId: '#EmployeeForm',
+                modalId: '#deleteAndDetailsModel',
+                message: 'Employee was successfully deleted....'
+            });
+            await getEmployeeList(); // Update the category list
+        } else {
+            // Display the error message in the modal
+            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
         }
     });
 }

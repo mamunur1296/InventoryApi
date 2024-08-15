@@ -159,15 +159,47 @@ const UsrValidae = $('#ProductForm').validate({
 
     },
     messages: {
-        WarehouseName: {
-            required: " Warehouse Name is required.",
-
+        ProductName: {
+            required: "Product Name is required.",
         },
-        Location: {
-            required: " Address is required.",
-
+        Description: {
+            required: "Description is required.",
+        },
+        CategoryID: {
+            required: "Category ID is required.",
+        },
+        SupplierID: {
+            required: "Supplier ID is required.",
+        },
+        QuantityPerUnit: {
+            required: "Quantity per Unit is required.",
+        },
+        UnitPrice: {
+            required: "Unit Price is required.",
+        },
+        UnitsInStock: {
+            required: "Units in Stock is required.",
+        },
+        ReorderLevel: {
+            required: "Reorder Level is required.",
+        },
+        BatchNumber: {
+            required: "Batch Number is required.",
+        },
+        ExpirationDate: {
+            required: "Expiration Date is required.",
+        },
+        ImageURL: {
+            required: "Image URL is required.",
+        },
+        Weight: {
+            required: "Weight is required.",
+        },
+        Dimensions: {
+            required: "Dimensions are required.",
         }
     },
+
     errorElement: 'div',
     errorPlacement: function (error, element) {
         error.addClass('invalid-feedback');
@@ -278,12 +310,20 @@ window.deleteProduct = async (id) => {
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
+    $('#DeleteErrorMessage').hide();
     $('#btnDelete').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/Product/Delete', method: "POST", data: { id: id } });
         if (result.success) {
-            displayNotification({ formId: '#ProductForm', modalId: '#deleteAndDetailsModel', message: ' Product was successfully Delete....' });
-            await getProductList(); // Update the user list
+            displayNotification({
+                formId: '#ProductForm',
+                modalId: '#deleteAndDetailsModel',
+                message: 'Category was successfully deleted....'
+            });
+            await getProductList(); // Update the category list
+        } else {
+            // Display the error message in the modal
+            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
         }
     });
 }

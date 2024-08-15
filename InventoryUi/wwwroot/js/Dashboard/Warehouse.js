@@ -197,12 +197,20 @@ window.deleteWareHouse = async (id) => {
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
+    $('#DeleteErrorMessage').hide();
     $('#btnDelete').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/Warehouse/Delete', method: "POST", data: { id: id } });
         if (result.success) {
-            displayNotification({ formId: '#WarehouseForm', modalId: '#deleteAndDetailsModel', message: ' Warehouse was successfully Delete....' });
-            await getWarehouseList(); // Update the user list
+            displayNotification({
+                formId: '#WarehouseForm',
+                modalId: '#deleteAndDetailsModel',
+                message: 'Warehouse was successfully deleted....'
+            });
+            await getWarehouseList(); // Update the category list
+        } else {
+            // Display the error message in the modal
+            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
         }
     });
 }

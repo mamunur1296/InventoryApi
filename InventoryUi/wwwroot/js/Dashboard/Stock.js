@@ -99,15 +99,13 @@ const UsrValidae = $('#StockForm').validate({
     },
     rules: {
         ProductID: {
-            required: true,
+            required: "Product  is required.",
         },
         WarehouseID: {
-            required: true,
-
+            required: "Warehouse  is required.",
         },
         Quantity: {
-            required: true,
-
+            required: "Quantity is required.",
         }
 
     },
@@ -213,12 +211,20 @@ window.deleteStock = async (id) => {
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
+    $('#DeleteErrorMessage').hide();
     $('#btnDelete').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/Stock/Delete', method: "POST", data: { id: id } });
         if (result.success) {
-            displayNotification({ formId: '#StockForm', modalId: '#deleteAndDetailsModel', message: ' Stock was successfully Delete....' });
-            await getStockList(); // Update the user list
+            displayNotification({
+                formId: '#StockForm',
+                modalId: '#deleteAndDetailsModel',
+                message: 'Stock was successfully deleted....'
+            });
+            await getStockList(); // Update the category list
+        } else {
+            // Display the error message in the modal
+            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
         }
     });
 }

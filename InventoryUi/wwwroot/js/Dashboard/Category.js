@@ -195,15 +195,25 @@ window.updateCategory = async (id) => {
 
 
 window.deleteCategory = async (id) => {
-    debugger
+    debugger;
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
-    $('#btnDelete').click(async () => {
-        debugger
+    $('#DeleteErrorMessage').hide();
+    $('#DeleteErrorMessage').hide(); // Hide error message initially
+    $('#btnDelete').off('click').on('click', async () => {
+        debugger;
         const result = await SendRequest({ endpoint: '/Category/Delete', method: "POST", data: { id: id } });
+
         if (result.success) {
-            displayNotification({ formId: '#CategoryForm', modalId: '#deleteAndDetailsModel', message: ' Category was successfully Delete....' });
-            await getCategoryList(); // Update the user list
+            displayNotification({
+                formId: '#CategoryForm',
+                modalId: '#deleteAndDetailsModel',
+                message: 'Category was successfully deleted....'
+            });
+            await getCategoryList(); // Update the category list
+        } else {
+            // Display the error message in the modal
+            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
         }
     });
 }

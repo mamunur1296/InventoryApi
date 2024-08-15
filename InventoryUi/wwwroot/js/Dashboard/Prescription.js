@@ -123,15 +123,23 @@ const UsrValidae = $('#PrescriptionForm').validate({
 
     },
     messages: {
-        WarehouseName: {
-            required: " Warehouse Name is required.",
-
+        CustomerID: {
+            required: "Customer  is required.",
         },
-        Location: {
-            required: " Address is required.",
-
+        DoctorName: {
+            required: "Doctor Name is required.",
+        },
+        PrescriptionDate: {
+            required: "Prescription Date is required.",
+        },
+        MedicationDetails: {
+            required: "Medication Details are required.",
+        },
+        DosageInstructions: {
+            required: "Dosage Instructions are required.",
         }
     },
+
     errorElement: 'div',
     errorPlacement: function (error, element) {
         error.addClass('invalid-feedback');
@@ -223,12 +231,20 @@ window.deletePrescription = async (id) => {
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
+    $('#DeleteErrorMessage').hide();
     $('#btnDelete').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/Prescription/Delete', method: "POST", data: { id: id } });
         if (result.success) {
-            displayNotification({ formId: '#PrescriptionForm', modalId: '#deleteAndDetailsModel', message: ' Prescription was successfully Delete....' });
-            await getPrescriptionList(); // Update the user list
+            displayNotification({
+                formId: '#PrescriptionForm',
+                modalId: '#deleteAndDetailsModel',
+                message: 'Prescription was successfully deleted....'
+            });
+            await getPrescriptionList(); // Update the category list
+        } else {
+            // Display the error message in the modal
+            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
         }
     });
 }

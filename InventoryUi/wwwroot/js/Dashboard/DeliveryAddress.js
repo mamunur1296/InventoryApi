@@ -121,7 +121,7 @@ const UsrValidae = $('#DeliveryAddressForm').validate({
     },
     messages: {
         UserId: {
-            required: "User ID is required.",
+            required: "User  is required.",
         },
         Address: {
             required: "Address is required.",
@@ -231,12 +231,20 @@ window.deleteDeliveryAddress = async (id) => {
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
+    $('#DeleteErrorMessage').hide();
     $('#btnDelete').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/DeliveryAddress/Delete', method: "POST", data: { id: id } });
         if (result.success) {
-            displayNotification({ formId: '#DeliveryAddressForm', modalId: '#deleteAndDetailsModel', message: ' Delivery Address was successfully Delete....' });
-            await getDeliveryAddressList(); // Update the user list
+            displayNotification({
+                formId: '#DeliveryAddressForm',
+                modalId: '#deleteAndDetailsModel',
+                message: 'Delivery Address was successfully deleted....'
+            });
+            await getDeliveryAddressList(); // Update the category list
+        } else {
+            // Display the error message in the modal
+            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
         }
     });
 }

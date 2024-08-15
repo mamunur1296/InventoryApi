@@ -94,13 +94,8 @@ const UsrValidae = $('#ShoppingCartForm').validate({
 
     },
     messages: {
-        WarehouseName: {
-            required: " Warehouse Name is required.",
-            checkDuplicateWarehouseName: "This Warehouse Name is already taken."
-        },
-        Location: {
-            required: " Address is required.",
-
+        CustomerID: {
+            required: "Customer ID is required.",
         }
     },
     errorElement: 'div',
@@ -190,6 +185,7 @@ window.deleteShoppingCart = async (id) => {
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
+    $('#DeleteErrorMessage').hide();
     $('#btnDelete').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/ShoppingCart/Delete', method: "POST", data: { id: id } });

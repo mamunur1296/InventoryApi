@@ -247,11 +247,19 @@ window.deleteUser = async (id) => {
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
+    $('#DeleteErrorMessage').hide();
     $('#btnDelete').click(async () => {
         const result = await SendRequest({ endpoint: '/DashboardUser/Delete', method: "POST", data: { id: id } });
         if (result.success) {
-            displayNotification({ formId: '#UserForm', modalId: '#deleteAndDetailsModel', message: ' User was successfully Delete....' });
-            await getUserList(); // Update the user list
+            displayNotification({
+                formId: '#UserForm',
+                modalId: '#deleteAndDetailsModel',
+                message: 'User was successfully deleted....'
+            });
+            await getUserList(); // Update the category list
+        } else {
+            // Display the error message in the modal
+            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
         }
     });
 }
