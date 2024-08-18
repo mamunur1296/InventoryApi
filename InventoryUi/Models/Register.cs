@@ -34,6 +34,8 @@ namespace InventoryUi.Models
         [DisplayName("Confirm Password")]
         public string ConfirmationPassword { get; set; }
         public List<string> Roles { get; set; }
+        [DisplayName("Roles")]
+        public string RoleName { get; set; }
     }
 
 }

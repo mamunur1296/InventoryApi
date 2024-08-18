@@ -21,6 +21,7 @@ namespace InventoryUi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Payment model)
         {
+            model.UpdatedBy = null;
             var result = await _paymentServices.PostClientAsync("Payment/Create", model);
             return Json(result);
         }
@@ -33,6 +34,7 @@ namespace InventoryUi.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(string id, Payment model)
         {
+            model.CreatedBy = null;
             var result = await _paymentServices.UpdateClientAsync($"Payment/Update/{id}", model);
             return Json(result);
         }

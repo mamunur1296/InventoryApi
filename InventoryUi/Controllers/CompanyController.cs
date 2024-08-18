@@ -19,6 +19,7 @@ namespace InventoryUi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Company model)
         {
+            model.UpdatedBy = null;
             var register = await _companyServices.PostClientAsync("Company/Create", model);
             return Json(register);
         }
@@ -37,6 +38,7 @@ namespace InventoryUi.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(string id, Company model)
         {
+            model.CreatedBy = null;
             var result = await _companyServices.UpdateClientAsync($"Company/Update/{id}", model);
             return Json(result);
         }

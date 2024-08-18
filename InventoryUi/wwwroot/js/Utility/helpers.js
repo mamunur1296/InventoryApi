@@ -136,12 +136,6 @@ export const displayNotification = ({
 
 
 
-
-
-
-
-
-
 export const initializevalidation = (formselector, rules, messages) => {
     const validator = $(formselector).validate({
         onkeyup: function (element) {
@@ -186,3 +180,19 @@ export const dataToMap = (data, key) => {
     }, {});
 };
 
+export const clearMessage = (...messageIds) => {
+    messageIds.forEach(id => {
+        $(`#${id}`).hide();
+    });
+}
+export const resetFormValidation = (formId, validator) => {
+    // Reset the form fields
+    $(formId)[0].reset();
+
+    // Reset validation (removes all error messages and error classes)
+    validator.resetForm();
+
+    // Remove any additional classes applied by validation
+    $(formId).find('.is-invalid').removeClass('is-invalid');
+    $(formId).find('.invalid-feedback').remove();
+};

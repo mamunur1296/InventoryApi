@@ -34,6 +34,7 @@ namespace InventoryUi.Models
         public string? Country { get; set; }
         [DisplayName("Role")]
         public List<string> Roles { get; set; }
-
+        [DisplayName("Role")]
+        public string RoleName { get; set; }
     }
 }

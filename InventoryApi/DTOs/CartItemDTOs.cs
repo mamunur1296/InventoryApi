@@ -2,9 +2,9 @@
 
 namespace InventoryApi.DTOs
 {
-    public class CartItemDTOs
+    public class CartItemDTOs : BaseDTOs
     {
-        public string id { get; set; }
+        
         public string CartID { get; set; }
         //public ShoppingCart ShoppingCart { get; set; }
         public string ProductID { get; set; }

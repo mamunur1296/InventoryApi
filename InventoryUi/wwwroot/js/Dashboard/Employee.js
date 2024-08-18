@@ -1,4 +1,4 @@
-﻿import { createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
+﻿import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
@@ -15,11 +15,11 @@ const getEmployeeList = async () => {
 
 const onSuccessUsers = async (employeees) => {
     debugger
-    //const companyMap = dataToMap(companys, 'id');
+    const managerMap = dataToMap(employeees, 'id');
     const employeeesitem = employeees.map((employee) => {
         if (employee) {
             debugger
-            //const company = companyMap[warehouse.companyId];
+            const manager = managerMap[employee?.managerId];
             return {
                 id: employee?.id,
                 fName: employee?.firstName ?? "No Name",
@@ -27,6 +27,8 @@ const onSuccessUsers = async (employeees) => {
                 title: employee?.title ?? "No title",
                 address: employee?.address + ", " + employee?.city + ", " + employee?.region + ", " + employee?.postalCode + ", " + employee?.country ?? "No title",
                 phone: employee?.homePhone ?? "No title",
+                manager: manager ? (manager?.firstName + " " + manager?.lastName) : " No Data",
+                name: employee ? (employee?.firstName + " " + employee?.lastName) : " No Data",
                 
             };
         }
@@ -37,10 +39,7 @@ const onSuccessUsers = async (employeees) => {
         debugger
         const userSchema = [
             {
-                render: (data, type, row) => row?.fName
-            },
-            {
-                render: (data, type, row) => row?.lName
+                render: (data, type, row) => row?.name
             },
             {
                 render: (data, type, row) => row?.title
@@ -50,6 +49,9 @@ const onSuccessUsers = async (employeees) => {
             },
             {
                 render: (data, type, row) => row?.phone
+            },
+            {
+                render: (data, type, row) => row?.manager
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
@@ -218,15 +220,18 @@ const UsrValidae = $('#EmployeeForm').validate({
 
 
 //Sow Create Model 
-$('#CreateBtn').click(async () => {
+$('#CreateBtn').off('click').click(async () => {
+    resetFormValidation('#EmployeeForm', UsrValidae);
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
-
+    await populateDropdown('/Employee/GetAll', '#ManagerDropdown', 'id', 'firstName', "Select Manager");
 });
 
 // Save Button
 
-$('#btnSave').click(async () => {
+$('#btnSave').off('click').click(async () => {
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     try {
         if ($('#EmployeeForm').valid()) {
@@ -253,11 +258,13 @@ $('#btnSave').click(async () => {
 
 
 window.updateEmployee = async (id) => {
+    resetFormValidation('#EmployeeForm', UsrValidae);
+    clearMessage('successMessage', 'globalErrorMessage');
     loger(id);
     debugger
     $('#myModalLabelUpdateEmployee').show();
     $('#myModalLabelAddEmployee').hide();
-
+    await populateDropdown('/Employee/GetAll', '#ManagerDropdown', 'id', 'firstName', "Select Manager");
     const result = await SendRequest({ endpoint: '/Employee/GetById/' + id });
     if (result.success) {
         $('#btnSave').hide();
@@ -287,7 +294,7 @@ window.updateEmployee = async (id) => {
 
         $('#modelCreate').modal('show');
         resetValidation(UsrValidae, '#EmployeeForm');
-        $('#btnUpdate').on('click', async () => {
+        $('#btnUpdate').off('click').on('click', async () => {
             debugger
             const formData = $('#EmployeeForm').serialize();
             const result = await SendRequest({ endpoint: '/Employee/Update/' + id, method: "PUT", data: formData });
@@ -309,11 +316,12 @@ window.updateEmployee = async (id) => {
 
 
 window.deleteEmployee = async (id) => {
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
     $('#DeleteErrorMessage').hide();
-    $('#btnDelete').click(async () => {
+    $('#btnDelete').off('click').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/Employee/Delete', method: "POST", data: { id: id } });
         if (result.success) {

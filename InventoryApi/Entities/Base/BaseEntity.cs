@@ -12,9 +12,9 @@ namespace InventoryApi.Entities.Base
         public DateTime? UpdateDate { get; private set; }
         public string? CreatedBy { get; set; }
         public string? UpdatedBy { get; set; }
-        public BaseEntity()
+        public void SetUpdateDate(DateTime updateDate)
         {
-            UpdateDate = DateTime.Now;
+            UpdateDate = updateDate;
         }
     }
 }

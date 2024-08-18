@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace InventoryApi.DTOs
 {
-    public class ShipperDTOs
+    public class ShipperDTOs : BaseDTOs
     {
-        public string id { get; set; }
+        
         [Required]
         public string ShipperName { get; set; }
         public string Phone { get; set; }

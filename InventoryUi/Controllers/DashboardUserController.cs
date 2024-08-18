@@ -59,6 +59,8 @@ namespace InventoryUi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Register model)
         {
+            // Initialize the Roles list with the RoleName value
+            model.Roles = new List<string> { model.RoleName };
             var register = await _registerServices.PostClientAsync("Auth/Register", model);
             return Json(register);
         }

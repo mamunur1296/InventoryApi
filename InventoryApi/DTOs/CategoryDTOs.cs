@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace InventoryApi.DTOs
 {
-    public class CategoryDTOs
+    public class CategoryDTOs : BaseDTOs
     {
         
-        public string id { get; set; }
+       
 
         [Required(ErrorMessage = "Category name is required.")]
         [StringLength(255, ErrorMessage = "Category name cannot be longer than 255 characters.")]

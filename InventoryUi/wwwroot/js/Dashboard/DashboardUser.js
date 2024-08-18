@@ -1,4 +1,4 @@
-﻿import { createActionButtons, displayNotification, initializeDataTable, loger, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
+﻿import { clearMessage, createActionButtons, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
@@ -172,14 +172,17 @@ const UsrValidae = $('#UserForm').validate({
 });
 
 //Sow Create Model 
-$('#CreateUserBtn').click(async () => {
+$('#CreateUserBtn').off('click').click(async () => {
+    resetFormValidation('#UserForm', UsrValidae);
+    clearMessage('successMessage', 'globalErrorMessage');
      showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
-    await populateDropdown('/DashboardRole/GetAll', '#RolesDropdown', 'roleName', 'roleName',null);
+     await populateDropdown('/DashboardRole/GetAll', '#RolesDropdown', 'roleName', 'roleName'," Select Role");
 });
 
 // Save Button
 
-$('#btnSave').click(async () => {
+$('#btnSave').off('click').click(async () => {
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     try {
         if ($('#UserForm').valid()) {
@@ -206,6 +209,8 @@ $('#btnSave').click(async () => {
 
 
 window.updateUser = async (id) => {
+    resetFormValidation('#UserForm', UsrValidae);
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#myModalLabelUpdateEmployee').show();
     $('#myModalLabelAddEmployee').hide();
@@ -222,7 +227,7 @@ window.updateUser = async (id) => {
         $('#RolesDropdown').val(result.data.roles);
         $('#modelCreate').modal('show');
         resetValidation(UsrValidae, '#UserForm');
-        $('#btnUpdate').on('click', async () => {
+        $('#btnUpdate').off('click').on('click', async () => {
             debugger
             const formData = $('#UserForm').serialize();
             const result = await SendRequest({ endpoint: '/DashboardUser/Update/' + id, method: "PUT", data: formData });
@@ -244,11 +249,12 @@ window.showDetails = async (id) => {
 
 
 window.deleteUser = async (id) => {
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
     $('#DeleteErrorMessage').hide();
-    $('#btnDelete').click(async () => {
+    $('#btnDelete').off('click').click(async () => {
         const result = await SendRequest({ endpoint: '/DashboardUser/Delete', method: "POST", data: { id: id } });
         if (result.success) {
             displayNotification({

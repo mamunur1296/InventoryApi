@@ -24,6 +24,8 @@ namespace InventoryApi.Services.Implementation
             {
                 Id = Guid.NewGuid().ToString(),
                 ProductId = entity.ProductId?.Trim(),
+                CreatedBy = entity.CreatedBy?.Trim(),
+                CreationDate = DateTime.Now, // Set CreationDate here
 
             };
             await _unitOfWorkRepository.orderProductRepository.AddAsync(newOrderProduct);
@@ -72,6 +74,9 @@ namespace InventoryApi.Services.Implementation
             // Update properties with validation
             item.ProductId=entity.ProductId;
 
+            // Set the UpdateDate to the current date and time
+            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.orderProductRepository.UpdateAsync(item);
             await _unitOfWorkRepository.SaveAsync();

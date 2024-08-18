@@ -2,9 +2,9 @@
 
 namespace InventoryApi.DTOs
 {
-    public class ReviewDTOs
+    public class ReviewDTOs : BaseDTOs
     {
-        public string id { get; set; }
+       
         public string ProductID { get; set; }
         //public Product Product { get; set; }
         public string CustomerID { get; set; }

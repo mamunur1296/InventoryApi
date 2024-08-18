@@ -23,8 +23,11 @@ namespace InventoryApi.Services.Implementation
             var newWarehouse = new Warehouse
             {
                 Id = Guid.NewGuid().ToString(),
-                WarehouseName=entity.WarehouseName.Trim(),
+                CreatedBy = entity.CreatedBy?.Trim(),
+                CreationDate = DateTime.Now, // Set CreationDate here
+                WarehouseName =entity.WarehouseName.Trim(),
                 Location = entity.Location.Trim(),
+                CompanyId=entity?.CompanyId?.Trim(),
             };
             await _unitOfWorkRepository.warehouseRepository.AddAsync(newWarehouse);
             await _unitOfWorkRepository.SaveAsync();
@@ -73,7 +76,11 @@ namespace InventoryApi.Services.Implementation
             // Update properties with validation
             item.WarehouseName = string.IsNullOrWhiteSpace(entity.WarehouseName) ? item.WarehouseName : entity.WarehouseName.Trim();
             item.Location = string.IsNullOrWhiteSpace(entity.Location) ? item.Location : entity.Location.Trim();
+            item.CompanyId = string.IsNullOrWhiteSpace(entity.CompanyId) ? item.CompanyId : entity.CompanyId.Trim(); 
 
+            // Set the UpdateDate to the current date and time
+            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.warehouseRepository.UpdateAsync(item);
             await _unitOfWorkRepository.SaveAsync();

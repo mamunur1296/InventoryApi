@@ -21,6 +21,7 @@ namespace InventoryUi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(MenuRole model)
         {
+
             var result = await _menuRoleServices.PostClientAsync("MenuRole/Create", model);
             return Json(result);
         }
@@ -33,6 +34,7 @@ namespace InventoryUi.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(string id, MenuRole model)
         {
+            
             var result = await _menuRoleServices.UpdateClientAsync($"MenuRole/Update/{id}", model);
             return Json(result);
         }

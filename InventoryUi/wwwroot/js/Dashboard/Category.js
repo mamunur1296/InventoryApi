@@ -1,4 +1,4 @@
-﻿import { createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
+﻿import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
@@ -15,15 +15,16 @@ const getCategoryList = async () => {
 
 const onSuccessUsers = async (categorys) => {
     debugger
-    //const companyMap = dataToMap(companys, 'id');
+    const catagoryMap = dataToMap(categorys, 'id');
     const categoryitem = categorys.map((category) => {
         if (category) {
             debugger
-            //const company = companyMap[warehouse.companyId];
+            const subcatagory = catagoryMap[category.parentCategoryID];
             return {
                 id: category?.id,
                 name: category?.categoryName ?? "No Name",
                 description: category?.description ?? "No Address",
+                sub: subcatagory?.categoryName ?? "No Data",
             };
         }
         return null;
@@ -37,6 +38,9 @@ const onSuccessUsers = async (categorys) => {
             },
             {
                 render: (data, type, row) => row?.description
+            },
+            {
+                render: (data, type, row) => row?.sub
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
@@ -126,15 +130,18 @@ const UsrValidae = $('#CategoryForm').validate({
 });
 
 //Sow Create Model 
-$('#CreateBtn').click(async () => {
+$('#CreateBtn').off('click').click(async () => {
+    resetFormValidation('#CategoryForm', UsrValidae);
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
-
+    await populateDropdown('/Category/GetAll', '#ParentCategoryDropdown', 'id', 'categoryName', "Select Catagory");
 });
 
 // Save Button
 
-$('#btnSave').click(async () => {
+$('#btnSave').off('click').click(async () => {
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     try {
         if ($('#CategoryForm').valid()) {
@@ -161,19 +168,23 @@ $('#btnSave').click(async () => {
 
 
 window.updateCategory = async (id) => {
+    resetFormValidation('#CategoryForm', UsrValidae);
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#myModalLabelUpdateEmployee').show();
     $('#myModalLabelAddEmployee').hide();
-
+    $('#CategoryForm')[0].reset();
+    await populateDropdown('/Category/GetAll', '#ParentCategoryDropdown', 'id', 'categoryName', "Select Catagory");
     const result = await SendRequest({ endpoint: '/Category/GetById/' + id });
     if (result.success) {
         $('#btnSave').hide();
         $('#btnUpdate').show();
         $('#CategoryName').val(result.data.categoryName);
         $('#Description').val(result.data.description);
+        $('#ParentCategoryDropdown').val(result.data.parentCategoryID);
         $('#modelCreate').modal('show');
         resetValidation(UsrValidae, '#CategoryForm');
-        $('#btnUpdate').on('click', async () => {
+        $('#btnUpdate').off('click').on('click', async () => {
             debugger
             const formData = $('#CategoryForm').serialize();
             const result = await SendRequest({ endpoint: '/Category/Update/' + id, method: "PUT", data: formData });
@@ -195,6 +206,7 @@ window.updateCategory = async (id) => {
 
 
 window.deleteCategory = async (id) => {
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger;
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();

@@ -51,7 +51,7 @@
         },
         ...(requestData ? { body: requestData } : {})
     };
-
+    debugger
     // Perform fetch request
     try {
         const response = await fetch(endpoint, options);
@@ -62,7 +62,9 @@
         } else {
             throw new Error(result || 'Network response was not ok.');
         }
+        
     } catch (error) {
+        debugger
         handleError(error.message || 'Unknown error occurred.');
         throw new Error(error.message || 'Network response was not ok.');
     }

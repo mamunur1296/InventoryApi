@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace InventoryApi.DTOs
 {
-    public class CustomerDTOs
+    public class CustomerDTOs : BaseDTOs
     {
-        public string id { get; set; }
+      
 
         [Required(ErrorMessage = "Customer name is required.")]
         [StringLength(255, ErrorMessage = "Customer name cannot be longer than 255 characters.")]

@@ -22,7 +22,9 @@ namespace InventoryApi.Services.Implementation
             var newOrderDetail = new OrderDetail
             {
                 Id = Guid.NewGuid().ToString(),
-                OrderID=entity.OrderID.Trim(),
+                CreatedBy = entity.CreatedBy?.Trim(),
+                CreationDate = DateTime.Now, // Set CreationDate here
+                OrderID =entity.OrderID.Trim(),
                 ProductID=entity.ProductID.Trim(),
                 UnitPrice=entity.UnitPrice,
                 Quantity=entity.Quantity,
@@ -80,6 +82,10 @@ namespace InventoryApi.Services.Implementation
             item.Quantity = entity.Quantity != default ? entity.Quantity : item.Quantity;
             item.Discount = entity.Discount != default ? entity.Discount : item.Discount;
 
+
+            // Set the UpdateDate to the current date and time
+            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.orderDetailRepository.UpdateAsync(item);
             await _unitOfWorkRepository.SaveAsync();

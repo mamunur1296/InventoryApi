@@ -13,7 +13,8 @@ namespace InventoryUi.Models
         [StringLength(255, ErrorMessage = "Location cannot be longer than 255 characters.")]
         [DisplayName("Address")]
         public string Location { get; set; }
-
+        public string? CompanyId { get; set; }
+        public Company? Company { get; set; }
         public ICollection<Stock> Stocks { get; set; }
 
     }

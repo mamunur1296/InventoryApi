@@ -1,8 +1,8 @@
 ﻿namespace InventoryApi.DTOs
 {
-    public class RoleDTO
+    public class RoleDTO : BaseDTOs
     {
-        public string Id { get; set; }
+    
         public string RoleName { get; set; }
     }
 }

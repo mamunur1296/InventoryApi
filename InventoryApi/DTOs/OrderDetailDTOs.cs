@@ -2,9 +2,9 @@
 
 namespace InventoryApi.DTOs
 {
-    public class OrderDetailDTOs
+    public class OrderDetailDTOs : BaseDTOs
     {
-        public string id { get; set; }
+        
         public string OrderID { get; set; }
         //public Order Order { get; set; }
         public string ProductID { get; set; }

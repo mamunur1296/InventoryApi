@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace InventoryApi.DTOs
 {
-    public class WarehouseDTOs
+    public class WarehouseDTOs : BaseDTOs
     {
-        public string id { get; set; }
+
 
         [Required(ErrorMessage = "Warehouse name is required.")]
         [StringLength(255, ErrorMessage = "Warehouse name cannot be longer than 255 characters.")]
@@ -13,6 +13,7 @@ namespace InventoryApi.DTOs
 
         [StringLength(255, ErrorMessage = "Location cannot be longer than 255 characters.")]
         public string Location { get; set; }
+        public string? CompanyId { get; set; }
 
         //public ICollection<Stock> Stocks { get; set; }
 

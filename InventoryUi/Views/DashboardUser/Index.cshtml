@@ -1,4 +1,5 @@
 ﻿@model InventoryUi.Models.User
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -24,7 +25,7 @@
                     <div id="successMessage" class="alert alert-success" role="alert" style="display: none;">
                         <button id="btnClose" type="button" class="btn-close" aria-label="Close"></button>
                     </div>
-                    <div id="globalErrorMessage" class="alert alert-success" role="alert" style="display: none;">
+                    <div id="globalErrorMessage" class="alert alert-danger" role="alert" style="display: none;">
                         <button id="btnClose" type="button" class="btn-close" aria-label="Close"></button>
                     </div>
 
@@ -114,8 +115,8 @@
                                     <span asp-validation-for="ConfirmationPassword" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="Roles"></label>
-                                    <select class="form-control" asp-for="Roles" id="RolesDropdown">
+                                    <label asp-for="RoleName"></label>
+                                    <select class="form-control" asp-for="RoleName" id="RolesDropdown">
                                         <option value="">Select role</option>
                                     </select>
                                 </div>

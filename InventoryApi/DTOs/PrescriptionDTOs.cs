@@ -2,9 +2,9 @@
 
 namespace InventoryApi.DTOs
 {
-    public class PrescriptionDTOs
+    public class PrescriptionDTOs : BaseDTOs
     {
-        public string id { get; set; }
+      
         public string CustomerID { get; set; }
        // public Customer Customer { get; set; }
         public string DoctorName { get; set; }

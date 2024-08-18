@@ -23,6 +23,8 @@ namespace InventoryApi.Services.Implementation
             var newProduct = new Product
             {
                 Id = Guid.NewGuid().ToString(),
+                CreatedBy = entity.CreatedBy?.Trim(),
+                CreationDate = DateTime.Now, // Set CreationDate here
                 ProductName = entity.ProductName.Trim(),
                 Description = entity.Description.Trim(),
                 CategoryID = entity.CategoryID.ToString(),
@@ -98,6 +100,11 @@ namespace InventoryApi.Services.Implementation
             item.Weight = entity?.Weight != null ? entity.Weight : item.Weight;
             item.Dimensions = entity?.Dimensions != null ? entity.Dimensions : item.Dimensions;
 
+
+
+            // Set the UpdateDate to the current date and time
+            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.productRepository.UpdateAsync(item);
             await _unitOfWorkRepository.SaveAsync();

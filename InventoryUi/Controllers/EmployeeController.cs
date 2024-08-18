@@ -22,6 +22,7 @@ namespace InventoryUi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Employee model)
         {
+            model.UpdatedBy = null;
             model.Photo = new byte[0];
             model.PhotoPath = "https://www.example.com/image.jpg";
             var result = await _employeeServices.PostClientAsync("Employee/Create", model);
@@ -36,6 +37,7 @@ namespace InventoryUi.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(string id, Employee model)
         {
+            model.CreatedBy = null;
             model.Photo = new byte[0];
             model.PhotoPath= "https://www.example.com/image.jpg";
             var result = await _employeeServices.UpdateClientAsync($"Employee/Update/{id}", model);

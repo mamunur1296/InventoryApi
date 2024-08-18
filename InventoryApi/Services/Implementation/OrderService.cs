@@ -23,6 +23,8 @@ namespace InventoryApi.Services.Implementation
             var newOrder = new Order
             {
                 Id = Guid.NewGuid().ToString(),
+                CreatedBy = entity.CreatedBy?.Trim(),
+                CreationDate = DateTime.Now, // Set CreationDate here
                 CustomerID = entity.CustomerID.Trim(),
                 EmployeeID = entity.EmployeeID?.Trim(),
                 OrderDate = DateTime.Now,
@@ -101,6 +103,10 @@ namespace InventoryApi.Services.Implementation
             item.PaymentStatus = string.IsNullOrWhiteSpace(entity.PaymentStatus) ? item.PaymentStatus : entity.PaymentStatus.Trim();
             item.OrderStatus = string.IsNullOrWhiteSpace(entity.OrderStatus) ? item.OrderStatus : entity.OrderStatus.Trim();
 
+
+            // Set the UpdateDate to the current date and time
+            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.orderRepository.UpdateAsync(item);
             await _unitOfWorkRepository.SaveAsync();

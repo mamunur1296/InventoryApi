@@ -22,6 +22,8 @@ namespace InventoryApi.Services.Implementation
             var newPayment = new Payment
             {
                 Id = Guid.NewGuid().ToString(),
+                CreatedBy = entity.CreatedBy?.Trim(),
+                CreationDate = DateTime.Now, // Set CreationDate here
                 OrderID = entity.OrderID.Trim(),
                 PaymentDate = DateTime.Now,
                 PaymentMethod = entity.PaymentMethod.Trim(),
@@ -78,6 +80,10 @@ namespace InventoryApi.Services.Implementation
             item.Amount = entity.Amount != default ? entity.Amount : item.Amount;
             item.PaymentStatus = string.IsNullOrWhiteSpace(entity.PaymentStatus) ? item.PaymentStatus : entity.PaymentStatus.Trim();
 
+
+            // Set the UpdateDate to the current date and time
+            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.paymentRepository.UpdateAsync(item);
             await _unitOfWorkRepository.SaveAsync();

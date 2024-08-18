@@ -1,4 +1,4 @@
-﻿import { createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
+﻿import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
@@ -154,7 +154,9 @@ const UsrValidae = $('#DeliveryAddressForm').validate({
 });
 
 //Sow Create Model 
-$('#CreateBtn').click(async () => {
+$('#CreateBtn').off('click').click(async () => {
+    resetFormValidation('#DeliveryAddressForm', UsrValidae);
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
     await populateDropdown('/DashboardUser/GetAll', '#UserDropdown', 'id', 'userName', "Select User");
@@ -162,7 +164,8 @@ $('#CreateBtn').click(async () => {
 
 // Save Button
 
-$('#btnSave').click(async () => {
+$('#btnSave').off('click').click(async () => {
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     try {
         if ($('#DeliveryAddressForm').valid()) {
@@ -189,6 +192,8 @@ $('#btnSave').click(async () => {
 
 
 window.updateDeliveryAddress = async (id) => {
+    resetFormValidation('#DeliveryAddressForm', UsrValidae);
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#myModalLabelUpdateEmployee').show();
     $('#myModalLabelAddEmployee').hide();
@@ -206,7 +211,7 @@ window.updateDeliveryAddress = async (id) => {
 
         $('#modelCreate').modal('show');
         resetValidation(UsrValidae, '#DeliveryAddressForm');
-        $('#btnUpdate').on('click', async () => {
+        $('#btnUpdate').off('click').on('click', async () => {
             debugger
             const formData = $('#DeliveryAddressForm').serialize();
             const result = await SendRequest({ endpoint: '/DeliveryAddress/Update/' + id, method: "PUT", data: formData });
@@ -228,11 +233,12 @@ window.updateDeliveryAddress = async (id) => {
 
 
 window.deleteDeliveryAddress = async (id) => {
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
     $('#DeleteErrorMessage').hide();
-    $('#btnDelete').click(async () => {
+    $('#btnDelete').off('click').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/DeliveryAddress/Delete', method: "POST", data: { id: id } });
         if (result.success) {

@@ -1,4 +1,4 @@
-﻿import { createActionButtons, displayNotification, initializeDataTable, loger, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
+﻿import { clearMessage, createActionButtons, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
@@ -95,13 +95,16 @@ const UsrValidae = $('#RolesForm').validate({
 });
 
 //Sow Create Model 
-$('#CreateUserBtn').click(async () => {
+$('#CreateUserBtn').off('click').click(async () => {
+    resetFormValidation('#RolesForm', UsrValidae);
+    clearMessage('successMessage', 'globalErrorMessage');
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
 });
 
 // Save Button
 
-$('#btnSave').click(async () => {
+$('#btnSave').off('click').click(async () => {
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     try {
         if ($('#RolesForm').valid()) {
@@ -166,11 +169,12 @@ $('#btnSave').click(async () => {
 
 
 window.deleteRole = async (id) => {
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
     $('#DeleteErrorMessage').hide();
-    $('#btnDelete').click(async () => {
+    $('#btnDelete').off('click').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/DashboardRole/Delete', method: "POST", data: { id: id } });
         if (result.success) {

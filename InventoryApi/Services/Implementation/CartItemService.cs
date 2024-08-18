@@ -22,6 +22,8 @@ namespace InventoryApi.Services.Implementation
             var newCartItem = new CartItem
             {
                 Id = Guid.NewGuid().ToString(),
+                CreatedBy = entity.CreatedBy?.Trim(),
+                CreationDate = DateTime.Now, // Set CreationDate here
                 CartID = entity.CartID.Trim(),
                 Quantity=entity.Quantity,
                 ProductID= entity.ProductID.Trim(),
@@ -43,6 +45,9 @@ namespace InventoryApi.Services.Implementation
             item.ProductID = string.IsNullOrWhiteSpace(entity.ProductID) ? item.ProductID : entity.ProductID.Trim();
             item.Quantity = entity.Quantity;
 
+            // Set the UpdateDate to the current date and time
+            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.cartItemRepository.UpdateAsync(item);
             await _unitOfWorkRepository.SaveAsync();

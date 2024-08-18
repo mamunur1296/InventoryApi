@@ -1,10 +1,11 @@
-﻿import { createActionButtons, displayNotification, initializeDataTable, loger, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
+﻿import { clearMessage, createActionButtons, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
     await getCompanyList();
 });
 const getCompanyList = async () => {
+    debugger
     const result = await SendRequest({ endpoint: '/Company/GetAll' });
     if (result.status === 200 && result.success) {
         await onSuccessUsers(result.data);
@@ -12,6 +13,7 @@ const getCompanyList = async () => {
 }
 
 const onSuccessUsers = async (companys) => {
+    debugger
     try {
         debugger
         const userSchema = [
@@ -92,6 +94,7 @@ const UsrValidae = $('#CompanyForm').validate({
         $(element).valid();
     },
     rules: {
+     
         Name: {
             required: true,
             checkDuplicateCompanyName: true
@@ -148,13 +151,16 @@ const UsrValidae = $('#CompanyForm').validate({
 });
 
 //Sow Create Model 
-$('#CreateUserBtn').click(async () => {
+$('#CreateUserBtn').off('click').click(async () => {
+    resetFormValidation('#CompanyForm', UsrValidae);
+    clearMessage('successMessage', 'globalErrorMessage');
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
 });
 
 // Save Button
 
-$('#btnSave').click(async () => {
+$('#btnSave').off('click').click(async () => {
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     try {
         if ($('#CompanyForm').valid()) {
@@ -182,9 +188,10 @@ $('#btnSave').click(async () => {
 
 window.updateCompany = async (id) => {
     debugger
+    clearMessage('successMessage', 'globalErrorMessage');
+    resetFormValidation('#CompanyForm', UsrValidae);
     $('#myModalLabelUpdateEmployee').show();
     $('#myModalLabelAddEmployee').hide();
-    
     const result = await SendRequest({ endpoint: '/Company/GetById/' + id });
     if (result.success) {
         $('#btnSave').hide();
@@ -198,16 +205,21 @@ window.updateCompany = async (id) => {
         $('#FaxNo').val(result.data.faxNo);
         $('#EmailNo').val(result.data.emailNo);
         $('#IsActive').val(result.data.isActive);
+
+        // Correctly set the checkbox state based on the isActive value
+        $('#IsActiveCheckbox').prop('checked', result.data.isActive);
         
         $('#modelCreate').modal('show');
         resetValidation(UsrValidae, '#CompanyForm');
-        $('#btnUpdate').on('click', async () => {
+        $('#btnUpdate').off('click').on('click', async () => {
             debugger
             const formData = $('#CompanyForm').serialize();
             const result = await SendRequest({ endpoint: '/Company/Update/' + id, method: "PUT", data: formData });
             if (result.success) {
                 displayNotification({ formId: '#CompanyForm', modalId: '#modelCreate', message: ' Company was successfully Updated....' });
                 await getCompanyList(); // Update the user list
+            } else {
+                displayNotification({ formId: '#CompanyForm', modalId: '#modelCreate', messageElementId: '#globalErrorMessage', message: 'Company Updated failed. Please try again.' });
             }
         });
     }
@@ -223,11 +235,12 @@ window.updateCompany = async (id) => {
 
 
 window.deleteCompany = async (id) => {
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
     $('#DeleteErrorMessage').hide();
-    $('#btnDelete').click(async () => {
+    $('#btnDelete').off('click').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/Company/Delete', method: "POST", data: { id: id } });
         if (result.success) {

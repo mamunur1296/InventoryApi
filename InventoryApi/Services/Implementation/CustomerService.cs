@@ -23,6 +23,8 @@ namespace InventoryApi.Services.Implementation
             var newCustomer = new Customer
             {
                 Id = Guid.NewGuid().ToString(),
+                CreatedBy = entity.CreatedBy?.Trim(),
+                CreationDate = DateTime.Now, // Set CreationDate here
                 CustomerName = entity.CustomerName.Trim(),
                 ContactName = entity.ContactName.Trim(),
                 ContactTitle = entity.ContactTitle.Trim(),
@@ -66,6 +68,11 @@ namespace InventoryApi.Services.Implementation
             item.DateOfBirth = entity.DateOfBirth;
             item.MedicalHistory = string.IsNullOrWhiteSpace(entity.MedicalHistory) ? item.MedicalHistory : entity.MedicalHistory.Trim();
 
+
+
+            // Set the UpdateDate to the current date and time
+            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.customerRepository.UpdateAsync(item);
             await _unitOfWorkRepository.SaveAsync();

@@ -1,4 +1,4 @@
-﻿import { createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
+﻿import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
@@ -99,6 +99,18 @@ const UsrValidae = $('#StockForm').validate({
     },
     rules: {
         ProductID: {
+            required: true,
+        },
+        WarehouseID: {
+            required: true,
+        },
+        Quantity: {
+            required: true,
+        }
+
+    },
+    messages: {
+        ProductID: {
             required: "Product  is required.",
         },
         WarehouseID: {
@@ -106,17 +118,6 @@ const UsrValidae = $('#StockForm').validate({
         },
         Quantity: {
             required: "Quantity is required.",
-        }
-
-    },
-    messages: {
-        WarehouseName: {
-            required: " Warehouse Name is required.",
-            checkDuplicateWarehouseName: "This Warehouse Name is already taken."
-        },
-        Location: {
-            required: " Address is required.",
-
         }
     },
     errorElement: 'div',
@@ -133,7 +134,9 @@ const UsrValidae = $('#StockForm').validate({
 });
 
 //Sow Create Model 
-$('#CreateBtn').click(async () => {
+$('#CreateBtn').off('click').click(async () => {
+    resetFormValidation('#StockForm', UsrValidae);
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
     await populateDropdown('/Product/GetAll', '#ProductDropdown', 'id', 'productName', "Select Product");
@@ -142,7 +145,8 @@ $('#CreateBtn').click(async () => {
 
 // Save Button
 
-$('#btnSave').click(async () => {
+$('#btnSave').off('click').click(async () => {
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     try {
         if ($('#StockForm').valid()) {
@@ -169,6 +173,8 @@ $('#btnSave').click(async () => {
 
 
 window.updateStock = async (id) => {
+    resetFormValidation('#StockForm', UsrValidae);
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#myModalLabelUpdateEmployee').show();
     $('#myModalLabelAddEmployee').hide();
@@ -186,7 +192,7 @@ window.updateStock = async (id) => {
 
         $('#modelCreate').modal('show');
         resetValidation(UsrValidae, '#StockForm');
-        $('#btnUpdate').on('click', async () => {
+        $('#btnUpdate').off('click').on('click', async () => {
             debugger
             const formData = $('#StockForm').serialize();
             const result = await SendRequest({ endpoint: '/Stock/Update/' + id, method: "PUT", data: formData });
@@ -208,11 +214,13 @@ window.updateStock = async (id) => {
 
 
 window.deleteStock = async (id) => {
+
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
     $('#DeleteErrorMessage').hide();
-    $('#btnDelete').click(async () => {
+    $('#btnDelete').off('click').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/Stock/Delete', method: "POST", data: { id: id } });
         if (result.success) {

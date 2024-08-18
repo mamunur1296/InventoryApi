@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace InventoryApi.DTOs
 {
-    public class StockDTOs
+    public class StockDTOs : BaseDTOs
     {
-        public string id { get; set; }
+      
 
         [Required(ErrorMessage = "Product ID is required.")]
         public string ProductID { get; set; }

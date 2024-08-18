@@ -5,6 +5,7 @@ using InventoryApi.Exceptions;
 using InventoryApi.Services.Interfaces;
 using InventoryApi.UnitOfWork;
 
+
 namespace InventoryApi.Services.Implementation
 {
     public class CompanyService : IBaseServices<CompanyDTOs>
@@ -23,6 +24,8 @@ namespace InventoryApi.Services.Implementation
             var newCompany = new Company
             {
                 Id = Guid.NewGuid().ToString(),
+                CreatedBy = entity.CreatedBy?.Trim(),
+                CreationDate = DateTime.Now, // Set CreationDate here
                 Name = entity.Name?.Trim(),
                 FullName = entity.FullName?.Trim(),
                 ContactPerson = entity.ContactPerson?.Trim(),
@@ -36,6 +39,7 @@ namespace InventoryApi.Services.Implementation
             await _unitOfWorkRepository.SaveAsync();
             return true;
         }
+
 
         public async Task<bool> DeleteAsync(string id)
         {
@@ -73,17 +77,22 @@ namespace InventoryApi.Services.Implementation
             var item = await _unitOfWorkRepository.companyRepository.GetByIdAsync(id);
             if (item == null || item?.Id != id)
             {
-                throw new NotFoundException($"company with id = {id} not found");
+                throw new NotFoundException($"Company with id = {id} not found");
             }
-            // Update  properties
-            item.Name = string.IsNullOrWhiteSpace(entity.Name) ? item.Name : entity.Name;
-            item.FullName = string.IsNullOrWhiteSpace(entity.FullName) ? item.FullName : entity.FullName;
-            item.ContactPerson = string.IsNullOrWhiteSpace(entity.ContactPerson) ? item.ContactPerson : entity.ContactPerson;
-            item.FaxNo = string.IsNullOrWhiteSpace(entity.FaxNo) ? item.FaxNo : entity.FaxNo;
-            item.PhoneNo = string.IsNullOrWhiteSpace(entity.PhoneNo) ? item.PhoneNo : entity.PhoneNo;
-            item.EmailNo = string.IsNullOrWhiteSpace(entity.EmailNo) ? item.EmailNo : entity.EmailNo;
-            item.IsActive = entity.IsActive; // Assuming IsActive is a non-nullable boolean
-            item.Address = string.IsNullOrWhiteSpace(entity.Address) ? item.Address : entity.Address;
+
+            // Update properties
+            item.Name = entity.Name?.Trim();
+            item.FullName = entity.FullName?.Trim();
+            item.ContactPerson = entity.ContactPerson?.Trim();
+            item.Address = entity.Address?.Trim();
+            item.PhoneNo = entity.PhoneNo?.Trim();
+            item.FaxNo = entity.FaxNo?.Trim();
+            item.EmailNo = entity.EmailNo?.Trim();
+            item.IsActive = entity.IsActive;
+
+            // Set the UpdateDate to the current date and time
+            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.SetUpdateDate(DateTime.Now);
 
             // Perform update operation
             await _unitOfWorkRepository.companyRepository.UpdateAsync(item);
@@ -91,6 +100,7 @@ namespace InventoryApi.Services.Implementation
 
             return true;
         }
+
     }
 }
 // Helper method for string validation and update

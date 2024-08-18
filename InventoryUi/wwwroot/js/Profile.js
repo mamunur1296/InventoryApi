@@ -8,7 +8,7 @@ $(document).ready(async function () {
 });
 
 const changePassword = async () => {
-    $("#submitBtn").click(async (event) => {
+    $("#submitBtn").off('click').click(async (event) => {
         event.preventDefault();
         debugger;
         const oldPassword = $("#OldPassword").val();

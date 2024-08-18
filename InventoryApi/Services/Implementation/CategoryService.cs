@@ -23,6 +23,8 @@ namespace InventoryApi.Services.Implementation
             var newCategory = new Category
             {
                 Id = Guid.NewGuid().ToString(),
+                CreatedBy = entity.CreatedBy?.Trim(),
+                CreationDate = DateTime.Now, // Set CreationDate here
                 CategoryName = entity.CategoryName.Trim(),
                 Description = entity.Description.Trim(),
                 ParentCategoryID= entity.ParentCategoryID?.Trim(),
@@ -74,6 +76,10 @@ namespace InventoryApi.Services.Implementation
             item.CategoryName = string.IsNullOrWhiteSpace(entity.CategoryName) ? item.CategoryName : entity.CategoryName;
             item.Description = string.IsNullOrWhiteSpace(entity.Description) ? item.Description : entity.Description;
             item.ParentCategoryID = string.IsNullOrWhiteSpace(entity.ParentCategoryID) ? item.ParentCategoryID : entity.ParentCategoryID;
+
+            // Set the UpdateDate to the current date and time
+            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.categoryRepository.UpdateAsync(item);
             await _unitOfWorkRepository.SaveAsync();

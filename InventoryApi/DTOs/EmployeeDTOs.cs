@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace InventoryApi.DTOs
 {
-    public class EmployeeDTOs
+    public class EmployeeDTOs : BaseDTOs
     {
-        public string id { get; set; }
+        
         [Required(ErrorMessage = "LastName is Required")]
         public string LastName { get; set; }
         [Required(ErrorMessage = "FirstName is Required")]

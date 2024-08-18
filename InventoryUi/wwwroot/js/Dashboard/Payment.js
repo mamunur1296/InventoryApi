@@ -1,4 +1,4 @@
-﻿import { createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
+﻿import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
@@ -153,7 +153,9 @@ const UsrValidae = $('#PaymentForm').validate({
 });
 
 //Sow Create Model 
-$('#CreateBtn').click(async () => {
+$('#CreateBtn').off('click').click(async () => {
+    resetFormValidation('#PaymentForm', UsrValidae);
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
     await populateDropdown('/Order/GetAll', '#Orderdropdown', 'id', 'orderDate', "Select Order Date");
@@ -161,7 +163,8 @@ $('#CreateBtn').click(async () => {
 
 // Save Button
 
-$('#btnSave').click(async () => {
+$('#btnSave').off('click').click(async () => {
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     try {
         if ($('#PaymentForm').valid()) {
@@ -188,6 +191,8 @@ $('#btnSave').click(async () => {
 
 
 window.updatePayment = async (id) => {
+    resetFormValidation('#PaymentForm', UsrValidae);
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#myModalLabelUpdateEmployee').show();
     $('#myModalLabelAddEmployee').hide();
@@ -205,7 +210,7 @@ window.updatePayment = async (id) => {
 
         $('#modelCreate').modal('show');
         resetValidation(UsrValidae, '#PaymentForm');
-        $('#btnUpdate').on('click', async () => {
+        $('#btnUpdate').off('click').on('click', async () => {
             debugger
             const formData = $('#PaymentForm').serialize();
             const result = await SendRequest({ endpoint: '/Payment/Update/' + id, method: "PUT", data: formData });
@@ -227,11 +232,12 @@ window.updatePayment = async (id) => {
 
 
 window.deletePayment = async (id) => {
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
     $('#DeleteErrorMessage').hide();
-    $('#btnDelete').click(async () => {
+    $('#btnDelete').off('click').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/Payment/Delete', method: "POST", data: { id: id } });
         if (result.success) {

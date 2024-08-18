@@ -1,4 +1,4 @@
-﻿import { createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
+﻿import { clearMessage,createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
@@ -112,7 +112,9 @@ const UsrValidae = $('#ShoppingCartForm').validate({
 });
 
 //Sow Create Model 
-$('#CreateBtn').click(async () => {
+$('#CreateBtn').off('click').click(async () => {
+    resetFormValidation('#ShoppingCartForm', UsrValidae);
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
     await populateDropdown('/Customer/GetAll', '#CustomerDropdown', 'id', 'customerName', "Select Customer");
@@ -120,7 +122,8 @@ $('#CreateBtn').click(async () => {
 
 // Save Button
 
-$('#btnSave').click(async () => {
+$('#btnSave').off('click').click(async () => {
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     try {
         if ($('#ShoppingCartForm').valid()) {
@@ -147,6 +150,8 @@ $('#btnSave').click(async () => {
 
 
 window.updateShoppingCart = async (id) => {
+    resetFormValidation('#ShoppingCartForm', UsrValidae);
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#myModalLabelUpdateEmployee').show();
     $('#myModalLabelAddEmployee').hide();
@@ -160,7 +165,7 @@ window.updateShoppingCart = async (id) => {
 
         $('#modelCreate').modal('show');
         resetValidation(UsrValidae, '#ShoppingCartForm');
-        $('#btnUpdate').on('click', async () => {
+        $('#btnUpdate').off('click').on('click', async () => {
             debugger
             const formData = $('#ShoppingCartForm').serialize();
             const result = await SendRequest({ endpoint: '/ShoppingCart/Update/' + id, method: "PUT", data: formData });
@@ -182,11 +187,12 @@ window.updateShoppingCart = async (id) => {
 
 
 window.deleteShoppingCart = async (id) => {
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
     $('#DeleteErrorMessage').hide();
-    $('#btnDelete').click(async () => {
+    $('#btnDelete').off('click').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/ShoppingCart/Delete', method: "POST", data: { id: id } });
         if (result.success) {

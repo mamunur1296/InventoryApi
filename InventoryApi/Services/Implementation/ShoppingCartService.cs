@@ -22,6 +22,8 @@ namespace InventoryApi.Services.Implementation
             var newShoppingCart = new ShoppingCart
             {
                 Id = Guid.NewGuid().ToString(),
+                CreatedBy = entity.CreatedBy?.Trim(),
+                CreationDate = DateTime.Now, // Set CreationDate here
                 CustomerID = entity.CustomerID.Trim(),
                 CreatedDate = DateTime.Now,
             };
@@ -71,7 +73,9 @@ namespace InventoryApi.Services.Implementation
 
             // Update properties with validation
             item.CustomerID = string.IsNullOrWhiteSpace(entity.CustomerID) ? item.CustomerID : entity.CustomerID;
-   
+            // Set the UpdateDate to the current date and time
+            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.SetUpdateDate(DateTime.Now);
 
             // Perform update operation
             await _unitOfWorkRepository.shoppingCartRepository.UpdateAsync(item);

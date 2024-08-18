@@ -22,6 +22,8 @@ namespace InventoryApi.Services.Implementation
             var newReview = new Review
             {
                 Id = Guid.NewGuid().ToString(),
+                CreatedBy = entity.CreatedBy?.Trim(),
+                CreationDate = DateTime.Now, // Set CreationDate here
                 ProductID = entity.ProductID.Trim(),
                 CustomerID = entity.CustomerID.Trim(),
                 Rating = entity.Rating,
@@ -79,6 +81,10 @@ namespace InventoryApi.Services.Implementation
             item.ReviewText = string.IsNullOrWhiteSpace(entity?.ReviewText) ? item.ReviewText : entity.ReviewText.Trim();
             item.ReviewDate = DateTime.Now; // Update to the current date
 
+
+            // Set the UpdateDate to the current date and time
+            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.reviewRepository.UpdateAsync(item);
             await _unitOfWorkRepository.SaveAsync();

@@ -1,4 +1,4 @@
-﻿import { createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
+﻿import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
@@ -207,7 +207,9 @@ const UsrValidae = $('#SupplierForm').validate({
 });
 
 //Sow Create Model 
-$('#CreateBtn').click(async () => {
+$('#CreateBtn').off('click').click(async () => {
+    resetFormValidation('#SupplierForm', UsrValidae);
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
 
@@ -215,7 +217,8 @@ $('#CreateBtn').click(async () => {
 
 // Save Button
 
-$('#btnSave').click(async () => {
+$('#btnSave').off('click').click(async () => {
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     try {
         if ($('#SupplierForm').valid()) {
@@ -242,6 +245,8 @@ $('#btnSave').click(async () => {
 
 
 window.updateSupplier = async (id) => {
+    resetFormValidation('#SupplierForm', UsrValidae);
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#myModalLabelUpdateEmployee').show();
     $('#myModalLabelAddEmployee').hide();
@@ -266,7 +271,7 @@ window.updateSupplier = async (id) => {
 
         $('#modelCreate').modal('show');
         resetValidation(UsrValidae, '#SupplierForm');
-        $('#btnUpdate').on('click', async () => {
+        $('#btnUpdate').off('click').on('click', async () => {
             debugger
             const formData = $('#SupplierForm').serialize();
             const result = await SendRequest({ endpoint: '/Supplier/Update/' + id, method: "PUT", data: formData });
@@ -288,11 +293,12 @@ window.updateSupplier = async (id) => {
 
 
 window.deleteSupplier = async (id) => {
+    clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#deleteAndDetailsModel').modal('show');
     $('#companyDetails').empty();
     $('#DeleteErrorMessage').hide();
-    $('#btnDelete').click(async () => {
+    $('#btnDelete').off('click').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/Supplier/Delete', method: "POST", data: { id: id } });
         if (result.success) {

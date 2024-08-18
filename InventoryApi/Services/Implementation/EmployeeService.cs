@@ -23,6 +23,8 @@ namespace InventoryApi.Services.Implementation
             var newEmployee = new Employee
             {
                 Id = Guid.NewGuid().ToString(),
+                CreatedBy = entity.CreatedBy?.Trim(),
+                CreationDate = DateTime.Now, // Set CreationDate here
                 FirstName = entity.FirstName.Trim(),
                 LastName = entity.LastName.Trim(),
                 Title = string.IsNullOrWhiteSpace(entity.Title) ? null : entity.Title.Trim(),
@@ -40,6 +42,7 @@ namespace InventoryApi.Services.Implementation
                 Notes = string.IsNullOrWhiteSpace(entity.Notes) ? null : entity.Notes.Trim(),
                 ReportsTo = entity.ReportsTo,
                 PhotoPath = string.IsNullOrWhiteSpace(entity.PhotoPath) ? null : entity.PhotoPath.Trim(),
+                ManagerId=entity?.ManagerId?.Trim(),
             };
 
             await _unitOfWorkRepository.employeeRepository.AddAsync(newEmployee);
@@ -106,7 +109,12 @@ namespace InventoryApi.Services.Implementation
             item.Notes = string.IsNullOrWhiteSpace(entity.Notes) ? item.Notes : entity.Notes.Trim();
             item.ReportsTo = entity.ReportsTo ?? item.ReportsTo;
             item.PhotoPath = string.IsNullOrWhiteSpace(entity.PhotoPath) ? item.PhotoPath : entity.PhotoPath.Trim();
+            item.ManagerId = entity?.ManagerId?.Trim();
 
+
+            // Set the UpdateDate to the current date and time
+            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.employeeRepository.UpdateAsync(item);
             await _unitOfWorkRepository.SaveAsync();

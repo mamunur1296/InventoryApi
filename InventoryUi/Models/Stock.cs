@@ -10,7 +10,6 @@ namespace InventoryUi.Models
         [DisplayName("Product")]
         public string ProductID { get; set; }
 
-        [ForeignKey("ProductID")]
         [DisplayName("Product")]
         public Product Product { get; set; }
 
@@ -18,7 +17,6 @@ namespace InventoryUi.Models
         [DisplayName("Warehouse")]
         public string WarehouseID { get; set; }
 
-        [ForeignKey("WarehouseID")]
         [DisplayName("Warehouse")]
         public Warehouse Warehouse { get; set; }
 

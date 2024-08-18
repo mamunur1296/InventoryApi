@@ -2,9 +2,9 @@
 
 namespace InventoryApi.DTOs
 {
-    public class PaymentDTOs
+    public class PaymentDTOs : BaseDTOs
     {
-        public string id { get; set; }
+        
         public string OrderID { get; set; }
         //public Order Order { get; set; }
         public DateTime PaymentDate { get; set; }

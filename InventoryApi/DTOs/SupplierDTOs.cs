@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace InventoryApi.DTOs
 {
-    public class SupplierDTOs
+    public class SupplierDTOs : BaseDTOs
     {
-        public string id { get; set; }
+
 
         [Required(ErrorMessage = "Supplier name is required.")]
         [StringLength(255, ErrorMessage = "Supplier name cannot be longer than 255 characters.")]

@@ -23,6 +23,8 @@ namespace InventoryApi.Services.Implementation
             var newdelivaryAddress = new DeliveryAddress
             {
                 Id = Guid.NewGuid().ToString(),
+                CreatedBy = entity.CreatedBy?.Trim(),
+                CreationDate = DateTime.Now, // Set CreationDate here
                 Address = entity.Address.Trim(),
                 Mobile = entity.Mobile.Trim(),
                 Phone = entity.Phone.Trim(),
@@ -83,6 +85,10 @@ namespace InventoryApi.Services.Implementation
             item.IsActive = entity.IsActive;
             item.IsDefault = entity.IsDefault;
 
+
+            // Set the UpdateDate to the current date and time
+            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.deliveryAddressRepository.UpdateAsync(item);
             await _unitOfWorkRepository.SaveAsync();
