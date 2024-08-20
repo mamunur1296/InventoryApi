@@ -3,5 +3,6 @@
     public interface IFileHelper
     {
         Task<bool> FileExists(string path);
+
     }
 }

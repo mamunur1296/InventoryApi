@@ -44,7 +44,7 @@ namespace InventoryUi.Controllers
             var shoppingCarts = await _shoppingCartServices.GetAllClientsAsync("ShoppingCart/All");
             return Json(shoppingCarts);
         }
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             var result = await _shoppingCartServices.DeleteClientAsync($"ShoppingCart/Delete/{id}");

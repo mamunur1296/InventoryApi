@@ -44,7 +44,7 @@ namespace InventoryUi.Controllers
             var menuRoles = await _menuRoleServices.GetAllClientsAsync("MenuRole/All");
             return Json(menuRoles);
         }
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             var result = await _menuRoleServices.DeleteClientAsync($"MenuRole/Delete/{id}");

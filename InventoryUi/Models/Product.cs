@@ -51,10 +51,10 @@ namespace InventoryUi.Models
         public string BatchNumber { get; set; }
         [DisplayName("Expiration")]
         public DateTime? ExpirationDate { get; set; }
-
-        [Url(ErrorMessage = "Invalid URL format.")]
         [DisplayName("Image")]
         public string ImageURL { get; set; }
+        [DisplayName("Image")]
+        public List<IFormFile> Files { get; set; }
 
         [Range(0, double.MaxValue, ErrorMessage = "Weight must be a non-negative value.")]
         [DisplayName("Weight")]

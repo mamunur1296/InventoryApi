@@ -44,7 +44,7 @@ namespace InventoryUi.Controllers
             var payments = await _paymentServices.GetAllClientsAsync("Payment/All");
             return Json(payments);
         }
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             var result = await _paymentServices.DeleteClientAsync($"Payment/Delete/{id}");

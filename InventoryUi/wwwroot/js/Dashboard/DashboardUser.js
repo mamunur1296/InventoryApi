@@ -1,4 +1,5 @@
-﻿import { clearMessage, createActionButtons, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
+﻿import { notification } from '../Utility/notification.js';
+import { clearMessage, createActionButtons, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
@@ -115,7 +116,7 @@ const UsrValidae = $('#UserForm').validate({
             required: true,
             equalTo: "#Password"
         },
-        Roles: {
+        RoleName: {
             required: true
         }
     },
@@ -154,7 +155,7 @@ const UsrValidae = $('#UserForm').validate({
             required: "Confirmation Password is required.",
             equalTo: "Password and Confirmation Password do not match."
         },
-        Roles: {
+        RoleName: {
             required: "Must be select Roles "
         }
     },
@@ -174,7 +175,7 @@ const UsrValidae = $('#UserForm').validate({
 //Sow Create Model 
 $('#CreateUserBtn').off('click').click(async () => {
     resetFormValidation('#UserForm', UsrValidae);
-    clearMessage('successMessage', 'globalErrorMessage');
+     clearMessage('successMessage', 'globalErrorMessage');
      showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
      await populateDropdown('/DashboardRole/GetAll', '#RolesDropdown', 'roleName', 'roleName'," Select Role");
 });
@@ -196,13 +197,16 @@ $('#btnSave').off('click').click(async () => {
             $('#GeneralError').hide();
             debugger
             if (result.success && result.status === 201) {
-                displayNotification({ formId: '#UserForm', modalId: '#modelCreate', message: ' User was successfully Created....' });
+                //displayNotification({ formId: '#UserForm', modalId: '#modelCreate', message: ' User was successfully Created....' });
+                $('#modelCreate').modal('hide');
+                notification({ message: "User Created successfully !", type: "success", title: "Success" });
                 await getUserList(); // Update the user list
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
-        displayNotification({ formId: '#UserForm', modalId: '#modelCreate', messageElementId: '#globalErrorMessage', message: 'Registration failed. Please try again.' });
+        $('#modelCreate').modal('hide');
+        notification({ message: " Registration failed . Please try again. !", type: "error", title: "Error" });
     }
 });
 
@@ -232,12 +236,13 @@ window.updateUser = async (id) => {
             const formData = $('#UserForm').serialize();
             const result = await SendRequest({ endpoint: '/DashboardUser/Update/' + id, method: "PUT", data: formData });
             if (result.success) {
-                displayNotification({ formId: '#UserForm', modalId: '#modelCreate', message: ' User was successfully Updated....' });
+                $('#modelCreate').modal('hide');
+                notification({ message: "User Updated successfully !", type: "success", title: "Success" });
                 await getUserList(); // Update the user list
             }
         });
     }
-    loger(result);
+    
 }
 
 
@@ -255,13 +260,10 @@ window.deleteUser = async (id) => {
     $('#companyDetails').empty();
     $('#DeleteErrorMessage').hide();
     $('#btnDelete').off('click').click(async () => {
-        const result = await SendRequest({ endpoint: '/DashboardUser/Delete', method: "POST", data: { id: id } });
+        const result = await SendRequest({ endpoint: '/DashboardUser/Delete', method: "DELETE", data: { id: id } });
         if (result.success) {
-            displayNotification({
-                formId: '#UserForm',
-                modalId: '#deleteAndDetailsModel',
-                message: 'User was successfully deleted....'
-            });
+            $('#deleteAndDetailsModel').modal('hide');
+            notification({ message: "User Deleted successfully !", type: "success", title: "Success" });
             await getUserList(); // Update the category list
         } else {
             // Display the error message in the modal

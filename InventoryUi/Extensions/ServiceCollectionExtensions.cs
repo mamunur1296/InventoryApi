@@ -21,6 +21,7 @@ namespace InventoryUi.Extensions
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IFileUploader, FileUploader>();
             services.AddScoped<IFileHelper, FileHelper>();
+            services.AddScoped<IImageProcessor<Employee>, ImageProcessor>();
             services.AddScoped<IUtilityHelper, UtilityHelper>();
             services.AddScoped<IClientServices<ChangePassword>, ClientServices<ChangePassword>>();
             services.AddScoped<IClientServices<User>, ClientServices<User>>();

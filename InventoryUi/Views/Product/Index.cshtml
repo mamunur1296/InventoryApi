@@ -54,6 +54,7 @@
 
                             <thead>
                                 <tr>
+                                    <th>Image</th>
                                     <th>Name</th>
                                     <th>Category</th>
                                     <th>Supplier</th>
@@ -158,9 +159,9 @@
                                     <span asp-validation-for="ExpirationDate" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="ImageURL" class="control-label"></label>
-                                    <input asp-for="ImageURL" placeholder="Enter img URL(e.g.http://ex.com/img.jpg)" class="form-control" name="ImageURL" />
-                                    <span asp-validation-for="ImageURL" class="text-danger"></span>
+                                    <label asp-for="Files" class="control-label"></label>
+                                    <input asp-for="Files" placeholder="Enter img URL(e.g.http://ex.com/img.jpg)" class="form-control" name="Files" />
+                                    <span asp-validation-for="Files" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="Weight" class="control-label"></label>

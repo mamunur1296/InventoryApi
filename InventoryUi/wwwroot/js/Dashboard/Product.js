@@ -1,4 +1,5 @@
-﻿import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
+﻿import { notification } from '../Utility/notification.js';
+import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
@@ -30,6 +31,7 @@ const onSuccessUsers = async (products, categorys, suppliers) => {
                 supplier: supplier?.supplierName ?? "No Address",
                 price: product?.unitPrice ?? "No Address",
                 stock: product?.unitsInStock ?? "No Address",
+                img: product?.imageURL 
             };
         }
         return null;
@@ -38,6 +40,9 @@ const onSuccessUsers = async (products, categorys, suppliers) => {
     try {
         debugger
         const userSchema = [
+            {
+                render: (data, type, row) => row.img ? `<img src="images/${row.img}" alt="Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" />` : `<img src="/ProjectRootImg/default-user.png" alt=" Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" />`
+            },
             {
                 render: (data, type, row) => row?.name
             },
@@ -230,7 +235,8 @@ $('#btnSave').off('click').click(async () => {
     debugger
     try {
         if ($('#ProductForm').valid()) {
-            const formData = $('#ProductForm').serialize();
+            //const formData = $('#ProductForm').serialize();
+            const formData = new FormData($('#ProductForm')[0]);
             loger(formData);
             const result = await SendRequest({ endpoint: '/Product/Create', method: 'POST', data: formData });
             // Clear previous messages
@@ -241,15 +247,17 @@ $('#btnSave').off('click').click(async () => {
             $('#GeneralError').hide();
             debugger
             if (result.success && result.status === 201) {
-                displayNotification({ formId: '#ProductForm', modalId: '#modelCreate', message: ' Product was successfully Created....' });
+                $('#modelCreate').modal('hide');
+                notification({ message: "Product Created successfully !", type: "success", title: "Success" });
                 await getProductList(); // Update the user list
             }
         }
     } catch (error) {
-        loger(error);
         console.error('Error in click handler:', error);
-        displayNotification({ formId: '#ProductForm', modalId: '#modelCreate', messageElementId: '#globalErrorMessage', message: 'Product Create failed. Please try again.' });
+        $('#modelCreate').modal('hide');
+        notification({ message: " Product Created failed . Please try again. !", type: "error", title: "Error" });
     }
+
 });
 
 
@@ -290,15 +298,20 @@ window.updateProduct = async (id) => {
         resetValidation(UsrValidae, '#ProductForm');
         $('#btnUpdate').off('click').on('click', async () => {
             debugger
-            const formData = $('#ProductForm').serialize();
+            //const formData = $('#ProductForm').serialize();
+            const formData = new FormData($('#ProductForm')[0]);
             const result = await SendRequest({ endpoint: '/Product/Update/' + id, method: "PUT", data: formData });
             debugger
             if (result.success) {
-                debugger
+                $('#modelCreate').modal('hide');
+                notification({ message: "Product Updated successfully !", type: "success", title: "Success" });
 
-                displayNotification({ formId: '#ProductForm', modalId: '#modelCreate', message: ' Product was successfully Updated....' });
                 await getProductList(); // Update the user list
+            } else {
+                $('#modelCreate').modal('hide');
+                notification({ message: " Product Updated failed . Please try again. !", type: "error", title: "Error" });
             }
+
         });
     }
     loger(result);
@@ -319,17 +332,15 @@ window.deleteProduct = async (id) => {
     $('#DeleteErrorMessage').hide();
     $('#btnDelete').off('click').click(async () => {
         debugger
-        const result = await SendRequest({ endpoint: '/Product/Delete', method: "POST", data: { id: id } });
+        const result = await SendRequest({ endpoint: '/Product/Delete', method: "DELETE", data: { id: id } });
         if (result.success) {
-            displayNotification({
-                formId: '#ProductForm',
-                modalId: '#deleteAndDetailsModel',
-                message: 'Category was successfully deleted....'
-            });
+            $('#deleteAndDetailsModel').modal('hide');
+            notification({ message: "Product  Deleted successfully !", type: "success", title: "Success" });
             await getProductList(); // Update the category list
         } else {
-            // Display the error message in the modal
-            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
+            $('#deleteAndDetailsModel').modal('hide');
+            notification({ message: result.detail, type: "error", title: "Error" });
+
         }
     });
 }

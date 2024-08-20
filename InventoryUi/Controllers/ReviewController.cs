@@ -44,7 +44,7 @@ namespace InventoryUi.Controllers
             var reviews = await _reviewServices.GetAllClientsAsync("Review/All");
             return Json(reviews);
         }
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             var result = await _reviewServices.DeleteClientAsync($"Review/Delete/{id}");

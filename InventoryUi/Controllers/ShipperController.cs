@@ -44,7 +44,7 @@ namespace InventoryUi.Controllers
             var shippers = await _shipperServices.GetAllClientsAsync("Shipper/All");
             return Json(shippers);
         }
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             var result = await _shipperServices.DeleteClientAsync($"Shipper/Delete/{id}");

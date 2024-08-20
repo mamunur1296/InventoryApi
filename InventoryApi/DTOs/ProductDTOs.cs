@@ -44,7 +44,6 @@ namespace InventoryApi.DTOs
 
         public DateTime? ExpirationDate { get; set; }
 
-        [Url(ErrorMessage = "Invalid URL format.")]
         public string ImageURL { get; set; }
 
         [Range(0, double.MaxValue, ErrorMessage = "Weight must be a non-negative value.")]

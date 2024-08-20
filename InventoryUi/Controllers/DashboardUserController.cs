@@ -64,7 +64,7 @@ namespace InventoryUi.Controllers
             var register = await _registerServices.PostClientAsync("Auth/Register", model);
             return Json(register);
         }
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             var deleted = await _userServices.DeleteClientAsync($"User/{id}");

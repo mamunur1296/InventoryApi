@@ -44,7 +44,7 @@ namespace InventoryUi.Controllers
             var prescriptions = await _prescriptionServices.GetAllClientsAsync("Prescription/All");
             return Json(prescriptions);
         }
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             var result = await _prescriptionServices.DeleteClientAsync($"Prescription/Delete/{id}");

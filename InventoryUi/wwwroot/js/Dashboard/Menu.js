@@ -207,7 +207,7 @@ window.deleteMenu = async (id) => {
     $('#DeleteErrorMessage').hide();
     $('#btnDelete').off('click').click(async () => {
         debugger
-        const result = await SendRequest({ endpoint: '/Menu/Delete', method: "POST", data: { id: id } });
+        const result = await SendRequest({ endpoint: '/Menu/Delete', method: "DELETE", data: { id: id } });
         if (result.success) {
             displayNotification({
                 formId: '#MenuForm',

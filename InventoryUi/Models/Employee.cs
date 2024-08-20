@@ -34,17 +34,19 @@ namespace InventoryUi.Models
         public string HomePhone { get; set; }
         [DisplayName("Extension")]
         public string Extension { get; set; }
-        [DisplayName("Photo")]
-        public byte[] Photo { get; set; }
+        
         [DisplayName("Notes")]
         public string Notes { get; set; }
         [DisplayName("Reports")]
         public int? ReportsTo { get; set; }
         [DisplayName("Photo")]
+        public byte[] Photo { get; set; }
+        [DisplayName("Photo")]
         public string PhotoPath { get; set; }
+        [DisplayName("Photo")]
+         public List<IFormFile> Files { get; set; } 
         [DisplayName("Manager")]
         public string? ManagerId { get; set; }
-        
         public Employee Manager { get; set; }
         public ICollection<Employee> Subordinates { get; set; }
         public ICollection<Order> Orders { get; set; }

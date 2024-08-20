@@ -1,19 +1,22 @@
 ﻿using InventoryUi.Models;
 using InventoryUi.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
-using static System.Net.WebRequestMethods;
+
 
 namespace InventoryUi.Controllers
 {
     public class EmployeeController : Controller
     {
         private readonly IClientServices<Employee> _employeeServices;
+        private readonly IImageProcessor<Employee> _imageProcessor;
         private readonly IUtilityHelper _utilityHelper;
-
-        public EmployeeController(IClientServices<Employee> service, IUtilityHelper utilityHelper)
+        private readonly IFileUploader _fileUploder;
+        public EmployeeController(IClientServices<Employee> service, IUtilityHelper utilityHelper, IImageProcessor<Employee> imageProcessor, IFileUploader fileUploder)
         {
             _employeeServices = service;
             _utilityHelper = utilityHelper;
+            _imageProcessor = imageProcessor;
+            _fileUploder = fileUploder;
         }
         public IActionResult Index()
         {
@@ -24,7 +27,10 @@ namespace InventoryUi.Controllers
         {
             model.UpdatedBy = null;
             model.Photo = new byte[0];
-            model.PhotoPath = "https://www.example.com/image.jpg";
+            if (model.Files != null && model.Files.Count > 0)
+            {
+                model.PhotoPath = await _fileUploder.ImgUploader(model.Files[0]);
+            }
             var result = await _employeeServices.PostClientAsync("Employee/Create", model);
             return Json(result);
         }
@@ -39,7 +45,19 @@ namespace InventoryUi.Controllers
         {
             model.CreatedBy = null;
             model.Photo = new byte[0];
-            model.PhotoPath= "https://www.example.com/image.jpg";
+            var employee = await _employeeServices.GetClientByIdAsync($"Employee/get/{id}");
+            if (model.Files != null && model.Files.Count > 0)
+            {
+                if (employee.Data.PhotoPath != null)
+                {
+                     await _fileUploder.DeleteFile(employee.Data.PhotoPath);
+                }
+                model.PhotoPath = await _fileUploder.ImgUploader(model.Files[0]);
+            }
+            else
+            {
+                model.PhotoPath = employee.Data.PhotoPath;
+            }
             var result = await _employeeServices.UpdateClientAsync($"Employee/Update/{id}", model);
             return Json(result);
         }
@@ -49,11 +67,18 @@ namespace InventoryUi.Controllers
             var employees = await _employeeServices.GetAllClientsAsync("Employee/All");
             return Json(employees);
         }
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
+            var employee = await _employeeServices.GetClientByIdAsync($"Employee/get/{id}");
             var result = await _employeeServices.DeleteClientAsync($"Employee/Delete/{id}");
+            if (result.Success)
+            {
+                
+                await _fileUploder.DeleteFile(employee.Data.PhotoPath);
+            }
             return Json(result);
+
         }
     }
 }

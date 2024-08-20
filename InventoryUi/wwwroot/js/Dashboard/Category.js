@@ -1,4 +1,5 @@
-﻿import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
+﻿import { notification } from '../Utility/notification.js';
+import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
@@ -155,14 +156,17 @@ $('#btnSave').off('click').click(async () => {
             $('#GeneralError').hide();
             debugger
             if (result.success && result.status === 201) {
-                displayNotification({ formId: '#CategoryForm', modalId: '#modelCreate', message: ' Category was successfully Created....' });
+                $('#modelCreate').modal('hide');
+                notification({ message: "Category Created successfully !", type: "success", title: "Success" });
                 await getCategoryList(); // Update the user list
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
-        displayNotification({ formId: '#CategoryForm', modalId: '#modelCreate', messageElementId: '#globalErrorMessage', message: 'Category Create failed. Please try again.' });
+        $('#modelCreate').modal('hide');
+        notification({ message: " Category Created failed . Please try again. !", type: "error", title: "Error" });
     }
+
 });
 
 
@@ -189,8 +193,13 @@ window.updateCategory = async (id) => {
             const formData = $('#CategoryForm').serialize();
             const result = await SendRequest({ endpoint: '/Category/Update/' + id, method: "PUT", data: formData });
             if (result.success) {
-                displayNotification({ formId: '#CategoryForm', modalId: '#modelCreate', message: ' Category was successfully Updated....' });
+                $('#modelCreate').modal('hide');
+                notification({ message: "Category Updated successfully !", type: "success", title: "Success" });
+
                 await getCategoryList(); // Update the user list
+            } else {
+                $('#modelCreate').modal('hide');
+                notification({ message: " Category Updated failed . Please try again. !", type: "error", title: "Error" });
             }
         });
     }
@@ -214,18 +223,16 @@ window.deleteCategory = async (id) => {
     $('#DeleteErrorMessage').hide(); // Hide error message initially
     $('#btnDelete').off('click').on('click', async () => {
         debugger;
-        const result = await SendRequest({ endpoint: '/Category/Delete', method: "POST", data: { id: id } });
+        const result = await SendRequest({ endpoint: '/Category/Delete', method: "DELETE", data: { id: id } });
 
         if (result.success) {
-            displayNotification({
-                formId: '#CategoryForm',
-                modalId: '#deleteAndDetailsModel',
-                message: 'Category was successfully deleted....'
-            });
+            $('#deleteAndDetailsModel').modal('hide');
+            notification({ message: "Category Deleted successfully !", type: "success", title: "Success" });
             await getCategoryList(); // Update the category list
+
         } else {
-            // Display the error message in the modal
-            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
+            $('#deleteAndDetailsModel').modal('hide');
+            notification({ message: result.detail, type: "error", title: "Error" });
         }
     });
 }

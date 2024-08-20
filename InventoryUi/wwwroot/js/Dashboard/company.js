@@ -1,4 +1,5 @@
-﻿import { clearMessage, createActionButtons, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
+﻿import { notification } from '../Utility/notification.js';
+import { clearMessage, createActionButtons, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
@@ -174,13 +175,14 @@ $('#btnSave').off('click').click(async () => {
             $('#GeneralError').hide();
             debugger
             if (result.success && result.status === 201) {
-                displayNotification({ formId: '#CompanyForm', modalId: '#modelCreate', message: ' Company was successfully Created....' });
+                $('#modelCreate').modal('hide');
+                notification({ message: "Company Created successfully !", type: "success", title: "Success" });
                 await getCompanyList(); // Update the user list
             }
         }
     } catch (error) {
-        console.error('Error in click handler:', error);
-        displayNotification({ formId: '#CompanyForm', modalId: '#modelCreate', messageElementId: '#globalErrorMessage', message: 'Company Create failed. Please try again.' });
+        $('#modelCreate').modal('hide');
+        notification({ message: " Company Created failed . Please try again. !", type: "error", title: "Error" });
     }
 });
 
@@ -216,10 +218,13 @@ window.updateCompany = async (id) => {
             const formData = $('#CompanyForm').serialize();
             const result = await SendRequest({ endpoint: '/Company/Update/' + id, method: "PUT", data: formData });
             if (result.success) {
-                displayNotification({ formId: '#CompanyForm', modalId: '#modelCreate', message: ' Company was successfully Updated....' });
+                $('#modelCreate').modal('hide');
+                notification({ message: "Company Updated successfully !", type: "success", title: "Success" });
+                
                 await getCompanyList(); // Update the user list
             } else {
-                displayNotification({ formId: '#CompanyForm', modalId: '#modelCreate', messageElementId: '#globalErrorMessage', message: 'Company Updated failed. Please try again.' });
+                $('#modelCreate').modal('hide');
+                notification({ message: " Company Updated failed . Please try again. !", type: "error", title: "Error" });
             }
         });
     }
@@ -242,17 +247,14 @@ window.deleteCompany = async (id) => {
     $('#DeleteErrorMessage').hide();
     $('#btnDelete').off('click').click(async () => {
         debugger
-        const result = await SendRequest({ endpoint: '/Company/Delete', method: "POST", data: { id: id } });
+        const result = await SendRequest({ endpoint: '/Company/Delete', method: "DELETE", data: { id: id } });
         if (result.success) {
-            displayNotification({
-                formId: '#CompanyForm',
-                modalId: '#deleteAndDetailsModel',
-                message: 'Company was successfully deleted....'
-            });
+            $('#deleteAndDetailsModel').modal('hide');
+            notification({ message: "Company Deleted successfully !", type: "success", title: "Success" });
             await getCompanyList(); // Update the category list
         } else {
-            // Display the error message in the modal
-            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
+            $('#deleteAndDetailsModel').modal('hide');
+            notification({ message: result.detail, type: "error", title: "Error" });
         }
     });
 }

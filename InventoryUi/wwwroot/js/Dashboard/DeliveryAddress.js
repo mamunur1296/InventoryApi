@@ -1,4 +1,5 @@
-﻿import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
+﻿import { notification } from '../Utility/notification.js';
+import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
@@ -179,14 +180,17 @@ $('#btnSave').off('click').click(async () => {
             $('#GeneralError').hide();
             debugger
             if (result.success && result.status === 201) {
-                displayNotification({ formId: '#DeliveryAddressForm', modalId: '#modelCreate', message: ' Delivery Address was successfully Created....' });
+                $('#modelCreate').modal('hide');
+                notification({ message: "Delivery Address Created successfully !", type: "success", title: "Success" });
                 await getDeliveryAddressList(); // Update the user list
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
-        displayNotification({ formId: '#DeliveryAddressForm', modalId: '#modelCreate', messageElementId: '#globalErrorMessage', message: 'Delivery Address Create failed. Please try again.' });
+        $('#modelCreate').modal('hide');
+        notification({ message: " Delivery Address Created failed . Please try again. !", type: "error", title: "Error" });
     }
+
 });
 
 
@@ -216,8 +220,13 @@ window.updateDeliveryAddress = async (id) => {
             const formData = $('#DeliveryAddressForm').serialize();
             const result = await SendRequest({ endpoint: '/DeliveryAddress/Update/' + id, method: "PUT", data: formData });
             if (result.success) {
-                displayNotification({ formId: '#DeliveryAddressForm', modalId: '#modelCreate', message: ' Delivery Address was successfully Updated....' });
+                $('#modelCreate').modal('hide');
+                notification({ message: "Delivery Address Updated successfully !", type: "success", title: "Success" });
+
                 await getDeliveryAddressList(); // Update the user list
+            } else {
+                $('#modelCreate').modal('hide');
+                notification({ message: " Delivery Address Updated failed . Please try again. !", type: "error", title: "Error" });
             }
         });
     }
@@ -240,17 +249,15 @@ window.deleteDeliveryAddress = async (id) => {
     $('#DeleteErrorMessage').hide();
     $('#btnDelete').off('click').click(async () => {
         debugger
-        const result = await SendRequest({ endpoint: '/DeliveryAddress/Delete', method: "POST", data: { id: id } });
+        const result = await SendRequest({ endpoint: '/DeliveryAddress/Delete', method: "DELETE", data: { id: id } });
         if (result.success) {
-            displayNotification({
-                formId: '#DeliveryAddressForm',
-                modalId: '#deleteAndDetailsModel',
-                message: 'Delivery Address was successfully deleted....'
-            });
+            $('#deleteAndDetailsModel').modal('hide');
+            notification({ message: "Delivery Address Deleted successfully !", type: "success", title: "Success" });
             await getDeliveryAddressList(); // Update the category list
         } else {
-            // Display the error message in the modal
-            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
+            $('#deleteAndDetailsModel').modal('hide');
+            notification({ message: result.detail, type: "error", title: "Error" });
+            
         }
     });
 }

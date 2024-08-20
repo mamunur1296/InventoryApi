@@ -1,4 +1,5 @@
-﻿import { clearMessage,createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
+﻿import { notification } from '../Utility/notification.js';
+import { clearMessage,createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
@@ -137,14 +138,17 @@ $('#btnSave').off('click').click(async () => {
             $('#GeneralError').hide();
             debugger
             if (result.success && result.status === 201) {
-                displayNotification({ formId: '#ShoppingCartForm', modalId: '#modelCreate', message: ' Shopping Cart was successfully Created....' });
+                $('#modelCreate').modal('hide');
+                notification({ message: "Shopping Cart Created successfully !", type: "success", title: "Success" });
                 await getShoppingCartList(); // Update the user list
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
-        displayNotification({ formId: '#ShoppingCartForm', modalId: '#modelCreate', messageElementId: '#globalErrorMessage', message: 'Shopping Cart Create failed. Please try again.' });
+        $('#modelCreate').modal('hide');
+        notification({ message: " Shopping Cart Created failed . Please try again. !", type: "error", title: "Error" });
     }
+
 });
 
 
@@ -170,9 +174,15 @@ window.updateShoppingCart = async (id) => {
             const formData = $('#ShoppingCartForm').serialize();
             const result = await SendRequest({ endpoint: '/ShoppingCart/Update/' + id, method: "PUT", data: formData });
             if (result.success) {
-                displayNotification({ formId: '#ShoppingCartForm', modalId: '#modelCreate', message: ' Shopping Cart was successfully Updated....' });
+                $('#modelCreate').modal('hide');
+                notification({ message: "Shopping Cart Updated successfully !", type: "success", title: "Success" });
+
                 await getShoppingCartList(); // Update the user list
+            } else {
+                $('#modelCreate').modal('hide');
+                notification({ message: " Shopping Cart Updated failed . Please try again. !", type: "error", title: "Error" });
             }
+
         });
     }
     loger(result);
@@ -194,10 +204,15 @@ window.deleteShoppingCart = async (id) => {
     $('#DeleteErrorMessage').hide();
     $('#btnDelete').off('click').click(async () => {
         debugger
-        const result = await SendRequest({ endpoint: '/ShoppingCart/Delete', method: "POST", data: { id: id } });
+        const result = await SendRequest({ endpoint: '/ShoppingCart/Delete', method: "DELETE", data: { id: id } });
         if (result.success) {
-            displayNotification({ formId: '#ShoppingCartForm', modalId: '#deleteAndDetailsModel', message: ' Shopping Cart was successfully Delete....' });
-            await getShoppingCartList(); // Update the user list
+            $('#deleteAndDetailsModel').modal('hide');
+            notification({ message: "Shopping Cart  Deleted successfully !", type: "success", title: "Success" });
+            await getShoppingCartList(); // Update the category list
+        } else {
+            $('#deleteAndDetailsModel').modal('hide');
+            notification({ message: result.detail, type: "error", title: "Error" });
+
         }
     });
 }

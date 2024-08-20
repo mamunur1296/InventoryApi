@@ -54,6 +54,7 @@
 
                             <thead>
                                 <tr>
+                                    <th>Photo</th>
                                     <th>Name</th>
                                     <th>Title</th>
                                     <th>Address</th>
@@ -91,6 +92,8 @@
                 <form id="EmployeeForm">
                     <input type="hidden" asp-for="CreatedBy" value="@userName" />
                     <input type="hidden" asp-for="UpdatedBy" value="@userName" />
+                    <input type="hidden" asp-for="Photo" value="Photo" />
+                    <input type="hidden" asp-for="PhotoPath" value="PhotoPath" />
                     <div class="card-body">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="row">
@@ -175,9 +178,9 @@
                                     <span asp-validation-for="ReportsTo" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="PhotoPath" class="control-label"></label>
-                                    <input asp-for="PhotoPath" placeholder="Upload photo (e.g., photo.jpg)" class="form-control" name="PhotoPath" />
-                                    <span asp-validation-for="PhotoPath" class="text-danger"></span>
+                                    <label asp-for="Files" class="control-label"></label>
+                                    <input asp-for="Files" placeholder="Upload photo (e.g., photo.jpg)" class="form-control" name="Files" />
+                                    <span asp-validation-for="Files" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" asp-for="ManagerId"></label>

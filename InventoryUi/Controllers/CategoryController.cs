@@ -44,7 +44,7 @@ namespace InventoryUi.Controllers
             var categorys = await _categoryServices.GetAllClientsAsync("Category/All");
             return Json(categorys);
         }
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             var result = await _categoryServices.DeleteClientAsync($"Category/Delete/{id}");

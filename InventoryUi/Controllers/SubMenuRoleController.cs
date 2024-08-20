@@ -42,7 +42,7 @@ namespace InventoryUi.Controllers
             var subMenuRoles = await _subMenuRoleServices.GetAllClientsAsync("SubMenuRole/All");
             return Json(subMenuRoles);
         }
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             var result = await _subMenuRoleServices.DeleteClientAsync($"SubMenuRole/Delete/{id}");

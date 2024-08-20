@@ -1,4 +1,5 @@
-﻿import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
+﻿import { notification } from '../Utility/notification.js';
+import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
@@ -173,14 +174,17 @@ $('#btnSave').off('click').click(async () => {
             $('#GeneralError').hide();
             debugger
             if (result.success && result.status === 201) {
-                displayNotification({ formId: '#ReviewForm', modalId: '#modelCreate', message: ' Review was successfully Created....' });
+                $('#modelCreate').modal('hide');
+                notification({ message: "Review Created successfully !", type: "success", title: "Success" });
                 await getReviewList(); // Update the user list
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
-        displayNotification({ formId: '#ReviewForm', modalId: '#modelCreate', messageElementId: '#globalErrorMessage', message: 'Review Create failed. Please try again.' });
+        $('#modelCreate').modal('hide');
+        notification({ message: " Review Created failed . Please try again. !", type: "error", title: "Error" });
     }
+
 });
 
 
@@ -212,9 +216,15 @@ window.updateReview = async (id) => {
             const formData = $('#ReviewForm').serialize();
             const result = await SendRequest({ endpoint: '/Review/Update/' + id, method: "PUT", data: formData });
             if (result.success) {
-                displayNotification({ formId: '#ReviewForm', modalId: '#modelCreate', message: ' Review was successfully Updated....' });
+                $('#modelCreate').modal('hide');
+                notification({ message: "Review Updated successfully !", type: "success", title: "Success" });
+
                 await getReviewList(); // Update the user list
+            } else {
+                $('#modelCreate').modal('hide');
+                notification({ message: " Review Updated failed . Please try again. !", type: "error", title: "Error" });
             }
+
         });
     }
     loger(result);
@@ -236,17 +246,15 @@ window.deleteReview = async (id) => {
     $('#DeleteErrorMessage').hide();
     $('#btnDelete').off('click').click(async () => {
         debugger
-        const result = await SendRequest({ endpoint: '/Review/Delete', method: "POST", data: { id: id } });
+        const result = await SendRequest({ endpoint: '/Review/Delete', method: "DELETE", data: { id: id } });
         if (result.success) {
-            displayNotification({
-                formId: '#ReviewForm',
-                modalId: '#deleteAndDetailsModel',
-                message: 'Review was successfully deleted....'
-            });
+            $('#deleteAndDetailsModel').modal('hide');
+            notification({ message: "Review  Deleted successfully !", type: "success", title: "Success" });
             await getReviewList(); // Update the category list
         } else {
-            // Display the error message in the modal
-            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
+            $('#deleteAndDetailsModel').modal('hide');
+            notification({ message: result.detail, type: "error", title: "Error" });
+
         }
     });
 }

@@ -42,7 +42,7 @@ namespace InventoryUi.Controllers
             var result = await _companyServices.UpdateClientAsync($"Company/Update/{id}", model);
             return Json(result);
         }
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             var deleted = await _companyServices.DeleteClientAsync($"Company/Delete/{id}");

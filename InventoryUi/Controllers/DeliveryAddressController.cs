@@ -44,7 +44,7 @@ namespace InventoryUi.Controllers
             var deliveryAddress = await _deliveryAddressServices.GetAllClientsAsync("DeliveryAddress/All");
             return Json(deliveryAddress);
         }
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             var result = await _deliveryAddressServices.DeleteClientAsync($"DeliveryAddress/Delete/{id}");

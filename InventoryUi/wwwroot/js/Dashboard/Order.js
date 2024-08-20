@@ -1,4 +1,5 @@
-﻿import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
+﻿import { notification } from '../Utility/notification.js';
+import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
@@ -258,14 +259,17 @@ $('#btnSave').off('click').click(async () => {
             $('#GeneralError').hide();
             debugger
             if (result.success && result.status === 201) {
-                displayNotification({ formId: '#OrderForm', modalId: '#modelCreate', message: ' Order was successfully Created....' });
+                $('#modelCreate').modal('hide');
+                notification({ message: "Order Created successfully !", type: "success", title: "Success" });
                 await getOrderList(); // Update the user list
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
-        displayNotification({ formId: '#OrderForm', modalId: '#modelCreate', messageElementId: '#globalErrorMessage', message: 'Order Create failed. Please try again.' });
+        $('#modelCreate').modal('hide');
+        notification({ message: " Order Created failed . Please try again. !", type: "error", title: "Error" });
     }
+
 });
 
 
@@ -308,9 +312,15 @@ window.updateOrder = async (id) => {
             const formData = $('#OrderForm').serialize();
             const result = await SendRequest({ endpoint: '/Order/Update/' + id, method: "PUT", data: formData });
             if (result.success) {
-                displayNotification({ formId: '#OrderForm', modalId: '#modelCreate', message: ' Order was successfully Updated....' });
+                $('#modelCreate').modal('hide');
+                notification({ message: "Order Updated successfully !", type: "success", title: "Success" });
+
                 await getOrderList(); // Update the user list
+            } else {
+                $('#modelCreate').modal('hide');
+                notification({ message: " Order Updated failed . Please try again. !", type: "error", title: "Error" });
             }
+
         });
     }
     loger(result);
@@ -332,17 +342,16 @@ window.deleteOrder = async (id) => {
     $('#DeleteErrorMessage').hide();
     $('#btnDelete').off('click').click(async () => {
         debugger
-        const result = await SendRequest({ endpoint: '/Order/Delete', method: "POST", data: { id: id } });
+        const result = await SendRequest({ endpoint: '/Order/Delete', method: "DELETE", data: { id: id } });
         if (result.success) {
-            displayNotification({
-                formId: '#OrderForm',
-                modalId: '#deleteAndDetailsModel',
-                message: 'Order was successfully deleted....'
-            });
+            $('#deleteAndDetailsModel').modal('hide');
+            notification({ message: "Order  Deleted successfully !", type: "success", title: "Success" });
             await getOrderList(); // Update the category list
         } else {
-            // Display the error message in the modal
-            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
+            $('#deleteAndDetailsModel').modal('hide');
+            notification({ message: result.detail, type: "error", title: "Error" });
+
         }
+
     });
 }

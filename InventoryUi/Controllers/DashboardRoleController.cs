@@ -32,7 +32,7 @@ namespace InventoryUi.Controllers
             var roles = await _roleServices.GetAllClientsAsync("Role/GetAll");
             return Json(roles);
         }
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             var deleted = await _roleServices.DeleteClientAsync($"Role/{id}");

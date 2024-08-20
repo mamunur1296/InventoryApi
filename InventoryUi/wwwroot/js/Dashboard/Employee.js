@@ -1,4 +1,5 @@
-﻿import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
+﻿import { notification } from '../Utility/notification.js';
+import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
@@ -29,6 +30,7 @@ const onSuccessUsers = async (employeees) => {
                 phone: employee?.homePhone ?? "No title",
                 manager: manager ? (manager?.firstName + " " + manager?.lastName) : " No Data",
                 name: employee ? (employee?.firstName + " " + employee?.lastName) : " No Data",
+                photo: employee?.photoPath,
                 
             };
         }
@@ -38,6 +40,9 @@ const onSuccessUsers = async (employeees) => {
     try {
         debugger
         const userSchema = [
+            {
+                render: (data, type, row) => row.photo ? `<img src="images/${row.photo}" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" />` : `<img src="/ProjectRootImg/default-user.png" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" />`
+            },
             {
                 render: (data, type, row) => row?.name
             },
@@ -151,7 +156,7 @@ const UsrValidae = $('#EmployeeForm').validate({
         ReportsTo: {
             required: true,
         },
-        PhotoPath: {
+        Files: {
             required: true,
         }
     },
@@ -201,7 +206,7 @@ const UsrValidae = $('#EmployeeForm').validate({
         ReportsTo: {
             required: "Reports To is required.",
         },
-        PhotoPath: {
+        Files: {
             required: "Photo Path is required.",
         }
     },
@@ -235,7 +240,8 @@ $('#btnSave').off('click').click(async () => {
     debugger
     try {
         if ($('#EmployeeForm').valid()) {
-            const formData = $('#EmployeeForm').serialize();
+            //const formData = $('#EmployeeForm').serialize();
+            const formData = new FormData($('#EmployeeForm')[0]);
             const result = await SendRequest({ endpoint: '/Employee/Create', method: 'POST', data: formData });
             // Clear previous messages
             $('#successMessage').hide();
@@ -245,13 +251,15 @@ $('#btnSave').off('click').click(async () => {
             $('#GeneralError').hide();
             debugger
             if (result.success && result.status === 201) {
-                displayNotification({ formId: '#EmployeeForm', modalId: '#modelCreate', message: ' Employee was successfully Created....' });
+                $('#modelCreate').modal('hide');
+                notification({ message: "Employee Created successfully !", type: "success", title: "Success" });
                 await getEmployeeList(); // Update the user list
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
-        displayNotification({ formId: '#EmployeeForm', modalId: '#modelCreate', messageElementId: '#globalErrorMessage', message: 'Employee Create failed. Please try again.' });
+        $('#modelCreate').modal('hide');
+        notification({ message: " Employee Created failed . Please try again. !", type: "error", title: "Error" });
     }
 });
 
@@ -270,7 +278,7 @@ window.updateEmployee = async (id) => {
         $('#btnSave').hide();
         $('#btnUpdate').show();
 
-        
+        debugger
         $('#LastName').val(result.data.lastName);
         $('#FirstName').val(result.data.firstName);
         $('#Title').val(result.data.title);
@@ -287,6 +295,8 @@ window.updateEmployee = async (id) => {
         $('#Notes').val(result.data.notes);
         $('#ReportsTo').val(result.data.reportsTo);
         $('#PhotoPath').val(result.data.photoPath);
+        $('#Files').val(result.data.files);
+        $('#Photo').val(result.data.photo);
         $('#PostalCode').val(result.data.postalCode);
         $('#ManagerDropdown').val(result.data.managerId);
 
@@ -296,11 +306,16 @@ window.updateEmployee = async (id) => {
         resetValidation(UsrValidae, '#EmployeeForm');
         $('#btnUpdate').off('click').on('click', async () => {
             debugger
-            const formData = $('#EmployeeForm').serialize();
+            //const formData = $('#EmployeeForm').serialize();
+            const formData = new FormData($('#EmployeeForm')[0]);
             const result = await SendRequest({ endpoint: '/Employee/Update/' + id, method: "PUT", data: formData });
             if (result.success) {
-                displayNotification({ formId: '#EmployeeForm', modalId: '#modelCreate', message: ' Employee was successfully Updated....' });
+                $('#modelCreate').modal('hide');
+                notification({ message: "Employee Updated successfully !", type: "success", title: "Success" });
                 await getEmployeeList(); // Update the user list
+            } else {
+                $('#modelCreate').modal('hide');
+                notification({ message: " Employee Updated failed . Please try again. !", type: "error", title: "Error" });
             }
         });
     }
@@ -323,17 +338,15 @@ window.deleteEmployee = async (id) => {
     $('#DeleteErrorMessage').hide();
     $('#btnDelete').off('click').click(async () => {
         debugger
-        const result = await SendRequest({ endpoint: '/Employee/Delete', method: "POST", data: { id: id } });
+        const result = await SendRequest({ endpoint: '/Employee/Delete', method: "DELETE", data: { id: id } });
+
         if (result.success) {
-            displayNotification({
-                formId: '#EmployeeForm',
-                modalId: '#deleteAndDetailsModel',
-                message: 'Employee was successfully deleted....'
-            });
+            $('#deleteAndDetailsModel').modal('hide');
+            notification({ message: "Employee Deleted successfully !", type: "success", title: "Success" });
             await getEmployeeList(); // Update the category list
         } else {
-            // Display the error message in the modal
-            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
+            $('#deleteAndDetailsModel').modal('hide');
+            notification({ message: result.detail, type: "error", title: "Error" });
         }
     });
 }
