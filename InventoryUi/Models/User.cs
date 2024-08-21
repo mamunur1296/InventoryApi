@@ -30,11 +30,15 @@ namespace InventoryUi.Models
         public string? Job { get; set; }
         [DisplayName("About")]
         public string? About { get; set; }
-        [DisplayName("Cuntry")]
+        [DisplayName("Country")]
         public string? Country { get; set; }
         [DisplayName("Role")]
         public List<string> Roles { get; set; }
         [DisplayName("Role")]
         public string RoleName { get; set; }
+        [DisplayName("Status")]
+        public bool isApproved { get; set; } = true;
+        public bool isEmployee { get; set; } = false;
+        public bool isApprovedByAdmin { get; set; } = false;
     }
 }
