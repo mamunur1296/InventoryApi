@@ -2,8 +2,8 @@
 {
     public interface IFileUploader
     {
-        Task<string> ImgUploader(IFormFile file);
-        Task<bool> DeleteFile(string fileName);
+        Task<string> ImgUploader(IFormFile file, string folderName);
+        Task<bool> DeleteFile(string fileName, string folderName);
         
     }
 }

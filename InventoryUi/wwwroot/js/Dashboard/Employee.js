@@ -41,7 +41,7 @@ const onSuccessUsers = async (employeees) => {
         debugger
         const userSchema = [
             {
-                render: (data, type, row) => row.photo ? `<img src="images/${row.photo}" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" />` : `<img src="/ProjectRootImg/default-user.png" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" />`
+                render: (data, type, row) => `<img src="images/Employee/${row.photo}" alt="User Avatar" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';" />`
             },
             {
                 render: (data, type, row) => row?.name

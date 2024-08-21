@@ -17,7 +17,7 @@ const onSuccessUsers = async (users) => {
         debugger
         const userSchema = [
             {
-                render: (data, type, row) => row.userImg ? `<img src="images/${row.userImg}" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" />` : `<img src="/ProjectRootImg/default-user.png" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" />`
+                render: (data, type, row) => `<img src="images/User/${row.userImg}" alt="User Avatar" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';" />`
             },
             {
                 render: (data, type, row) => `${row.firstName} ${row.lastName}`

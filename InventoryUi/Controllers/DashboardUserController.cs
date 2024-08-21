@@ -78,9 +78,9 @@ namespace InventoryUi.Controllers
             {
                 if (user.Data.UserImg != null)
                 {
-                    bool deleteImg = await _fileUploder.DeleteFile(user.Data.UserImg);
+                    bool deleteImg = await _fileUploder.DeleteFile(user.Data.UserImg,"User");
                 }
-                model.UserImg = await _fileUploder.ImgUploader(model?.FormFile);
+                model.UserImg = await _fileUploder.ImgUploader(model?.FormFile , "User");
             }
             else
             {

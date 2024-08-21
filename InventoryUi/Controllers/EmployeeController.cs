@@ -29,7 +29,7 @@ namespace InventoryUi.Controllers
             model.Photo = new byte[0];
             if (model.Files != null && model.Files.Count > 0)
             {
-                model.PhotoPath = await _fileUploder.ImgUploader(model.Files[0]);
+                model.PhotoPath = await _fileUploder.ImgUploader(model.Files[0], "Employee");
             }
             var result = await _employeeServices.PostClientAsync("Employee/Create", model);
             return Json(result);
@@ -50,9 +50,9 @@ namespace InventoryUi.Controllers
             {
                 if (employee.Data.PhotoPath != null)
                 {
-                     await _fileUploder.DeleteFile(employee.Data.PhotoPath);
+                     await _fileUploder.DeleteFile(employee.Data.PhotoPath, "Employee");
                 }
-                model.PhotoPath = await _fileUploder.ImgUploader(model.Files[0]);
+                model.PhotoPath = await _fileUploder.ImgUploader(model.Files[0], "Employee");
             }
             else
             {
@@ -75,7 +75,7 @@ namespace InventoryUi.Controllers
             if (result.Success)
             {
                 
-                await _fileUploder.DeleteFile(employee.Data.PhotoPath);
+                await _fileUploder.DeleteFile(employee.Data.PhotoPath, "Employee");
             }
             return Json(result);
 

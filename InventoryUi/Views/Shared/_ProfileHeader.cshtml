@@ -1,8 +1,12 @@
 ﻿@model InventoryUi.ViewModel.ProfileViewModel
 
 <div class="profile-header">
-    <img src="@(Model?.User?.UserImg != null ? Url.Content("~/images/" + Model?.User?.UserImg) : Url.Content("~/ProjectRootImg/default-user.png"))" alt="Profile Image" class="rounded-circle mb-2" width="60" height="60">
-
+       <img src="/images/User/@Model?.User?.UserImg"
+         alt="Profile Image"
+         class="rounded-circle mb-2"
+         width="60"
+         height="60"
+         onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
     <h2>@Model?.User?.UserName</h2>
     <p>@Model?.User?.Job</p>
     <div class="social-icons">

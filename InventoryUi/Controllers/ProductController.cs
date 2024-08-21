@@ -28,7 +28,7 @@ namespace InventoryUi.Controllers
             model.UpdatedBy = null;
             if (model.Files != null && model.Files.Count > 0)
             {
-                model.ImageURL = await _fileUploader.ImgUploader(model.Files[0]);
+                model.ImageURL = await _fileUploader.ImgUploader(model.Files[0], "Product");
             }
             var result = await _productServices.PostClientAsync("Product/Create", model);
             return Json(result);
@@ -48,9 +48,9 @@ namespace InventoryUi.Controllers
             {
                 if (product?.Data?.ImageURL != null)
                 {
-                    await _fileUploader.DeleteFile(product.Data.ImageURL);
+                    await _fileUploader.DeleteFile(product.Data.ImageURL, "Product");
                 }
-                model.ImageURL = await _fileUploader.ImgUploader(model.Files[0]);
+                model.ImageURL = await _fileUploader.ImgUploader(model.Files[0], "Product");
             }
             else
             {
@@ -72,7 +72,7 @@ namespace InventoryUi.Controllers
             var result = await _productServices.DeleteClientAsync($"Product/Delete/{id}");
             if (result.Success)
             {
-                await _fileUploader.DeleteFile(product?.Data?.ImageURL);
+                await _fileUploader.DeleteFile(product?.Data?.ImageURL, "Product");
             }
             return Json(result);
         }

@@ -41,7 +41,7 @@ const onSuccessUsers = async (products, categorys, suppliers) => {
         debugger
         const userSchema = [
             {
-                render: (data, type, row) => row.img ? `<img src="images/${row.img}" alt="Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" />` : `<img src="/ProjectRootImg/default-user.png" alt=" Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" />`
+                render: (data, type, row) => `<img src="images/Product/${row.img}" alt="User Avatar" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" onerror="this.onerror=null;this.src='/ProjectRootImg/default-product.png';" />`
             },
             {
                 render: (data, type, row) => row?.name

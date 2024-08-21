@@ -9,7 +9,7 @@ public class FileUploader : IFileUploader
         _webHostEnvironment = webHostEnvironment;
     }
 
-    public async Task<string> ImgUploader(IFormFile file)
+    public async Task<string> ImgUploader(IFormFile file , string folderName)
     {
         if (file == null || file.Length == 0)
         {
@@ -17,7 +17,7 @@ public class FileUploader : IFileUploader
         }
 
         string fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
-        string folderPath = Path.Combine(_webHostEnvironment.WebRootPath, "Images");
+        string folderPath = string.IsNullOrEmpty(folderName) ? Path.Combine(_webHostEnvironment.WebRootPath, "Images") : Path.Combine(_webHostEnvironment.WebRootPath, "Images", folderName);
 
         if (!Directory.Exists(folderPath))
         {
@@ -34,14 +34,14 @@ public class FileUploader : IFileUploader
         return fileName;
     }
 
-    public async Task<bool> DeleteFile(string fileName)
+    public async Task<bool> DeleteFile(string fileName, string folderName)
     {
         if (string.IsNullOrEmpty(fileName))
         {
             throw new ArgumentException("File name is null or empty", nameof(fileName));
         }
 
-        string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "Images", fileName);
+        string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "Images", folderName , fileName);
 
         if (File.Exists(filePath))
         {
