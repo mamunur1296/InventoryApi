@@ -1,4 +1,5 @@
-﻿using InventoryApi.Entities;
+﻿using InventoryApi.DTOs;
+using InventoryApi.Entities;
 using InventoryApi.Exceptions;
 using InventoryApi.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -11,12 +12,20 @@ namespace InventoryApi.Services.Implementation
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly IHelperServicess _helperServicess;
 
-        public UserService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager)
+
+
+        public UserService(UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            RoleManager<ApplicationRole> roleManager,
+            IHelperServicess helperServicess
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _helperServicess = helperServicess;
         }
 
         public async Task<(bool Success, string ErrorMessage)> ChangePassword(string OldPassword, string newPassword, string Userid)
@@ -42,50 +51,12 @@ namespace InventoryApi.Services.Implementation
             return (false, errorMessage);
         }
 
-        public async Task<(bool isSucceed, string userId)> CreateUserAsync(string userName, string password, string email, string firstName, string lastName, string phoneNumber, List<string> roles)
+        public async Task<(bool isSucceed, string userId)> CreateUserAsync(RegistrationDTOs model)
         {
-            if (roles == null || roles.Count == 0)
-            {
-                throw new ValidationException("Role names must be provided.");
-            }
+            
+            var result = await _helperServicess.CreateUserAndCustomerAsync(model);
 
-            var user = new ApplicationUser()
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                UserName = userName,
-                Email = email,
-                PhoneNumber = phoneNumber,
-            };
-
-            var roleExists = true;
-            foreach (var role in roles)
-            {
-                if (await _roleManager.FindByNameAsync(role) == null)
-                {
-                    roleExists = false;
-                    break;
-                }
-            }
-
-            if (!roleExists)
-            {
-                throw new ValidationException("One or more roles are invalid.");
-            }
-
-            var result = await _userManager.CreateAsync(user, password);
-            if (!result.Succeeded)
-            {
-                throw new ValidationException(result.Errors);
-            }
-
-            var addUserRole = await _userManager.AddToRolesAsync(user, roles);
-            if (!addUserRole.Succeeded)
-            {
-                throw new ValidationException(addUserRole.Errors);
-            }
-
-            return (true, user.Id);
+            return (result.isSucceed, result.userId);
         }
 
 
@@ -107,26 +78,32 @@ namespace InventoryApi.Services.Implementation
             return result.Succeeded;
         }
 
-        public async Task<List<(string id, string FirstName, string LastName, string Phone, string UserName, string Email, string Img)>> GetAllUsersAsync()
+        public async Task<List<UserDTO>> GetAllUsersAsync()
         {
-            var users = await _userManager.Users.Select(x => new
-            {
-                x.Id,
-                x.FirstName,
-                x.LastName,
-                x.PhoneNumber,
-                x.UserName,
-                x.Email,
-                x.UserImg
-            }).ToListAsync();
+            var users = await _userManager.Users
+                .Select(x => new UserDTO
+                {
+                    Id = x.Id,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    PhoneNumber = x.PhoneNumber,
+                    UserName = x.UserName,
+                    Email = x.Email,
+                    UserImg = x.UserImg,
+                    isApproved = x.isApproved,
+                    isApprovedByAdmin = x.isApprovedByAdmin,
+                    isEmployee = x.isEmployee
+                })
+                .ToListAsync();
 
-            return users.Select(user => (user.Id, user.FirstName, user.LastName, user.PhoneNumber, user.UserName, user.Email, user.UserImg)).ToList();
+            return users;
         }
 
 
 
 
-        public async Task<(string userId, string FirstName, string LastName, string UserName, string email, string img, string PhoneNumber, string NID, string Address, string Job, string Country, string About, IList<string> roles)> GetUserDetailsAsync(string userId)
+
+        public async Task<UserDTO> GetUserDetailsAsync(string userId)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null)
@@ -134,7 +111,21 @@ namespace InventoryApi.Services.Implementation
                 throw new NotFoundException("User not found");
             }
             var roles = await _userManager.GetRolesAsync(user);
-            return (user.Id, user.FirstName, user.LastName, user.UserName, user.Email, user.UserImg, user.PhoneNumber , user.NID, user.Address, user.Job, user.Country,user.About, roles);
+            var userDto = new UserDTO
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                UserName = user.UserName,
+                Email = user.Email,
+                UserImg = user.UserImg,
+                isApproved = user.isApproved,
+                isApprovedByAdmin = user.isApprovedByAdmin,
+                isEmployee = user.isEmployee,
+                Roles = roles.ToList()
+            };
+            return userDto;
         }
 
 

@@ -36,6 +36,9 @@ namespace InventoryUi.Models
         public List<string> Roles { get; set; }
         [DisplayName("Roles")]
         public string RoleName { get; set; }
+        public bool? isApproved { get; set; } = true;
+        public bool? isEmployee { get; set; } = false;
+        public bool? isApprovedByAdmin { get; set; } = false;
     }
 
 }

@@ -31,5 +31,8 @@ namespace InventoryApi.DTOs
 
         [Required(ErrorMessage = "At least one role is required.")]
         public List<string> Roles { get; set; }
+        public bool? isApproved { get; set; } = true;
+        public bool? isEmployee { get; set; } = false;
+        public bool? isApprovedByAdmin { get; set; } = false;
     }
 }

@@ -23,7 +23,7 @@ namespace InventoryUi.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Employee model)
+        public async Task<IActionResult> Create( Employee model)
         {
             model.UpdatedBy = null;
             model.Photo = new byte[0];

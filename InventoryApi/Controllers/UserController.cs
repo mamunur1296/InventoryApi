@@ -19,21 +19,10 @@ namespace InventoryApi.Controllers
         public async Task<IActionResult> GetAllAsync()
         {
             var users = await _userService.GetAllUsersAsync();
-            var result = users.Select(x => new UserDTO()
-            {
-                Id = x.id, // Assuming correct property name
-                UserName = x.UserName, // Assuming correct property name
-                Email = x.Email, // Assuming correct property name
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-                PhoneNumber=x.Phone,
-                UserImg=x.Img,
-            }).ToList();
-
             var response =  new ResponseDTOs<IEnumerable<UserDTO>>
             {
                 Success = true,
-                Data = result,
+                Data = users,
                 Status = HttpStatusCode.OK,
                 Detail = "All users retrieved successfully."
             };
@@ -44,7 +33,7 @@ namespace InventoryApi.Controllers
         public async Task<IActionResult> GetDetails(string userId)
         {
             var user = await _userService.GetUserDetailsAsync(userId);
-            if (user.userId == null)
+            if (user.Id == null)
             {
                 return StatusCode((int)HttpStatusCode.NotFound, new ResponseDTOs<UserDTO>
                 {
@@ -53,27 +42,10 @@ namespace InventoryApi.Controllers
                     Detail = "User not found."
                 });
             }
-            var userDTO = new UserDTO
-            {
-                Id = user.userId,
-                UserName = user.UserName,
-                Email = user.email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                PhoneNumber= user.PhoneNumber,
-                Job = user.Job,
-                Country = user.Country,
-                Address=user.Address,
-                NID = user.NID,
-                UserImg= user.img,
-                About=user.About,
-                Roles = (List<string>)(user.roles ?? new List<string>())
-            };
-
             var response = new ResponseDTOs<UserDTO>
             {
                 Success = true,
-                Data = userDTO,
+                Data = user,
                 Status = HttpStatusCode.OK,
                 Detail = "User details retrieved successfully."
             };

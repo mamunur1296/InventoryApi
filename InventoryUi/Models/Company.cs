@@ -20,7 +20,9 @@ namespace InventoryUi.Models
         public string? FaxNo { get; set; }
         [DisplayName("Email")]
         public string? EmailNo { get; set; }
-       
+        [DisplayName("Logo")]
+        public IFormFile? FormFile { get; set; }
+        public byte[]? Logo { get; set; }
         public bool IsActive { get; set; }
         public Warehouse? Warehouse { get; set; }
 

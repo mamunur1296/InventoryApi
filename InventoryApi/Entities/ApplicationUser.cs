@@ -14,5 +14,8 @@ namespace InventoryApi.Entities
         public string ? Job { get; set; }
         public string? About { get; set; }
         public string? Country { get; set;}
+        public bool? isApproved { get; set; } 
+        public bool? isEmployee { get; set; } 
+        public bool? isApprovedByAdmin { get; set; }
     }
 }

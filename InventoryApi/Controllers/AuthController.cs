@@ -29,7 +29,7 @@ namespace InventoryApi.Controllers
                 return BadRequest("Password and ConfirmationPassword do not match.");
             }
 
-            var result = await _userService.CreateUserAsync(model.UserName, model.Password, model.Email, model.FirstName, model.LastName, model.PhoneNumber, model.Roles);
+            var result = await _userService.CreateUserAsync(model);
             if (result.isSucceed)
             {
                 response.Success = true;
@@ -50,10 +50,10 @@ namespace InventoryApi.Controllers
             }
             var user = await _userService.GetUserDetailsAsync(await _userService.GetUserIdAsync(model.UserName));
 
-            string token = _tokenGenerator.GenerateJWTToken((user.userId, user.UserName, user.FirstName, user.LastName, user.email, user.img, user.roles));
+            string token = _tokenGenerator.GenerateJWTToken((user.Id, user.UserName, user.FirstName, user.LastName, user.Email, user.UserImg, user.Roles));
             var auth =  new AuthDTO()
             {
-                UserId = user.userId,
+                UserId = user.Id,
                 Name = user.UserName,
                 Token = token,
             };

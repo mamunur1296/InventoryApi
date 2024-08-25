@@ -54,6 +54,7 @@
                             
                             <thead>
                                 <tr>
+                                    <th>Logo</th>
                                     <th>Name</th>
                                     <th>Full Name </th>
                                     <th>Contact Person  </th>
@@ -133,6 +134,11 @@
                                     <label asp-for="EmailNo" class="control-label"></label>
                                     <input asp-for="EmailNo" placeholder="Enter Company Email Address (e.g., info@acme.com)" class="form-control" name="EmailNo" />
                                     <span asp-validation-for="EmailNo" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="FormFile" class="control-label"></label>
+                                    <input asp-for="FormFile" placeholder="Enter Company Email Address (e.g., info@acme.com)" class="form-control" name="FormFile" />
+                                    <span asp-validation-for="FormFile" class="text-danger"></span>
                                 </div>
                                 <div class="form-group mt-5 form-check">
                                     <input asp-for="IsActive" type="checkbox" class="form-check-input" id="IsActiveCheckbox" />

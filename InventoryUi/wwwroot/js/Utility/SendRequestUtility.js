@@ -96,6 +96,7 @@ export const SendRequest = async ({ endpoint, method = 'GET', data = null, heade
     let cache = true;
   
     if (data) {
+        
         if (data instanceof FormData) {
             // Handling FormData - Typically used for file uploads or complex form data
             contentType = false;  // Let the browser set the appropriate content type
@@ -108,7 +109,7 @@ export const SendRequest = async ({ endpoint, method = 'GET', data = null, heade
             contentType = 'application/x-www-form-urlencoded';
         } else if (typeof data === 'object' && !(data instanceof FormData)) {
             // Handling JSON data
-            contentType = 'application/json;charset=utf-8';
+            contentType = 'application/json';
             processData = true;
             cache = true;
         }
@@ -117,8 +118,9 @@ export const SendRequest = async ({ endpoint, method = 'GET', data = null, heade
     // Prepare request data
     let requestData = null;
     if (data) {
+        
         switch (contentType) {
-            case 'application/json;charset=utf-8':
+            case 'application/json':
                 requestData = JSON.stringify(data);
                 break;
             case 'application/x-www-form-urlencoded':
@@ -131,7 +133,7 @@ export const SendRequest = async ({ endpoint, method = 'GET', data = null, heade
                 requestData = data; // This case is for any custom or non-standard content types
         }
     }
-    
+   
     // Setup fetch options
     const options = {
         method,
@@ -146,7 +148,7 @@ export const SendRequest = async ({ endpoint, method = 'GET', data = null, heade
     
     // Perform fetch request
     try {
-        
+        debugger
         const response = await fetch(endpoint, options);
         const result = dataType === 'json' ? await response.json() : await response.text();
 

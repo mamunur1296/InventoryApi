@@ -19,17 +19,21 @@ const onSuccessUsers = async (companys) => {
         debugger
         const userSchema = [
             {
+                render: (data, type, row) => `<img src="data:image/jpeg;base64,${row.logo}" alt="Photo" style="width:50px; height:50px;" onerror="this.onerror=null;this.src='/ProjectRootImg/defoltLogo.png';" />`
+            },
+            {
                 render: (data, type, row) => row.name ?? "No Data"
             },
             {
                 render: (data, type, row) => row.fullName ?? "No Data"
             },
-            {
+            { 
                 render: (data, type, row) => row.contactPerson ?? "No Data"
             },
             {
                 render: (data, type, row) => row.address ?? "No Address"
             },
+
             {
                 render: (data, type, row) => row.phoneNo ?? "No Phone"
             },
@@ -165,7 +169,8 @@ $('#btnSave').off('click').click(async () => {
     debugger
     try {
         if ($('#CompanyForm').valid()) {
-            const formData = $('#CompanyForm').serialize();
+            //const formData = $('#CompanyForm').serialize();
+            const formData = new FormData($('#CompanyForm')[0]);
             const result = await SendRequest({ endpoint: '/Company/Create', method: 'POST', data: formData });
             // Clear previous messages
             $('#successMessage').hide();
@@ -215,7 +220,8 @@ window.updateCompany = async (id) => {
         resetValidation(UsrValidae, '#CompanyForm');
         $('#btnUpdate').off('click').on('click', async () => {
             debugger
-            const formData = $('#CompanyForm').serialize();
+            //const formData = $('#CompanyForm').serialize();
+            const formData = new FormData($('#CompanyForm')[0]);
             const result = await SendRequest({ endpoint: '/Company/Update/' + id, method: "PUT", data: formData });
             if (result.success) {
                 $('#modelCreate').modal('hide');

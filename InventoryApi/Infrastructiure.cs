@@ -39,6 +39,7 @@ namespace ProjectApi
             services.AddScoped<IUnitOfWorkRepository, UnitOfWorkRepository>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IHelperServicess, HelperServicess>();
             services.AddScoped<RoleManager<ApplicationRole>>();
             services.AddScoped<IBaseServices<CompanyDTOs>, CompanyService>();
             services.AddScoped<IBaseServices<DeliveryAddressDTOs>, DeliveryAddressService>();

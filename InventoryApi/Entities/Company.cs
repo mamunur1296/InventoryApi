@@ -12,6 +12,7 @@ namespace InventoryApi.Entities
         public string? FaxNo { get; set; }
         public string? EmailNo { get; set; }
         public bool IsActive { get; set; }
+        public byte[]? Logo {  get; set; }
         public ICollection<Warehouse>? Warehouses { get; set; }
 
     }

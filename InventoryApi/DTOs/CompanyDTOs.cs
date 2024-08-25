@@ -13,6 +13,7 @@ namespace InventoryApi.DTOs
         public string? FaxNo { get; set; }
         public string? EmailNo { get; set; }
         public bool IsActive { get; set; }
+        public byte[]? Logo { get; set; }
         //public Warehouse? Warehouse { get; set; }
     }
 }

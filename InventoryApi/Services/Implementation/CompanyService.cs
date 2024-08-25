@@ -33,7 +33,9 @@ namespace InventoryApi.Services.Implementation
                 PhoneNo = entity.PhoneNo?.Trim(),
                 FaxNo = entity.FaxNo?.Trim(),
                 EmailNo = entity.EmailNo?.Trim(),
+                Logo=entity.Logo,
                 IsActive = true // Assuming new companies are always active by default
+
             };
             await _unitOfWorkRepository.companyRepository.AddAsync(newCompany);
             await _unitOfWorkRepository.SaveAsync();
@@ -88,6 +90,7 @@ namespace InventoryApi.Services.Implementation
             item.PhoneNo = entity.PhoneNo?.Trim();
             item.FaxNo = entity.FaxNo?.Trim();
             item.EmailNo = entity.EmailNo?.Trim();
+            item.Logo = entity.Logo;
             item.IsActive = entity.IsActive;
 
             // Set the UpdateDate to the current date and time

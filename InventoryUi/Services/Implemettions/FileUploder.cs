@@ -1,5 +1,6 @@
 ﻿using InventoryUi.Services.Interface;
 using System.IO;
+using System.Reflection;
 public class FileUploader : IFileUploader
 {
     private readonly IWebHostEnvironment _webHostEnvironment;
@@ -59,5 +60,29 @@ public class FileUploader : IFileUploader
         return false;
     }
 
-   
+    public async Task<byte[]> ProcessImageToByteAsync(IFormFile file)
+    {
+        if (file != null && file.Length > 0)
+        {
+            using (var ms = new MemoryStream())
+            {
+                await file.CopyToAsync(ms);
+                byte[] photoBytes = ms.ToArray(); // Save the photo as a byte array in the database
+
+                // Convert the byte array to a Base64 string
+                string base64String = Convert.ToBase64String(photoBytes);
+
+                // Determine the image type from the file content type
+                string imageType = file.ContentType; // For example, "image/png"
+
+                // Set the PhotoPath to the Base64 data URI (this assumes you have a model object)
+               // model.PhotoPath = $"data:{imageType};base64,{base64String}";
+
+                return photoBytes; // Return the byte array
+            }
+        }
+
+        return null; // Return null if the file is null or empty
+    }
+
 }

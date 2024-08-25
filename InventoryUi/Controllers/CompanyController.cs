@@ -1,16 +1,19 @@
 ﻿using InventoryUi.Models;
 using InventoryUi.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.Scaffolding.Shared.CodeModifier.CodeChange;
 
 namespace InventoryUi.Controllers
 {
     public class CompanyController : Controller
     {
         private readonly IClientServices<Company> _companyServices;
+        private readonly IFileUploader _fileUploader;
 
-        public CompanyController(IClientServices<Company> service)
+        public CompanyController(IClientServices<Company> service, IFileUploader fileUploader)
         {
             _companyServices = service;
+            _fileUploader = fileUploader;
         }
         public IActionResult Index()
         {
@@ -20,6 +23,10 @@ namespace InventoryUi.Controllers
         public async Task<IActionResult> Create(Company model)
         {
             model.UpdatedBy = null;
+            if (model.FormFile != null)
+            {
+              model.Logo=  await _fileUploader.ProcessImageToByteAsync(model.FormFile);
+            }
             var register = await _companyServices.PostClientAsync("Company/Create", model);
             return Json(register);
         }
@@ -39,6 +46,15 @@ namespace InventoryUi.Controllers
         public async Task<IActionResult> Update(string id, Company model)
         {
             model.CreatedBy = null;
+            var CompanyItem = await _companyServices.GetClientByIdAsync($"Company/get/{id}");
+            if (model.FormFile != null)
+            {
+                model.Logo = await _fileUploader.ProcessImageToByteAsync(model.FormFile);
+            }
+            else
+            {
+                model.Logo = CompanyItem?.Data?.Logo;
+            }
             var result = await _companyServices.UpdateClientAsync($"Company/Update/{id}", model);
             return Json(result);
         }

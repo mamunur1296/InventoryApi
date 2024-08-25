@@ -1,8 +1,118 @@
-﻿
+﻿@model InventoryUi.Models.User
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>This is Dashboard Controller </h1>
 
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <!-- /.card -->
+                <div class="card">
+                    <div class="card-header ">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title font-weight-bold fs-4 text-primary">List of Unapproved Employees</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="successMessage" class="alert alert-success" role="alert" style="display: none;">
+                        <button id="btnClose" type="button" class="btn-close" aria-label="Close"></button>
+                    </div>
+                    <div id="globalErrorMessage" class="alert alert-danger" role="alert" style="display: none;">
+                        <button id="btnClose" type="button" class="btn-close" aria-label="Close"></button>
+                    </div>
+
+                    <!-- /.card-header -->
+
+                    <div class="card-body">
+                        <table id="EmployeeTable" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>User Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<form id="UserForm" style="display: none;">
+    <div class="card-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="FirstName" class="control-label"></label>
+                    <input asp-for="FirstName" placeholder="Enter first Name" class="form-control" name="FirstName" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName" class="control-label"></label>
+                    <input asp-for="LastName" placeholder="Enter Last Name " class="form-control" name="LastName" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UserName" class="control-label"></label>
+                    <input asp-for="UserName" placeholder="Enter User Name" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                    <div id="UserError" class="text-danger" role="alert" style="display: none;"></div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" placeholder="Enter Email" class="form-control" name="Email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <div id="EmailError" class="text-danger" role="alert" style="display: none;"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="PhoneNumber" class="control-label"></label>
+                    <input asp-for="PhoneNumber" placeholder="Enter Phone Number" class="form-control" name="PhoneNumber" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" type="password" placeholder="Enter Password" class="form-control" name="Password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <div id="PasswordError" class="text-danger" role="alert" style="display: none;"></div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ConfirmationPassword" class="control-label"></label>
+                    <input asp-for="ConfirmationPassword" type="password" placeholder="Confirm your Password" class="form-control" name="ConfirmationPassword" />
+                    <span asp-validation-for="ConfirmationPassword" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="RoleName"></label>
+                    <select class="form-control" asp-for="RoleName" id="RolesDropdown">
+                        <option value="">Select role</option>
+                    </select>
+                </div>
+                <div class="form-group mt-5 form-check">
+                    <input asp-for="isEmployee" type="checkbox" class="form-check-input" id="IsEmployeeCheckbox" />
+                    <label asp-for="isEmployee" class="form-check-label" for="IsEmployeeCheckbox">Employee</label>
+                    <span asp-validation-for="isEmployee" class="text-danger"></span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script type="module" src="~/js/dashboard/dashboard.js"></script>
+}
