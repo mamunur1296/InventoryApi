@@ -13,7 +13,7 @@ namespace InventoryApi.Entities
         public string? EmailNo { get; set; }
         public bool IsActive { get; set; }
         public byte[]? Logo {  get; set; }
-        public ICollection<Warehouse>? Warehouses { get; set; }
+        public ICollection<Branch> Branchs { get; set; }
 
     }
 }

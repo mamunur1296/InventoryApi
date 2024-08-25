@@ -50,6 +50,9 @@ namespace InventoryUi.Extensions
             services.AddScoped<IClientServices<Customer>, ClientServices<Customer>>();
             services.AddScoped<IClientServices<Category>, ClientServices<Category>>();
             services.AddScoped<IClientServices<CartItem>, ClientServices<CartItem>>();
+            services.AddScoped<IClientServices<Branch>, ClientServices<Branch>>();
+            services.AddScoped<IClientServices<UnitChild>, ClientServices<UnitChild>>();
+            services.AddScoped<IClientServices<UnitMaster>, ClientServices<UnitMaster>>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

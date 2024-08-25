@@ -10,20 +10,23 @@ const getProductList = async () => {
     const products = await SendRequest({ endpoint: '/Product/GetAll' });
     const categorys = await SendRequest({ endpoint: '/Category/GetAll' });
     const suppliers = await SendRequest({ endpoint: '/Supplier/GetAll' });
+    const unitMasters = await SendRequest({ endpoint: '/UnitMaster/GetAll' });
     if (products.status === 200 && products.success) {
-        await onSuccessUsers(products.data, categorys.data, suppliers.data);
+        await onSuccessUsers(products.data, categorys.data, suppliers.data, unitMasters.data);
     }
 }
 
-const onSuccessUsers = async (products, categorys, suppliers) => {
+const onSuccessUsers = async (products, categorys, suppliers, unitMasters) => {
     debugger
     const categorysMap = dataToMap(categorys, 'id');
     const suppliersMap = dataToMap(suppliers, 'id');
+    const unitMastersMap = dataToMap(unitMasters, 'id');
     const productsitem = products.map((product) => {
         if (product) {
             debugger
             const category = categorysMap[product.categoryID];
             const supplier = suppliersMap[product.supplierID];
+            const unitMaster = unitMastersMap[product.unitMasterId];
             return {
                 id: product?.id,
                 name: product?.productName ?? "No Address",
@@ -31,7 +34,8 @@ const onSuccessUsers = async (products, categorys, suppliers) => {
                 supplier: supplier?.supplierName ?? "No Address",
                 price: product?.unitPrice ?? "No Address",
                 stock: product?.unitsInStock ?? "No Address",
-                img: product?.imageURL 
+                img: product?.imageURL ,
+                unit: unitMaster?.name ?? "No Unit" 
             };
         }
         return null;
@@ -57,6 +61,9 @@ const onSuccessUsers = async (products, categorys, suppliers) => {
             },
             {
                 render: (data, type, row) => row?.stock
+            },
+            {
+                render: (data, type, row) => row?.unit
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
@@ -161,6 +168,14 @@ const UsrValidae = $('#ProductForm').validate({
         Dimensions: {
             required: true,
         }
+        ,
+        UnitMasterId: {
+            required: true,
+        }
+        ,
+        UnitChildId: {
+            required: true,
+        }
 
     },
     messages: {
@@ -226,6 +241,8 @@ $('#CreateBtn').off('click').click(async () => {
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
     await populateDropdown('/Category/GetAll', '#CategoryDropdown', 'id', 'categoryName', "Select Catagory");
     await populateDropdown('/Supplier/GetAll', '#SupplierDropdown', 'id', 'supplierName', "Select Supplier");
+    await populateDropdown('/UnitMaster/GetAll', '#UnitMasterDropdown', 'id', 'name', "Select Master Unit");
+    await populateDropdown('/UnitChild/GetAll', '#UnitChildDropdown', 'id', 'name', "Select Sub Unit");
 });
 
 // Save Button
@@ -270,6 +287,8 @@ window.updateProduct = async (id) => {
     $('#myModalLabelAddEmployee').hide();
     await populateDropdown('/Category/GetAll', '#CategoryDropdown', 'id', 'categoryName', "Select Catagory");
     await populateDropdown('/Supplier/GetAll', '#SupplierDropdown', 'id', 'supplierName', "Select Supplier");
+    await populateDropdown('/UnitMaster/GetAll', '#UnitMasterDropdown', 'id', 'name', "Select Master Unit");
+    await populateDropdown('/UnitChild/GetAll', '#UnitChildDropdown', 'id', 'name', "Select Sub Unit");
 
     const result = await SendRequest({ endpoint: '/Product/GetById/' + id });
     if (result.success) {
@@ -292,6 +311,8 @@ window.updateProduct = async (id) => {
         $('#Dimensions').val(result.data.dimensions);
         $('#Category').val(result.data.category);
         $('#Supplier').val(result.data.supplier);
+        $('#UnitMasterDropdown').val(result.data.unitMasterId);
+        $('#UnitChildDropdown').val(result.data.unitChildId);
 
 
         $('#modelCreate').modal('show');

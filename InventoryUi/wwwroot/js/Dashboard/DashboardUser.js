@@ -6,6 +6,7 @@ $(document).ready(async function () {
     await getUserList();
 });
 const getUserList = async () => {
+    debugger
     const users = await SendRequest({ endpoint: '/DashboardUser/GetAll' });
     if (users.status === 200 && users.success) {
         await onSuccessUsers(users.data);

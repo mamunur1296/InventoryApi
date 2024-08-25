@@ -50,6 +50,12 @@ namespace InventoryApi.UnitOfWork
 
         public ICartItemRepository cartItemRepository { get; private set; }
 
+        public IBranchRepository branchRepository { get; private set; }
+
+        public IUnitChildRepository unitChildRepository { get; private set; }
+
+        public IUnitMasterRepository unitMasterRepository { get; private set; }
+
         public UnitOfWorkRepository(ApplicationDbContext applicationDbContext)
         {
             _applicationDbContext = applicationDbContext;
@@ -75,6 +81,9 @@ namespace InventoryApi.UnitOfWork
             employeeRepository = new EmployeeRepository(applicationDbContext);
             customerRepository = new CustomerRepository(applicationDbContext);
             cartItemRepository = new CartItemRepository(applicationDbContext);
+            branchRepository = new BranchRepository(applicationDbContext);
+            unitChildRepository = new UnitChildRepository(applicationDbContext);
+            unitMasterRepository = new UnitMasterRepository(applicationDbContext);
 
         }
 

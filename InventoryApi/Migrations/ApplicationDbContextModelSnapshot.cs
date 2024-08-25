@@ -149,6 +149,59 @@ namespace InventoryApi.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("InventoryApi.Entities.Branch", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CompanyId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ContactPerson")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmailNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FaxNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("BranchItems");
+                });
+
             modelBuilder.Entity("InventoryApi.Entities.CartItem", b =>
                 {
                     b.Property<string>("Id")
@@ -854,6 +907,14 @@ namespace InventoryApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("UnitChildId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UnitMasterId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<decimal>("UnitPrice")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -876,6 +937,10 @@ namespace InventoryApi.Migrations
                     b.HasIndex("CategoryID");
 
                     b.HasIndex("SupplierID");
+
+                    b.HasIndex("UnitChildId");
+
+                    b.HasIndex("UnitMasterId");
 
                     b.ToTable("Products");
                 });
@@ -1143,13 +1208,87 @@ namespace InventoryApi.Migrations
                     b.ToTable("Suppliers");
                 });
 
+            modelBuilder.Entity("InventoryApi.Entities.UnitChild", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UnitDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UnitMasterId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UnitShortCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UnitMasterId");
+
+                    b.ToTable("UnitChilds");
+                });
+
+            modelBuilder.Entity("InventoryApi.Entities.UnitMaster", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UnitMasterDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UnitMasterItems");
+                });
+
             modelBuilder.Entity("InventoryApi.Entities.Warehouse", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CompanyId")
+                    b.Property<string>("BranchId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedBy")
@@ -1174,7 +1313,7 @@ namespace InventoryApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId");
+                    b.HasIndex("BranchId");
 
                     b.ToTable("Warehouses");
                 });
@@ -1283,6 +1422,17 @@ namespace InventoryApi.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("InventoryApi.Entities.Branch", b =>
+                {
+                    b.HasOne("InventoryApi.Entities.Company", "Company")
+                        .WithMany("Branchs")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("InventoryApi.Entities.CartItem", b =>
@@ -1429,18 +1579,34 @@ namespace InventoryApi.Migrations
                     b.HasOne("InventoryApi.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("InventoryApi.Entities.Supplier", "Supplier")
                         .WithMany("Products")
                         .HasForeignKey("SupplierID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("InventoryApi.Entities.UnitChild", "UnitChild")
+                        .WithMany("Products")
+                        .HasForeignKey("UnitChildId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("InventoryApi.Entities.UnitMaster", "UnitMaster")
+                        .WithMany("Products")
+                        .HasForeignKey("UnitMasterId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Category");
 
                     b.Navigation("Supplier");
+
+                    b.Navigation("UnitChild");
+
+                    b.Navigation("UnitMaster");
                 });
 
             modelBuilder.Entity("InventoryApi.Entities.Review", b =>
@@ -1478,13 +1644,13 @@ namespace InventoryApi.Migrations
                     b.HasOne("InventoryApi.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("InventoryApi.Entities.Warehouse", "Warehouse")
                         .WithMany("Stocks")
                         .HasForeignKey("WarehouseID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -1522,13 +1688,26 @@ namespace InventoryApi.Migrations
                     b.Navigation("SubMenu");
                 });
 
+            modelBuilder.Entity("InventoryApi.Entities.UnitChild", b =>
+                {
+                    b.HasOne("InventoryApi.Entities.UnitMaster", "UnitMaster")
+                        .WithMany("UnitChildrens")
+                        .HasForeignKey("UnitMasterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("UnitMaster");
+                });
+
             modelBuilder.Entity("InventoryApi.Entities.Warehouse", b =>
                 {
-                    b.HasOne("InventoryApi.Entities.Company", "Company")
+                    b.HasOne("InventoryApi.Entities.Branch", "Branch")
                         .WithMany("Warehouses")
-                        .HasForeignKey("CompanyId");
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                    b.Navigation("Company");
+                    b.Navigation("Branch");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1582,6 +1761,11 @@ namespace InventoryApi.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("InventoryApi.Entities.Branch", b =>
+                {
+                    b.Navigation("Warehouses");
+                });
+
             modelBuilder.Entity("InventoryApi.Entities.Category", b =>
                 {
                     b.Navigation("Products");
@@ -1591,7 +1775,7 @@ namespace InventoryApi.Migrations
 
             modelBuilder.Entity("InventoryApi.Entities.Company", b =>
                 {
-                    b.Navigation("Warehouses");
+                    b.Navigation("Branchs");
                 });
 
             modelBuilder.Entity("InventoryApi.Entities.Customer", b =>
@@ -1640,6 +1824,18 @@ namespace InventoryApi.Migrations
             modelBuilder.Entity("InventoryApi.Entities.Supplier", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("InventoryApi.Entities.UnitChild", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("InventoryApi.Entities.UnitMaster", b =>
+                {
+                    b.Navigation("Products");
+
+                    b.Navigation("UnitChildrens");
                 });
 
             modelBuilder.Entity("InventoryApi.Entities.Warehouse", b =>

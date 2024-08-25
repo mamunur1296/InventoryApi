@@ -32,9 +32,12 @@ public static class SeedData
         {
             UserName = "admin@123",
             Email = "admin@Gmail.com",
-            FirstName="Mamunur Rudhid",
-            LastName="Admin",
-            PhoneNumber="01767988385",
+            FirstName = "Mamunur Rudhid",
+            LastName = "Admin",
+            PhoneNumber = "01767988385",
+            isApproved = true,
+            isApprovedByAdmin = false,
+            isEmployee = false,
         };
 
         string adminPassword = "admin@123";

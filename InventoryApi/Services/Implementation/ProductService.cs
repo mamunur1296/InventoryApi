@@ -39,6 +39,8 @@ namespace InventoryApi.Services.Implementation
                 ImageURL=entity.ImageURL.Trim(),
                 Weight=entity.Weight,
                 Dimensions=entity.Dimensions,
+                UnitChildId=entity.UnitChildId,
+                UnitMasterId=entity.UnitMasterId,
             };
             await _unitOfWorkRepository.productRepository.AddAsync(newProduct);
             await _unitOfWorkRepository.SaveAsync();
@@ -99,7 +101,8 @@ namespace InventoryApi.Services.Implementation
             item.ImageURL = string.IsNullOrWhiteSpace(entity?.ImageURL) ? item.ImageURL : entity.ImageURL.Trim();
             item.Weight = entity?.Weight != null ? entity.Weight : item.Weight;
             item.Dimensions = entity?.Dimensions != null ? entity.Dimensions : item.Dimensions;
-
+            item.UnitMasterId = entity.UnitMasterId;
+            item.UnitChildId=entity.UnitChildId;
 
 
             // Set the UpdateDate to the current date and time

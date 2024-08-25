@@ -81,6 +81,88 @@
 
 
 
+//export const SendRequest = async ({ endpoint, method = 'GET', data = null, headers = {}, dataType = 'json' }) => {
+//    // Validate and set default method
+//    const validMethods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
+//    method = validMethods.includes(method.toUpperCase()) ? method.toUpperCase() : 'GET';
+
+//    // Validate and set default data type
+//    const validDataTypes = ['json', 'text', 'html', 'xml', 'script'];
+//    dataType = validDataTypes.includes(dataType) ? dataType : 'json';
+
+//    // Determine content type and processing options based on data
+//    let contentType = null;
+//    let processData = true;
+//    let cache = true;
+  
+//    if (data) {
+        
+//        if (data instanceof FormData) {
+//            // Handling FormData - Typically used for file uploads or complex form data
+//            contentType = false;  // Let the browser set the appropriate content type
+//            processData = false;  // Prevent jQuery from processing the data
+//            cache = false;        // Disable caching for file uploads
+//        } else if (typeof data === 'string') {
+//            // Handling serialized form data - e.g., $('#EmployeeForm').serialize()
+//            contentType = 'application/x-www-form-urlencoded';
+//        } else if (method === "DELETE") {
+//            contentType = 'application/x-www-form-urlencoded';
+//        } else if (typeof data === 'object' && !(data instanceof FormData)) {
+//            // Handling JSON data
+//            contentType = 'application/json';
+//            processData = true;
+//            cache = true;
+//        }
+//    }
+    
+//    // Prepare request data
+//    let requestData = null;
+//    if (data) {
+        
+//        switch (contentType) {
+//            case 'application/json':
+//                requestData = JSON.stringify(data);
+//                break;
+//            case 'application/x-www-form-urlencoded':
+//                requestData = new URLSearchParams(data).toString();
+//                break;
+//            case false:
+//                requestData = data; // FormData is already prepared, no need for additional processing
+//                break;
+//            default:
+//                requestData = data; // This case is for any custom or non-standard content types
+//        }
+//    }
+   
+//    // Setup fetch options
+//    const options = {
+//        method,
+//        headers: {
+//            ...headers,
+//            ...(contentType !== false ? { 'Content-Type': contentType } : {})
+//        },
+//        body: requestData,
+//        processData,
+//        cache: cache ? 'default' : 'no-cache',
+//    };
+    
+//    // Perform fetch request
+//    try {
+//        debugger
+//        const response = await fetch(endpoint, options);
+//        const result = dataType === 'json' ? await response.json() : await response.text();
+
+//        if (response.ok) {
+//            return result;
+//        } else {
+//            throw new Error(result || 'Network response was not ok.');
+//        }
+//    } catch (error) {
+//        handleError(error.message || 'Unknown error occurred.');
+//        throw new Error(error.message || 'Network response was not ok.');
+//    }
+//};
+
 export const SendRequest = async ({ endpoint, method = 'GET', data = null, headers = {}, dataType = 'json' }) => {
     // Validate and set default method
     const validMethods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
@@ -94,9 +176,8 @@ export const SendRequest = async ({ endpoint, method = 'GET', data = null, heade
     let contentType = null;
     let processData = true;
     let cache = true;
-  
+
     if (data) {
-        
         if (data instanceof FormData) {
             // Handling FormData - Typically used for file uploads or complex form data
             contentType = false;  // Let the browser set the appropriate content type
@@ -109,18 +190,17 @@ export const SendRequest = async ({ endpoint, method = 'GET', data = null, heade
             contentType = 'application/x-www-form-urlencoded';
         } else if (typeof data === 'object' && !(data instanceof FormData)) {
             // Handling JSON data
-            contentType = 'application/json';
+            contentType = 'application/json;charset=utf-8';
             processData = true;
             cache = true;
         }
     }
-    
+
     // Prepare request data
     let requestData = null;
     if (data) {
-        
         switch (contentType) {
-            case 'application/json':
+            case 'application/json;charset=utf-8':
                 requestData = JSON.stringify(data);
                 break;
             case 'application/x-www-form-urlencoded':
@@ -133,7 +213,7 @@ export const SendRequest = async ({ endpoint, method = 'GET', data = null, heade
                 requestData = data; // This case is for any custom or non-standard content types
         }
     }
-   
+
     // Setup fetch options
     const options = {
         method,
@@ -145,10 +225,10 @@ export const SendRequest = async ({ endpoint, method = 'GET', data = null, heade
         processData,
         cache: cache ? 'default' : 'no-cache',
     };
-    
+
     // Perform fetch request
     try {
-        debugger
+
         const response = await fetch(endpoint, options);
         const result = dataType === 'json' ? await response.json() : await response.text();
 
@@ -162,8 +242,6 @@ export const SendRequest = async ({ endpoint, method = 'GET', data = null, heade
         throw new Error(error.message || 'Network response was not ok.');
     }
 };
-
-
 
 
 

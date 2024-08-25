@@ -14,6 +14,6 @@ namespace InventoryApi.DTOs
         public string? EmailNo { get; set; }
         public bool IsActive { get; set; }
         public byte[]? Logo { get; set; }
-        //public Warehouse? Warehouse { get; set; }
+        //public ICollection<Branch> Branchs { get; set; }
     }
 }

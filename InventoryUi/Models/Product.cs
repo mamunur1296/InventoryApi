@@ -31,6 +31,18 @@ namespace InventoryUi.Models
         [StringLength(50, ErrorMessage = "Quantity per unit cannot be longer than 50 characters.")]
         [DisplayName("Quantity Per Unit")]
         public string QuantityPerUnit { get; set; }
+        [DisplayName("Unit Master")]
+        public string UnitMasterId { get; set; }
+
+
+        public UnitMaster UnitMaster { get; set; }
+
+        [Required(ErrorMessage = "Unit Child ID is required.")]
+        [DisplayName("Unit Child")]
+        public string UnitChildId { get; set; }
+
+
+        public UnitChild UnitChild { get; set; }
 
         [Range(0, double.MaxValue, ErrorMessage = "Unit price must be a non-negative value.")]
         [DisplayName("Price")]

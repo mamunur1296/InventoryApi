@@ -27,7 +27,7 @@ namespace InventoryUi.Controllers
             {
                 var result = users.Data
                     .Where(item => item.isEmployee && !item.isApprovedByAdmin)
-                    .ToList(); 
+                    .ToList();
                 return Json(result);
             }
             return Json(null);

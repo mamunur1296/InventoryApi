@@ -26,6 +26,9 @@ namespace InventoryApi.UnitOfWork
         IEmployeeRepository employeeRepository { get; } 
         ICustomerRepository customerRepository { get; }
         ICartItemRepository cartItemRepository { get; }
+        IBranchRepository branchRepository { get; }
+        IUnitChildRepository unitChildRepository { get; }
+        IUnitMasterRepository unitMasterRepository { get; }
 
         Task SaveAsync();
     }

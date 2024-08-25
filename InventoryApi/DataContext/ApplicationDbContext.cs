@@ -27,6 +27,9 @@ namespace InventoryApi.DataContext
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<UnitChild> UnitChilds { get; set; }
+        public DbSet<Branch> BranchItems { get; set; }
+        public DbSet<UnitMaster> UnitMasterItems { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -39,6 +42,53 @@ namespace InventoryApi.DataContext
             builder.Entity<SubMenuRole>().HasOne(smr => smr.SubMenu).WithMany(sm => sm.SubMenuRoles).HasForeignKey(smr => smr.SubMenuId);
             builder.Entity<SubMenuRole>().HasOne(smr => smr.Role).WithMany().HasForeignKey(smr => smr.RoleId);
             builder.Entity<Order>().Property(o => o.Freight).HasPrecision(18, 2);
+            builder.Entity<Product>()
+                .HasOne(p => p.UnitMaster)
+                .WithMany(u => u.Products)
+                .HasForeignKey(p => p.UnitMasterId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Product>()
+                .HasOne(p => p.UnitChild)
+                .WithMany(u => u.Products)
+                .HasForeignKey(p => p.UnitChildId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Product>()
+                .HasOne(p => p.Category)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.CategoryID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Product>()
+                .HasOne(p => p.Supplier)
+                .WithMany(s => s.Products)
+                .HasForeignKey(p => p.SupplierID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<UnitChild>()
+                .HasOne(u => u.UnitMaster)
+                .WithMany(um => um.UnitChildrens)
+                .HasForeignKey(u => u.UnitMasterId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Warehouse>()
+                .HasOne(w => w.Branch)
+                .WithMany(b => b.Warehouses)
+                .HasForeignKey(w => w.BranchId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Stock>()
+                .HasOne(s => s.Product)
+                .WithMany()
+                .HasForeignKey(s => s.ProductID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Stock>()
+                .HasOne(s => s.Warehouse)
+                .WithMany(w => w.Stocks)
+                .HasForeignKey(s => s.WarehouseID)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 

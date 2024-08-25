@@ -13,6 +13,7 @@ namespace InventoryApi.Services.Implementation
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IHelperServicess _helperServicess;
+        
 
 
 
