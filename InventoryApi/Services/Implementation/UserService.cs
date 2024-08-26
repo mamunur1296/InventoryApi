@@ -180,20 +180,20 @@ namespace InventoryApi.Services.Implementation
         }
 
 
-        public async Task<bool> UpdateUserProfile(string id, string firstName, string lastName, string email, string img, string PhoneNumber, string NID, string Address, string Job, string Country, string about, IList<string> roles)
+        public async Task<bool> UpdateUserProfile(UserDTO model)
         {
             // Validate input data
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(model.Id))
             {
                 throw new ValidationException("User ID must be provided.");
             }
 
-            if (roles == null || roles.Count == 0)
+            if (model.Roles == null || model.Roles.Count == 0)
             {
                 throw new ValidationException("Role names must be provided.");
             }
 
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(model.Id);
             if (user == null)
             {
                 throw new ValidationException("User not found.");
@@ -201,7 +201,7 @@ namespace InventoryApi.Services.Implementation
 
             // Check if roles exist
             var roleExists = true;
-            foreach (var role in roles)
+            foreach (var role in model.Roles)
             {
                 if (await _roleManager.FindByNameAsync(role) == null)
                 {
@@ -215,16 +215,19 @@ namespace InventoryApi.Services.Implementation
                 throw new ValidationException("One or more roles are invalid.");
             }
             // Update user properties
-            user.FirstName = !string.IsNullOrEmpty(firstName) ? firstName.Trim() : user.FirstName; // Update only if firstName has a value
-            user.LastName = !string.IsNullOrEmpty(lastName) ? lastName.Trim() : user.LastName; // Update only if lastName has a value
-            user.Email = !string.IsNullOrEmpty(email) ? email : user.Email;
-            user.PhoneNumber = !string.IsNullOrEmpty(PhoneNumber) ? PhoneNumber : user.PhoneNumber;
-            user.UserImg = !string.IsNullOrEmpty(img) ? img : user.UserImg;
-            user.Job = !string.IsNullOrEmpty(Job) ? Job : user.Job;
-            user.Country = !string.IsNullOrEmpty(Country) ? Country : user.Country;
-            user.Address = !string.IsNullOrEmpty(Address) ? Address : user.Address;
-            user.NID = !string.IsNullOrEmpty(NID) ? NID : user.NID;
-            user.About = !string.IsNullOrEmpty(about) ? about.Trim() : user.About;
+            user.FirstName = !string.IsNullOrEmpty(model.FirstName) ? model.FirstName.Trim() : user.FirstName; // Update only if firstName has a value
+            user.LastName = !string.IsNullOrEmpty(model.LastName) ? model.LastName.Trim() : user.LastName; // Update only if lastName has a value
+            user.Email = !string.IsNullOrEmpty(model.Email) ? model.Email : user.Email;
+            user.PhoneNumber = !string.IsNullOrEmpty(model.PhoneNumber) ? model.PhoneNumber : user.PhoneNumber;
+            user.UserImg = !string.IsNullOrEmpty(model.UserImg) ? model.UserImg : user.UserImg;
+            user.Job = !string.IsNullOrEmpty(model.Job) ? model.Job : user.Job;
+            user.Country = !string.IsNullOrEmpty(model.Country) ? model.    Country : user.Country;
+            user.Address = !string.IsNullOrEmpty(model.Address) ? model.Address : user.Address;
+            user.NID = !string.IsNullOrEmpty(model.NID) ? model.NID : user.NID;
+            user.About = !string.IsNullOrEmpty(model.About) ? model.About.Trim() : user.About;
+            user.isApproved=model.isApproved;
+            user.isApprovedByAdmin=model.isApprovedByAdmin;
+            user.isEmployee=model.isEmployee;
             // Perform update operation
             var result = await _userManager.UpdateAsync(user);
 
@@ -235,8 +238,8 @@ namespace InventoryApi.Services.Implementation
 
             // Update user roles
             var userRoles = await _userManager.GetRolesAsync(user);
-            var rolesToRemove = userRoles.Except(roles).ToList();
-            var rolesToAdd = roles.Except(userRoles).ToList();
+            var rolesToRemove = userRoles.Except(model.Roles).ToList();
+            var rolesToAdd = model.Roles.Except(userRoles).ToList();
 
             if (rolesToRemove.Any())
             {

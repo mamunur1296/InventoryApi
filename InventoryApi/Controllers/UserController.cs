@@ -80,7 +80,7 @@ namespace InventoryApi.Controllers
         public async Task<ActionResult> Edit(string id, UserDTO model)
         {
             // Attempt to update the user profile
-            var updateUser = await _userService.UpdateUserProfile(id, model.FirstName, model.LastName, model.Email,model.UserImg,model.PhoneNumber,model.NID,model.Address,model.Job,model.Country,model.About, model.Roles);
+            var updateUser = await _userService.UpdateUserProfile(model);
             if (updateUser)
             {
                 return StatusCode((int)HttpStatusCode.Created, new ResponseDTOs<string>

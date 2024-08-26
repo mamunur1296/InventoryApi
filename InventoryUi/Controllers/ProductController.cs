@@ -1,8 +1,6 @@
 ﻿using InventoryUi.Models;
-using InventoryUi.Services.Implemettions;
 using InventoryUi.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace InventoryUi.Controllers
 {

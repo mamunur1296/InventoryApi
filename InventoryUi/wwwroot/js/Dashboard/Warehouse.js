@@ -8,24 +8,24 @@ $(document).ready(async function () {
 const getWarehouseList = async () => {
     debugger
     const warehouse = await SendRequest({ endpoint: '/Warehouse/GetAll' });
-    const company = await SendRequest({ endpoint: '/Company/GetAll' });
-    if (warehouse.status === 200 && warehouse.success) {
-        await onSuccessUsers(warehouse.data, company.data);
+    const branchs = await SendRequest({ endpoint: '/Branch/GetAll' });
+    if (branchs.status === 200 && branchs.success) {
+        await onSuccessUsers(warehouse.data, branchs.data);
     }
 }
 
-const onSuccessUsers = async (warehouses, companys) => {
+const onSuccessUsers = async (warehouses, branchs) => {
     debugger
-    const companyMap = dataToMap(companys, 'id');
+    const branchsMap = dataToMap(branchs, 'id');
     const warehouseitem = warehouses.map((warehouse) => {
         if (warehouse) {
             debugger
-            const company = companyMap[warehouse.companyId];
+            const branchs = branchsMap[warehouse.branchId];
             return {
                 id: warehouse?.id,
                 warehouseName: warehouse?.warehouseName ?? "No Name",
                 location: warehouse?.location ?? "No Address",
-                company: company?.fullName ?? "No Address",
+                branch: branchs?.fullName ?? "No Address",
             };
         }
         return null;
@@ -40,7 +40,7 @@ const onSuccessUsers = async (warehouses, companys) => {
             {
                 render: (data, type, row) => row?.location
             }, {
-                render: (data, type, row) => row?.company
+                render: (data, type, row) => row?.branch
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
@@ -104,7 +104,7 @@ const UsrValidae = $('#WarehouseForm').validate({
 
         }
         ,
-        CompanyId: {
+        BranchId: {
             required: true,
 
         }
@@ -120,8 +120,8 @@ const UsrValidae = $('#WarehouseForm').validate({
 
         }
         ,
-        CompanyId: {
-            required: " Company is required.",
+        BranchId: {
+            required: " Branch is required.",
 
         }
     },
@@ -144,7 +144,7 @@ $('#CreateUserBtn').off('click').click(async () => {
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
-    await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'fullName', "Select Company");
+    await populateDropdown('/Branch/GetAll', '#BranchDropdown', 'id', 'fullName', "Select Branch");
 });
 
 // Save Button
@@ -186,14 +186,14 @@ window.updateWareHouse = async (id) => {
     debugger
     $('#myModalLabelUpdateEmployee').show();
     $('#myModalLabelAddEmployee').hide();
-    await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'fullName', "Select Company");
+    await populateDropdown('/Branch/GetAll', '#BranchDropdown', 'id', 'fullName', "Select Branch");
     const result = await SendRequest({ endpoint: '/Warehouse/GetById/' + id });
     if (result.success) {
         $('#btnSave').hide();
         $('#btnUpdate').show();
         $('#WarehouseName').val(result.data.warehouseName);
         $('#Location').val(result.data.location);
-        $('#CompanyDropdown').val(result.data.companyId);
+        $('#BranchDropdown').val(result.data.branchId);
         $('#modelCreate').modal('show');
         resetValidation(UsrValidae, '#WarehouseForm');
         $('#btnUpdate').off('click').on('click', async () => {

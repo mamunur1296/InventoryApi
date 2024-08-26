@@ -15,7 +15,7 @@ namespace InventoryApi.Services.Interfaces
         Task<List<UserDTO>> GetAllUsersAsync();
 
 
-        Task<bool> UpdateUserProfile(string id, string FirstName, string LastName, string email, string img, string PhoneNumber, string NID, string Address, string Job, string Country,string about, IList<string> roles);
+        Task<bool> UpdateUserProfile(UserDTO model);
 
         Task<(bool Success, string ErrorMessage)> ChangePassword(string OldPassword, string newPassword, string Userid);
     }

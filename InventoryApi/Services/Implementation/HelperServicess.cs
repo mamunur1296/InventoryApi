@@ -94,7 +94,7 @@ namespace InventoryApi.Services.Implementation
                             Phone = " ",
                             Fax = " ",
                             Email = model.Email, // Ensure this is provided as it's required
-                            PasswordHash = _userManager.PasswordHasher.HashPassword(user, model.Password), // Hash the password
+                            PasswordHash = model.Password, // Hash the password
                             DateOfBirth = DateTime.Now, // Adjust as needed
                             MedicalHistory = " ",
                         };
