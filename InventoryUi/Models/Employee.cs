@@ -45,6 +45,9 @@ namespace InventoryUi.Models
         public string PhotoPath { get; set; }
         [DisplayName("Photo")]
          public List<IFormFile> Files { get; set; } 
+        [DisplayName("User")]
+        public string? UserId { get; set; }
+        public User? User { get; set; }
         [DisplayName("Manager")]
         public string? ManagerId { get; set; }
         public Employee Manager { get; set; }

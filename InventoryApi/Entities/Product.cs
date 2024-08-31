@@ -1,6 +1,4 @@
 ﻿using InventoryApi.Entities.Base;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace InventoryApi.Entities
@@ -8,7 +6,7 @@ namespace InventoryApi.Entities
     public class Product : BaseEntity
     {
         public string ProductName { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public string CategoryID { get; set; }
 
         //[ForeignKey("CategoryID")]
@@ -35,7 +33,7 @@ namespace InventoryApi.Entities
         public string BatchNumber { get; set; }
 
         public DateTime? ExpirationDate { get; set; }
-        public string ImageURL { get; set; }
+        public string? ImageURL { get; set; }
         [Precision(18, 2)]
         public decimal Weight { get; set; }
         public string Dimensions { get; set; }

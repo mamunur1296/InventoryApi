@@ -23,22 +23,23 @@ namespace InventoryApi.Services.Implementation
             var newCustomer = new Customer
             {
                 Id = Guid.NewGuid().ToString(),
-                CreatedBy = entity.CreatedBy?.Trim(),
+                CreatedBy = entity?.CreatedBy?.Trim(),
                 CreationDate = DateTime.Now, // Set CreationDate here
                 CustomerName = entity.CustomerName.Trim(),
-                ContactName = entity.ContactName.Trim(),
-                ContactTitle = entity.ContactTitle.Trim(),
-                Address = entity.Address.Trim(),
-                City = entity.City.Trim(),
-                Region = entity.Region.Trim(),
-                PostalCode = entity.PostalCode.Trim(),
-                Country = entity.Country.Trim(),
+                ContactName = entity?.ContactName?.Trim(),
+                ContactTitle = entity?.ContactTitle?.Trim(),
+                Address = entity?.Address?.Trim(),
+                City = entity?.City?.Trim(),
+                Region = entity?.Region?.Trim(),
+                PostalCode = entity?.PostalCode?.Trim(),
+                Country = entity?.Country?.Trim(),
                 Phone = entity.Phone.Trim(),
                 Fax = entity?.Fax?.Trim(),
-                Email = entity.Email.Trim(),
+                Email = entity?.Email?.Trim(),
                 PasswordHash = entity.PasswordHash.Trim(),
-                DateOfBirth = entity.DateOfBirth,
-                MedicalHistory= entity.MedicalHistory.Trim(),
+                DateOfBirth = entity?.DateOfBirth,
+                MedicalHistory= entity?.MedicalHistory?.Trim(),
+                UserId=entity?.UserId,
             };
             await _unitOfWorkRepository.customerRepository.AddAsync(newCustomer);
             await _unitOfWorkRepository.SaveAsync();
@@ -67,7 +68,7 @@ namespace InventoryApi.Services.Implementation
             item.PasswordHash = string.IsNullOrWhiteSpace(entity.PasswordHash) ? item.PasswordHash : entity.PasswordHash.Trim();
             item.DateOfBirth = entity.DateOfBirth;
             item.MedicalHistory = string.IsNullOrWhiteSpace(entity.MedicalHistory) ? item.MedicalHistory : entity.MedicalHistory.Trim();
-
+            item.UserId= entity.UserId;
 
 
             // Set the UpdateDate to the current date and time

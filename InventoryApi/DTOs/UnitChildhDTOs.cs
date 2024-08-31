@@ -11,8 +11,8 @@ namespace InventoryApi.DTOs
         public string UnitMasterId { get; set; }
 
         public string UnitShortCode { get; set; }
-        public string? DisplayName { get; set; }
-        public string? UnitDescription { get; set; }
+        public string ? DisplayName { get; set; }
+        public string ? UnitDescription { get; set; }
         //public UnitMaster UnitMaster { get; set; }
 
        // public ICollection<Product> Products { get; set; }

@@ -17,15 +17,15 @@ namespace InventoryApi.Entities
         [Precision(18, 2)]
         public decimal Freight { get; set; }
         public string ShipName { get; set; }
-        public string ShipAddress { get; set; }
-        public string ShipCity { get; set; }
-        public string ShipRegion { get; set; }
-        public string ShipPostalCode { get; set; }
-        public string ShipCountry { get; set; }
+        public string? ShipAddress { get; set; }
+        public string? ShipCity { get; set; }
+        public string? ShipRegion { get; set; }
+        public string? ShipPostalCode { get; set; }
+        public string? ShipCountry { get; set; }
         public string? PrescriptionID { get; set; }
         public Prescription Prescription { get; set; }
-        public string PaymentStatus { get; set; }
-        public string OrderStatus { get; set; }
+        public string? PaymentStatus { get; set; }
+        public string? OrderStatus { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
 
     }

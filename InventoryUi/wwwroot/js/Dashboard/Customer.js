@@ -8,19 +8,19 @@ $(document).ready(async function () {
 const getCustomerList = async () => {
     debugger
     const customers = await SendRequest({ endpoint: '/Customer/GetAll' });
-    // const company = await SendRequest({ endpoint: '/Company/GetAll' });
+    const users = await SendRequest({ endpoint: '/DashboardUser/GetAll' });
     if (customers.status === 200 && customers.success) {
-        await onSuccessUsers(customers.data);
+        await onSuccessUsers(customers.data, users.data);
     }
 }
 
-const onSuccessUsers = async (customers) => {
+const onSuccessUsers = async (customers, users) => {
     debugger
-    //const companyMap = dataToMap(companys, 'id');
+    const usersMap = dataToMap(users, 'id');
     const customersitem = customers.map((customer) => {
         if (customer) {
             debugger
-            //const company = companyMap[warehouse.companyId];
+            const user = usersMap[customer.userId];
             return {
                 id: customer?.id,
                 name: customer?.customerName ?? "No Name",
@@ -32,6 +32,7 @@ const onSuccessUsers = async (customers) => {
                 email: customer?.email ?? "No Email",
                 birthDate: customer?.dateOfBirth ?? "No Birth Date",
                 medicalHistory: customer?.medicalHistory ?? "No Medical History",
+                user: user?.userName,
             };
         }
         return null;
@@ -65,7 +66,7 @@ const onSuccessUsers = async (customers) => {
                 render: (data, type, row) => row?.birthDate
             },
             {
-                render: (data, type, row) => row?.medicalHistory
+                render: (data, type, row) => row?.user
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
@@ -122,58 +123,19 @@ const UsrValidae = $('#CustomerForm').validate({
     rules: {
         CustomerName: {
             required: true,
-            maxlength: 255
-        },
-        ContactName: {
-            required: true,
-            maxlength: 255
-        },
-        ContactTitle: {
-            required: true,
-            maxlength: 255
-        },
-        Address: {
-            required: true,
-            maxlength: 255
-        },
-        City: {
-            required: true,
-            maxlength: 255
-        },
-        Region: {
-            required: true,
-            maxlength: 255
-        },
-        PostalCode: {
-            required: true,
-            maxlength: 255
-        },
-        Country: {
-            required: true,
-            maxlength: 255
+            
         },
         Phone: {
             required: true,
-            maxlength: 255
-        },
-        Fax: {
-            maxlength: 255
-        },
-        Email: {
-            required: true,
-            email: true,
-            maxlength: 255
+            
         },
         PasswordHash: {
             required: true,
-            maxlength: 255
-        },
-        MedicalHistory: {
+          
+        }
+        ,
+        UserId: {
             required: true,
-        },
-        DateOfBirth: {
-            required: true,
-            date: true
         }
     },
     messages: {
@@ -254,7 +216,7 @@ $('#CreateBtn').off('click').click(async () => {
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
-
+    await populateDropdown('/DashboardUser/GetAll', '#UserDropdown', 'id', 'userName', "Select User");
 });
 
 // Save Button
@@ -295,7 +257,7 @@ window.updateCustomer = async (id) => {
     debugger
     $('#myModalLabelUpdateEmployee').show();
     $('#myModalLabelAddEmployee').hide();
-
+    await populateDropdown('/DashboardUser/GetAll', '#UserDropdown', 'id', 'userName', "Select User");
     const result = await SendRequest({ endpoint: '/Customer/GetById/' + id });
     if (result.success) {
         $('#btnSave').hide();
@@ -314,6 +276,7 @@ window.updateCustomer = async (id) => {
         $('#PasswordHash').val(result.data.passwordHash);
         $('#DateOfBirth').val(result.data.dateOfBirth);
         $('#MedicalHistory').val(result.data.medicalHistory);
+        $('#UserDropdown').val(result.data.userId);
         $('#modelCreate').modal('show');
         resetValidation(UsrValidae, '#CustomerForm');
         $('#btnUpdate').off('click').on('click', async () => {

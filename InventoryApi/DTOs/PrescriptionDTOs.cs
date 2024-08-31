@@ -9,8 +9,8 @@ namespace InventoryApi.DTOs
        // public Customer Customer { get; set; }
         public string DoctorName { get; set; }
         public DateTime PrescriptionDate { get; set; }
-        public string MedicationDetails { get; set; }
-        public string DosageInstructions { get; set; }
+        public string? MedicationDetails { get; set; }
+        public string? DosageInstructions { get; set; }
 
     }
 }

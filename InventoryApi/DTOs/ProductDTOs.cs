@@ -10,7 +10,7 @@ namespace InventoryApi.DTOs
 
 
         public string ProductName { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public string CategoryID { get; set; }
 
         
@@ -37,10 +37,16 @@ namespace InventoryApi.DTOs
         public string BatchNumber { get; set; }
 
         public DateTime? ExpirationDate { get; set; }
-        public string ImageURL { get; set; }
+        public string? ImageURL { get; set; }
         [Precision(18, 2)]
         public decimal Weight { get; set; }
-        public string Dimensions { get; set; }
+        public string? Dimensions { get; set; }
+
+        public int Quentity { get; set; } = 1;
+        public decimal Disc { get; set; } = 0;
+        public int TotalPrice { get; set; }
+        public int TotalPriceWithoutDiscount { get; set; }
+        public int TotlaDiscAmount { get; set; }
 
     }
 }

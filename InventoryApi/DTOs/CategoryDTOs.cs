@@ -13,7 +13,7 @@ namespace InventoryApi.DTOs
         [StringLength(255, ErrorMessage = "Category name cannot be longer than 255 characters.")]
         public string CategoryName { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public string? ParentCategoryID { get; set; }
 

@@ -1,0 +1,129 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class=" m-2">
+    <div class="row">
+        <div class="col-md-6 p-3">
+            <div class="bg-light  text-dark">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="fs-5 fw-semibold mb-0">Sales Summary</h2>
+                    <span class="fs-6 text-muted">Updated: Today 10:49:09</span>
+                </div>
+                <div class="row text-center">
+                    <div class="col-6 mb-3">
+                        <div class="fs-5 fw-bold">$12.99</div>
+                        <div class="fs-6 text-muted">Net Sales</div>
+                        <div class="text-success small">↑ 100%</div>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <div class="fs-5 fw-bold">$13.01</div>
+                        <div class="fs-6 text-muted">Payments</div>
+                        <div class="text-success small">↑ 100%</div>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <div class="fs-5 fw-bold">$4.01</div>
+                        <div class="fs-6 text-muted">Discounts</div>
+                        <div class="text-success small">↑ 100%</div>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <div class="fs-5 fw-bold">$0.00</div>
+                        <div class="fs-6 text-muted">Voided</div>
+                        <div class="text-muted small">0%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="my-3 w-100">
+                <input type="text" name="name" value="" class="form-control" />
+            </div>
+            <div class="w-100">
+                <p>Operations</p>
+                <input type="text" name="name" value="" class="form-control" />
+            </div>
+
+                
+        </div>
+        <div class="col-md-6">
+            <!-- Button Grid -->
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <button class="btn btn-light border  shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#128336;</p>
+                        <p class="fa-1x mb-0">Time Clock</p>
+                    </button>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <a asp-action="index" asp-controller="NewOrder" class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#128196;</p>
+                        <p class="fa-1x mb-0">New Order</p>
+                    </a>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#128200;</p>
+                        <p class="fa-1x mb-0">Reports</p>
+                    </button>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#128240;</p>
+                        <p class="fa-1x mb-0">Orders</p>
+                    </button>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#128281;</p>
+                        <p class="fa-1x mb-0">Return</p>
+                    </button>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#127869;</p>
+                        <p class="fa-1x mb-0">Tables</p>
+                    </button>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#128666;</p>
+                        <p class="fa-1x mb-0">Delivery Management</p>
+                    </button>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#9881;</p>
+                        <p class="fa-1x mb-0">Product Setup</p>
+                    </button>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#128179;</p>
+                        <p class="fa-1x mb-0">Invoices</p>
+                    </button>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#127942;</p>
+                        <p class="fa-1x mb-0">Reward Cards</p>
+                    </button>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#127873;</p>
+                        <p class="fa-1x mb-0">Gift Cards</p>
+                    </button>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#128179;</p>
+                        <p class="fa-1x mb-0">Store Credit</p>
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+

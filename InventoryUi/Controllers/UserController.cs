@@ -65,7 +65,7 @@ namespace InventoryUi.Controllers
             var user = await _userServices.GetClientByIdAsync($"User/{id}");
             if (model.FormFile != null)
             {
-                if(user.Data.UserImg != null)
+                if(user?.Data?.UserImg != null)
                 {
                     bool deleteImg = await _fileUploder.DeleteFile(user.Data.UserImg, "User");
                 }
@@ -73,11 +73,11 @@ namespace InventoryUi.Controllers
             }
             else
             {
-                model.UserImg = user.Data.UserImg;
+                model.UserImg = user?.Data?.UserImg;
             }
             if (model.Roles == null)
             {
-                model.Roles = user.Data.Roles;
+                model.Roles = user?.Data?.Roles;
             }
             var result = await _userServices.UpdateClientAsync($"User/Edit/{id}", model);
 

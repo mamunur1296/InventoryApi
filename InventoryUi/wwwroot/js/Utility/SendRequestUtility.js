@@ -161,29 +161,6 @@ export const SendRequest = async ({ endpoint, method = 'GET', data = null, heade
     }
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export function handleError(message) {
     console.error('Error:', message);
 }
@@ -206,7 +183,8 @@ export const populateDropdown = async (endpoint, dropdownSelector, valueField, t
         // Check if data is null or empty
         if (!data || data.length === 0) {
           
-            $(dropdownSelector).append('<option value="">No data available</option>');
+            $(dropdownSelector).append('');
+            //$(dropdownSelector).append('<option value=""></option>');
             return;
         }
 

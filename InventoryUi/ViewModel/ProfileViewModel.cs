@@ -9,7 +9,7 @@ namespace InventoryUi.ViewModel
 
         public User User { get; set; } = new User();
         
-        public ChangePassword ChangePassword { get; set; } = new ChangePassword();
+        public ChangePassword ?ChangePassword { get; set; } = new ChangePassword();
 
     }
 }

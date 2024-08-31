@@ -9,18 +9,21 @@ const getEmployeeList = async () => {
     debugger
     const employeees = await SendRequest({ endpoint: '/Employee/GetAll' });
     // const company = await SendRequest({ endpoint: '/Company/GetAll' });
+    const users = await SendRequest({ endpoint: '/DashboardUser/GetAll' });
     if (employeees.status === 200 && employeees.success) {
-        await onSuccessUsers(employeees.data);
+        await onSuccessUsers(employeees.data, users.data);
     }
 }
 
-const onSuccessUsers = async (employeees) => {
+const onSuccessUsers = async (employeees, users) => {
     debugger
     const managerMap = dataToMap(employeees, 'id');
+    const usersMap = dataToMap(users, 'id');
     const employeeesitem = employeees.map((employee) => {
         if (employee) {
             debugger
             const manager = managerMap[employee?.managerId];
+            const user = usersMap[employee.userId];
             return {
                 id: employee?.id,
                 fName: employee?.firstName ?? "No Name",
@@ -30,8 +33,8 @@ const onSuccessUsers = async (employeees) => {
                 phone: employee?.homePhone ?? "No title",
                 manager: manager ? (manager?.firstName + " " + manager?.lastName) : " No Data",
                 name: employee ? (employee?.firstName + " " + employee?.lastName) : " No Data",
-                photo: employee?.photoPath,
-                
+                photo: employee?.photoPath ?? "No title",
+                user: user?.userName ?? "Null", 
             };
         }
         return null;
@@ -57,6 +60,9 @@ const onSuccessUsers = async (employeees) => {
             },
             {
                 render: (data, type, row) => row?.manager
+            },
+            {
+                render: (data, type, row) => row?.user
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
@@ -231,6 +237,7 @@ $('#CreateBtn').off('click').click(async () => {
     debugger
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
     await populateDropdown('/Employee/GetAll', '#ManagerDropdown', 'id', 'firstName', "Select Manager");
+    await populateDropdown('/DashboardUser/GetAll', '#UserDropdown', 'id', 'userName', "Select User");
 });
 
 // Save Button
@@ -273,6 +280,7 @@ window.updateEmployee = async (id) => {
     $('#myModalLabelUpdateEmployee').show();
     $('#myModalLabelAddEmployee').hide();
     await populateDropdown('/Employee/GetAll', '#ManagerDropdown', 'id', 'firstName', "Select Manager");
+    await populateDropdown('/DashboardUser/GetAll', '#UserDropdown', 'id', 'userName', "Select User");
     const result = await SendRequest({ endpoint: '/Employee/GetById/' + id });
     if (result.success) {
         $('#btnSave').hide();
@@ -299,7 +307,7 @@ window.updateEmployee = async (id) => {
         $('#Photo').val(result.data.photo);
         $('#PostalCode').val(result.data.postalCode);
         $('#ManagerDropdown').val(result.data.managerId);
-
+        $('#UserDropdown').val(result.data.userId);
 
 
         $('#modelCreate').modal('show');

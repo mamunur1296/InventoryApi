@@ -8,7 +8,7 @@ namespace InventoryApi.Entities
 
         public string CategoryName { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public string? ParentCategoryID { get; set; }
 

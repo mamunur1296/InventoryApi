@@ -10,36 +10,33 @@ namespace InventoryUi.Models
         [DisplayName("Name")]
         public string CustomerName { get; set; }
 
-        [StringLength(255, ErrorMessage = "Contact name cannot be longer than 255 characters.")]
+
         [DisplayName("Contact Name")]
-        public string ContactName { get; set; }
+        public string? ContactName { get; set; }
 
-        [StringLength(255, ErrorMessage = "Contact title cannot be longer than 255 characters.")]
+
         [DisplayName("Contact Title")]
-        public string ContactTitle { get; set; }
+        public string? ContactTitle { get; set; }
 
-        [StringLength(255, ErrorMessage = "Address cannot be longer than 255 characters.")]
         [DisplayName("Address")]
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
 
-        [StringLength(255, ErrorMessage = "City cannot be longer than 255 characters.")]
+
         [DisplayName("City")]
-        public string City { get; set; }
+        public string? City { get; set; }
 
-        [StringLength(255, ErrorMessage = "Region cannot be longer than 255 characters.")]
+
         [DisplayName("Region")]
-        public string Region { get; set; }
+        public string? Region { get; set; }
 
-        [StringLength(255, ErrorMessage = "Postal code cannot be longer than 255 characters.")]
+
         [DisplayName("Postal Code")]
-        public string PostalCode { get; set; }
+        public string? PostalCode { get; set; }
 
-        [StringLength(255, ErrorMessage = "Country cannot be longer than 255 characters.")]
         [DisplayName("Country")]
-        public string Country { get; set; }
+        public string? Country { get; set; }
 
-        [StringLength(255, ErrorMessage = "Phone number cannot be longer than 255 characters.")]
         [DisplayName("Phone")]
         public string Phone { get; set; }
 
@@ -47,21 +44,33 @@ namespace InventoryUi.Models
         [DisplayName("Fax")]
         public string ? Fax { get; set; }
 
-        [Required(ErrorMessage = "Email is required.")]
+
         [EmailAddress(ErrorMessage = "Invalid email format.")]
-        [StringLength(255, ErrorMessage = "Email cannot be longer than 255 characters.")]
         [DisplayName("Email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [Required(ErrorMessage = "Password is required.")]
         [StringLength(255, ErrorMessage = "Password hash cannot be longer than 255 characters.")]
         [DisplayName("Password")]
         public string PasswordHash { get; set; }
         [DisplayName("Birth Date")]
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         [DisplayName("Medical History")]
-        public string MedicalHistory { get; set; }
+        public string? MedicalHistory { get; set; }
+        [DisplayName("User")]
+        public string? UserId { get; set; }
 
+        public int totalAmount { get; set; }
+        public int DiscountedAmount { get; set; }
+        public int SubTotal { get; set;  }
+        public int vat { get; set; } = 0;
+        public int PaymentAmount { get; set; } 
+        public int DueAmount { get; set; } 
+        public int FynalyPaymentAmount { get; set; } 
+        public int productDiscountedTotal { get; set; } 
+
+
+        public User? User { get; set; }
         public ICollection<Order> Orders { get; set; }
         public ICollection<Review> Reviews { get; set; }
         public ICollection<ShoppingCart> ShoppingCarts { get; set; }

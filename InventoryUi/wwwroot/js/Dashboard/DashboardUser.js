@@ -1,4 +1,5 @@
-﻿import { notification } from '../Utility/notification.js';
+﻿import { mackEmployee} from '../Utility/ObjectMaping.js';
+import { notification } from '../Utility/notification.js';
 import { clearMessage, createActionButtons, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
@@ -36,7 +37,8 @@ const onSuccessUsers = async (users) => {
                 render: (data, type, row) => createActionButtons(row, [
                     { label: 'Edit', btnClass: 'btn-primary', callback: 'updateUser'},
                     { label: 'Details', btnClass: 'btn-info', callback: 'showDetails', disabled: true },
-                    { label: 'Delete', btnClass: 'btn-danger', callback: 'deleteUser' }
+                    { label: 'Delete', btnClass: 'btn-danger', callback: 'deleteUser' },
+                    { label: 'Add Employee', btnClass: 'btn-primary', callback: 'addEmployee', disabled: row.isApprovedByAdmin  },
                 ])
             }
         ];
@@ -253,6 +255,15 @@ window.showDetails = async (id) => {
     loger("showDetails id " + id);
 }
 
+window.addEmployee = async (id) => {
+    debugger
+    const result = await mackEmployee(id);
+    if (result) {
+        await getUserList();
+        notification({ message: "Successfully Approved Employee", type: "success", title: "Success" });
+    }
+}
+
 
 window.deleteUser = async (id) => {
     clearMessage('successMessage', 'globalErrorMessage');
@@ -272,3 +283,6 @@ window.deleteUser = async (id) => {
         }
     });
 }
+
+
+

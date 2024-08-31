@@ -23,26 +23,27 @@ namespace InventoryApi.Services.Implementation
             var newEmployee = new Employee
             {
                 Id = Guid.NewGuid().ToString(),
-                CreatedBy = entity.CreatedBy?.Trim(),
+                CreatedBy = entity?.CreatedBy?.Trim(),
                 CreationDate = DateTime.Now, // Set CreationDate here
                 FirstName = entity.FirstName.Trim(),
                 LastName = entity.LastName.Trim(),
                 Title = string.IsNullOrWhiteSpace(entity.Title) ? null : entity.Title.Trim(),
                 TitleOfCourtesy = string.IsNullOrWhiteSpace(entity.TitleOfCourtesy) ? null : entity.TitleOfCourtesy.Trim(),
-                BirthDate = entity.BirthDate,
-                HireDate = entity.HireDate,
-                Address = string.IsNullOrWhiteSpace(entity.Address) ? null : entity.Address.Trim(),
-                City = string.IsNullOrWhiteSpace(entity.City) ? null : entity.City.Trim(),
-                Region = string.IsNullOrWhiteSpace(entity.Region) ? null : entity.Region.Trim(),
-                PostalCode = string.IsNullOrWhiteSpace(entity.PostalCode) ? null : entity.PostalCode.Trim(),
-                Country = string.IsNullOrWhiteSpace(entity.Country) ? null : entity.Country.Trim(),
+                BirthDate = entity?.BirthDate,
+                HireDate = DateTime.Now,
+                Address = string.IsNullOrWhiteSpace(entity?.Address) ? null : entity?.Address.Trim(),
+                City = string.IsNullOrWhiteSpace(entity?.City) ? null : entity.City.Trim(),
+                Region = string.IsNullOrWhiteSpace(entity?.Region) ? null : entity.Region.Trim(),
+                PostalCode = string.IsNullOrWhiteSpace(entity?.PostalCode) ? null : entity.PostalCode.Trim(),
+                Country = string.IsNullOrWhiteSpace(entity?.Country) ? null : entity.Country.Trim(),
                 HomePhone = string.IsNullOrWhiteSpace(entity.HomePhone) ? null : entity.HomePhone.Trim(),
                 Extension = string.IsNullOrWhiteSpace(entity.Extension) ? null : entity.Extension.Trim(),
-                Photo = entity.Photo, // Assuming Photo is nullable
-                Notes = string.IsNullOrWhiteSpace(entity.Notes) ? null : entity.Notes.Trim(),
-                ReportsTo = entity.ReportsTo,
-                PhotoPath = string.IsNullOrWhiteSpace(entity.PhotoPath) ? null : entity.PhotoPath.Trim(),
+                Photo = entity?.Photo, // Assuming Photo is nullable
+                Notes = string.IsNullOrWhiteSpace(entity?.Notes) ? null : entity?.Notes?.Trim(),
+                ReportsTo = entity?.ReportsTo,
+                PhotoPath = string.IsNullOrWhiteSpace(entity?.PhotoPath) ? null : entity?.PhotoPath.Trim(),
                 ManagerId=entity?.ManagerId?.Trim(),
+                UserId=entity?.UserId,
             };
 
             await _unitOfWorkRepository.employeeRepository.AddAsync(newEmployee);
@@ -110,6 +111,7 @@ namespace InventoryApi.Services.Implementation
             item.ReportsTo = entity.ReportsTo ?? item.ReportsTo;
             item.PhotoPath = string.IsNullOrWhiteSpace(entity.PhotoPath) ? item.PhotoPath : entity.PhotoPath.Trim();
             item.ManagerId = entity?.ManagerId?.Trim();
+            item.UserId = entity?.UserId;
 
 
             // Set the UpdateDate to the current date and time

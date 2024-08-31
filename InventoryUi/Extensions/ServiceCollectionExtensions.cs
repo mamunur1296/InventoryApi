@@ -53,6 +53,7 @@ namespace InventoryUi.Extensions
             services.AddScoped<IClientServices<Branch>, ClientServices<Branch>>();
             services.AddScoped<IClientServices<UnitChild>, ClientServices<UnitChild>>();
             services.AddScoped<IClientServices<UnitMaster>, ClientServices<UnitMaster>>();
+            services.AddScoped<IClientServices<NewOrderVm>, ClientServices<NewOrderVm>>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -63,7 +64,12 @@ namespace InventoryUi.Extensions
                     options.ReturnUrlParameter = "ReturnUrl";
                 });
 
-            services.AddSession();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); 
+                options.Cookie.HttpOnly = true; 
+                options.Cookie.IsEssential = true; 
+            });
 
             return services;
         }

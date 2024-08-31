@@ -13,7 +13,7 @@ namespace InventoryApi.Entities
         public string? PhoneNo { get; set; }
         public string? FaxNo { get; set; }
         public string? EmailNo { get; set; }
-        public bool IsActive { get; set; }
+        public bool? IsActive { get; set; }
 
         [Required(ErrorMessage = "Company ID is required.")]
         public string CompanyId { get; set; }

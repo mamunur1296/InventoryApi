@@ -1,0 +1,66 @@
+﻿@model IEnumerable<InventoryUi.POC.CityViewModel>
+
+@{
+    ViewData["Title"] = "Product Search";
+}
+
+<div>
+    <input type="text" id="searchInput" placeholder="Search for products..." autocomplete="off" />
+    <div id="suggestions"></div>
+</div>
+
+<div id="cart">
+    <h2>Shopping Cart</h2>
+    <ul id="cartItems"></ul>
+</div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('input', function () {
+        var searchTerm = this.value;
+        if (searchTerm.length > 0) {
+            fetch(`/Product/GetProductSuggestions?searchTerm=${encodeURIComponent(searchTerm)}`)
+                .then(response => response.json())
+                .then(data => {
+                    var suggestionsDiv = document.getElementById('suggestions');
+                    suggestionsDiv.innerHTML = '';
+
+                    data.forEach(function (product) {
+                        var suggestionItem = document.createElement('div');
+                        suggestionItem.textContent = product.name;
+                        suggestionItem.setAttribute('data-id', product.id);
+                        suggestionItem.onclick = function () {
+                            addToCart(product.id, product.name);
+                        };
+                        suggestionsDiv.appendChild(suggestionItem);
+                    });
+                });
+        } else {
+            document.getElementById('suggestions').innerHTML = '';
+        }
+    });
+
+    function addToCart(productId, productName) {
+        fetch('/Product/AddToCart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ productId: productId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                var cartItems = document.getElementById('cartItems');
+                var listItem = document.createElement('li');
+                listItem.textContent = productName;
+                cartItems.appendChild(listItem);
+
+                // Clear suggestions and input field after adding to cart
+                document.getElementById('suggestions').innerHTML = '';
+                document.getElementById('searchInput').value = '';
+            } else {
+                alert(data.message);
+            }
+        });
+    }
+</script>

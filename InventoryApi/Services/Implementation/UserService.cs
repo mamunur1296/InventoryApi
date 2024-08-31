@@ -93,7 +93,13 @@ namespace InventoryApi.Services.Implementation
                     UserImg = x.UserImg,
                     isApproved = x.isApproved,
                     isApprovedByAdmin = x.isApprovedByAdmin,
-                    isEmployee = x.isEmployee
+                    isEmployee = x.isEmployee,
+                    NID=x.NID,
+                    About=x.About,
+                    Address=x.Address,
+                    Country=x.Country,
+                    Job=x.Job,
+                    
                 })
                 .ToListAsync();
 
@@ -124,7 +130,12 @@ namespace InventoryApi.Services.Implementation
                 isApproved = user.isApproved,
                 isApprovedByAdmin = user.isApprovedByAdmin,
                 isEmployee = user.isEmployee,
-                Roles = roles.ToList()
+                Roles = roles.ToList(),
+                Job = user.Job,
+                Country = user.Country,
+                Address = user.Address,
+                About = user.About,
+                NID = user.NID,
             };
             return userDto;
         }
