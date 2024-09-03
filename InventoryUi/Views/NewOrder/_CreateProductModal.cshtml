@@ -1,0 +1,162 @@
+﻿@model InventoryUi.ViewModel.NewOrderVm
+@using System.Security.Claims
+@using Microsoft.IdentityModel.JsonWebTokens
+
+@{
+    var userName = string.Empty;
+
+    if (User.Identity.IsAuthenticated)
+    {
+        var claimsIdentity = User.Identity as ClaimsIdentity;
+        if (claimsIdentity != null)
+        {
+            // Extract the username from claims
+            var userNameClaim = claimsIdentity.FindFirst(ClaimTypes.Name);
+            if (userNameClaim != null)
+            {
+                userName = userNameClaim.Value;
+            }
+        }
+    }
+}
+<!-- Modal -->
+<div class="modal fade" id="createProductModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAddEmployee" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="max-width: 65%; max-height: 80%;">
+        <div class="modal-content" style="height: 100%; overflow: hidden;">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabelAddEmployee">Add Product</h4>
+                <h4 class="modal-title" style="display:none;" id="myModalLabelUpdateEmployee">Update Product</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="height: calc(100% - 60px); overflow-y: auto;">
+                <form id="createProductForm" enctype="application/x-www-form-urlencoded" asp-action="Create" asp-controller="Product" method="post">
+                    <input type="hidden" asp-for="Product.CreatedBy" value="@userName" />
+                    <input type="hidden" asp-for="Product.UpdatedBy" value="@userName" />
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="Product.ProductName" class="control-label"></label>
+                                    <input asp-for="Product.ProductName" placeholder="Enter product name" class="form-control" name="ProductName" />
+                                    <span asp-validation-for="Product.ProductName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Product.Description" class="control-label"></label>
+                                    <input asp-for="Product.Description" placeholder="Enter product description" class="form-control" name="Description" />
+                                    <span asp-validation-for="Product.Description" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" asp-for="Product.CategoryID"></label>
+                                    <select class="form-control" asp-for="Product.CategoryID" name="CategoryID" >
+                                        <option value="">Select category</option>
+                                        @{
+                                            foreach (var category in Model.CategoryLIst)
+                                            {
+                                                <option value="@category.Id" >@category.CategoryName</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" asp-for="Product.SupplierID"></label>
+                                    <select class="form-control" asp-for="Product.SupplierID" name="SupplierID">
+                                        <option value="">Select supplier</option>
+                                        @{
+                                            foreach (var supplair in Model.Suppliers)
+                                            {
+                                                <option value="@supplair.Id">@supplair.SupplierName</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Product.QuantityPerUnit" class="control-label"></label>
+                                    <input asp-for="Product.QuantityPerUnit" placeholder="Enter quantity per unit (e.g., 10 boxes)" class="form-control" name="QuantityPerUnit" />
+                                    <span asp-validation-for="Product.QuantityPerUnit" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="Product.UnitPrice" class="control-label"></label>
+                                    <input asp-for="Product.UnitPrice" placeholder="Enter unit price (e.g., 25.00)" class="form-control" name="UnitPrice" />
+                                    <span asp-validation-for="Product.UnitPrice" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Product.UnitsInStock" class="control-label"></label>
+                                    <input asp-for="Product.UnitsInStock" placeholder="Enter units in stock (e.g., 100)" class="form-control" name="UnitsInStock" />
+                                    <span asp-validation-for="Product.UnitsInStock" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Product.ReorderLevel" class="control-label"></label>
+                                    <input asp-for="Product.ReorderLevel" placeholder="Enter reorder level (e.g., 20)" class="form-control" name="ReorderLevel" />
+                                    <span asp-validation-for="Product.ReorderLevel" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Product.BatchNumber" class="control-label"></label>
+                                    <input asp-for="Product.BatchNumber" placeholder="Enter batch number" class="form-control" name="BatchNumber" />
+                                    <span asp-validation-for="Product.BatchNumber" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Product.ExpirationDate" class="control-label"></label>
+                                    <input asp-for="Product.ExpirationDate" placeholder="Enter expiration date (e.g., 2024-12-31)" class="form-control" name="ExpirationDate" />
+                                    <span asp-validation-for="Product.ExpirationDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="form-group">
+                                    <label asp-for="Product.Files" class="control-label"></label>
+                                    <input asp-for="Product.Files"  class="form-control" name="Files"/>
+                                    <span asp-validation-for="Product.Files" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Product.Weight" class="control-label"></label>
+                                    <input asp-for="Product.Weight" placeholder="Enter weight (e.g., 1.5 kg)" class="form-control" name="Weight" />
+                                    <span asp-validation-for="Product.Weight" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Product.Dimensions" class="control-label"></label>
+                                    <input asp-for="Product.Dimensions" placeholder="Enter dimensions (e.g., 10x20x15 cm)" class="form-control" name="Dimensions" />
+                                    <span asp-validation-for="Product.Dimensions" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" asp-for="Product.UnitMasterId"></label>
+                                    <select class="form-control" asp-for="Product.UnitMasterId" name="UnitMasterId">
+                                        <option value="">Select Master Unit</option>
+                                        @{
+                                            foreach (var m_unit in Model.unitMasters)
+                                            {
+                                                <option value="@m_unit.Id">@m_unit.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" asp-for="Product.UnitChildId"></label>
+                                    <select class="form-control" asp-for="Product.UnitChildId" name="UnitChildId">
+                                        <option value="">Select Child Unit</option>
+                                        @{
+                                            foreach (var c_unit in Model.unitChildrens)
+                                            {
+                                                <option value="@c_unit.Id">@c_unit.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="createProductForm">Save</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
+

@@ -1,5 +1,6 @@
 ﻿using InventoryApi.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 
 namespace InventoryApi.Controllers
@@ -12,7 +13,12 @@ namespace InventoryApi.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> Create(NewOrderDTOs model)
         {
-            return Ok();
+            return StatusCode((int)HttpStatusCode.Created, new ResponseDTOs<string>
+            {
+                Success = true,
+                Status = HttpStatusCode.Created,
+                Detail = "Order  successfully !!."
+            });
         }
     }
 }

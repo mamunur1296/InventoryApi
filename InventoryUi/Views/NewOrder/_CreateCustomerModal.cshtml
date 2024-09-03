@@ -1,0 +1,73 @@
+﻿@model InventoryUi.ViewModel.NewOrderVm
+@using System.Security.Claims
+@using Microsoft.IdentityModel.JsonWebTokens
+
+@{
+    var userName = string.Empty;
+
+    if (User.Identity.IsAuthenticated)
+    {
+        var claimsIdentity = User.Identity as ClaimsIdentity;
+        if (claimsIdentity != null)
+        {
+            // Extract the username from claims
+            var userNameClaim = claimsIdentity.FindFirst(ClaimTypes.Name);
+            if (userNameClaim != null)
+            {
+                userName = userNameClaim.Value;
+            }
+        }
+    }
+}
+
+
+<!-- Modal -->
+<div class="modal fade" id="createCustomerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAddEmployee" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="max-width: 65%; max-height: 80%;">
+        <div class="modal-content" style="height: 100%; overflow: hidden;">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabelAddEmployee">Add Customer</h4>
+                <h4 class="modal-title" style="display:none;" id="myModalLabelUpdateEmployee">Update Customer</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="height: calc(100% - 60px); overflow-y: auto;">
+                <form id="CreatCustomerForm" asp-action="Create" asp-controller="Customer">
+                    <input type="hidden" asp-for="Customer.CreatedBy" value="@userName" />
+                    <input type="hidden" asp-for="Customer.UpdatedBy" value="@userName" />
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="Customer.CustomerName" class="control-label"></label>
+                                    <input asp-for="Customer.CustomerName" placeholder="Enter Customer Name (e.g., Acme Corp)" class="form-control" name="CustomerName" />
+                                    <span asp-validation-for="Customer.CustomerName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="Customer.Phone" class="control-label"></label>
+                                    <input asp-for="Customer.Phone" placeholder="Enter Customer Phone (e.g., +1234567890)" class="form-control" name="Phone" />
+                                    <span asp-validation-for="Customer.Phone" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="Customer.Email" class="control-label"></label>
+                                    <input asp-for="Customer.Email" placeholder="Enter Customer Email (e.g., example@domain.com)" class="form-control" name="Email" />
+                                    <span asp-validation-for="Customer.Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="btnSave">Save</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+
+            </div>
+           
+        </div>
+    </div>
+</div>

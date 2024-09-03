@@ -3,7 +3,6 @@ using InventoryUi.Models;
 using InventoryUi.Services.Interface;
 using InventoryUi.ViewModel;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection;
 
 namespace InventoryUi.Controllers
 {
@@ -11,21 +10,29 @@ namespace InventoryUi.Controllers
     {
         private readonly IClientServices<Product> _productServices;
         private readonly IClientServices<Customer> _customerServices;
+        private readonly IClientServices<Category> _catagoryServices;
+        private readonly IClientServices<Supplier> _supplairServices;
+        private readonly IClientServices<UnitChild> _unitchildServices;
+        private readonly IClientServices<UnitMaster> _unitMasterServices;
         private readonly IClientServices<Order> _orderService;
         private readonly IClientServices<NewOrderVm> _newOrderServices;
-
-        public NewOrderController(IClientServices<Product> productServices, IClientServices<Customer> customerServices, IClientServices<Order> orderService, IClientServices<NewOrderVm> newOrderServices)
+        public NewOrderController(IClientServices<Product> productServices, IClientServices<Customer> customerServices, IClientServices<Category> catagoryServices, IClientServices<Supplier> supplairServices, IClientServices<UnitChild> unitchildServices, IClientServices<UnitMaster> unitMasterServices, IClientServices<Order> orderService, IClientServices<NewOrderVm> newOrderServices)
         {
             _productServices = productServices;
             _customerServices = customerServices;
+            _catagoryServices = catagoryServices;
+            _supplairServices = supplairServices;
+            _unitchildServices = unitchildServices;
+            _unitMasterServices = unitMasterServices;
             _orderService = orderService;
             _newOrderServices = newOrderServices;
         }
+
         [HttpGet]
-        public async Task<IActionResult> Test()
-        {
+        public async Task<IActionResult> SarchProduct()
+       {
             var products = await _productServices.GetAllClientsAsync("Product/All");
-            var name = HttpContext.Request.Query["term"].ToString();
+            var name = HttpContext.Request.Query["productTerm"].ToString();
 
             var filteredProducts = products?.Data?
                 .Where(c => c.ProductName.Contains(name))
@@ -38,9 +45,27 @@ namespace InventoryUi.Controllers
 
             return Ok(filteredProducts);
         }
+        [HttpGet]
+        public async Task<IActionResult> SearchCustomer() // Corrected method name
+        {
+            var customers = await _customerServices.GetAllClientsAsync("Customer/All");
+            var name = HttpContext.Request.Query["CustomerTerm"].ToString();
+
+            var filteredCustomers = customers?.Data?
+                .Where(c => c.Phone.Contains(name))
+                .Select(c => new
+                {
+                    label = c.Phone, // Display name
+                    customerId = c.Id // Actual customer ID
+                })
+                .ToList();
+
+            return Ok(filteredCustomers);
+        }
+
 
         [HttpGet]
-        public async Task<IActionResult> Index(string searchTerm)
+        public async Task<IActionResult> Index(string searchTerm, bool isPartial = false)
         {
             // Retrieve the list of products from the session or initialize a new list
             var productList = HttpContext.Session.GetObject<List<Product>>("ProductList") ?? new List<Product>();
@@ -55,16 +80,25 @@ namespace InventoryUi.Controllers
             // Fetch product and customer lists from the services
             var products = await _productServices.GetAllClientsAsync("Product/All");
             var customers = await _customerServices.GetAllClientsAsync("Customer/All");
+            var categorys = await _catagoryServices.GetAllClientsAsync("Category/All");
+            var suppliers = await _supplairServices.GetAllClientsAsync("Supplier/All");
+            var unitChild = await _unitchildServices.GetAllClientsAsync("UnitChild/All");
+            var unitMasters = await _unitMasterServices.GetAllClientsAsync("UnitMaster/All");
 
             // Prepare the view model
             var vm = new NewOrderVm
             {
                 Products = products?.Data,
                 Customers = customers?.Data,
+                CategoryLIst = categorys?.Data,
+                Suppliers = suppliers?.Data,
+                unitChildrens= unitChild?.Data,
+                unitMasters= unitMasters?.Data,
                 ProductsListFromSession = productList,
                 CustomerLIstFromSession = customer, // Pass customer to the view model
-                IsPaymentButtonEnabled = productList.Any() && customer.CustomerName != null  // Enable payment button if product list is not empty and customer is set
+                IsPaymentButtonEnabled = productList.Any()  // Enable payment button if product list is not empty and customer is set
             };
+
             // Update customer properties
             customer.totalAmount = totalAmount;
             customer.productDiscountedTotal = totalAmount + discountAmount;
@@ -76,61 +110,69 @@ namespace InventoryUi.Controllers
             // Update session with the modified customer object
             HttpContext.Session.SetObject("CurrentCustomer", customer);
 
-            // Return the view with the view model
-            return View(vm);
+            // Return the appropriate view based on the isPartial parameter
+            if (isPartial)
+            {
+                return PartialView("_ProductVawser", vm);
+            }
+            else
+            {
+                
+                return View(vm); 
+            }
+
         }
+
 
         [HttpPost]
         public async Task<IActionResult> AddToCart(string productId)
         {
             if (string.IsNullOrEmpty(productId))
             {
-                return RedirectToAction("Index");
+                // Return an empty partial view if no productId is provided
+                return PartialView("_ProductListPartial", new List<Product>());
             }
 
             var product = await _productServices.GetClientByIdAsync($"Product/get/{productId}");
 
-            if (product?.Data != null)
+            if (product?.Data == null)
             {
-                var productList = HttpContext.Session.GetObject<List<Product>>("ProductList") ?? new List<Product>();
-
-                // Check if the product is already in the cart
-                var existingProduct = productList.FirstOrDefault(p => p.Id == product.Data.Id);
-                if (existingProduct == null)
-                {
-                    // Initialize new product quantities and discounts
-                    product.Data.Quentity = 1; // Default quantity
-                    product.Data.Disc = 0; // Default discount
-                    product.Data.TotalPriceWithoutDiscount = (int)(product.Data.UnitPrice * product.Data.Quentity);
-                    product.Data.TotalPrice = (int)(product.Data.UnitPrice * product.Data.Quentity * (1 - product.Data.Disc / 100));
-                    product.Data.TotlaDiscAmount = (int)(product.Data.UnitPrice * product.Data.Quentity) - product.Data.TotalPrice;
-
-                    // Add product to the list
-                    productList.Add(product.Data);
-                }
-                else
-                {
-                    // Update existing product quantities and discounts
-                    existingProduct.Quentity += 1;
-                    existingProduct.TotalPriceWithoutDiscount = (int)(existingProduct.UnitPrice * existingProduct.Quentity);
-                    existingProduct.TotalPrice = (int)(existingProduct.UnitPrice * existingProduct.Quentity * (1 - existingProduct.Disc / 100));
-                    existingProduct.TotlaDiscAmount = (int)(existingProduct.UnitPrice * existingProduct.Quentity) - existingProduct.TotalPrice;
-                }
-
-                // Calculate and update discountAmount and totalAmount
-                var discountAmount = HttpContext.Session.GetInt32("DiscountAmount") ?? 0;
-                var totalAmount = HttpContext.Session.GetInt32("totalAmount") ?? 0;
-
-                // Recalculate discountAmount and totalAmount
-                discountAmount = productList.Sum(p => p.TotlaDiscAmount);
-                totalAmount = productList.Sum(p => p.TotalPriceWithoutDiscount);
-
-                HttpContext.Session.SetInt32("DiscountAmount", discountAmount);
-                HttpContext.Session.SetInt32("totalAmount", totalAmount);
-                HttpContext.Session.SetObject("ProductList", productList);
+                // Return an empty partial view if the product is not found
+                return PartialView("_ProductListPartial", new List<Product>());
             }
 
-            return RedirectToAction("Index");
+            var productList = HttpContext.Session.GetObject<List<Product>>("ProductList") ?? new List<Product>();
+
+            var existingProduct = productList.FirstOrDefault(p => p.Id == product.Data.Id);
+            if (existingProduct == null)
+            {
+                product.Data.Quentity = 1;
+                product.Data.Disc = 0;
+                product.Data.TotalPriceWithoutDiscount = (int)(product.Data.UnitPrice * product.Data.Quentity);
+                product.Data.TotalPrice = (int)(product.Data.UnitPrice * product.Data.Quentity * (1 - product.Data.Disc / 100));
+                product.Data.TotlaDiscAmount = (int)(product.Data.UnitPrice * product.Data.Quentity) - product.Data.TotalPrice;
+
+                productList.Add(product.Data);
+            }
+            else
+            {
+                existingProduct.Quentity += 1;
+                existingProduct.TotalPriceWithoutDiscount = (int)(existingProduct.UnitPrice * existingProduct.Quentity);
+                existingProduct.TotalPrice = (int)(existingProduct.UnitPrice * existingProduct.Quentity * (1 - existingProduct.Disc / 100));
+                existingProduct.TotlaDiscAmount = (int)(existingProduct.UnitPrice * existingProduct.Quentity) - existingProduct.TotalPrice;
+            }
+
+            var discountAmount = productList.Sum(p => p.TotlaDiscAmount);
+            var totalAmount = productList.Sum(p => p.TotalPriceWithoutDiscount);
+
+            HttpContext.Session.SetInt32("DiscountAmount", discountAmount);
+            HttpContext.Session.SetInt32("totalAmount", totalAmount);
+            HttpContext.Session.SetObject("ProductList", productList);
+            var vm = new NewOrderVm
+            {
+                ProductsListFromSession = productList,
+            };
+            return PartialView("_ProductListPartial", vm);
         }
 
         [HttpPost]
@@ -138,7 +180,7 @@ namespace InventoryUi.Controllers
         {
             if (string.IsNullOrEmpty(productId))
             {
-                return RedirectToAction("Index");
+                return PartialView("_ProductListPartial", new List<Product>());
             }
 
             var productList = HttpContext.Session.GetObject<List<Product>>("ProductList");
@@ -159,23 +201,28 @@ namespace InventoryUi.Controllers
                     HttpContext.Session.SetObject("ProductList", productList);
                 }
             }
+            var vm = new NewOrderVm
+            {
+                ProductsListFromSession = productList,
 
-            return RedirectToAction("Index");
+            };
+            return PartialView("_ProductListPartial", vm);
+
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateProduct(string productId, int quantity, decimal discount)
+        public async Task<IActionResult> UpdateProductItem(string productId, int quantity, decimal discount)
         {
             var productList = HttpContext.Session.GetObject<List<Product>>("ProductList");
             if (productList == null)
             {
-                return RedirectToAction("Index");
+                return PartialView("_ProductListPartial", new List<Product>());
             }
 
             var product = productList.FirstOrDefault(p => p.Id.ToString().Equals(productId, StringComparison.OrdinalIgnoreCase));
             if (product == null)
             {
-                return RedirectToAction("Index");
+                return PartialView("_ProductListPartial", new List<Product>());
             }
 
             // Calculate the previous total price and discount amount for the product
@@ -203,8 +250,12 @@ namespace InventoryUi.Controllers
             HttpContext.Session.SetInt32("DiscountAmount", discountAmount);
             HttpContext.Session.SetInt32("totalAmount", totalAmount);
             HttpContext.Session.SetObject("ProductList", productList);
+            var vm = new NewOrderVm
+            {
+                ProductsListFromSession = productList,
 
-            return RedirectToAction("Index");
+            };
+            return PartialView("_ProductListPartial", vm);
         }
 
         [HttpPost]
@@ -222,28 +273,45 @@ namespace InventoryUi.Controllers
                 HttpContext.Session.SetObject("CurrentCustomer", customer.Data);
             }
 
-            return RedirectToAction("Index");
+            return Json("Index");
         }
 
-        
-        public async Task<IActionResult>  Payment()
+
+        public async Task<IActionResult> Payment()
         {
             var productList = HttpContext.Session.GetObject<List<Product>>("ProductList") ?? new List<Product>();
             var customer = HttpContext.Session.GetObject<Customer>("CurrentCustomer") ?? new Customer();
+
             // Prepare the view model
             var model = new NewOrderVm
             {
                 ProductsListFromSession = productList,
-                CustomerLIstFromSession = customer,
-            }; 
+                CustomerLIstFromSession = new Customer()
+                {
+                    CustomerName = customer?.CustomerName ?? "No Name",
+                    Phone = customer?.Phone ?? "null",
+                    PasswordHash = "password"
+                }
+            };
+
             var result = await _newOrderServices.PostClientAsync("OrderMaping/Create", model);
+
+            if (result.Success)
+            {
+                // Return a partial view containing the success modal
+                HttpContext.Session.Clear();
+                return PartialView("_SuccessModal");
+            }
+
             return RedirectToAction("Index");
         }
+
 
         public IActionResult Cancel()
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Index");
         }
+       
     }
 }

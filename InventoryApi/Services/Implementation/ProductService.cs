@@ -25,8 +25,8 @@ namespace InventoryApi.Services.Implementation
                 Id = Guid.NewGuid().ToString(),
                 CreatedBy = entity.CreatedBy?.Trim(),
                 CreationDate = DateTime.Now, // Set CreationDate here
-                ProductName = entity.ProductName.Trim(),
-                Description = entity.Description.Trim(),
+                ProductName = entity?.ProductName?.Trim(),
+                Description = entity?.Description?.Trim(),
                 CategoryID = entity.CategoryID.ToString(),
                 SupplierID = entity.SupplierID.ToString(),
                 QuantityPerUnit = entity.QuantityPerUnit.ToString(),
@@ -41,6 +41,7 @@ namespace InventoryApi.Services.Implementation
                 Dimensions=entity.Dimensions,
                 UnitChildId=entity.UnitChildId,
                 UnitMasterId=entity.UnitMasterId,
+                
             };
             await _unitOfWorkRepository.productRepository.AddAsync(newProduct);
             await _unitOfWorkRepository.SaveAsync();

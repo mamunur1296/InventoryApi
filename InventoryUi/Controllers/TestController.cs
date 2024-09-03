@@ -1,57 +1,59 @@
-﻿using InventoryUi.POC;
+﻿using InventoryUi.Models;
+using InventoryUi.POC;
+using InventoryUi.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace InventoryUi.Controllers
 {
     public class TestController : Controller
     {
-        private static List<Product> _products = new List<Product>
-        {
-            new Product { Id = 1, Name = "Apple", Price = 1.20m, Stock = 50 },
-            new Product { Id = 2, Name = "Banana", Price = 0.80m, Stock = 100 },
-            new Product { Id = 3, Name = "Orange", Price = 1.00m, Stock = 75 },
-            new Product { Id = 4, Name = "Mango", Price = 1.50m, Stock = 20 },
-            new Product { Id = 5, Name = "Grapes", Price = 2.00m, Stock = 60 }
-        };
+        private readonly IClientServices<Menu> _menuServices;
 
-        public ActionResult Index()
+        public TestController(IClientServices<Menu> menuServices)
         {
-            return View();
+            _menuServices = menuServices;
         }
 
-        // API to get product suggestions
-        [HttpGet]
-        public IActionResult GetProductSuggestions(string searchTerm)
+        public async Task<IActionResult> Index()
         {
-            if (string.IsNullOrEmpty(searchTerm))
+            var menus = await _menuServices.GetAllClientsAsync("Menu/All");
+
+            var model = new MenuViewModel
             {
-                return Json(new List<Product>());
-            }
-
-            var suggestedProducts = _products
-                .Where(p => p.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
-                .OrderBy(p => p.Name)
-                .ToList();
-
-            return Json(suggestedProducts);
+                Menus = menus.Data,
+                NewMenu = new Menu()
+            };
+            return View(model);
         }
 
-        // POST: Add product to cart
         [HttpPost]
-        public IActionResult AddToCart(int productId)
+        public async Task<IActionResult> CreateProduct(MenuViewModel model)
         {
-            // Here you would normally add the product to the user's cart
-            // For simplicity, we're just returning a success message
+            model.NewMenu.UpdatedBy = null;
 
-            var product = _products.FirstOrDefault(p => p.Id == productId);
-            if (product != null)
+            var result = await _menuServices.PostClientAsync("Menu/Create", model.NewMenu);
+
+            if (result != null && result.Success)
             {
-                // Add to cart logic here (e.g., update session, database, etc.)
-                return Json(new { success = true, message = $"{product.Name} added to cart." });
+                var menus = await _menuServices.GetAllClientsAsync("Menu/All");
+
+                // Return the updated product list as a partial view
+                return PartialView("ProductList", menus.Data);
             }
 
-            return Json(new { success = false, message = "Product not found." });
+            // If there was an error, add a model error to be displayed to the user
+            ModelState.AddModelError(string.Empty, "Unable to create product. Please try again.");
+
+            // Reload the existing menus to maintain consistency and return the partial view with errors
+            model.Menus = (await _menuServices.GetAllClientsAsync("Menu/All")).Data;
+
+            // Return the partial view with the model containing errors
+            return PartialView("ProductList", model.Menus);
         }
+
+
+
 
     }
 }

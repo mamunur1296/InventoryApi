@@ -110,3 +110,21 @@ export const mackCustomer = async (id) => {
         return false;
     }
 }
+
+
+
+export const initializeAutocomplete = (selector, sourceUrl) => {
+    $(selector).autocomplete({
+        source: sourceUrl, // Endpoint to fetch products
+        select: function (event, ui) {
+            // Set the selected product name to the search input
+            $(selector).val(ui.item.label);
+            // Store the selected productId in the hidden input field
+            $("#selectedProductId").val(ui.item.productid);
+            // Prevent the default form submission
+            event.preventDefault();
+            // Trigger form submission manually
+            $(this).closest('form').submit();
+        }
+    });
+};

@@ -31,6 +31,7 @@ namespace InventoryUi.Controllers
             var result = await _productServices.PostClientAsync("Product/Create", model);
             return Json(result);
         }
+       
         [HttpGet]
         public async Task<IActionResult> GetById(string id)
         {

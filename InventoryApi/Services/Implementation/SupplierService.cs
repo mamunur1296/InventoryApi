@@ -26,16 +26,16 @@ namespace InventoryApi.Services.Implementation
                 CreatedBy = entity.CreatedBy?.Trim(),
                 CreationDate = DateTime.Now, // Set CreationDate here
                 SupplierName = entity.SupplierName.Trim(),
-                ContactName = entity.ContactName.Trim(),
-                ContactTitle = entity.ContactTitle.Trim(),
-                Address = entity.Address.Trim(),
-                City= entity.City.Trim(),
-                Region= entity.Region.Trim(),
-                PostalCode = entity.PostalCode.Trim(),
-                Country= entity.Country.Trim(),
+                ContactName = entity?.ContactName?.Trim(),
+                ContactTitle = entity?.ContactTitle?.Trim(),
+                Address = entity?.Address?.Trim(),
+                City= entity?.City?.Trim(),
+                Region= entity?.Region?.Trim(),
+                PostalCode = entity?.PostalCode?.Trim(),
+                Country= entity?.Country?.Trim(),
                 Phone= entity.Phone.Trim(),
-                Fax= entity.Fax.Trim(),
-                HomePage= entity.HomePage.Trim(),
+                Fax= entity?.Fax?.Trim(),
+                HomePage= entity?.HomePage?.Trim(),
             };
             await _unitOfWorkRepository.supplierRepository.AddAsync(newSupplier);
             await _unitOfWorkRepository.SaveAsync();

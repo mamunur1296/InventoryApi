@@ -1,0 +1,123 @@
+﻿@model InventoryUi.ViewModel.NewOrderVm
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Delete</th>
+            <th>Item</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>Disc %</th>
+            <th>Total</th>
+            <th>Update</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model.ProductsListFromSession)
+        {
+            <tr>
+                <td>
+                    <form asp-action="DeleteProduct" id="deleteItem" method="post" style="display:inline;">
+                        <input type="hidden" name="productId" value="@product.Id" />
+                        <button type="submit" class="btn btn-sm" aria-label="Delete">
+                            <i class="fas text-danger fa-trash-alt"></i>
+                        </button>
+                    </form>
+                </td>
+                <td>@product.ProductName</td>
+                <td>@($"{product.UnitPrice} Tk")</td>
+
+                <!-- Hidden input for product ID (if needed for other purposes) -->
+                <input type="hidden" name="productId" value="@product.Id" />
+
+                <td>
+                    <div class="input-group">
+                        <!-- Using data attributes for easier selection in JavaScript -->
+                        <input type="number" name="quantity" class="form-control text-center product-quantity" value="@product.Quentity" style="width: 60px;" data-product-id="@product.Id" />
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input type="number" name="discount" class="form-control text-center product-discount" value="@product.Disc" style="width: 60px;" data-product-id="@product.Id" />
+                    </div>
+                </td>
+                <td>@($"{product.TotalPrice} Tk")</td>
+                <td>
+                    <!-- Updated button class for identification -->
+                    <button class="btn btn-sm update-item-btn" data-product-id="@product.Id" aria-label="UpdateProductItem">
+                        <i class="fas text-primary fa-sync"></i>
+                    </button>
+                </td>
+               
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script type="module" src="~/js/powerofsales/neworder.js"></script>
+}
+
+
+
+@* @model List<Product>;
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Delete</th>
+            <th>Item</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>Disc %</th>
+            <th>Total</th>
+            <th>Update</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>
+                    <form asp-action="DeleteProduct" id="deleteItem" method="post" style="display:inline;">
+                        <input type="hidden" name="productId" value="@product.Id" />
+                        <button type="submit" class="btn btn-sm" aria-label="Delete">
+                            <i class="fas text-danger fa-trash-alt"></i>
+                        </button>
+                    </form>
+                </td>
+                <td>@product.ProductName</td>
+                <td>@($"{product.UnitPrice} Tk")</td>
+                <form asp-action="UpdateProductItem" id="updateItemForm" method="post" style="display:inline;">
+                    <input type="hidden" name="productId" value="@product.Id" />
+                <td>
+                    <div class="input-group">
+                        <input type="number" name="quantity" class="form-control text-center" value="@product.Quentity" style="width: 60px;" />
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input type="number" name="discount" class="form-control text-center" value="@product.Disc" style="width: 60px;" />
+                    </div>
+                </td>
+                <td>@($"{product.TotalPrice} Tk")</td>
+                <td>
+                    <button type="submit" class="btn btn-sm" aria-label="updateItemForm">
+                        <i class="fas text-primary fa-sync"></i>
+                    </button>
+                </td>
+                </form>
+            </tr>
+            
+        }
+    </tbody>
+
+</table>
+
+@section Scripts {
+    <script type="module" src="~/js/powerofsales/neworder.js"></script>
+}
+
+
+ *@

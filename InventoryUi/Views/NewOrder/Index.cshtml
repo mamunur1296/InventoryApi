@@ -3,211 +3,57 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-@{
-    
-}
+
 <div class="m-2">
     <div class="row">
         <!-- Product Section -->
-        <div class="col-md-9">
+        <div class="col-md-8">
             <div class="mb-3">
                 <!-- Search Product -->
-                <!-- Search Product -->
-
                 <div class="row mb-3">
-                    <label class="col-2 text-1xl me-2" for="selectProduct">Select Product:</label>
+                    <label class="col-form-label col-2 text-1xl me-2" for="selectProduct">Select Product:</label>
 
-                    <form asp-action="AddToCart" method="post" class="col-10 d-flex">
-                        <select class="form-control" id="selectProduct" name="productId" onchange="this.form.submit()">
-                            <option value="" disabled selected>Select a product</option>
-                            @foreach (var product in Model.Products)
-                            {
-                                <option  value="@product.Id">@product.ProductName</option>
-                            }
-                        </select>
-                        <div class="d-flex justify-content-end ms-2">
-                            <button  class="btn btn-success"><i class="fa fa-plus"></i></button>
-                        </div>
-                    </form>
-                   
-                </div>
-                <div class="row mb-3">
-                    <label class="col-2 text-1xl me-2" for="selectProduct">Select Product:</label>
-
-                    <form asp-action="AddToCart" method="post" class="col-10 d-flex">
-                        <!-- This input field is used for searching -->
-                        <input type="text" id="tags" class="form-control col-10 d-flex" placeholder="Type to search products..." />
-                        <!-- This hidden input field is used to store the selected productId -->
-                        <input type="hidden" id="selectedProductId" name="productId" />
-                        @section Scripts {
-                            <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-                            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-                            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-                            <script>
-                                $(function () {
-                                    $("#tags").autocomplete({
-                                        source: '/NewOrder/Test', // Endpoint to fetch products
-                                        select: function (event, ui) {
-                                            // Set the selected product name to the search input
-                                            $("#tags").val(ui.item.label);
-                                            // Store the selected productId in the hidden input field
-                                            $("#selectedProductId").val(ui.item.productid);
-                                            // Prevent the default form submission
-                                            event.preventDefault();
-                                            // Trigger form submission manually
-                                            this.form.submit();
-                                        }
-                                    });
-                                });
-                            </script>
-                        }
-                        <div class="d-flex justify-content-end ms-2">
-                            <button class="btn btn-success"><i class="fa fa-plus"></i></button>
-                        </div>
-                    </form>
-
-                </div>
-
-                
-
-
-
-
-                <!-- Product Table -->
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Delete</th>
-                                <th>Item</th>
-                                <th>Price</th>
-                                <th>Qty</th>
-                                <th>Disc %</th>
-                                <th>Total</th>
-                                <th>Update</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var product in Model.ProductsListFromSession)
-                            {
-                                
-
-                            <tr>
-                                    <td>
-                                        <form asp-action="DeleteProduct" method="post" style="display:inline;">
-                                            <input type="hidden" name="productId" value="@product.Id" />
-                                            <button type="submit" class="btn btn-sm" aria-label="Delete">
-                                                <i class="fas text-danger fa-trash-alt"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                    <td>@product.ProductName</td>
-                                    <td>@($"{product.UnitPrice} Tk")</td>
-                                    <form asp-action="UpdateProduct" method="post" style="display:inline;">
-                                        <input type="hidden" name="productId" value="@product.Id" />
-                                    <td>
-                                        <div class="input-group">
-                                            <input type="number" name="quantity" class="form-control text-center" value="@product.Quentity" style="width: 60px;" />
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="input-group">
-                                            <input type="number" name="discount" class="form-control text-center" value="@product.Disc" style="width: 60px;" />
-                                        </div>
-                                    </td>
-                                    <td>@($"{product.TotalPrice} Tk")</td>
-                                    <td>
-
-                                        <button class="btn btn-sm" aria-label="Update">
-                                            <i class="fas text-primary fa-sync"></i>
-                                        </button>
-                                    </td>
-                                    </form>
-
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div>
-        <!-- Customer and Payment Section -->
-        <div class="col-md-3 ">
-
-            <!-- Display Customer Details -->
-            <div class="">
-                <div class="border px-3 rounded">
-                    <!-- Search Customer and Add Customer Button -->
-                    <div class="row  mb-3">
-                        <form asp-action="AddCustomer" method="post" class="col-12  d-flex justify-content-between">
-                            <div class="flex-grow-1 me-2">
-                                <select class="form-control" id="selectProduct" name="customerId" onchange="this.form.submit()">
-                                    <option value="" disabled selected>Select Customer</option>
-                                    @foreach (var customer in Model.Customers)
-                                    {
-                                        <option value="@customer.Id">@customer.CustomerName</option>
-                                    }
-                                </select>
-                            </div>
-                            <button class="btn btn-success">
-                                <i class="fa fa-plus"></i>
-                            </button>
+                    <div class="col-6">
+                        <form asp-action="AddToCart" id="addProductForm" method="post" class="d-flex">
+                            <!-- This input field is used for searching -->
+                            <input type="text" id="tags" class="form-control me-2" placeholder="Type to search products..." />
+                            <!-- This hidden input field is used to store the selected productId -->
+                            <input type="hidden" id="selectedProductId" name="productId" />
                         </form>
                     </div>
 
-
-                    
-                    <div class="d-flex justify-content-between">
-                        <p class="mb-0">Name:</p>
-                        <p class="mb-0">@Model?.CustomerLIstFromSession?.CustomerName</p>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p class="mb-0">Phone:</p>
-                        <p class="mb-0">@Model?.CustomerLIstFromSession?.Phone</p>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p class="mb-0">Total:</p>
-                        <p class="mb-0">@Model?.CustomerLIstFromSession?.productDiscountedTotal  Tk</p>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p class="mb-0">Discount:</p>
-                        <p class="mb-0">@Model?.CustomerLIstFromSession?.DiscountedAmount  Tk</p>
-                    </div>
-                    <hr style="border: 1px solid;" />
-
-                    <div class="d-flex justify-content-between">
-                        <p class="mb-0">Sub total</p>
-                        <p class="mb-0">@Model?.CustomerLIstFromSession?.SubTotal Tk</p>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p class="mb-0">Vat</p>
-                        <p class="mb-0">@Model?.CustomerLIstFromSession?.vat Tk</p>
-                    </div>
-                    <hr style="border: 1px solid;" />
-
-                    <div class="d-flex justify-content-between">
-                        <p class="mb-0">Payment Total</p>
-                        <p class="mb-0">@Model?.CustomerLIstFromSession?.PaymentAmount  Tk</p>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p class="mb-0">Amount Due</p>
-                        <p class="mb-0">@Model?.CustomerLIstFromSession?.DueAmount Tk</p>
-                    </div>
-                    <hr style="border: 1px solid;" />
-                    <div class="d-flex justify-content-between">
-                        <p class="mb-0">Totla Payment Amount</p>
-                        <p class="mb-0">@Model?.CustomerLIstFromSession?.FynalyPaymentAmount  Tk</p>
-                    </div>
-                    <div class="d-flex mt-5 justify-content-between">
-                        <button type="submit"  class="btn btn-success" onclick="window.location.href='@Url.Action("Payment", "NewOrder")'" id="paymentButton" @(Model.IsPaymentButtonEnabled ? "" : "disabled")>Payment</button>
-                        <button type="button" onclick="window.location.href='@Url.Action("Cancel", "NewOrder")'" class="btn btn-danger">Cancel</button>
+                    <div class="col-4 d-flex justify-content-between">
+                        <button id="addNewProductButton" class="btn btn-success" title="Add Product"><i class="fa fa-plus"></i></button>
+                        <button id="addNewCatagoryButton" class="btn btn-success" title="Add Category"><i class="fa fa-plus"></i></button>
+                        <button id="addNewSupplierButton" class="btn btn-success" title="Add Supplier"><i class="fa fa-plus"></i></button>
+                        <button id="addNewMasterUnitButton" class="btn btn-success" title="Add Master Unit"><i class="fa fa-plus"></i></button>
+                        <button id="addNewChildUnitButton" class="btn btn-success" title="Add Child Unit"><i class="fa fa-plus"></i></button>
                     </div>
 
+                </div>
 
+                <!-- Product Table -->
+                <div class="table-responsive " id="ProductListPartial">
+                    @await Html.PartialAsync("_ProductListPartial", Model)
                 </div>
             </div>
         </div>
+        <!-- Customer and Payment Section -->
+        <div class="col-md-4 h-100 " id="ProductVawser">
+            @await Html.PartialAsync("_ProductVawser", Model)
+        </div>
     </div>
+    <!-- Container for dynamically loaded modal -->
+    <div id="modalSuccess"></div>
 </div>
+@await Html.PartialAsync("_CreateProductModal", Model)
+@await Html.PartialAsync("_CreateSupplierModal", Model)
+@await Html.PartialAsync("_CreateCategoryModal", Model)
+@await Html.PartialAsync("_CreateUnitMasterModal", Model)
+@await Html.PartialAsync("_CreateUnitChildModal", Model)
+@await Html.PartialAsync("_SuccessModal", Model)
+
+@section Scripts {
+    <script type="module" src="~/js/powerofsales/neworder.js"></script>
+}
 

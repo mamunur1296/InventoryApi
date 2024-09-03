@@ -1,0 +1,16 @@
+﻿@model InventoryUi.ViewModel.NewOrderVm
+<div class="d-flex col-12 justify-content-between">
+    <form asp-action="AddCustomer" id="addCustomerForm" method="post" class=" w-75 d-flex justify-content-between ">
+        <!-- This input field is used for searching -->
+        <input type="text" id="phoneNumber" class="form-control   " placeholder="Type to search Customer phone..." />
+        <!-- This hidden input field is used to store the selected productId -->
+        <input type="hidden" id="selectedCustomerId" name="customerId" />
+    </form>
+    <button id="addNewCustomerButton" type="submit" class="btn btn-success">
+        <i class="fa fa-plus"></i>
+    </button>
+</div>
+@await Html.PartialAsync("_CreateCustomerModal", Model)
+@section Scripts {
+    <script type="module" src="~/js/powerofsales/neworder.js"></script>
+}

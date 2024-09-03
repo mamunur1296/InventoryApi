@@ -22,6 +22,7 @@ namespace InventoryUi.Controllers
         public async Task<IActionResult> Create(Customer model)
         {
             model.UpdatedBy = null;
+            model.PasswordHash = "PasswordHash";
             var result = await _customerServices.PostClientAsync("Customer/Create", model);
             return Json(result);
         }

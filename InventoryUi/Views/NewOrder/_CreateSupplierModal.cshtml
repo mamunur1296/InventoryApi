@@ -1,0 +1,111 @@
+﻿@model InventoryUi.ViewModel.NewOrderVm
+@using System.Security.Claims
+@using Microsoft.IdentityModel.JsonWebTokens
+
+@{
+    var userName = string.Empty;
+
+    if (User.Identity.IsAuthenticated)
+    {
+        var claimsIdentity = User.Identity as ClaimsIdentity;
+        if (claimsIdentity != null)
+        {
+            // Extract the username from claims
+            var userNameClaim = claimsIdentity.FindFirst(ClaimTypes.Name);
+            if (userNameClaim != null)
+            {
+                userName = userNameClaim.Value;
+            }
+        }
+    }
+}
+<!-- Modal -->
+<div class="modal fade" id="SupplierModelCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAddEmployee" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="max-width: 65%; max-height: 80%;">
+        <div class="modal-content" style="height: 100%; overflow: hidden;">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabelAddEmployee">Add Supplier</h4>
+                <h4 class="modal-title" style="display:none;" id="myModalLabelUpdateEmployee">Update Supplier</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="height: calc(100% - 60px); overflow-y: auto;">
+                <form id="CreateSupplierForm" asp-action="Create" asp-controller="Supplier" method="post">
+                    <input type="hidden" asp-for="Supplier.CreatedBy" value="@userName" />
+                    <input type="hidden" asp-for="Supplier.UpdatedBy" value="@userName" />
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="Supplier.SupplierName" class="control-label"></label>
+                                    <input asp-for="Supplier.SupplierName" placeholder="Enter supplier name (e.g., Acme Corporation)" class="form-control" name="SupplierName" />
+                                    <span asp-validation-for="Supplier.SupplierName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Supplier.ContactName" class="control-label"></label>
+                                    <input asp-for="Supplier.ContactName" placeholder="Enter contact name (e.g., John)" class="form-control" name="ContactName" />
+                                    <span asp-validation-for="Supplier.ContactName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Supplier.ContactTitle" class="control-label"></label>
+                                    <input asp-for="Supplier.ContactTitle" placeholder="Enter contact title (e.g., Sales Manager)" class="form-control" name="ContactTitle" />
+                                    <span asp-validation-for="Supplier.ContactTitle" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Supplier.Address" class="control-label"></label>
+                                    <input asp-for="Supplier.Address" placeholder="Enter address (e.g., 456 Dhaka)" class="form-control" name="Address" />
+                                    <span asp-validation-for="Supplier.Address" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="Supplier.City" class="control-label"></label>
+                                    <input asp-for="Supplier.City" placeholder="Enter city (e.g., Dhaka)" class="form-control" name="City" />
+                                    <span asp-validation-for="Supplier.City" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Supplier.Region" class="control-label"></label>
+                                    <input asp-for="Supplier.Region" placeholder="Enter region (e.g., Dhaka)" class="form-control" name="Region" />
+                                    <span asp-validation-for="Supplier.Region" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Supplier.PostalCode" class="control-label"></label>
+                                    <input asp-for="Supplier.PostalCode" placeholder="Enter postal code (e.g., 62704)" class="form-control" name="PostalCode" />
+                                    <span asp-validation-for="Supplier.PostalCode" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Supplier.Country" class="control-label"></label>
+                                    <input asp-for="Supplier.Country" placeholder="Enter country (e.g., Bangladesh)" class="form-control" name="Country" />
+                                    <span asp-validation-for="Supplier.Country" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="Supplier.Phone" class="control-label"></label>
+                                    <input asp-for="Supplier.Phone" placeholder="Enter phone number (e.g., +1 234 567 890)" class="form-control" name="Phone" />
+                                    <span asp-validation-for="Supplier.Phone" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Supplier.Fax" class="control-label"></label>
+                                    <input asp-for="Supplier.Fax" placeholder="Enter fax number (e.g., +1 234 567 891)" class="form-control" name="Fax" />
+                                    <span asp-validation-for="Supplier.Fax" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Supplier.HomePage" class="control-label"></label>
+                                    <input asp-for="Supplier.HomePage" placeholder="Enter homepage URL (e.g., www.acme.com)" class="form-control" name="HomePage" />
+                                    <span asp-validation-for="Supplier.HomePage" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="btnSave">Save</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+
+            </div>
+            
+        </div>
+    </div>
+</div>

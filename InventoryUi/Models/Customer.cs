@@ -52,7 +52,7 @@ namespace InventoryUi.Models
         [Required(ErrorMessage = "Password is required.")]
         [StringLength(255, ErrorMessage = "Password hash cannot be longer than 255 characters.")]
         [DisplayName("Password")]
-        public string PasswordHash { get; set; }
+        public string  PasswordHash { get; set; }
         [DisplayName("Birth Date")]
         public DateTime? DateOfBirth { get; set; }
         [DisplayName("Medical History")]

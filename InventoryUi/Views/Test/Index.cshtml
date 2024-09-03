@@ -1,66 +1,56 @@
-﻿@model IEnumerable<InventoryUi.POC.CityViewModel>
-
+﻿@model InventoryUi.POC.MenuViewModel
 @{
-    ViewData["Title"] = "Product Search";
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<form asp-action="CreateProduct" method="post" id="createProductForm">
+    <div class="card-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="NewMenu.Name" class="control-label"></label>
+                    <input asp-for="NewMenu.Name" placeholder="Enter Product Name" class="form-control" />
+                    <span asp-validation-for="NewMenu.Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="NewMenu.Url" class="control-label"></label>
+                    <input asp-for="NewMenu.Url" placeholder="Enter Product URL" class="form-control" />
+                    <span asp-validation-for="NewMenu.Url" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Product</button>
+</form>
 
-<div>
-    <input type="text" id="searchInput" placeholder="Search for products..." autocomplete="off" />
-    <div id="suggestions"></div>
+<!-- Placeholder for the product list -->
+<div id="productList">
+    @await Html.PartialAsync("ProductList", Model.Menus) <!-- This will load the initial product list -->
 </div>
 
-<div id="cart">
-    <h2>Shopping Cart</h2>
-    <ul id="cartItems"></ul>
-</div>
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#createProductForm').submit(function (e) {
+                e.preventDefault(); // Prevent the default form submission
 
-<script>
-    document.getElementById('searchInput').addEventListener('input', function () {
-        var searchTerm = this.value;
-        if (searchTerm.length > 0) {
-            fetch(`/Product/GetProductSuggestions?searchTerm=${encodeURIComponent(searchTerm)}`)
-                .then(response => response.json())
-                .then(data => {
-                    var suggestionsDiv = document.getElementById('suggestions');
-                    suggestionsDiv.innerHTML = '';
-
-                    data.forEach(function (product) {
-                        var suggestionItem = document.createElement('div');
-                        suggestionItem.textContent = product.name;
-                        suggestionItem.setAttribute('data-id', product.id);
-                        suggestionItem.onclick = function () {
-                            addToCart(product.id, product.name);
-                        };
-                        suggestionsDiv.appendChild(suggestionItem);
-                    });
+                $.ajax({
+                    url: $(this).attr('action'), // Use the form's action attribute
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (result) {
+                        // Replace the content of the productList div with the returned partial view
+                        $('#productList').html(result);
+                    },
+                    error: function () {
+                        alert('An error occurred while creating the product.');
+                    }
                 });
-        } else {
-            document.getElementById('suggestions').innerHTML = '';
-        }
-    });
-
-    function addToCart(productId, productName) {
-        fetch('/Product/AddToCart', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ productId: productId })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                var cartItems = document.getElementById('cartItems');
-                var listItem = document.createElement('li');
-                listItem.textContent = productName;
-                cartItems.appendChild(listItem);
-
-                // Clear suggestions and input field after adding to cart
-                document.getElementById('suggestions').innerHTML = '';
-                document.getElementById('searchInput').value = '';
-            } else {
-                alert(data.message);
-            }
+            });
         });
-    }
-</script>
+    </script>
+}
