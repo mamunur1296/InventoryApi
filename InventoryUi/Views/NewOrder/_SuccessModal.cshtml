@@ -1,5 +1,4 @@
-﻿<!-- _SuccessModal.cshtml -->
-<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+﻿<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -10,6 +9,9 @@
             </div>
             <div class="modal-body">
                 <p>Your payment was processed successfully.</p>
+                <a href="@Url.Action("DownloadReceipt", "NewOrder")" class="btn btn-primary">
+                    Download Receipt
+                </a>
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" onclick="window.location.href='@Url.Action("Cancel", "NewOrder")'" class="btn btn-danger">Ok</button>

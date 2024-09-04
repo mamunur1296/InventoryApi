@@ -52,6 +52,7 @@ const SearchCustomer = () => {
 };
 
 const AddCustomer = () => {
+    debugger
     $(document).off('submit', '#addCustomerForm').on('submit', '#addCustomerForm', function (e) {
         e.preventDefault();
         $.ajax({
@@ -60,6 +61,12 @@ const AddCustomer = () => {
             data: $(this).serialize(),
             success: function (result) {
                 ReloadIndexWithPartial();
+                debugger
+                notification({
+                    message: "Product Add successfully!",
+                    type: "success",
+                    title: "Success"
+                });
             },
             error: function (xhr, status, error) {
                 console.error('Error adding product:', error);
@@ -371,15 +378,16 @@ const newUnitChildModalHandling = () => {
     });
 };
 window.processPayment = function () {
+    debugger
     $.ajax({
         url: '/NewOrder/Payment',
         type: 'POST',
         success: function (response) {
+            debugger
             // Load the partial view response into the modal container
             $('#modalContainer').html(response);
             // Show the modal using Bootstrap's modal method
             $('#successModal').modal('show');
-            
         },
         error: function (xhr, status, error) {
             console.log('An error occurred while processing the payment: ', error);

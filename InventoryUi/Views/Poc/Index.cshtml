@@ -7,43 +7,45 @@
 <div class=" m-2">
     <div class="row">
         <div class="col-md-6 p-3">
-            <div class="bg-light  text-dark">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2 class="fs-5 fw-semibold mb-0">Sales Summary</h2>
-                    <span class="fs-6 text-muted">Updated: Today 10:49:09</span>
+            <div class="row">
+                <div class="col-12 mb-3">
+                    <h1>Sales Summary</h1>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <a asp-action="index" asp-controller="NewOrder" class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                                <i class="fas fa-chart-line fa-2x mb-1"></i>
+                                <p class="fa-1x mb-0">Today Sales</p>
+                            </a>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <a asp-action="index" asp-controller="NewOrder" class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                                <i class="fas fa-calendar-day fa-2x mb-1"></i>
+                                <p class="fa-1x mb-0">Last Day Sales</p>
+                            </a>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <a asp-action="index" asp-controller="NewOrder" class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                                <i class="fas fa-calendar-alt fa-2x mb-1"></i>
+                                <p class="fa-1x mb-0">Current Month Sales</p>
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a asp-action="index" asp-controller="NewOrder" class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                                <i class="fas fa-calendar fa-2x mb-1"></i>
+                                <p class="fa-1x mb-0">Last Month Sales</p>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="row text-center">
-                    <div class="col-6 mb-3">
-                        <div class="fs-5 fw-bold">$12.99</div>
-                        <div class="fs-6 text-muted">Net Sales</div>
-                        <div class="text-success small">↑ 100%</div>
-                    </div>
-                    <div class="col-6 mb-3">
-                        <div class="fs-5 fw-bold">$13.01</div>
-                        <div class="fs-6 text-muted">Payments</div>
-                        <div class="text-success small">↑ 100%</div>
-                    </div>
-                    <div class="col-6 mb-3">
-                        <div class="fs-5 fw-bold">$4.01</div>
-                        <div class="fs-6 text-muted">Discounts</div>
-                        <div class="text-success small">↑ 100%</div>
-                    </div>
-                    <div class="col-6 mb-3">
-                        <div class="fs-5 fw-bold">$0.00</div>
-                        <div class="fs-6 text-muted">Voided</div>
-                        <div class="text-muted small">0%</div>
-                    </div>
+
+                <div class="col-12 mb-3">
+                    Parses Summary
                 </div>
-            </div>
-            <div class="my-3 w-100">
-                <input type="text" name="name" value="" class="form-control" />
-            </div>
-            <div class="w-100">
-                <p>Operations</p>
-                <input type="text" name="name" value="" class="form-control" />
+                <div class="col-12">
+                    Dayagram
+                </div>
             </div>
 
-                
         </div>
         <div class="col-md-6">
             <!-- Button Grid -->

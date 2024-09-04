@@ -3,6 +3,13 @@ using InventoryUi.Models;
 using InventoryUi.Services.Interface;
 using InventoryUi.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using System.IO;
+using Microsoft.AspNetCore.Identity;
+using System.Drawing.Imaging;
+
 
 namespace InventoryUi.Controllers
 {
@@ -277,29 +284,64 @@ namespace InventoryUi.Controllers
         }
 
 
+        //public async Task<IActionResult> Payment()
+        //{
+        //    var productList = HttpContext.Session.GetObject<List<Product>>("ProductList") ?? new List<Product>();
+        //    var customer = HttpContext.Session.GetObject<Customer>("CurrentCustomer") ?? new Customer();
+
+        //    // Prepare the view model
+        //    var model = new NewOrderVm
+        //    {
+        //        ProductsListFromSession = productList,
+        //        CustomerLIstFromSession = new Customer()
+        //        {
+        //            CustomerName = customer?.CustomerName ?? "No Name",
+        //            Phone = customer?.Phone ?? "null",
+        //            PasswordHash = "password"
+        //        }
+        //    };
+
+        //    var result = await _newOrderServices.PostClientAsync("OrderMaping/Create", model);
+
+        //    if (result.Success)
+        //    {
+        //        // Return a partial view containing the success modal
+        //        HttpContext.Session.Clear();
+        //        return PartialView("_SuccessModal");
+        //    }
+
+        //    return RedirectToAction("Index");
+        //}
+        public IActionResult Cancel()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index");
+        }
         public async Task<IActionResult> Payment()
         {
             var productList = HttpContext.Session.GetObject<List<Product>>("ProductList") ?? new List<Product>();
             var customer = HttpContext.Session.GetObject<Customer>("CurrentCustomer") ?? new Customer();
 
-            // Prepare the view model
             var model = new NewOrderVm
             {
                 ProductsListFromSession = productList,
-                CustomerLIstFromSession = new Customer()
-                {
-                    CustomerName = customer?.CustomerName ?? "No Name",
-                    Phone = customer?.Phone ?? "null",
-                    PasswordHash = "password"
-                }
+                CustomerLIstFromSession = customer,
+                
             };
-
+            model.CustomerLIstFromSession.CustomerName = customer?.CustomerName ?? "No Name";
+            model.CustomerLIstFromSession.Phone = customer?.Phone ?? "null";
+            model.CustomerLIstFromSession.PasswordHash = "password";
             var result = await _newOrderServices.PostClientAsync("OrderMaping/Create", model);
 
             if (result.Success)
             {
-                // Return a partial view containing the success modal
-                HttpContext.Session.Clear();
+                // Generate PDF
+               // var pdfBytes = GeneratePdf(model);
+
+                // Store the PDF bytes temporarily
+                //TempData["PaymentReceipt"] = Convert.ToBase64String(pdfBytes);
+
+                // Return the success modal partial view
                 return PartialView("_SuccessModal");
             }
 
@@ -307,11 +349,10 @@ namespace InventoryUi.Controllers
         }
 
 
-        public IActionResult Cancel()
-        {
-            HttpContext.Session.Clear();
-            return RedirectToAction("Index");
-        }
-       
+
+
+
+
+
     }
 }
