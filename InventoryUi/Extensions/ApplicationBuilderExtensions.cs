@@ -12,8 +12,12 @@
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+            
 
             app.UseHttpsRedirection();
+
+            // Configure caching policies for static files
+          
             app.UseStaticFiles();
 
             // Add UseRouting before other middleware that depends on routing.

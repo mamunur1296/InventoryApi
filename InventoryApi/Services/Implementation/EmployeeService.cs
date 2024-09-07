@@ -22,7 +22,6 @@ namespace InventoryApi.Services.Implementation
         {
             var newEmployee = new Employee
             {
-                Id = Guid.NewGuid().ToString(),
                 CreatedBy = entity?.CreatedBy?.Trim(),
                 CreationDate = DateTime.Now, // Set CreationDate here
                 FirstName = entity.FirstName.Trim(),
@@ -45,7 +44,15 @@ namespace InventoryApi.Services.Implementation
                 ManagerId=entity?.ManagerId?.Trim(),
                 UserId=entity?.UserId,
             };
-
+            // Set the Id conditionally
+            if (entity?.IsEmp == true)
+            {
+                newEmployee.Id = entity.Id;
+            }
+            else
+            {
+                newEmployee.Id = Guid.NewGuid().ToString();
+            }
             await _unitOfWorkRepository.employeeRepository.AddAsync(newEmployee);
             await _unitOfWorkRepository.SaveAsync();
 

@@ -47,20 +47,25 @@
                                     <input asp-for="Product.Description" placeholder="Enter product description" class="form-control" name="Description" />
                                     <span asp-validation-for="Product.Description" class="text-danger"></span>
                                 </div>
-                                <div class="form-group">
+                                <div class=" form-group ">
                                     <label class="control-label" asp-for="Product.CategoryID"></label>
-                                    <select class="form-control" asp-for="Product.CategoryID" name="CategoryID" >
-                                        <option value="">Select category</option>
-                                        @{
-                                            foreach (var category in Model.CategoryLIst)
-                                            {
-                                                <option value="@category.Id" >@category.CategoryName</option>
+                                    <div class="d-flex">
+                                        <select class="form-control" asp-for="Product.CategoryID" name="CategoryID">
+                                            <option value="">Select category</option>
+                                            @{
+                                                foreach (var category in Model.CategoryLIst)
+                                                {
+                                                    <option value="@category.Id">@category.CategoryName</option>
+                                                }
                                             }
-                                        }
-                                    </select>
+                                        </select>
+                                        <button id="addNewCatagoryButton" class="btn btn-success" title="Add Category"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                    
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" asp-for="Product.SupplierID"></label>
+                                    <div class="d-flex"> 
                                     <select class="form-control" asp-for="Product.SupplierID" name="SupplierID">
                                         <option value="">Select supplier</option>
                                         @{
@@ -70,6 +75,8 @@
                                             }
                                         }
                                     </select>
+                                    <button id="addNewSupplierButton" class="btn btn-success" title="Add Supplier"><i class="fa fa-plus"></i></button>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="Product.QuantityPerUnit" class="control-label"></label>
@@ -124,6 +131,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" asp-for="Product.UnitMasterId"></label>
+                                    <div class="d-flex">
                                     <select class="form-control" asp-for="Product.UnitMasterId" name="UnitMasterId">
                                         <option value="">Select Master Unit</option>
                                         @{
@@ -133,9 +141,13 @@
                                             }
                                         }
                                     </select>
+                                        <button id="addNewMasterUnitButton" class="btn btn-success" title="Add Master Unit"><i class="fa fa-plus"></i></button>
+
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" asp-for="Product.UnitChildId"></label>
+                                    <div class="d-flex">
                                     <select class="form-control" asp-for="Product.UnitChildId" name="UnitChildId">
                                         <option value="">Select Child Unit</option>
                                         @{
@@ -145,6 +157,9 @@
                                             }
                                         }
                                     </select>
+                                        <button id="addNewChildUnitButton" class="btn btn-success" title="Add Child Unit"><i class="fa fa-plus"></i></button>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -160,3 +175,7 @@
     </div>
 </div>
 
+@await Html.PartialAsync("_CreateSupplierModal", Model)
+@await Html.PartialAsync("_CreateCategoryModal", Model)
+@await Html.PartialAsync("_CreateUnitMasterModal", Model)
+@await Html.PartialAsync("_CreateUnitChildModal", Model)

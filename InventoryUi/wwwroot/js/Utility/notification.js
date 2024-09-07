@@ -1,10 +1,22 @@
-﻿export const notification = ({
+﻿$(document).ready(async function () {
+});
+export const notification = ({
     message = "",
     type = "success",
     title = "",
     time = 5000,
     position = "toast-top-center" // Default position, can be overridden
 } = {}) => {
+    // Default position, can be overridden
+    // Default position, can be overridden
+    // Default position, can be overridden
+    // Default position, can be overridden
+    // Default position, can be overridden
+    // Default position, can be overridden
+    
+    
+    
+  
     debugger
     console.log("Notification");
     // Set the options for Toastr

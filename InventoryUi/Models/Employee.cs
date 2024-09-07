@@ -51,6 +51,7 @@ namespace InventoryUi.Models
         [DisplayName("Manager")]
         public string? ManagerId { get; set; }
         public Employee Manager { get; set; }
+        public bool ? IsEmp {  get; set; }  
         public ICollection<Employee> Subordinates { get; set; }
         public ICollection<Order> Orders { get; set; }
     }

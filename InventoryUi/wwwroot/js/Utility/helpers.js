@@ -157,6 +157,10 @@ export const initializevalidation = (formselector, rules, messages) => {
     });
     debugger
     // bind validation on change and focus events
+    // bind validation on change and focus events
+    // bind validation on change and focus events
+    // bind validation on change and focus events
+    // bind validation on change and focus events
     $(formselector + ' input[type="text"]').on('change focus', function () {
         validator.element($(this));
     });

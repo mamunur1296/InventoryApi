@@ -9,7 +9,7 @@ namespace InventoryApi.DTOs
 
         [Required(ErrorMessage = "Customer name is required.")]
         [StringLength(255, ErrorMessage = "Customer name cannot be longer than 255 characters.")]
-        public string CustomerName { get; set; }
+        public string? CustomerName { get; set; }
 
    
         public string? ContactName { get; set; }
@@ -33,7 +33,7 @@ namespace InventoryApi.DTOs
         public string? Country { get; set; }
 
  
-        public string Phone { get; set; }
+        public string? Phone { get; set; }
 
         public string? Fax { get; set; }
 
@@ -41,7 +41,7 @@ namespace InventoryApi.DTOs
         public string? Email { get; set; }
 
    
-        public string PasswordHash { get; set; }
+        public string? PasswordHash { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
 

@@ -75,6 +75,7 @@ $.validator.addMethod("checkDuplicateUsername", createDuplicateCheckValidator(
     "Username already exists."
 ));
 
+
 $.validator.addMethod("checkDuplicateEmail", createDuplicateCheckValidator(
     "/DashboardUser/CheckDuplicate",
     "Email",
@@ -283,6 +284,7 @@ window.deleteUser = async (id) => {
         }
     });
 }
+
 
 
 

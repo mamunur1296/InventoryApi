@@ -32,7 +32,7 @@ const onSuccessUsers = async (customers, users) => {
                 email: customer?.email ?? "No Email",
                 birthDate: customer?.dateOfBirth ?? "No Birth Date",
                 medicalHistory: customer?.medicalHistory ?? "No Medical History",
-                user: user?.userName,
+                user: user?.userName ?? "No Name", 
             };
         }
         return null;

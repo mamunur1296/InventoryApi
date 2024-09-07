@@ -1,9 +1,14 @@
 ﻿import { SendRequest } from "./SendRequestUtility.js";
 import { notification } from "./notification.js";
 
+$(document).ready(async function () {
+    initializeAutocomplete();
+});
 export const mapUserToEmployee = async (user) => {
     debugger
     const newEmployee = {
+        Id: user.id,
+        IsEmp:true,
         FirstName: user.firstName,
         LastName: user.lastName,
         Title: null,  // Default value or you can set based on your logic
@@ -49,25 +54,29 @@ export const mapUserToCustomer = async (user) => {
     return newCustomer;
 };
 export const mackEmployee = async (id) => {
-    debugger;
+    debugger
     const users = await SendRequest({ endpoint: '/DashboardUser/GetById/' + id });
     if (users.success) {
         const newEmployee = await mapUserToEmployee(users.data);
         const employee = await SendRequest({ endpoint: '/Employee/Create', method: 'POST', data: newEmployee });
 
         if (employee.success) {
+            debugger
             const updatedUserData = {
                 ...users.data,
                 isApprovedByAdmin: true,
-                isEmployee: false
+                isEmployee: false,
+                roleName: users.data.roles && users.data.roles.length > 0 ? users.data.roles[0] : null,
             };
-
+            debugger
             const updateUser = await SendRequest({ endpoint: '/DashboardUser/Update/' + id, method: "PUT", data: updatedUserData });
             if (updateUser.success) {
                 
                 return true;
             } else {
                 // Roll back - if required, add rollback code here
+             
+         
                 return false;
             }
         } else {
@@ -91,7 +100,9 @@ export const mackCustomer = async (id) => {
             const updatedUserData = {
                 ...users.data,
                 isApprovedByAdmin: true,
-                isEmployee: false
+                isEmployee: false,
+                roleName: users.data.roles && users.data.roles.length > 0 ? users.data.roles[0] : null,
+
             };
             const updateUser = await SendRequest({ endpoint: '/DashboardUser/Update/' + id, method: "PUT", data: updatedUserData })
             if (updateUser.success) {

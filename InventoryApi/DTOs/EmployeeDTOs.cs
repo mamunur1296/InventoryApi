@@ -26,6 +26,7 @@ namespace InventoryApi.DTOs
         public string? ManagerId { get; set; }
         public int? ReportsTo { get; set; }
         public string? PhotoPath { get; set; }
+        public bool? IsEmp { get; set; }
         public string? UserId { get; set; }
        // public ApplicationUser? User { get; set; }
         // public Employee Manager { get; set; }

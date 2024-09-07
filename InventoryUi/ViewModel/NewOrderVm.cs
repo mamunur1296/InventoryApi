@@ -3,7 +3,7 @@ using InventoryUi.Models;
 
 namespace InventoryUi.ViewModel
 {
-    public class NewOrderVm
+    public class NewOrderVm : BaseModel
     {
         public string SearchTerm { get; set; }
         public IEnumerable<Product> Products { get; set; } = new List<Product>(); // Default empty list of Products
@@ -21,6 +21,8 @@ namespace InventoryUi.ViewModel
         public IEnumerable<UnitMaster> unitMasters { get; set; }= new List<UnitMaster>();
         public IEnumerable<UnitChild> unitChildrens { get; set; } = new List<UnitChild>();
         public bool IsPaymentButtonEnabled { get; set; }=false;
+        public string ? EmployeeId { get; set; }
+        
     }
 
 }

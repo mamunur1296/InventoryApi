@@ -13,7 +13,7 @@
                 <div class="row mb-3">
                     <label class="col-form-label col-2 text-1xl me-2" for="selectProduct">Select Product:</label>
 
-                    <div class="col-6">
+                    <div class="col-9">
                         <form asp-action="AddToCart" id="addProductForm" method="post" class="d-flex">
                             <!-- This input field is used for searching -->
                             <input type="text" id="tags" class="form-control me-2" placeholder="Type to search products..." />
@@ -22,12 +22,9 @@
                         </form>
                     </div>
 
-                    <div class="col-4 d-flex justify-content-between">
+                    <div class="col-1 d-flex justify-content-between">
                         <button id="addNewProductButton" class="btn btn-success" title="Add Product"><i class="fa fa-plus"></i></button>
-                        <button id="addNewCatagoryButton" class="btn btn-success" title="Add Category"><i class="fa fa-plus"></i></button>
-                        <button id="addNewSupplierButton" class="btn btn-success" title="Add Supplier"><i class="fa fa-plus"></i></button>
-                        <button id="addNewMasterUnitButton" class="btn btn-success" title="Add Master Unit"><i class="fa fa-plus"></i></button>
-                        <button id="addNewChildUnitButton" class="btn btn-success" title="Add Child Unit"><i class="fa fa-plus"></i></button>
+                         
                     </div>
 
                 </div>
@@ -47,13 +44,9 @@
     <div id="modalSuccess"></div>
 </div>
 @await Html.PartialAsync("_CreateProductModal", Model)
-@await Html.PartialAsync("_CreateSupplierModal", Model)
-@await Html.PartialAsync("_CreateCategoryModal", Model)
-@await Html.PartialAsync("_CreateUnitMasterModal", Model)
-@await Html.PartialAsync("_CreateUnitChildModal", Model)
 @await Html.PartialAsync("_SuccessModal", Model)
 
 @section Scripts {
-    <script type="module" src="~/js/powerofsales/neworder.js"></script>
+    <script type="module" src="~/js/powerofsales/neworder.js" asp-append-version="true"></script>
 }
 

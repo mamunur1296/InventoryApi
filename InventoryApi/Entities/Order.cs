@@ -5,7 +5,7 @@ namespace InventoryApi.Entities
 {
     public class Order : BaseEntity
     {
-        public string CustomerID { get; set; }
+        public string ? CustomerID { get; set; }
         public Customer Customer { get; set; }
         public string? EmployeeID { get; set; }
         public Employee Employee { get; set; }

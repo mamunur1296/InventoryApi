@@ -86,9 +86,13 @@ namespace InventoryUi.Controllers
             {
                 model.UserImg = user.Data.UserImg;
             }
-            if (model.Roles == null)
+            if (model.RoleName == null)
             {
                 model.Roles = user.Data.Roles;
+            }
+            else
+            {
+                model.Roles = new List<string> { model.RoleName };
             }
             var result = await _userServices.UpdateClientAsync($"User/Edit/{id}", model);
 

@@ -1,6 +1,7 @@
 ﻿using InventoryApi.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace InventoryApi.DataContext
 {
@@ -42,6 +43,7 @@ namespace InventoryApi.DataContext
             builder.Entity<SubMenuRole>().HasOne(smr => smr.SubMenu).WithMany(sm => sm.SubMenuRoles).HasForeignKey(smr => smr.SubMenuId);
             builder.Entity<SubMenuRole>().HasOne(smr => smr.Role).WithMany().HasForeignKey(smr => smr.RoleId);
             builder.Entity<Order>().Property(o => o.Freight).HasPrecision(18, 2);
+            
             builder.Entity<Product>()
                 .HasOne(p => p.UnitMaster)
                 .WithMany(u => u.Products)

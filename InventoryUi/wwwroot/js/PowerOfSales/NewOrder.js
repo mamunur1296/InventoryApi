@@ -1,4 +1,6 @@
-﻿import { notification } from "../Utility/notification.js";
+﻿
+import { CatagoryValidae, ProductValidator, SupplierValidate, validateUnitChildForm, validateUnitMasterForm } from "../utility/allvalidator.js";
+import { notification } from "../Utility/notification.js";
 
 $(document).ready(function () {
     initializeFunctions();
@@ -17,7 +19,7 @@ const initializeFunctions = () => {
     newSupplierModalHandling();
     newUnitMasterModalHandling();
     newUnitChildModalHandling();
-   
+
 };
 
 const SearchProduct = () => {
@@ -77,15 +79,31 @@ const AddCustomer = () => {
 };
 
 const AddToCart = () => {
+    debugger
     $(document).off('submit', '#addProductForm').on('submit', '#addProductForm', function (e) {
         e.preventDefault();
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',
             data: $(this).serialize(),
-            success: function (result) {
-                $('#ProductListPartial').html(result);
-                ReloadIndexWithPartial();
+            success: function (result, textStatus, jqXHR) {
+                debugger
+                var contentType = jqXHR.getResponseHeader("Content-Type");
+                if (contentType && contentType.includes("text/html")) {
+                    debugger
+                    $('#ProductListPartial').html(result);
+                    ReloadIndexWithPartial();
+                } else if (contentType && contentType.includes("application/json")) {
+                    if (!result.success) {
+                        debugger
+                        notification({
+                            message: result.message,
+                            type: "error",
+                            title: "error"
+                        });
+                    }
+                }
+               
             },
             error: function (xhr, status, error) {
                 console.error('Error adding product:', error);
@@ -148,27 +166,40 @@ const UpdateCartItem = () => {
             quantity: quantity,
             discount: discount
         };
-
+        debugger
         // AJAX request to update product item
         $.ajax({
             url: '/NewOrder/UpdateProductItem', // Update the URL to the correct endpoint
             type: 'POST',
             data: data,
-            success: function (result) {
-                // Update the product list partial view with the response
-                $('#ProductListPartial').html(result);
-                ReloadIndexWithPartial();
+            success: function (result, textStatus, jqXHR) {
+                debugger
+                var contentType = jqXHR.getResponseHeader("Content-Type");
+                if (contentType && contentType.includes("text/html")) {
+                    // Update the product list partial view with the response
+                    $('#ProductListPartial').html(result);
+                    ReloadIndexWithPartial();
 
-                // Show success notification
-                notification({
-                    message: "Product updated successfully!",
-                    type: "success",
-                    title: "Success"
-                });
+                    // Show success notification
+                    notification({
+                        message: "Product updated successfully!",
+                        type: "success",
+                        title: "Success"
+                    });
+                } else if (contentType && contentType.includes("application/json")) {
+                    if (!result.success) {
+                        notification({
+                            message: result.message,
+                            type: "error",
+                            title: "error"
+                        });
+                    }
+                }
+                
             },
             error: function (xhr, status, error) {
                 console.error('Error updating item:', error);
-
+                debugger
                 // Show error notification
                 notification({
                     message: "An error occurred while updating the product in the cart. Please try again!",
@@ -180,34 +211,92 @@ const UpdateCartItem = () => {
     });
 };
 
-
-
 const newProductModalHandling = () => {
     $('#addNewProductButton').off('click').on('click', function () {
         $('#createProductModal').modal('show');
     });
-
+    ProductValidator('#createProductForm');
     $('#createProductForm').off('submit').on('submit', function (e) {
         e.preventDefault();
-        var form = $(this);
-        var formData = new FormData(form[0]);
+        if ($('#createProductForm').valid()) {
+            var form = $(this);
+            var formData = new FormData(form[0]);
 
-        $.ajax({
-            url: form.attr('action'),
-            type: form.attr('method'),
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                $('#createProductModal').modal('hide');
-                $('#ProductListPartial').load('/Product/GetProductList');
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        $('#createProductModal').modal('hide');
+                        form[0].reset();
+                        $('#ProductListPartial').load('/Product/GetProductList');
+                        notification({
+                            message: "Product Create successfully!",
+                            type: "success",
+                            title: "Success"
+                        });
+                    }
+                    
+                },
+                error: function (error) {
+                    console.log(error);
+                    notification({
+                        message: "Product Create Faild.",
+                        type: "error",
+                        title: "error"
+                    });
+                }
+            });
+        }
+
+    });
+
+
+};
+
+
+const newCategoryModalHandling = () => {
+    $('#addNewCatagoryButton').off('click').on('click', function () {
+        $('#CategoryModelCreate').modal('show');
+    });
+
+    CatagoryValidae('#CreateCategoryForm');
+    $('#CreateCategoryForm').off('submit').on('submit', function (e) {
+        e.preventDefault();
+        if ($('#CreateCategoryForm').valid()) {
+            var form = $(this);
+            var formData = new FormData(form[0]);
+
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        $('#CategoryModelCreate').modal('hide');
+                        form[0].reset();
+                        notification({
+                            message: "Category Create successfully!",
+                            type: "success",
+                            title: "Success"
+                        });
+                    }
+                    //$('#ProductListPartial').load('/Product/GetProductList');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
     });
 };
+
 const newCustomerModalHandling = () => {
     $('#addNewCustomerButton').off('click').on('click', function () {
         $('#createCustomerModal').modal('show');
@@ -227,6 +316,7 @@ const newCustomerModalHandling = () => {
             success: function (response) {
                 if (response.success) {
                     $('#createCustomerModal').modal('hide');
+                    form[0].reset();
                     notification({
                         message: "Customer Create successfully!",
                         type: "success",
@@ -241,156 +331,189 @@ const newCustomerModalHandling = () => {
         });
     });
 };
-
-const newCategoryModalHandling = () => {
-    $('#addNewCatagoryButton').off('click').on('click', function () {
-        $('#CategoryModelCreate').modal('show');
-    });
-
-    $('#CreateCategoryForm').off('submit').on('submit', function (e) {
-        e.preventDefault();
-        var form = $(this);
-        var formData = new FormData(form[0]);
-
-        $.ajax({
-            url: form.attr('action'),
-            type: form.attr('method'),
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                if (response.success) {
-                    $('#CategoryModelCreate').modal('hide');
-                    notification({
-                        message: "Category Create successfully!",
-                        type: "success",
-                        title: "Success"
-                    });
-                }
-                //$('#ProductListPartial').load('/Product/GetProductList');
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
-    });
-};
-
 const newSupplierModalHandling = () => {
+    // Show the Supplier creation modal when the button is clicked
     $('#addNewSupplierButton').off('click').on('click', function () {
         $('#SupplierModelCreate').modal('show');
     });
 
+    // Initialize validation for the Supplier form
+    SupplierValidate('#CreateSupplierForm');
+
+    // Handle form submission
     $('#CreateSupplierForm').off('submit').on('submit', function (e) {
         e.preventDefault();
-        var form = $(this);
-        var formData = new FormData(form[0]);
 
-        $.ajax({
-            url: form.attr('action'),
-            type: form.attr('method'),
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                if (response.success) {
-                    $('#SupplierModelCreate').modal('hide');
+        // Check if the form is valid
+        if ($('#CreateSupplierForm').valid()) {
+            var form = $(this);
+            var formData = new FormData(form[0]);
+
+            // Perform the AJAX request to submit the form
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: formData,
+                processData: false, // Don't process the files
+                contentType: false, // Set to false for file uploads
+                success: function (response) {
+                    if (response.success) {
+                        // Hide the modal if the form was successfully submitted
+                        $('#SupplierModelCreate').modal('hide');
+                        form[0].reset();
+                        // Show success notification
+                        notification({
+                            message: "Supplier created successfully!",
+                            type: "success",
+                            title: "Success"
+                        });
+
+                        // Optionally, reload the supplier list or some other content
+                        // $('#SupplierListPartial').load('/Supplier/GetSupplierList');
+                    }
+                },
+                error: function (error) {
+                    // Handle errors here
+                    console.log(error);
                     notification({
-                        message: "Supplier Create successfully!",
-                        type: "success",
-                        title: "Success"
+                        message: "Failed to create supplier.",
+                        type: "error",
+                        title: "Error"
                     });
                 }
-                //$('#ProductListPartial').load('/Product/GetProductList');
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
+            });
+        }
     });
 };
 const newUnitMasterModalHandling = () => {
     $('#addNewMasterUnitButton').off('click').on('click', function () {
         $('#UnitMasterModelCreate').modal('show');
     });
-
+    validateUnitMasterForm('#CreateUnitMasterForm');
     $('#CreateUnitMasterForm').off('submit').on('submit', function (e) {
         e.preventDefault();
-        var form = $(this);
-        var formData = new FormData(form[0]);
+        if ($('#CreateUnitMasterForm').valid()) {
+            var form = $(this);
+            var formData = new FormData(form[0]);
 
-        $.ajax({
-            url: form.attr('action'),
-            type: form.attr('method'),
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                if (response.success) {
-                    $('#UnitMasterModelCreate').modal('hide');
-                    notification({
-                        message: "Master Unit Create successfully!",
-                        type: "success",
-                        title: "Success"
-                    });
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        $('#UnitMasterModelCreate').modal('hide');
+                        form[0].reset();
+                        notification({
+                            message: "Master Unit Create successfully!",
+                            type: "success",
+                            title: "Success"
+                        });
+                    }
+                    //$('#ProductListPartial').load('/Product/GetProductList');
+                },
+                error: function (error) {
+                    console.log(error);
                 }
-                //$('#ProductListPartial').load('/Product/GetProductList');
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
+            });
+        }
+  
     });
 };
-
 const newUnitChildModalHandling = () => {
     $('#addNewChildUnitButton').off('click').on('click', function () {
         $('#UnitChildMUodelCreate').modal('show');
     });
-
+    validateUnitChildForm('#CreateUnitChildForm');
     $('#CreateUnitChildForm').off('submit').on('submit', function (e) {
         e.preventDefault();
-        var form = $(this);
-        var formData = new FormData(form[0]);
-        debugger
-        $.ajax({
-            url: form.attr('action'),
-            type: form.attr('method'),
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                if (response.success) {
-                    $('#UnitChildMUodelCreate').modal('hide');
-                
-                    notification({
-                        message: "Child Unit Create successfully!",
-                        type: "success",
-                        title: "Success"
-                    });
+        if ($('#CreateUnitChildForm').valid()) {
+            var form = $(this);
+            var formData = new FormData(form[0]);
+            debugger
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        $('#UnitChildMUodelCreate').modal('hide');
+                        form[0].reset();
+
+                        notification({
+                            message: "Child Unit Create successfully!",
+                            type: "success",
+                            title: "Success"
+                        });
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error);
+
                 }
-                
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
+            });
+        }
+        
     });
 };
 window.processPayment = function () {
-    debugger
+    debugger;
     $.ajax({
         url: '/NewOrder/Payment',
         type: 'POST',
-        success: function (response) {
+        success: function (response, textStatus, jqXHR) {
             debugger
-            // Load the partial view response into the modal container
-            $('#modalContainer').html(response);
-            // Show the modal using Bootstrap's modal method
-            $('#successModal').modal('show');
+            // Check the content type of the response
+            var contentType = jqXHR.getResponseHeader("Content-Type");
+
+            if (contentType && contentType.includes("text/html")) {
+                // Handle HTML partial view response
+                $('#modalContainer').html(response);
+                $('#successModal').modal('show');
+            } else if (contentType && contentType.includes("application/json")) {
+                // Handle JSON response
+                debugger
+
+                if (response.Success) {
+                    debugger
+                    // Show the success modal if JSON response indicates success
+                    $('#modalContainer').html(response); // If you include HTML in the JSON response
+                    $('#successModal').modal('show');
+                } else {
+                    debugger
+                    // Trigger error notification if JSON response indicates failure
+                    notification({
+                        message: response.message,
+                        type: "error",
+                        title: "error"
+                    });
+                }
+            } else {
+                // Handle unexpected response
+                notification({
+                    message: "Unexpected response format.",
+                    type: "error",
+                    title: "error"
+                });
+            }
         },
         error: function (xhr, status, error) {
+            debugger;
             console.log('An error occurred while processing the payment: ', error);
+
+            // Trigger error notification for AJAX errors
+            notification({
+                message: "An error occurred while processing the payment. Please try again.",
+                type: "error",
+                title: "error"
+            });
         }
     });
 };
+
+
