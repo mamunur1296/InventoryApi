@@ -8,6 +8,10 @@ using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using System.Drawing.Imaging;
 using System.Security.Claims;
+using InventoryUi.Services.Implemettions;
+using Microsoft.AspNetCore.Hosting;
+using System.Drawing.Printing;
+
 
 
 
@@ -23,6 +27,7 @@ namespace InventoryUi.Controllers
         private readonly IClientServices<UnitMaster> _unitMasterServices;
         private readonly IClientServices<Order> _orderService;
         private readonly IClientServices<NewOrderVm> _newOrderServices;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         public NewOrderController(
             IClientServices<Product> productServices,
             IClientServices<Customer> customerServices,
@@ -31,7 +36,9 @@ namespace InventoryUi.Controllers
             IClientServices<UnitChild> unitchildServices,
             IClientServices<UnitMaster> unitMasterServices,
             IClientServices<Order> orderService,
-            IClientServices<NewOrderVm> newOrderServices)
+            IClientServices<NewOrderVm> newOrderServices,
+            IWebHostEnvironment webHostEnvironment
+            )
         {
             _productServices = productServices;
             _customerServices = customerServices;
@@ -41,6 +48,7 @@ namespace InventoryUi.Controllers
             _unitMasterServices = unitMasterServices;
             _orderService = orderService;
             _newOrderServices = newOrderServices;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
@@ -50,7 +58,7 @@ namespace InventoryUi.Controllers
             var name = HttpContext.Request.Query["productTerm"].ToString();
 
             var filteredProducts = products?.Data?
-             .Where(p => p.ProductName.Contains(name) && p.UnitsInStock > 0) // Add condition for Quantity
+             .Where(p => p.ProductName.Contains(name)) // Add condition for Quantity
              .Select(p => new
              {
                  label = p.ProductName, // Display name
@@ -156,14 +164,15 @@ namespace InventoryUi.Controllers
             var productList = HttpContext.Session.GetObject<List<Product>>("ProductList") ?? new List<Product>();
 
             var existingProduct = productList.FirstOrDefault(p => p.Id == product.Data.Id);
-            if (product?.Data?.UnitsInStock <= existingProduct?.Quentity)
+            if (product?.Data?.UnitsInStock <= existingProduct?.Quentity || product?.Data?.UnitsInStock <= 0)
             {
                 return Json(new
                 {
                     Success = false,
-                    Message = $"Stock Error: Insufficient stock for '{product.Data.ProductName}'. Available stock: {product.Data.UnitsInStock}"
+                    Message = $"Stock Error: Insufficient stock for '{product?.Data?.ProductName}'. Available stock: {product?.Data?.UnitsInStock ?? 0}"
                 });
             }
+
             if (existingProduct == null)
             {
                 product.Data.Quentity = 1;
@@ -388,6 +397,7 @@ namespace InventoryUi.Controllers
                     // Delete the file after reading (to clear storage)
                     System.IO.File.Delete(filePath);
 
+                    HttpContext.Session.Clear();
                     // Return the file for download
                     return File(fileStream, "application/pdf", "PaymentReceipt.pdf");
                 }
@@ -402,6 +412,9 @@ namespace InventoryUi.Controllers
             // If no PDF data is available, redirect to an appropriate action
             return RedirectToAction("Index");
         }
+
+
+
         private byte[] GeneratePdf(NewOrderVm model)
         {
             try
@@ -464,7 +477,7 @@ namespace InventoryUi.Controllers
                                 graphics.DrawString(index.ToString(), regularFont, Brushes.Black, new PointF(margin, yPosition));
                                 graphics.DrawString(product.ProductName, regularFont, Brushes.Black, new PointF(margin + 30, yPosition));
                                 graphics.DrawString($"{product.UnitPrice} Tk", regularFont, Brushes.Black, new PointF(margin + 140, yPosition));
-                                graphics.DrawString($"{product.Quentity}", regularFont, Brushes.Black, new PointF(margin + 180, yPosition));
+                                graphics.DrawString($"{product.Quentity}", regularFont, Brushes.Black, new PointF(margin + 190, yPosition));
                                 graphics.DrawString($"{product.TotalPrice} Tk", regularFont, Brushes.Black, new PointF(margin + 220, yPosition));
 
                                 yPosition += 20;

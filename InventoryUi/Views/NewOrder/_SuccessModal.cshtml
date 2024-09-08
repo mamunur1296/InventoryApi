@@ -1,4 +1,6 @@
-﻿<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+﻿@model InventoryUi.ViewModel.NewOrderVm
+
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -14,7 +16,7 @@
                 </a>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" onclick="window.location.href='@Url.Action("Cancel", "NewOrder")'" class="btn btn-danger">Ok</button>
+                <button type="button" data-dismiss="modal" onclick="window.location.href='@Url.Action("Cancel", "NewOrder")'" class="btn btn-success">New Order</button>
             </div>
         </div>
     </div>
