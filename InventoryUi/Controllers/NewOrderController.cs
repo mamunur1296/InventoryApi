@@ -3,14 +3,8 @@ using InventoryUi.Models;
 using InventoryUi.Services.Interface;
 using InventoryUi.ViewModel;
 using Microsoft.AspNetCore.Mvc;
-using System.Drawing;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using System.Drawing.Imaging;
 using System.Security.Claims;
-using InventoryUi.Services.Implemettions;
-using Microsoft.AspNetCore.Hosting;
-using System.Drawing.Printing;
+
 
 
 
@@ -27,7 +21,9 @@ namespace InventoryUi.Controllers
         private readonly IClientServices<UnitMaster> _unitMasterServices;
         private readonly IClientServices<Order> _orderService;
         private readonly IClientServices<NewOrderVm> _newOrderServices;
+        private readonly IClientServices<Employee> _employeeServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IClientServices<OrderDetail> _orderDetailServices;
         public NewOrderController(
             IClientServices<Product> productServices,
             IClientServices<Customer> customerServices,
@@ -37,7 +33,10 @@ namespace InventoryUi.Controllers
             IClientServices<UnitMaster> unitMasterServices,
             IClientServices<Order> orderService,
             IClientServices<NewOrderVm> newOrderServices,
-            IWebHostEnvironment webHostEnvironment
+            IWebHostEnvironment webHostEnvironment,
+            IClientServices<OrderDetail> orderDetailServices,
+            IClientServices<Employee> employeeServices
+
             )
         {
             _productServices = productServices;
@@ -49,6 +48,8 @@ namespace InventoryUi.Controllers
             _orderService = orderService;
             _newOrderServices = newOrderServices;
             _webHostEnvironment = webHostEnvironment;
+            _orderDetailServices= orderDetailServices;
+            _employeeServices = employeeServices;
         }
 
         [HttpGet]
@@ -353,17 +354,14 @@ namespace InventoryUi.Controllers
             model.CustomerLIstFromSession.Phone = customer?.Phone ?? "null";
             model.CustomerLIstFromSession.PasswordHash = "password";
             var result = await _newOrderServices.PostClientAsync("OrderMaping/Create", model);
-
             if (result.Success)
             {
-                // Generate PDF
-                var pdfBytes = GeneratePdf(model);
+                return Json(new
+                {
+                    Success = true,
+                    Message = result.Data,
 
-                // Store the PDF bytes temporarily
-                TempData["PaymentReceipt"] = Convert.ToBase64String(pdfBytes);
-
-                // Return the success modal partial view
-                return PartialView("_SuccessModal");
+                });
             }
             else
             {
@@ -374,166 +372,8 @@ namespace InventoryUi.Controllers
                     Message = result.Detail
                 });
             }
+
         }
-        public IActionResult DownloadReceipt()
-        {
-            try
-            {
-                // Assuming the PDF is generated and stored in TempData as a base64 string
-                if (TempData["PaymentReceipt"] is string pdfBase64)
-                {
-                    // Convert from Base64 string to byte array
-                    var pdfBytes = Convert.FromBase64String(pdfBase64);
-
-                    // Define the path to save the file temporarily (you can change this path)
-                    var filePath = Path.Combine(Path.GetTempPath(), "PaymentReceipt.pdf");
-
-                    // Save the PDF to the file system
-                    System.IO.File.WriteAllBytes(filePath, pdfBytes);
-
-                    // Read the file back for download
-                    var fileStream = System.IO.File.ReadAllBytes(filePath);
-
-                    // Delete the file after reading (to clear storage)
-                    System.IO.File.Delete(filePath);
-
-                    HttpContext.Session.Clear();
-                    // Return the file for download
-                    return File(fileStream, "application/pdf", "PaymentReceipt.pdf");
-                }
-            }
-            catch (Exception ex)
-            {
-                // Handle any errors (log or redirect)
-                Console.WriteLine($"Error during file download: {ex.Message}");
-                return RedirectToAction("Error"); // Handle the error appropriately
-            }
-
-            // If no PDF data is available, redirect to an appropriate action
-            return RedirectToAction("Index");
-        }
-
-
-
-        private byte[] GeneratePdf(NewOrderVm model)
-        {
-            try
-            {
-                // Default page width for a small printer, e.g., 80mm wide in pixels (assuming 300 dpi)
-                int pageWidth = 500;  // Adjust this value according to your printer's width in pixels
-                int pageHeight = 1000; // Initial height
-                int margin = 10;
-
-                using (var stream = new MemoryStream())
-                {
-                    var totalItemsHeight = model.ProductsListFromSession.Count * 20 + 200;
-
-                    // Adjust page height based on content length
-                    if (totalItemsHeight > pageHeight)
-                        pageHeight = totalItemsHeight;
-
-                    using (var bitmap = new Bitmap(pageWidth, pageHeight))
-                    {
-                        using (var graphics = Graphics.FromImage(bitmap))
-                        {
-                            graphics.Clear(Color.White); // Clear background
-
-                            // Font styles with smaller sizes suitable for receipt printers
-                            Font titleFont = new Font("Arial", 10, FontStyle.Bold);
-                            Font regularFont = new Font("Arial", 8, FontStyle.Regular);
-
-                            // Draw header information
-                            graphics.DrawString("Inventory", titleFont, Brushes.Black, new PointF(margin, margin));
-                            graphics.DrawString("House # 8, Road # 14, Dhanmondi, Dhaka", regularFont, Brushes.Black, new PointF(margin, margin + 20));
-
-                            // Separator line
-                            graphics.DrawLine(Pens.Black, new Point(margin, 50), new Point(pageWidth - margin, 50));
-
-                            // Customer information
-                            graphics.DrawString($"Bill To: {model.CustomerLIstFromSession.CustomerName}", regularFont, Brushes.Black, new PointF(margin, 60));
-                            graphics.DrawString($"Mobile no: {model.CustomerLIstFromSession.Phone}", regularFont, Brushes.Black, new PointF(margin, 80));
-                            graphics.DrawString($"Delivery Address: {model.CustomerLIstFromSession.Address}", regularFont, Brushes.Black, new PointF(margin, 100));
-
-                            // Table headers
-                            graphics.DrawString("#", titleFont, Brushes.Black, new PointF(margin, 130));
-                            graphics.DrawString("Item", titleFont, Brushes.Black, new PointF(margin + 30, 130));
-                            graphics.DrawString("Rate", titleFont, Brushes.Black, new PointF(margin + 140, 130));
-                            graphics.DrawString("Qty", titleFont, Brushes.Black, new PointF(margin + 180, 130));
-                            graphics.DrawString("Total", titleFont, Brushes.Black, new PointF(margin + 220, 130));
-
-                            // Draw products list
-                            var yPosition = 150;
-                            int index = 1;
-
-                            foreach (var product in model.ProductsListFromSession)
-                            {
-                                // Handle overflow and create new page if necessary (optional)
-                                if (yPosition > pageHeight - 50) // Dynamic height check for content overflow
-                                {
-                                    yPosition = 150; // Reset for next page (if multiple pages needed)
-                                                     // Generate next page logic here if necessary
-                                }
-
-                                graphics.DrawString(index.ToString(), regularFont, Brushes.Black, new PointF(margin, yPosition));
-                                graphics.DrawString(product.ProductName, regularFont, Brushes.Black, new PointF(margin + 30, yPosition));
-                                graphics.DrawString($"{product.UnitPrice} Tk", regularFont, Brushes.Black, new PointF(margin + 140, yPosition));
-                                graphics.DrawString($"{product.Quentity}", regularFont, Brushes.Black, new PointF(margin + 190, yPosition));
-                                graphics.DrawString($"{product.TotalPrice} Tk", regularFont, Brushes.Black, new PointF(margin + 220, yPosition));
-
-                                yPosition += 20;
-                                index++;
-                            }
-
-                            // Draw totals
-                            yPosition += 20;
-                            graphics.DrawString($"Sub Total: {model.CustomerLIstFromSession.SubTotal} Tk", titleFont, Brushes.Black, new PointF(margin, yPosition));
-                            graphics.DrawString($"Delivery Charge: {model.CustomerLIstFromSession.vat} Tk", titleFont, Brushes.Black, new PointF(margin, yPosition + 20));
-                            graphics.DrawString($"Total: {model.CustomerLIstFromSession.PaymentAmount} Tk", titleFont, Brushes.Black, new PointF(margin, yPosition + 40));
-                            graphics.DrawString($"Paid: {model.CustomerLIstFromSession.PaymentAmount} Tk", titleFont, Brushes.Black, new PointF(margin, yPosition + 60));
-                            graphics.DrawString($"Amount Due: {model.CustomerLIstFromSession.DueAmount} Tk", titleFont, Brushes.Black, new PointF(margin, yPosition + 80));
-
-                            // Save bitmap to stream
-                            bitmap.Save(stream, ImageFormat.Png);
-                        }
-                    }
-
-                    // Convert to PDF and return byte array (replace this with your PDF generation logic)
-                    var pdfBytes = ConvertBitmapToPdf(stream.ToArray());
-                    return pdfBytes;
-                }
-            }
-            catch (Exception ex)
-            {
-                // Handle error
-                Console.WriteLine($"Error generating PDF: {ex.Message}");
-                return null;
-            }
-        }
-        private byte[] ConvertBitmapToPdf(byte[] imageBytes)
-        {
-            using (var ms = new MemoryStream())
-            {
-                // Use PdfSharp to convert the image to PDF
-                using (var document = new PdfDocument())
-                {
-                    var page = document.AddPage();
-                    using (var xgr = XGraphics.FromPdfPage(page))
-                    {
-                        // Use the correct constructor to ensure proper stream handling
-                        using (var imageStream = new MemoryStream(imageBytes, 0, imageBytes.Length, false, true))
-                        {
-                            using (var image = XImage.FromStream(imageStream))
-                            {
-                                xgr.DrawImage(image, 0, 0, page.Width, page.Height);
-                            }
-                        }
-                    }
-                    document.Save(ms, false);
-                }
-
-                return ms.ToArray();
-            }
-        }
-
     }
 }
+

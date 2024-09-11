@@ -111,7 +111,9 @@ namespace InventoryApi.Controllers
                     {
                         Success = true,
                         Status = HttpStatusCode.Created,
-                        Detail = "Order created successfully."
+                        Detail = "Order created successfully.",
+                        Data= newOrder.Id,
+
                     });
                 }
                 catch (DbUpdateException ex)

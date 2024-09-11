@@ -7,16 +7,47 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Repots\Invoice.rdlc" />
+    <Content Remove="wwwroot\Repots\Report1.rdlc" />
+  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="System.CodeDom" Version="6.0.0" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+	</ItemGroup>
+
+	<ItemGroup>
+    <PackageReference Include="AspNetCore.Reporting" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.33" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.17" />
-    <PackageReference Include="PDFsharp" Version="6.2.0-preview-1" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.0" />
+    <PackageReference Include="System.Security.Permissions" Version="6.0.0" />
     <PackageReference Include="toastr" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Views\Shared\NewOrder\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Repots\Invoice.rdlc" />
+    <None Include="wwwroot\Repots\Report1.rdlc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="DataSets\dsInvoice.Designer.cs">
+      <DependentUpon>dsInvoice.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DataSets\dsInvoice.xsd">
+      <SubType>Designer</SubType>
+      <LastGenOutput>dsInvoice.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
   </ItemGroup>
 	
 

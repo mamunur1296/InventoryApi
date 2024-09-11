@@ -22,6 +22,7 @@ namespace InventoryUi.ViewModel
         public IEnumerable<UnitChild> unitChildrens { get; set; } = new List<UnitChild>();
         public bool IsPaymentButtonEnabled { get; set; }=false;
         public string ? EmployeeId { get; set; }
+        public string ? newOrderId { get; set; }
         
     }
 

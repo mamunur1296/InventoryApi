@@ -4,6 +4,7 @@ using InventoryUi.Services.Implemettions;
 using InventoryUi.Services.Interface;
 using InventoryUi.ViewModel;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Text;
 
 namespace InventoryUi.Extensions
 {
@@ -16,6 +17,7 @@ namespace InventoryUi.Extensions
             // Assign it to Helper.BaseUrl if Helper is a static class
             Helper.BaseUrl = baseUrl;
 
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             services.AddHttpClient();
             services.AddScoped<IHttpService, HttpService>();
             services.AddScoped<ITokenService, TokenService>();

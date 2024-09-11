@@ -479,10 +479,14 @@ window.processPayment = function () {
                 // Handle JSON response
                 debugger
 
-                if (response.Success) {
+                if (response.success) {
                     debugger
                     // Show the success modal if JSON response indicates success
-                    $('#modalContainer').html(response); // If you include HTML in the JSON response
+                    //$('#modalContainer').html(response); // If you include HTML in the JSON response
+
+                    var orderId = response.message;
+                    var isDownload = true;
+                    $('#downloadReceiptLink').attr('href', '/PosReport/DownloadInvoice?id=' + orderId + '&isDownload=' + isDownload);
                     $('#successModal').modal('show');
                 } else {
                     debugger

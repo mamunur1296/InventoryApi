@@ -67,7 +67,7 @@ const onSuccessUsers = async (orders, customes, employees, prescriptions) => {
             {
                 render: (data, type, row) => createActionButtons(row, [
                     { label: 'Edit', btnClass: 'btn-primary', callback: 'updateOrder' },
-                    { label: 'Details', btnClass: 'btn-info', callback: 'showDetails', disabled: true },
+                    { label: 'Details', btnClass: 'btn-info', callback: 'showDetails' },
                     { label: 'Delete', btnClass: 'btn-danger', callback: 'deleteOrder' }
                 ])
             }
@@ -329,9 +329,12 @@ window.updateOrder = async (id) => {
 
 
 
-//window.showDetails = async (id) => {
-//    loger("showDetails id " + id);
-//}
+window.showDetails = async (id) => {
+    const isDownload = false;  // Set this as needed
+    const url = '/PosReport/DownloadInvoice?id=' + id + '&isDownload=' + isDownload;
+    //window.location.href = url;  
+    window.open(url, '_blank');
+}
 
 
 window.deleteOrder = async (id) => {
