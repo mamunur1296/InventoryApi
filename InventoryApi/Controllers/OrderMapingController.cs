@@ -1,6 +1,5 @@
 ﻿using InventoryApi.DTOs;
 using InventoryApi.Entities;
-using InventoryApi.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
@@ -65,6 +64,9 @@ namespace InventoryApi.Controllers
                         OrderDate = DateTime.Now,
                         RequiredDate = DateTime.Now,
                         ShippedDate = DateTime.Now,
+                        InvoiceNumber=model.InvoiceNumber,
+                        IsHold=model.IsHold,
+                        HoldReason=model.HoldReason,
                         ShipVia = 1,
                         Freight = 1,
                         ShipName = "mamun",

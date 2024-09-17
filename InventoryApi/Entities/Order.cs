@@ -26,6 +26,9 @@ namespace InventoryApi.Entities
         public Prescription Prescription { get; set; }
         public string? PaymentStatus { get; set; }
         public string? OrderStatus { get; set; }
+        public string InvoiceNumber { get; set; }
+        public bool ? IsHold { get; set; }
+        public string ? HoldReason { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
 
     }

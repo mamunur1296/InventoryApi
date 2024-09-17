@@ -1,7 +1,9 @@
 ﻿using InventoryApi.DTOs;
 using InventoryApi.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.Net;
+using System.Text;
 
 namespace InventoryApi.Controllers
 {
@@ -92,5 +94,9 @@ namespace InventoryApi.Controllers
             }
             return StatusCode((int)HttpStatusCode.BadRequest, result);
         }
+       
+        
+
+      
     }
 }

@@ -23,7 +23,10 @@ namespace InventoryUi.ViewModel
         public bool IsPaymentButtonEnabled { get; set; }=false;
         public string ? EmployeeId { get; set; }
         public string ? newOrderId { get; set; }
-        
+        public string InvoiceNumber { get; set;}
+        public bool? IsHold { get; set; }
+        public string? HoldReason { get; set; }
+
     }
 
 }

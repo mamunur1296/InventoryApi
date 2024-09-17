@@ -85,11 +85,11 @@ export const SendRequest = async ({ endpoint, method = 'GET', data = null, heade
     // Validate and set default method
     const validMethods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
     method = validMethods.includes(method.toUpperCase()) ? method.toUpperCase() : 'GET';
-    debugger
+    
     // Validate and set default data type
     const validDataTypes = ['json', 'text', 'html', 'xml', 'script'];
     dataType = validDataTypes.includes(dataType) ? dataType : 'json';
-    debugger
+    
     // Determine content type and processing options based on data
     let contentType = null;
     let processData = true;
@@ -113,7 +113,7 @@ export const SendRequest = async ({ endpoint, method = 'GET', data = null, heade
             cache = true;
         }
     }
-    debugger
+    
     // Prepare request data
     let requestData = null;
     if (data) {
@@ -152,10 +152,10 @@ export const SendRequest = async ({ endpoint, method = 'GET', data = null, heade
     // Perform fetch request
     
     try {
-        debugger
+       
         const response = await fetch(endpoint, options);
         const result = dataType === 'json' ? await response.json() : await response.text();
-        debugger
+        
         if (response.ok) {
             return result;
         } else {

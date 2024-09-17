@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\Repots\Invoice.rdlc" />
-    <Content Remove="wwwroot\Repots\Report1.rdlc" />
+    <Content Remove="wwwroot\Repots\OrderXl.rdlc" />
   </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="System.CodeDom" Version="6.0.0" />
@@ -31,7 +31,7 @@
 
   <ItemGroup>
     <None Include="wwwroot\Repots\Invoice.rdlc" />
-    <None Include="wwwroot\Repots\Report1.rdlc" />
+    <None Include="wwwroot\Repots\OrderXl.rdlc" />
   </ItemGroup>
 
   <ItemGroup>

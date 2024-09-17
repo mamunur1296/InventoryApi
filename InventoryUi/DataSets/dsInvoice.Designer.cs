@@ -699,6 +699,8 @@ namespace InventoryUi.DataSets {
             
             private global::System.Data.DataColumn columnCurrentTime;
             
+            private global::System.Data.DataColumn columnInvoiceNumber;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public OrderDataTable() {
@@ -838,6 +840,14 @@ namespace InventoryUi.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn InvoiceNumberColumn {
+                get {
+                    return this.columnInvoiceNumber;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -873,7 +883,7 @@ namespace InventoryUi.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public OrderRow AddOrderRow(string OrderID, string CustomerName, string CustomerPhone, string EmployeeName, string EmployeePhone, string CreationDate, string CustomerAddress, string Subtotal, string DalivaryCharge, string Total, string Paid, string TodayDate, string CurrentTime) {
+            public OrderRow AddOrderRow(string OrderID, string CustomerName, string CustomerPhone, string EmployeeName, string EmployeePhone, string CreationDate, string CustomerAddress, string Subtotal, string DalivaryCharge, string Total, string Paid, string TodayDate, string CurrentTime, string InvoiceNumber) {
                 OrderRow rowOrderRow = ((OrderRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         OrderID,
@@ -888,7 +898,8 @@ namespace InventoryUi.DataSets {
                         Total,
                         Paid,
                         TodayDate,
-                        CurrentTime};
+                        CurrentTime,
+                        InvoiceNumber};
                 rowOrderRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowOrderRow);
                 return rowOrderRow;
@@ -924,6 +935,7 @@ namespace InventoryUi.DataSets {
                 this.columnPaid = base.Columns["Paid"];
                 this.columnTodayDate = base.Columns["TodayDate"];
                 this.columnCurrentTime = base.Columns["CurrentTime"];
+                this.columnInvoiceNumber = base.Columns["InvoiceNumber"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -955,6 +967,8 @@ namespace InventoryUi.DataSets {
                 base.Columns.Add(this.columnTodayDate);
                 this.columnCurrentTime = new global::System.Data.DataColumn("CurrentTime", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCurrentTime);
+                this.columnInvoiceNumber = new global::System.Data.DataColumn("InvoiceNumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInvoiceNumber);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1572,6 +1586,22 @@ namespace InventoryUi.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string InvoiceNumber {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrder.InvoiceNumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'InvoiceNumber\' in table \'Order\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrder.InvoiceNumberColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsOrderIDNull() {
                 return this.IsNull(this.tableOrder.OrderIDColumn);
             }
@@ -1724,6 +1754,18 @@ namespace InventoryUi.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetCurrentTimeNull() {
                 this[this.tableOrder.CurrentTimeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsInvoiceNumberNull() {
+                return this.IsNull(this.tableOrder.InvoiceNumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetInvoiceNumberNull() {
+                this[this.tableOrder.InvoiceNumberColumn] = global::System.Convert.DBNull;
             }
         }
         

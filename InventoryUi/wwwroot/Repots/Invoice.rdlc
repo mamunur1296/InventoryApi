@@ -571,7 +571,7 @@
         <DataSetName>OrdereDetailsList</DataSetName>
         <Left>0.74226cm</Left>
         <Height>0.5in</Height>
-        <Width>7.84628in</Width>
+        <Width>7.84627in</Width>
         <ZIndex>2</ZIndex>
         <Style>
           <Border>
@@ -1253,7 +1253,7 @@
                   </Style>
                 </TextRun>
                 <TextRun>
-                  <Value>=First(Fields!OrderID.Value, "Order")</Value>
+                  <Value>=First(Fields!InvoiceNumber.Value, "Order")</Value>
                   <Style>
                     <FontStyle>Normal</FontStyle>
                     <FontFamily>Times New Roman</FontFamily>
@@ -1657,6 +1657,10 @@
         </Field>
         <Field Name="CurrentTime">
           <DataField>CurrentTime</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="InvoiceNumber">
+          <DataField>InvoiceNumber</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>

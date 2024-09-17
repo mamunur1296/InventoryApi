@@ -32,7 +32,7 @@ const onSuccessUsers = async (orders, customes, employees, prescriptions) => {
             const prescription = prescriptionMap[order.prescriptionID];
             return {
                 id: order?.id,
-                customer: custome?.customerName ?? "No Name",
+                invoice: order?.invoiceNumber ?? "N/A",
                 employee: employee?.firstName + employee?.lastName ?? "No Address",
                 orderDate: order?.orderDate ?? "No Name",
                 requiredDate: order?.requiredDate ?? "No Name",
@@ -47,10 +47,7 @@ const onSuccessUsers = async (orders, customes, employees, prescriptions) => {
         debugger
         const userSchema = [
             {
-                render: (data, type, row) => row?.customer
-            },
-            {
-                render: (data, type, row) => row?.employee
+                render: (data, type, row) => row?.invoice ?? "N/A"
             },
             {
                 render: (data, type, row) => row?.orderDate
@@ -340,7 +337,7 @@ window.showDetails = async (id) => {
 window.deleteOrder = async (id) => {
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
-    $('#deleteAndDetailsModel').modal('show');
+    $('#deleteAndDetailsModel').modal('show'); 
     $('#companyDetails').empty();
     $('#DeleteErrorMessage').hide();
     $('#btnDelete').off('click').click(async () => {

@@ -37,7 +37,9 @@
                             </div>
                             <div class="col-md-6 d-flex justify-content-end ">
                                 <a id="CreateBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Order</a>
+                                <a asp-action="ReportForCsv" asp-controller="Order" class="btn btn-success"></i>Reports</a>
                             </div>
+                           
                         </div>
                     </div>
                     <div id="successMessage" class="alert alert-success" role="alert" style="display: none;">
@@ -54,8 +56,7 @@
 
                             <thead>
                                 <tr>
-                                    <th>Customer</th>
-                                    <th>Employee</th>
+                                    <th>Invoice</th>
                                     <th>Order Date</th>
                                     <th>Required Date</th>
                                     <th>Shipped Date</th>

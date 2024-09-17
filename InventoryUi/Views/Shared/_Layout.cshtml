@@ -82,130 +82,171 @@
     <link href="~/lib/toastr.js/toastr.min.css" rel="stylesheet" asp-append-version="true" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" asp-append-version="true">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" asp-append-version="true">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
     
-    <style>
-        .profile-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-            .profile-header img {
-                width: 150px;
-                height: 150px;
-                border-radius: 50%;
-                object-fit: cover;
-                margin-bottom: 10px;
-            }
-
-            .profile-header h2 {
-                margin: 10px 0 5px;
-            }
-
-            .profile-header p {
-                color: #6c757d;
-                margin-bottom: 10px;
-            }
-
-        .profile-details {
-            margin-top: 20px;
-        }
-
-        .nav-tabs .nav-link {
-            color: #007bff;
-        }
-
-            .nav-tabs .nav-link.active {
-                color: #495057;
-                background-color: #fff;
-                border-color: #dee2e6 #dee2e6 #fff;
-            }
-
-        .tab-content {
-            padding-top: 20px;
-        }
-
-        .form-label {
-            font-weight: bold;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-
-            .btn-primary:hover {
-                background-color: #0056b3;
-                border-color: #004085;
-            }
-
-    </style>
+   
 </head>
-<body class="container">
-    <header>
-        <nav class=" navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+<body class="mx-auto" style="width: 90%;">
+     
+    <div class="shadow-sm">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-white me-5" aria-current="page" href="#">Logo</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-action="Index" asp-controller="Home">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    @{
-                        if (User.Identity.IsAuthenticated)
-                        {
+                <!-- Logo -->
+                <a class="navbar-brand fs-2 fw-bolder text-black" href="#">LOGO</a>
+
+                <!-- Toggler for mobile view -->
+                <button class="navbar-toggler text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Navbar content -->
+                <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+
+                    <!-- Search form (centered and larger) -->
+                    <form class="d-flex mx-auto w-75" role="search">
+                        <input class="form-control ms-5 me-2 fs-5 fw-bold" type="search" placeholder="Search For Logo" aria-label="Search">
+                        <button class="btn btn-dark text-white fw-bold fs-5" type="submit">Search</button>
+                    </form>
+
+                    <!-- Right side (Shopping cart and Sign In buttons) -->
+                    <div>
+                        <div class="d-flex align-items-center">
+                            <!-- Shopping cart button with icon and tooltip -->
+                            <a href="#" class="btn position-relative">
+                                <!-- Shopping cart icon -->
+                                <i class="fas fa-shopping-cart fs-4"></i>
+
+                                <!-- Red badge indicating the number of items in the cart -->
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success border border-light">
+                                    3 <!-- Change this number dynamically with JavaScript if needed -->
+                                    <span class="visually-hidden">Cart items</span>
+                                </span>
+                            </a>
+
+
+                            <!-- Sign-in button with icon -->
+                            @{
+                                if (User.Identity.IsAuthenticated)
+                                {
+
+                                    <div class="nav-item dropdown">
+                                        <a class="nav-link   d-flex align-items-center" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                                            <span class="btn">
+                                                <img src="/images/User/@img"
+                                                     alt="Profile Image"
+                                                     class="rounded-circle mb-2"
+                                                     width="40"
+                                                     height="40"
+                                                     onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
+                                            </span>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li class="dropdown-header text-center">
+                                                <img src="/images/User/@img"
+                                                     alt="Profile Image"
+                                                     class="rounded-circle mb-2"
+                                                     width="60"
+                                                     height="60"
+                                                     onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
+                                                <span>@userName</span>
+                                                <p class="dropdown-item-text">@fName @lName</p>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" asp-action="Profile" asp-controller="User" asp-route-id="@userId">My Profile</a></li>
+                                            <li><a class="dropdown-item" asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
+                                            <li><a class="dropdown-item" href="#">Need Help?</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" asp-controller="Auth" asp-action="LogOut">Sign Out</a></li>
+                                        </ul>
+                                    </div>
+                                }
+                                else
+                                {
+
+                                    <a asp-action="Login" asp-controller="Auth" class="btn fs-5 text-primary fw-bold">
+                                        <i class="fas fa-sign-in-alt"></i> Sign In
+                                    </a>
+                                }
+                            }
                             
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                                    <img src="/images/User/@img"
-                                         alt="Profile Image"
-                                         class="rounded-circle mb-2"
-                                         width="60"
-                                         height="60"
-                                         onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
-                                    <span>@userName</span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li class="dropdown-header text-center">
-                                        <img src="/images/User/@img"
-                                             alt="Profile Image"
-                                             class="rounded-circle mb-2"
-                                             width="60"
-                                             height="60"
-                                             onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
-                                        <span>@userName</span>
-                                        <p class="dropdown-item-text">@fName @lName</p>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" asp-action="Profile" asp-controller="User" asp-route-id="@userId">My Profile</a></li>
-                                    <li><a class="dropdown-item" asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
-                                    <li><a class="dropdown-item" href="#">Need Help?</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" asp-controller="Auth" asp-action="LogOut">Sign Out</a></li>
-                                </ul>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-action="Login" asp-controller="Auth">Login</a>
-                            </li>
-                        }
-                    }
-                </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <!-- Home Nav Item -->
+                        <li class="nav-item me-3">
+                            <a class="nav-link active fs-5 fw-bold" aria-current="page" asp-action="index" asp-controller="Home">
+                                <i class="fas fa-home me-1"></i> <!-- Home Icon -->
+                                Home
+                            </a>
+                        </li>
+
+                        <!-- Shops Nav Item -->
+                        <li class="nav-item me-3">
+                            <a class="nav-link active fs-5 fw-bold" aria-current="page" asp-action="Shops" asp-controller="Home">
+                                <i class="fas fa-store me-1"></i> <!-- Shops Icon -->
+                                Shops
+                            </a>
+                        </li>
+
+                        <!-- Categories Nav Item -->
+                        <li class="nav-item me-3">
+                            <a class="nav-link active fs-5 fw-bold" aria-current="page" href="#">
+                                <i class="fas fa-th-large me-1"></i> <!-- Categories Icon -->
+                                Categories
+                            </a>
+                        </li>
+                        @{
+                            if (User.Identity.IsAuthenticated)
+                            {
+                                <!-- Orders Nav Item -->
+                                <li class="nav-item me-3">
+                                    <a class="nav-link active fs-5 fw-bold" aria-current="page" href="#">
+                                        <i class="fas fa-box me-1"></i> <!-- Orders Icon -->
+                                        Orders
+                                    </a>
+                                </li>
+
+                                <!-- My eStore Nav Item -->
+                                <li class="nav-item me-3">
+                                    <a class="nav-link active fs-5 fw-bold" aria-current="page" href="#">
+                                        <i class="fas fa-store me-1"></i> <!-- eStore Icon -->
+                                        My eStore
+                                    </a>
+                                </li>
+
+                                <!-- Delivery Address Nav Item -->
+                                <li class="nav-item me-3">
+                                    <a class="nav-link active fs-5 fw-bold" aria-current="page" href="#">
+                                        <i class="fas fa-map-marker-alt me-1"></i> <!-- Delivery Address Icon -->
+                                        Delivery Address
+                                    </a>
+                                </li>
+
+                                
+                            }
+                            
+                        }
+                    </ul>
+                </div>
+
+            </div>
+        </nav>
     </div>
+
+    <main role="main">
+        @RenderBody()
+    </main>
   
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
@@ -216,7 +257,27 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" asp-append-version="true"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" asp-append-version="true"></script>
     <script src="https://kit.fontawesome.com/YOUR-KIT-ID.js" asp-append-version="true" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script>
+        // Function to update cart tooltip with item count
+        function updateCartTooltip(itemCount) {
+            var cartIcon = document.getElementById('cart-icon');
+            cartIcon.setAttribute('title', itemCount + ' items in cart');
+            var tooltip = bootstrap.Tooltip.getInstance(cartIcon);
+            tooltip.setContent({ '.tooltip-inner': itemCount + ' items in cart' });
+        }
+
+        // Initialize the tooltip
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+
+        // Example usage (update dynamically)
+        updateCartTooltip(5);  // This will change the tooltip to "5 items in cart"
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
     
+
 </body>
 </html>

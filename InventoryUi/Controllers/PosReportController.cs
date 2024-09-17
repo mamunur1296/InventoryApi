@@ -97,7 +97,8 @@ namespace InventoryUi.Controllers
                     Total = total.ToString("F2"), // Format total as string with 2 decimal places
                     Paid = total.ToString("F2"),  // Assuming the paid amount equals the total
                     TodayDate = DateTime.Now.ToString("MM/dd/yy"), // Format the current date as MM/dd/yy
-                    CurrentTime = DateTime.Now.ToString("hh:mm:ss tt")
+                    CurrentTime = DateTime.Now.ToString("hh:mm:ss tt"),
+                    InvoiceNumber=order.Data.InvoiceNumber,
                 };
 
 
@@ -141,7 +142,5 @@ namespace InventoryUi.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-
-
     }
 }

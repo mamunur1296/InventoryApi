@@ -1,5 +1,8 @@
 ﻿using InventoryUi.Models;
+using InventoryUi.Services.Interface;
+using InventoryUi.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Diagnostics;
 
 namespace InventoryUi.Controllers
@@ -7,16 +10,66 @@ namespace InventoryUi.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IClientServices<Product> _productServices;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IClientServices<Product> productServices)
         {
             _logger = logger;
+            _productServices = productServices;
+        }
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var allProducts = await _productServices.GetAllClientsAsync("Product/All");
+            // Create ViewModel
+            var viewModel = new ProductListVm
+            {
+                Products = allProducts?.Data?.Take(8)
+                
+            };
+            return View(viewModel);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Shops(int page = 1, int pageSize = 10)
+        {
+            // Fetch all products
+            var allProducts = await _productServices.GetAllClientsAsync("Product/All");
+
+            // Apply pagination
+            var pagedProducts = allProducts?.Data?
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            // Calculate total pages
+            var totalItems = allProducts?.Data?.Count();
+            var totalPages = (int)Math.Ceiling((int)totalItems / (double)pageSize);
+
+            // Create ViewModel
+            var viewModel = new ProductListVm
+            {
+                Products = pagedProducts,
+                CurrentPage = page,
+                TotalPages = totalPages,
+                TotalItems = (int)totalItems
+            };
+
+            return View(viewModel);
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Serch()
         {
-            return View();
+            var allProducts = await _productServices.GetAllClientsAsync("Product/All");
+            // Create ViewModel
+            var viewModel = new ProductListVm
+            {
+                Products = allProducts?.Data
+
+            };
+            return View(viewModel);
         }
+
 
         public IActionResult Privacy()
         {

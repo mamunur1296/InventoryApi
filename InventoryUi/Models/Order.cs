@@ -45,6 +45,9 @@ namespace InventoryUi.Models
         [DisplayName("Order Status")]
         public string OrderStatus { get; set; }
         [DisplayName("Order Details")]
+        public string InvoiceNumber { get; set; }
+        public bool? IsHold { get; set; }
+        public string? HoldReason { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

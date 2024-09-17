@@ -1,4 +1,6 @@
-﻿@{
+﻿@model InventoryUi.ViewModel.SalesSummaryVm
+
+@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -13,25 +15,27 @@
                     <div class="row">
                         <div class="col-6 mb-3">
                             <a asp-action="index" asp-controller="NewOrder" class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
-                                <i class="fas fa-chart-line fa-2x mb-1"></i>
+                                <p class="fa-2x">@Model.SalesSummary?.TodaySalesAmount.ToString("F2") tk / @Model?.SalesSummary?.TodaySalesUnit u</p>
                                 <p class="fa-1x mb-0">Today Sales</p>
                             </a>
                         </div>
                         <div class="col-6 mb-3">
                             <a asp-action="index" asp-controller="NewOrder" class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
-                                <i class="fas fa-calendar-day fa-2x mb-1"></i>
+                                <p class="fa-2x">@Model?.SalesSummary?.LastDaySalesAmount.ToString("F2") tk / @Model?.SalesSummary?.LastDaySalesUnit u </p>
                                 <p class="fa-1x mb-0">Last Day Sales</p>
                             </a>
                         </div>
                         <div class="col-6 mb-3">
                             <a asp-action="index" asp-controller="NewOrder" class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
-                                <i class="fas fa-calendar-alt fa-2x mb-1"></i>
+                                <p class="fa-2x">@Model?.SalesSummary?.CurrentMonthSalesAmount.ToString("F2") tk / @Model?.SalesSummary?.CurrentMonthSalesUnit u </p>
+
                                 <p class="fa-1x mb-0">Current Month Sales</p>
                             </a>
                         </div>
                         <div class="col-6">
                             <a asp-action="index" asp-controller="NewOrder" class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
-                                <i class="fas fa-calendar fa-2x mb-1"></i>
+                                <p class="fa-2x">@Model?.SalesSummary?.LastMonthSalesAmount.ToString("F2") tk / @Model?.SalesSummary?.LastMonthSalesUnit u </p>
+
                                 <p class="fa-1x mb-0">Last Month Sales</p>
                             </a>
                         </div>

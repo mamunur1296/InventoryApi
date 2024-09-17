@@ -1,4 +1,5 @@
 ﻿using InventoryUi.Extensions;
+using InventoryUi.Helpers;
 using InventoryUi.Models;
 using InventoryUi.Services.Interface;
 using InventoryUi.ViewModel;
@@ -342,7 +343,6 @@ namespace InventoryUi.Controllers
                     }
                 }
             }
-
             var model = new NewOrderVm
             {
                 ProductsListFromSession = productList,
@@ -353,6 +353,8 @@ namespace InventoryUi.Controllers
             model.CustomerLIstFromSession.CustomerName = customer?.CustomerName ?? "No Name";
             model.CustomerLIstFromSession.Phone = customer?.Phone ?? "null";
             model.CustomerLIstFromSession.PasswordHash = "password";
+            string uniqueInvoiceNumber = InvoiceHelper.GenerateInvoiceNumber();
+            model.InvoiceNumber = uniqueInvoiceNumber;
             var result = await _newOrderServices.PostClientAsync("OrderMaping/Create", model);
             if (result.Success)
             {
@@ -360,7 +362,6 @@ namespace InventoryUi.Controllers
                 {
                     Success = true,
                     Message = result.Data,
-
                 });
             }
             else
