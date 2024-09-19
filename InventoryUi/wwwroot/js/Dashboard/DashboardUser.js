@@ -91,76 +91,71 @@ const UsrValidae = $('#UserForm').validate({
         $(element).valid();
     },
     rules: {
-        FirstName: {
+        "User.FirstName": {
             required: true,
             minlength: 2,
             maxlength: 50
         },
-        LastName: {
+        "User.LastName": {
             required: true,
             minlength: 2,
             maxlength: 50
         },
-        UserName: {
+        "User.UserName": {
             required: true,
             checkDuplicateUsername: true
         },
-        Email: {
+        "User.Email": {
             required: true,
             checkDuplicateEmail: true
         },
-        PhoneNumber: {
+        "User.PhoneNumber": {
             required: true
         },
-        Password: {
+        "User.Password": {
             required: true,
             minlength: 6
         },
-        ConfirmationPassword: {
+        "User.ConfirmationPassword": {
             required: true,
             equalTo: "#Password"
         },
-        RoleName: {
+        "User.RoleName": {
             required: true
         }
     },
     messages: {
-        FirstName: {
-            required: " first Name is required.",
-            minlength: "first Name must be between 2 and 50 characters.",
-            maxlength: "first Name must be between 2 and 50 characters."
+        "User.FirstName": {
+            required: "First Name is required.",
+            minlength: "First Name must be between 2 and 50 characters.",
+            maxlength: "First Name must be between 2 and 50 characters."
         },
-        LastName: {
-            required: "Lastst Name  is required.",
-            minlength: "Lastst Name  must be between 2 and 50 characters.",
-            maxlength: "Lastst Name  must be between 2 and 50 characters."
+        "User.LastName": {
+            required: "Last Name is required.",
+            minlength: "Last Name must be between 2 and 50 characters.",
+            maxlength: "Last Name must be between 2 and 50 characters."
         },
-        UserName: {
-            required: "User Name  is required.",
-            minlength: "User Name   must be between 2 and 50 characters.",
-            maxlength: "User Name   must be between 2 and 50 characters.",
+        "User.UserName": {
+            required: "User Name is required.",
             checkDuplicateUsername: "This username is already taken."
         },
-        Email: {
+        "User.Email": {
             required: "Email is required.",
             checkDuplicateEmail: "This email is already registered."
-
         },
-        PhoneNumber: {
+        "User.PhoneNumber": {
             required: "Phone Number is required."
-        }
-        ,
-        Password: {
+        },
+        "User.Password": {
             required: "Password is required.",
             minlength: "Password must be at least 6 characters long."
-        }
-        ,
-        ConfirmationPassword: {
+        },
+        "User.ConfirmationPassword": {
             required: "Confirmation Password is required.",
             equalTo: "Password and Confirmation Password do not match."
         },
-        RoleName: {
-            required: "Must be select Roles "
+        "User.RoleName": {
+            required: "You must select a role."
         }
     },
     errorElement: 'div',
@@ -176,12 +171,45 @@ const UsrValidae = $('#UserForm').validate({
     }
 });
 
+
+
+
+const isEmployee = (isEmp = null) => {
+    // Check the initial value and show/hide the employee section accordingly
+    if (isEmp) {
+        $('#employeeSection').css('display', 'block');
+    } else {
+        $('#employeeSection').css('display', 'none');
+    }
+
+    // Set up event listener for future changes
+    $('#IsEmployeeCheckbox').off('change').on('change', function () {
+        isEmp = $(this).is(':checked'); // Checking if the checkbox is checked
+        if (isEmp) {
+            $('#employeeSection').css('display', 'block'); // Show the section
+        } else {
+            $('#employeeSection').css('display', 'none'); // Hide the section
+        }
+    });
+};
+
+
+
+
+
+
+
+
 //Sow Create Model 
 $('#CreateUserBtn').off('click').click(async () => {
     resetFormValidation('#UserForm', UsrValidae);
      clearMessage('successMessage', 'globalErrorMessage');
-     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
-     await populateDropdown('/DashboardRole/GetAll', '#RolesDropdown', 'roleName', 'roleName'," Select Role");
+    showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
+    await populateDropdown('/DashboardRole/GetAll', '#RolesDropdown', 'roleName', 'roleName', " Select Role");
+    await populateDropdown('/Branch/GetAll', '#BranchDropdown', 'id', 'name', "Select Branch");
+    await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'name',);
+    isEmployee();
+    
 });
 
 // Save Button
@@ -192,7 +220,12 @@ $('#btnSave').off('click').click(async () => {
     try {
         if ($('#UserForm').valid()) {
             const formData = $('#UserForm').serialize();
-            const result = await SendRequest({ endpoint: '/DashboardUser/Create', method: 'POST', data: formData });
+            //const formData = new FormData($('#UserForm')[0]);
+            //const formData = new FormData(document.querySelector('#UserForm'));
+            //for (const [key, value] of formData.entries()) {
+            //    console.log(`${key}: ${value}`);
+            //}
+            const result = await SendRequest({ endpoint: '/DashboardUser/Register', method: 'POST', data: formData });
             // Clear previous messages
             $('#successMessage').hide();
             $('#UserError').hide();
@@ -205,6 +238,9 @@ $('#btnSave').off('click').click(async () => {
                 $('#modelCreate').modal('hide');
                 notification({ message: "User Created successfully !", type: "success", title: "Success" });
                 await getUserList(); // Update the user list
+            } else {
+                $('#modelCreate').modal('hide');
+                notification({ message: " User Create failed . Please try again. !", type: "error", title: "Error" });
             }
         }
     } catch (error) {
@@ -223,17 +259,36 @@ window.updateUser = async (id) => {
     $('#myModalLabelUpdateEmployee').show();
     $('#myModalLabelAddEmployee').hide();
     await populateDropdown('/DashboardRole/GetAll', '#RolesDropdown', 'roleName', 'roleName', null);
+    await populateDropdown('/Branch/GetAll', '#BranchDropdown', 'id', 'name', "Select Branch");
+    await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'name',);
+    
     const result = await SendRequest({ endpoint: '/DashboardUser/GetById/' + id });
-    if (result.success) {
+    debugger
+    if (result) {
         $('#btnSave').hide();
         $('#btnUpdate').show();
-        $('#FirstName').val(result.data.firstName);
-        $('#LastName').val(result.data.lastName);
-        $('#UserName').val(result.data.userName);
-        $('#Email').val(result.data.email);
-        $('#PhoneNumber').val(result.data.phoneNumber);
-        $('#RolesDropdown').val(result.data.roles);
+        $('#UserId').val(result.user.id);
+        $('#FirstName').val(result.user.firstName);
+        $('#LastName').val(result.user.lastName);
+        $('#UserName').val(result.user.userName);
+        $('#Email').val(result.user.email);
+        $('#PhoneNumber').val(result.user.phoneNumber);
+        $('#RolesDropdown').val(result.user.roles);
+        $('#CompanyDropdown').val(result.user.companyId);
+        $('#BranchDropdown').val(result.user.branchId);
+
+
+        const isChecked = result.user.isEmployee;
+        $('#IsEmployeeCheckbox').prop('checked', isChecked);
+        isEmployee(isChecked);
+        loger(isChecked);
         $('#modelCreate').modal('show');
+
+
+        // Correctly set the checkbox state based on the isActive value
+       // $('#IsEmployeeCheckbox').prop('checked', result.data.isActive);
+
+
         resetValidation(UsrValidae, '#UserForm');
         $('#btnUpdate').off('click').on('click', async () => {
             debugger
@@ -243,6 +298,9 @@ window.updateUser = async (id) => {
                 $('#modelCreate').modal('hide');
                 notification({ message: "User Updated successfully !", type: "success", title: "Success" });
                 await getUserList(); // Update the user list
+            } else {
+                $('#modelCreate').modal('hide');
+                notification({ message: " User Updated failed . Please try again. !", type: "error", title: "Error" });
             }
         });
     }

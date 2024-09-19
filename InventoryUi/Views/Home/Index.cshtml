@@ -450,38 +450,44 @@
 
 
         <div class="row m-5">
-            @foreach (var product in Model.Products)
-            {
-                <div class="col-md-3 mb-4">
-                    <div class="card" style="width: 100%;">
-                        <img src="/images/Product/@product?.ImageURL"
-                             alt="Product Image"
-                             class="card-img-top"
-                             width="150"
-                             height="200"
-                             onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
-                        <div class="card-body">
-                            <p class="text-success">In Stock</p>
-                            <h5 class="card-title">@product?.ProductName</h5>
-                            <!-- Star Rating -->
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <span class="ms-2">(1)</span>
-                            </div>
+            @{
+                if(Model.Products != null)
+                {
+                    foreach (var product in Model.Products)
+                    {
+                        <div class="col-md-3 mb-4">
+                            <div class="card" style="width: 100%;">
+                                <img src="/images/Product/@product?.ImageURL"
+                                     alt="Product Image"
+                                     class="card-img-top"
+                                     width="150"
+                                     height="200"
+                                     onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
+                                <div class="card-body">
+                                    <p class="text-success">In Stock</p>
+                                    <h5 class="card-title">@product?.ProductName</h5>
+                                    <!-- Star Rating -->
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <span class="ms-2">(1)</span>
+                                    </div>
 
-                            <!-- Pricing -->
-                            <div>
-                                <span class="text-decoration-line-through text-muted">৳2200</span>
-                                <span class="fw-bold fs-5 d-block">৳1185</span>
+                                    <!-- Pricing -->
+                                    <div>
+                                        <span class="text-decoration-line-through text-muted">৳2200</span>
+                                        <span class="fw-bold fs-5 d-block">৳1185</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    }
+                }
             }
+            
         </div>
 
         

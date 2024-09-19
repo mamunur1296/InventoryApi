@@ -7,11 +7,11 @@ namespace InventoryUi.Models
     {
         [Required(ErrorMessage = "Category name is required.")]
         [StringLength(255, ErrorMessage = "Category name cannot be longer than 255 characters.")]
-        [DisplayName("Name")]
+        [DisplayName("Sub Catagory")]
         public string CategoryName { get; set; }
         [DisplayName("Description ")]
-        public string Description { get; set; }
-        [DisplayName("Sub Catagory ")]
+        public string ?Description { get; set; }
+        [DisplayName("Catagory")]
         public string? ParentCategoryID { get; set; }
         public Category ParentCategory { get; set; }
         public ICollection<Category> SubCategories { get; set; }

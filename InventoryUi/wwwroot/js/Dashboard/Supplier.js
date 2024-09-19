@@ -23,13 +23,13 @@ const onSuccessUsers = async (suppliers) => {
             //const company = companyMap[warehouse.companyId];
             return {
                 id: supplier?.id,
-                name: supplier?.supplierName ?? "No Name",
-                contact: supplier?.contactName ?? "No Name",
-                title: supplier?.contactTitle ?? "No Name",
-                address: supplier?.address + ", " + supplier?.city + ", " + supplier?.region + ", " + supplier?.postalCode + ", " + supplier?.country ?? "No Name",
-                phone: supplier?.phone ?? "No Name",
-                fax: supplier?.fax ?? "No Name",
-                homepage: supplier?.homePage ?? "No Name",
+                name: supplier?.supplierName ?? "N/A",
+                contact: supplier?.contactName ?? "N/A",
+                title: supplier?.contactTitle ?? "N/A",
+                address: supplier?.address ?? " " + ", " + supplier?.city ?? " " + ", " + supplier?.region ?? " " + ", " + supplier?.postalCode ?? " " + ", " + supplier?.country ?? " " ?? "N/A",
+                phone: supplier?.phone ?? "N/A",
+                fax: supplier?.fax ?? "N/A",
+                homepage: supplier?.homePage ?? "N/A",
                 
             };
         }
@@ -56,9 +56,6 @@ const onSuccessUsers = async (suppliers) => {
             },
             {
                 render: (data, type, row) => row?.fax
-            },
-            {
-                render: (data, type, row) => row?.homepage
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
@@ -121,39 +118,11 @@ const UsrValidae = $('#SupplierForm').validate({
             required: true,
 
         },
-        ContactTitle: {
-            required: true,
-
-        },
         Address: {
             required: true,
 
         },
-        City: {
-            required: true,
-
-        },
-        Region: {
-            required: true,
-
-        },
-        PostalCode: {
-            required: true,
-
-        },
-        Country: {
-            required: true,
-
-        },
         Phone: {
-            required: true,
-
-        },
-        Fax: {
-            required: true,
-
-        },
-        HomePage: {
             required: true,
 
         }

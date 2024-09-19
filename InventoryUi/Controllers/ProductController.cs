@@ -64,6 +64,7 @@ namespace InventoryUi.Controllers
             var products = await _productServices.GetAllClientsAsync("Product/All");
             return Json(products);
         }
+        
         [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {

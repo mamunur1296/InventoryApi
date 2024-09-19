@@ -1,5 +1,4 @@
 ﻿using InventoryApi.Entities.Base;
-using System.ComponentModel.DataAnnotations;
 
 namespace InventoryApi.Entities
 {
@@ -7,7 +6,7 @@ namespace InventoryApi.Entities
     {
         public string ShipperName { get; set; }
         public string Phone { get; set; }
-        public ICollection<Order> Orders { get; set; }
+        public ICollection<Order>? Orders { get; set; }
 
     }
 }

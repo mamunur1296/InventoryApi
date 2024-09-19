@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240905055132_adjustManyFkEmployeeByOrder")]
-    partial class adjustManyFkEmployeeByOrder
+    [Migration("20240918105800_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -432,7 +432,6 @@ namespace InventoryApi.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Mobile")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
@@ -466,8 +465,14 @@ namespace InventoryApi.Migrations
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("BranchId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CompanyId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
@@ -533,6 +538,10 @@ namespace InventoryApi.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("CompanyId");
 
                     b.HasIndex("ManagerId");
 
@@ -601,19 +610,36 @@ namespace InventoryApi.Migrations
                     b.Property<string>("CustomerID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("EmployeeID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("Freight")
+                    b.Property<decimal?>("DelivaryCharge")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("EmployeeID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal?>("Freight")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("HoldReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InvoiceNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsHold")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("OrderStatus")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("OtherExpances")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("PaymentStatus")
                         .HasColumnType("nvarchar(max)");
@@ -634,7 +660,6 @@ namespace InventoryApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ShipName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ShipPostalCode")
@@ -652,11 +677,31 @@ namespace InventoryApi.Migrations
                     b.Property<string>("ShipperId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<decimal?>("Tax")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("TotalAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("TotalAmountAfterDiscount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("TotalAmountBeforeDiscount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Vat")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -844,7 +889,6 @@ namespace InventoryApi.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("BatchNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CategoryID")
@@ -861,11 +905,14 @@ namespace InventoryApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Dimensions")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Discontinued")
                         .HasColumnType("bit");
+
+                    b.Property<decimal?>("Discount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("ExpirationDate")
                         .HasColumnType("datetime2");
@@ -878,29 +925,25 @@ namespace InventoryApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("QuantityPerUnit")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ReorderLevel")
+                    b.Property<int?>("ReorderLevel")
                         .HasColumnType("int");
 
                     b.Property<string>("SupplierID")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UnitChildId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UnitMasterId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("UnitPrice")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("UnitsInStock")
+                    b.Property<int?>("UnitsInStock")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateDate")
@@ -909,7 +952,7 @@ namespace InventoryApi.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Weight")
+                    b.Property<decimal?>("Weight")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
@@ -949,11 +992,10 @@ namespace InventoryApi.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("ReviewDate")
+                    b.Property<DateTime?>("ReviewDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ReviewText")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdateDate")
@@ -1011,7 +1053,7 @@ namespace InventoryApi.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("CreationDate")
@@ -1208,7 +1250,6 @@ namespace InventoryApi.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UnitShortCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdateDate")
@@ -1445,6 +1486,14 @@ namespace InventoryApi.Migrations
 
             modelBuilder.Entity("InventoryApi.Entities.Employee", b =>
                 {
+                    b.HasOne("InventoryApi.Entities.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId");
+
+                    b.HasOne("InventoryApi.Entities.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId");
+
                     b.HasOne("InventoryApi.Entities.Employee", "Manager")
                         .WithMany("Subordinates")
                         .HasForeignKey("ManagerId");
@@ -1452,6 +1501,10 @@ namespace InventoryApi.Migrations
                     b.HasOne("InventoryApi.Entities.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("Company");
 
                     b.Navigation("Manager");
 
@@ -1485,9 +1538,7 @@ namespace InventoryApi.Migrations
 
                     b.HasOne("InventoryApi.Entities.Employee", "Employee")
                         .WithMany("Orders")
-                        .HasForeignKey("EmployeeID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("EmployeeID");
 
                     b.HasOne("InventoryApi.Entities.Prescription", "Prescription")
                         .WithMany()
@@ -1575,20 +1626,17 @@ namespace InventoryApi.Migrations
                     b.HasOne("InventoryApi.Entities.Supplier", "Supplier")
                         .WithMany("Products")
                         .HasForeignKey("SupplierID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("InventoryApi.Entities.UnitChild", "UnitChild")
                         .WithMany("Products")
                         .HasForeignKey("UnitChildId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("InventoryApi.Entities.UnitMaster", "UnitMaster")
                         .WithMany("Products")
                         .HasForeignKey("UnitMasterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Category");
 

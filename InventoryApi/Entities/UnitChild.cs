@@ -12,13 +12,13 @@ namespace InventoryApi.Entities
         [Required(ErrorMessage = "Unit Master ID is required.")]
         public string UnitMasterId { get; set; }
 
-        public string UnitShortCode { get; set; }
+        public string? UnitShortCode { get; set; }
         public string? DisplayName { get; set; }
         public string? UnitDescription { get; set; }
 
         [ForeignKey("UnitMasterId")]
-        public UnitMaster UnitMaster { get; set; }
+        public UnitMaster? UnitMaster { get; set; }
 
-        public ICollection<Product> Products { get; set; }
+        public ICollection<Product>? Products { get; set; }
     }
 }

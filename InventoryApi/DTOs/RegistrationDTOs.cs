@@ -34,5 +34,8 @@ namespace InventoryApi.DTOs
         public bool? isApproved { get; set; } = true;
         public bool? isEmployee { get; set; } = false;
         public bool? isApprovedByAdmin { get; set; } = false;
+
+        public string? CompanyId { get; set; }
+        public string? BranchId { get; set; }
     }
 }

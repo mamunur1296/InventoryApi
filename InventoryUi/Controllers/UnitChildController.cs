@@ -7,12 +7,14 @@ namespace InventoryUi.Controllers
     public class UnitChildController : Controller
     {
         private readonly IClientServices<UnitChild> _unitChildServices;
+        private readonly IClientServices<UnitMaster> _unitMasterServices;
         private readonly IUtilityHelper _utilityHelper;
 
-        public UnitChildController(IClientServices<UnitChild> service, IUtilityHelper utilityHelper)
+        public UnitChildController(IClientServices<UnitChild> service, IUtilityHelper utilityHelper, IClientServices<UnitMaster> unitMasterServices)
         {
             _unitChildServices = service;
             _utilityHelper = utilityHelper;
+            _unitMasterServices = unitMasterServices;
         }
         public IActionResult Index()
         {
@@ -44,6 +46,23 @@ namespace InventoryUi.Controllers
             var unitChild = await _unitChildServices.GetAllClientsAsync("UnitChild/All");
             return Json(unitChild);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetallByFilterMaster(string id)
+        {
+            // Fetch all unit children
+            var unitChild = await _unitChildServices.GetAllClientsAsync("UnitChild/All");
+
+            // Fetch the specific UnitMaster by id
+            var unitMaster = await _unitMasterServices.GetClientByIdAsync($"UnitMaster/get/{id}");
+
+            // Filter unit children where the UnitMasterId matches the UnitMaster's Id
+            var filterByMaster = unitChild?.Data?
+                .Where(c => c.UnitMasterId.ToString() == unitMaster?.Data?.Id.ToString());
+
+            return Json(filterByMaster);
+        }
+
+
         [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {

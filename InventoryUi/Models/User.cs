@@ -40,5 +40,9 @@ namespace InventoryUi.Models
         public bool isApproved { get; set; } = true;
         public bool  isEmployee { get; set; } = false;
         public bool isApprovedByAdmin { get; set; } = false;
+        [DisplayName("Company")]
+        public string? CompanyId { get; set; }
+        [DisplayName("Branch")]
+        public string? BranchId { get; set; }
     }
 }

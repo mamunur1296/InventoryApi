@@ -4,32 +4,32 @@
 
 namespace InventoryApi.Migrations
 {
-    public partial class AddHold : Migration
+    public partial class addusercom : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "HoldReason",
-                table: "Orders",
+                name: "BranchId",
+                table: "AspNetUsers",
                 type: "nvarchar(max)",
                 nullable: true);
 
-            migrationBuilder.AddColumn<bool>(
-                name: "IsHold",
-                table: "Orders",
-                type: "bit",
+            migrationBuilder.AddColumn<string>(
+                name: "CompanyId",
+                table: "AspNetUsers",
+                type: "nvarchar(max)",
                 nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "HoldReason",
-                table: "Orders");
+                name: "BranchId",
+                table: "AspNetUsers");
 
             migrationBuilder.DropColumn(
-                name: "IsHold",
-                table: "Orders");
+                name: "CompanyId",
+                table: "AspNetUsers");
         }
     }
 }

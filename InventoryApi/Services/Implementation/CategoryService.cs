@@ -26,8 +26,8 @@ namespace InventoryApi.Services.Implementation
                 CreatedBy = entity.CreatedBy?.Trim(),
                 CreationDate = DateTime.Now, // Set CreationDate here
                 CategoryName = entity.CategoryName.Trim(),
-                Description = entity.Description.Trim(),
-                ParentCategoryID= entity.ParentCategoryID?.Trim(),
+                Description = entity?.Description?.Trim(),
+                ParentCategoryID= entity?.ParentCategoryID?.Trim(),
             };
             await _unitOfWorkRepository.categoryRepository.AddAsync(newCategory);
             await _unitOfWorkRepository.SaveAsync();
@@ -73,12 +73,12 @@ namespace InventoryApi.Services.Implementation
                 throw new NotFoundException($"Catagory with id = {id} not found");
             }
             // Update  properties
-            item.CategoryName = string.IsNullOrWhiteSpace(entity.CategoryName) ? item.CategoryName : entity.CategoryName;
-            item.Description = string.IsNullOrWhiteSpace(entity.Description) ? item.Description : entity.Description;
-            item.ParentCategoryID = string.IsNullOrWhiteSpace(entity.ParentCategoryID) ? item.ParentCategoryID : entity.ParentCategoryID;
+            item.CategoryName = entity.CategoryName;
+            item.Description = entity?.Description;
+            item.ParentCategoryID = entity?.ParentCategoryID;
 
             // Set the UpdateDate to the current date and time
-            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.UpdatedBy = entity?.UpdatedBy?.Trim();
             item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.categoryRepository.UpdateAsync(item);

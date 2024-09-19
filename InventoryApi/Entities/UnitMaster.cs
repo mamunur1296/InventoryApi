@@ -10,7 +10,7 @@ namespace InventoryApi.Entities
 
         public string? UnitMasterDescription { get; set; }
 
-        public ICollection<Product> Products { get; set; }
-        public ICollection<UnitChild> UnitChildrens { get; set; }
+        public ICollection<Product>? Products { get; set; }
+        public ICollection<UnitChild>? UnitChildrens { get; set; }
     }
 }

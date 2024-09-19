@@ -23,10 +23,11 @@ const onSuccessUsers = async (DeliveryAddresses, users) => {
             const user = usersMap[DeliveryAddress.userId];
             return {
                 id: DeliveryAddress?.id,
-                userName: user?.userName ?? "No Name",
-                address: DeliveryAddress?.address ?? "No Address",
-                phone: DeliveryAddress?.phone ?? "No Phone",
-                mobile: DeliveryAddress?.mobile ?? "No Mobile",
+                name: user.firstName +" " + user.lastName ,
+                userName: user?.userName ?? "N/A",
+                address: DeliveryAddress?.address ?? "N/A",
+                phone: DeliveryAddress?.phone ?? "N/A",
+                mobile: DeliveryAddress?.mobile ?? "N/A",
             };
         }
         return null;
@@ -35,6 +36,9 @@ const onSuccessUsers = async (DeliveryAddresses, users) => {
     try {
         debugger
         const userSchema = [
+            {
+                render: (data, type, row) => row?.name
+            },
             {
                 render: (data, type, row) => row?.userName
             },
@@ -108,10 +112,6 @@ const UsrValidae = $('#DeliveryAddressForm').validate({
             maxlength: 255
         },
         Phone: {
-            required: true,
-            maxlength: 20
-        },
-        Mobile: {
             required: true,
             maxlength: 20
         },

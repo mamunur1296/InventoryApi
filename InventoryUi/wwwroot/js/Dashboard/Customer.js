@@ -23,16 +23,16 @@ const onSuccessUsers = async (customers, users) => {
             const user = usersMap[customer.userId];
             return {
                 id: customer?.id,
-                name: customer?.customerName ?? "No Name",
-                contactName: customer?.contactName ?? "No Name",
-                contactTitle: customer?.contactTitle ?? "No Title",
-                address: customer?.address + ", " + customer?.city + ", " + customer?.region + ", " + customer?.postalCode + ", " + customer?.country  ?? "No Address",
-                phone: customer?.phone ?? "No Phone",
-                fax: customer?.fax ?? "No Fax",
-                email: customer?.email ?? "No Email",
-                birthDate: customer?.dateOfBirth ?? "No Birth Date",
-                medicalHistory: customer?.medicalHistory ?? "No Medical History",
-                user: user?.userName ?? "No Name", 
+                name: customer?.customerName ?? "N/A",
+                contactName: customer?.contactName ?? "N/A",
+                contactTitle: customer?.contactTitle ?? "N/A",
+                address: customer?.address + ", " + customer?.city + ", " + customer?.region + ", " + customer?.postalCode + ", " + customer?.country ?? "N/A",
+                phone: customer?.phone ?? "N/A",
+                fax: customer?.fax ?? "N/A",
+                email: customer?.email ?? "N/A",
+                birthDate: customer?.dateOfBirth ?? "N/A",
+                medicalHistory: customer?.medicalHistory ?? "N/A",
+                user: user?.userName ?? "N/A", 
             };
         }
         return null;
@@ -45,10 +45,7 @@ const onSuccessUsers = async (customers, users) => {
                 render: (data, type, row) => row?.name
             },
             {
-                render: (data, type, row) => row?.contactName
-            },
-            {
-                render: (data, type, row) => row?.contactTitle
+                render: (data, type, row) => row?.user
             },
             {
                 render: (data, type, row) => row?.address
@@ -57,17 +54,9 @@ const onSuccessUsers = async (customers, users) => {
                 render: (data, type, row) => row?.phone
             },
             {
-                render: (data, type, row) => row?.fax
-            },
-            {
                 render: (data, type, row) => row?.email
             },
-            {
-                render: (data, type, row) => row?.birthDate
-            },
-            {
-                render: (data, type, row) => row?.user
-            },
+            
             {
                 render: (data, type, row) => createActionButtons(row, [
                     { label: 'Edit', btnClass: 'btn-primary', callback: 'updateCustomer' },

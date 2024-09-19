@@ -114,7 +114,7 @@ namespace InventoryApi.Migrations
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Mobile = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Mobile = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     DeactivatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeactiveBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -317,7 +317,7 @@ namespace InventoryApi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ContactName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ContactTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -325,10 +325,10 @@ namespace InventoryApi.Migrations
                     Region = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Fax = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MedicalHistory = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
@@ -344,50 +344,6 @@ namespace InventoryApi.Migrations
                         name: "FK_Customers_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Employees",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TitleOfCourtesy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    HireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Region = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HomePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Extension = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Photo = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReportsTo = table.Column<int>(type: "int", nullable: true),
-                    PhotoPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ManagerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Employees", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Employees_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Employees_Employees_ManagerId",
-                        column: x => x.ManagerId,
-                        principalTable: "Employees",
                         principalColumn: "Id");
                 });
 
@@ -476,7 +432,7 @@ namespace InventoryApi.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UnitMasterId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UnitShortCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UnitShortCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UnitDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -527,7 +483,7 @@ namespace InventoryApi.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CustomerID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -542,6 +498,62 @@ namespace InventoryApi.Migrations
                         principalTable: "Customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TitleOfCourtesy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    HireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Region = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HomePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Extension = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Photo = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReportsTo = table.Column<int>(type: "int", nullable: true),
+                    PhotoPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ManagerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CompanyId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    BranchId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Employees_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Employees_BranchItems_BranchId",
+                        column: x => x.BranchId,
+                        principalTable: "BranchItems",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Employees_companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "companies",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Employees_Employees_ManagerId",
+                        column: x => x.ManagerId,
+                        principalTable: "Employees",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -600,19 +612,20 @@ namespace InventoryApi.Migrations
                     ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CategoryID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SupplierID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    QuantityPerUnit = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UnitMasterId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UnitChildId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SupplierID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    QuantityPerUnit = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UnitMasterId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UnitChildId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    UnitsInStock = table.Column<int>(type: "int", nullable: false),
-                    ReorderLevel = table.Column<int>(type: "int", nullable: false),
+                    UnitsInStock = table.Column<int>(type: "int", nullable: true),
+                    ReorderLevel = table.Column<int>(type: "int", nullable: true),
                     Discontinued = table.Column<bool>(type: "bit", nullable: false),
-                    BatchNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BatchNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Weight = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    Dimensions = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Weight = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
+                    Dimensions = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Discount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -652,15 +665,15 @@ namespace InventoryApi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CustomerID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CustomerID = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     EmployeeID = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RequiredDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ShippedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ShipVia = table.Column<int>(type: "int", nullable: true),
                     ShipperId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Freight = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    ShipName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Freight = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
+                    ShipName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ShipAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ShipCity = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ShipRegion = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -669,6 +682,16 @@ namespace InventoryApi.Migrations
                     PrescriptionID = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     PaymentStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OrderStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    InvoiceNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsHold = table.Column<bool>(type: "bit", nullable: true),
+                    HoldReason = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TotalAmountBeforeDiscount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
+                    TotalAmountAfterDiscount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
+                    Tax = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
+                    Vat = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
+                    DelivaryCharge = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
+                    OtherExpances = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -681,8 +704,7 @@ namespace InventoryApi.Migrations
                         name: "FK_Orders_Customers_CustomerID",
                         column: x => x.CustomerID,
                         principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Orders_Employees_EmployeeID",
                         column: x => x.EmployeeID,
@@ -738,8 +760,8 @@ namespace InventoryApi.Migrations
                     ProductID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CustomerID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
-                    ReviewText = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReviewDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ReviewText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReviewDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -941,6 +963,16 @@ namespace InventoryApi.Migrations
                 name: "IX_Customers_UserId",
                 table: "Customers",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_BranchId",
+                table: "Employees",
+                column: "BranchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_CompanyId",
+                table: "Employees",
+                column: "CompanyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_ManagerId",
@@ -1154,10 +1186,10 @@ namespace InventoryApi.Migrations
                 name: "UnitChilds");
 
             migrationBuilder.DropTable(
-                name: "BranchItems");
+                name: "Menus");
 
             migrationBuilder.DropTable(
-                name: "Menus");
+                name: "BranchItems");
 
             migrationBuilder.DropTable(
                 name: "Customers");

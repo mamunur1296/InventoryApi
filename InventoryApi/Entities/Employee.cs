@@ -1,5 +1,5 @@
 ﻿using InventoryApi.Entities.Base;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InventoryApi.Entities
 {
@@ -25,9 +25,13 @@ namespace InventoryApi.Entities
         public string ? ManagerId { get; set; }
         public string? UserId { get; set; }
         public ApplicationUser? User { get; set; }
-        public Employee Manager { get; set; }
-        public ICollection<Employee>   Subordinates { get; set; }
-        public ICollection<Order> Orders { get; set; }
+        public string ?CompanyId { get; set; }
+        public string ?BranchId { get; set; }
+        public Company? Company { get; set; }
+        public Branch? Branch { get; set; }
+        public Employee? Manager { get; set; }
+        public ICollection<Employee> ?  Subordinates { get; set; }
+        public ICollection<Order>? Orders { get; set; }
 
     }
 }

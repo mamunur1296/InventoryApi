@@ -16,7 +16,7 @@ namespace InventoryApi.Entities
         public string Phone { get; set; }
         public string ? Fax { get; set; }
         public string? HomePage { get; set; }
-        public ICollection<Product> Products { get; set; }
+        public ICollection<Product>? Products { get; set; }
 
     }
 }

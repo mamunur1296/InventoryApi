@@ -19,29 +19,26 @@ const onSuccessUsers = async (companys) => {
         debugger
         const userSchema = [
             {
-                render: (data, type, row) => `<img src="data:image/jpeg;base64,${row.logo}" alt="Photo" style="width:50px; height:50px;" onerror="this.onerror=null;this.src='/ProjectRootImg/defoltLogo.png';" />`
+                render: (data, type, row) => `<img src="data:image/jpeg;base64,${row.logo}" alt="Photo" style="width:30px; height:30px;" onerror="this.onerror=null;this.src='/ProjectRootImg/defoltLogo.png';" />`
             },
             {
-                render: (data, type, row) => row.name ?? "No Data"
+                render: (data, type, row) => row.name ?? "N/A"
             },
             {
-                render: (data, type, row) => row.fullName ?? "No Data"
-            },
-            { 
-                render: (data, type, row) => row.contactPerson ?? "No Data"
-            },
-            {
-                render: (data, type, row) => row.address ?? "No Address"
+                render: (data, type, row) => row.address ?? "N/A"
             },
 
             {
-                render: (data, type, row) => row.phoneNo ?? "No Phone"
+                render: (data, type, row) => row.phoneNo ?? "N/A"
             },
             {
-                render: (data, type, row) => row.faxNo ?? "No Fax"
+                render: (data, type, row) => row.faxNo ?? "N/A"
             },
             {
-                render: (data, type, row) => row.emailNo ?? "No Email"
+                render: (data, type, row) => row.emailNo ?? "N/A"
+            },
+            {
+                render: (data, type, row) => row.contactPerson ?? "N/A"
             },
             {
                 render: (data, type, row) => createActionButtons(row, [

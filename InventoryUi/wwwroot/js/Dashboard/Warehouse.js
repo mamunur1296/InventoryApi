@@ -23,9 +23,9 @@ const onSuccessUsers = async (warehouses, branchs) => {
             const branchs = branchsMap[warehouse.branchId];
             return {
                 id: warehouse?.id,
-                warehouseName: warehouse?.warehouseName ?? "No Name",
-                location: warehouse?.location ?? "No Address",
-                branch: branchs?.fullName ?? "No Address",
+                warehouseName: warehouse?.warehouseName ?? "N/A",
+                location: warehouse?.location ?? "N/A",
+                branch: branchs?.name ?? "N/A",
             };
         }
         return null;
@@ -144,7 +144,7 @@ $('#CreateUserBtn').off('click').click(async () => {
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
-    await populateDropdown('/Branch/GetAll', '#BranchDropdown', 'id', 'fullName', "Select Branch");
+    await populateDropdown('/Branch/GetAll', '#BranchDropdown', 'id', 'name', "Select Branch");
 });
 
 // Save Button
@@ -186,7 +186,7 @@ window.updateWareHouse = async (id) => {
     debugger
     $('#myModalLabelUpdateEmployee').show();
     $('#myModalLabelAddEmployee').hide();
-    await populateDropdown('/Branch/GetAll', '#BranchDropdown', 'id', 'fullName', "Select Branch");
+    await populateDropdown('/Branch/GetAll', '#BranchDropdown', 'id', 'name', "Select Branch");
     const result = await SendRequest({ endpoint: '/Warehouse/GetById/' + id });
     if (result.success) {
         $('#btnSave').hide();

@@ -12,37 +12,37 @@ namespace InventoryUi.Models
         public string ProductName { get; set; }
         [DisplayName("Description")]
 
-        public string Description { get; set; }
+        public string ?Description { get; set; }
 
         [Required(ErrorMessage = "Category ID is required.")]
         [DisplayName("Category")]
         public string CategoryID { get; set; }
 
         [DisplayName("Category")]
-        public Category Category { get; set; }
+        public Category? Category { get; set; }
 
         [Required(ErrorMessage = "Supplier ID is required.")]
         [DisplayName("Supplier")]
         public string SupplierID { get; set; }
 
         [DisplayName("Supplier")]
-        public Supplier Supplier { get; set; }
+        public Supplier ?Supplier { get; set; }
 
         [StringLength(50, ErrorMessage = "Quantity per unit cannot be longer than 50 characters.")]
         [DisplayName("Quantity Per Unit")]
-        public string QuantityPerUnit { get; set; }
+        public string ?QuantityPerUnit { get; set; }
         [DisplayName("Unit Master")]
         public string UnitMasterId { get; set; }
-
-
-        public UnitMaster UnitMaster { get; set; }
+        [DisplayName("Discount")]
+        public decimal? Discount { get; set; }
+        public UnitMaster? UnitMaster { get; set; }
 
         [Required(ErrorMessage = "Unit Child ID is required.")]
         [DisplayName("Unit Child")]
         public string UnitChildId { get; set; }
 
 
-        public UnitChild UnitChild { get; set; }
+        public UnitChild? UnitChild { get; set; }
 
         [Range(0, double.MaxValue, ErrorMessage = "Unit price must be a non-negative value.")]
         [DisplayName("Price")]
@@ -60,21 +60,21 @@ namespace InventoryUi.Models
 
         [StringLength(255, ErrorMessage = "Batch number cannot be longer than 255 characters.")]
         [DisplayName("Batch Number")]
-        public string BatchNumber { get; set; }
+        public string ?BatchNumber { get; set; }
         [DisplayName("Expiration")]
         public DateTime? ExpirationDate { get; set; }
         [DisplayName("Image")]
-        public string ImageURL { get; set; }
+        public string ?ImageURL { get; set; }
         [DisplayName("Image")]
-        public List<IFormFile> Files { get; set; }
+        public List<IFormFile>? Files { get; set; }
 
         [Range(0, double.MaxValue, ErrorMessage = "Weight must be a non-negative value.")]
         [DisplayName("Weight")]
-        public decimal Weight { get; set; }
+        public decimal? Weight { get; set; }
 
         [StringLength(255, ErrorMessage = "Dimensions cannot be longer than 255 characters.")]
         [DisplayName("Dimensions")]
-        public string Dimensions { get; set; }
+        public string? Dimensions { get; set; }
         public int Quentity { get; set; } = 1;
         public decimal Disc { get; set; } = 0;
         public int TotalPrice { get; set; }

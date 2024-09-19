@@ -29,13 +29,14 @@ const onSuccessUsers = async (products, categorys, suppliers, unitMasters) => {
             const unitMaster = unitMastersMap[product.unitMasterId];
             return {
                 id: product?.id,
-                name: product?.productName ?? "No Address",
-                catagory: category?.categoryName ?? "No Name",
-                supplier: supplier?.supplierName ?? "No Address",
-                price: product?.unitPrice ?? "No Address",
-                stock: product?.unitsInStock ?? "No Address",
+                name: product?.productName ?? "N/A",
+                catagory: category?.categoryName ?? "N/A",
+                supplier: supplier?.supplierName ?? "N/A",
+                price: product?.unitPrice ?? "N/A",
+                stock: product?.unitsInStock ?? "N/A",
                 img: product?.imageURL ,
-                unit: unitMaster?.name ?? "No Unit" 
+                unit: unitMaster?.name ?? "N/A",
+                dis: product?.discount ?? "N/A",
             };
         }
         return null;
@@ -51,12 +52,6 @@ const onSuccessUsers = async (products, categorys, suppliers, unitMasters) => {
                 render: (data, type, row) => row?.name
             },
             {
-                render: (data, type, row) => row?.catagory
-            },
-            {
-                render: (data, type, row) => row?.supplier
-            },
-            {
                 render: (data, type, row) => row?.price
             },
             {
@@ -64,6 +59,15 @@ const onSuccessUsers = async (products, categorys, suppliers, unitMasters) => {
             },
             {
                 render: (data, type, row) => row?.unit
+            },
+            {
+                render: (data, type, row) => row?.dis
+            }, 
+            {
+                render: (data, type, row) => row?.supplier
+            },
+            {
+                render: (data, type, row) => row?.catagory
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
@@ -121,10 +125,6 @@ const UsrValidae = $('#ProductForm').validate({
         ProductName: {
             required: true,
         },
-        Description: {
-            required: true,
-
-        },
         CategoryID: {
             required: true,
 
@@ -141,19 +141,11 @@ const UsrValidae = $('#ProductForm').validate({
             required: true,
 
         },
-        UnitsInStock: {
-            required: true,
-
-        },
         ReorderLevel: {
             required: true,
 
         },
         BatchNumber: {
-            required: true,
-
-        },
-        ExpirationDate: {
             required: true,
 
         },
@@ -164,6 +156,9 @@ const UsrValidae = $('#ProductForm').validate({
         Weight: {
             required: true,
 
+        },
+        UnitsInStock: {
+            required: true,
         },
         Dimensions: {
             required: true,
@@ -233,16 +228,52 @@ const UsrValidae = $('#ProductForm').validate({
     }
 });
 
+
+
+const selectChildUnit = async (selectedChildId = null) => {
+    $('#UnitMasterDropdown').off('change').on('change', async function () {
+        var id = $(this).val();
+        var $unitChildDropdown = $('#UnitChildDropdown');
+        $unitChildDropdown.empty();
+        $unitChildDropdown.append('<option value="">Select Child Unit</option>');
+
+        if (id !== null) {
+            const result = await SendRequest({ endpoint: '/UnitChild/GetallByFilterMaster/' + id });
+
+            if (result) {
+                $.each(result, function (index, item) {
+                    $unitChildDropdown.append(
+                        $('<option></option>').val(item.id).text(item.name)
+                    );
+                });
+
+                // If updating, select the appropriate child unit
+                if (selectedChildId) {
+                    $unitChildDropdown.val(selectedChildId);
+                }
+            }
+        }
+    });
+
+    // Manually trigger the change event if selectedChildId is provided
+    if ($('#UnitMasterDropdown').val()) {
+        $('#UnitMasterDropdown').trigger('change');
+    }
+};
+
+
+
 //Sow Create Model 
 $('#CreateBtn').off('click').click(async () => {
     resetFormValidation('#ProductForm', UsrValidae);
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
-    await populateDropdown('/Category/GetAll', '#CategoryDropdown', 'id', 'categoryName', "Select Catagory");
+    await populateDropdown('/Category/GetallSubCatagory', '#CategoryDropdown', 'id', 'categoryName', "Select Catagory");
     await populateDropdown('/Supplier/GetAll', '#SupplierDropdown', 'id', 'supplierName', "Select Supplier");
     await populateDropdown('/UnitMaster/GetAll', '#UnitMasterDropdown', 'id', 'name', "Select Master Unit");
-    await populateDropdown('/UnitChild/GetAll', '#UnitChildDropdown', 'id', 'name', "Select Sub Unit");
+    await selectChildUnit();
+    //await populateDropdown('/UnitChild/GetAll', '#UnitChildDropdown', 'id', 'name', "Select Sub Unit");
 });
 
 // Save Button
@@ -288,8 +319,8 @@ window.updateProduct = async (id) => {
     await populateDropdown('/Category/GetAll', '#CategoryDropdown', 'id', 'categoryName', "Select Catagory");
     await populateDropdown('/Supplier/GetAll', '#SupplierDropdown', 'id', 'supplierName', "Select Supplier");
     await populateDropdown('/UnitMaster/GetAll', '#UnitMasterDropdown', 'id', 'name', "Select Master Unit");
-    await populateDropdown('/UnitChild/GetAll', '#UnitChildDropdown', 'id', 'name', "Select Sub Unit");
-
+    //await populateDropdown('/UnitChild/GetAll', '#UnitChildDropdown', 'id', 'name', "Select Sub Unit");
+    
     const result = await SendRequest({ endpoint: '/Product/GetById/' + id });
     if (result.success) {
         $('#btnSave').hide();
@@ -313,6 +344,10 @@ window.updateProduct = async (id) => {
         $('#Supplier').val(result.data.supplier);
         $('#UnitMasterDropdown').val(result.data.unitMasterId);
         $('#UnitChildDropdown').val(result.data.unitChildId);
+        $('#Discount').val(result.data.discount);
+
+        // Call selectChildUnit with the selected child ID
+        await selectChildUnit(result.data.unitChildId);
 
 
         $('#modelCreate').modal('show');

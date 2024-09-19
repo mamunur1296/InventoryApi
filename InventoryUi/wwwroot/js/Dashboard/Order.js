@@ -33,11 +33,11 @@ const onSuccessUsers = async (orders, customes, employees, prescriptions) => {
             return {
                 id: order?.id,
                 invoice: order?.invoiceNumber ?? "N/A",
-                employee: employee?.firstName + employee?.lastName ?? "No Address",
-                orderDate: order?.orderDate ?? "No Name",
-                requiredDate: order?.requiredDate ?? "No Name",
-                shippedDate: order?.shippedDate ?? "No Name",
-                address: order?.shipAddress ?? "No Name",
+                employee: employee?.firstName + employee?.lastName ?? "N/A",
+                orderDate: order?.orderDate ?? "N/A",
+                requiredDate: order?.requiredDate ?? "N/A",
+                shippedDate: order?.shippedDate ?? "N/A",
+                address: order?.shipAddress ?? "N/A",
             };
         }
         return null;

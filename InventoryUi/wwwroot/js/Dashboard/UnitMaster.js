@@ -22,8 +22,8 @@ const onSuccessUsers = async (UnitMasters) => {
 
             return {
                 id: UnitMaster?.id,
-                name: UnitMaster?.name ?? "No Name",
-                description: UnitMaster?.unitMasterDescription ?? "No Address",
+                name: UnitMaster?.name ?? "N/A",
+                description: UnitMaster?.unitMasterDescription ?? "N/A",
             };
         }
         return null;
@@ -94,10 +94,6 @@ const UsrValidae = $('#UnitMasterForm').validate({
     rules: {
         Name: {
             required: true,
-        },
-        UnitMasterDescription: {
-            required: true,
-
         }
 
     },

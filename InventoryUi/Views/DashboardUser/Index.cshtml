@@ -1,4 +1,4 @@
-﻿@model InventoryUi.Models.User
+﻿@model InventoryUi.ViewModel.DashboirdUserVm
 
 @{
     ViewData["Title"] = "Index";
@@ -72,59 +72,129 @@
                 <form id="UserForm">
                     <div class="card-body">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="User.Id" value="User.Id" id="UserId" />
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label asp-for="FirstName" class="control-label"></label>
-                                    <input asp-for="FirstName" placeholder="Enter first Name" class="form-control" name="FirstName" />
-                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                    <label asp-for="User.FirstName" class="control-label"></label>
+                                    <input asp-for="User.FirstName" placeholder="Enter first Name" class="form-control"  id="FirstName" />
+                                    <span asp-validation-for="User.FirstName" id="FirstName" class="text-danger"></span>
                                 </div>
+                                
                                 <div class="form-group">
-                                    <label asp-for="LastName" class="control-label"></label>
-                                    <input asp-for="LastName" placeholder="Enter Last Name " class="form-control" name="LastName" />
-                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                    <label asp-for="User.LastName" class="control-label"></label>
+                                    <input asp-for="User.LastName" placeholder="Enter Last Name " class="form-control" id="LastName"  />
+                                    <span asp-validation-for="User.LastName" class="text-danger"></span>
                                 </div>
-                                <div class="form-group">
-                                    <label asp-for="UserName" class="control-label"></label>
-                                    <input asp-for="UserName" placeholder="Enter User Name" class="form-control" />
-                                    <span asp-validation-for="UserName" class="text-danger"></span>
-                                    <div id="UserError" class="text-danger" role="alert" style="display: none;"></div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="User.UserName" class="control-label"></label>
+                                            <input asp-for="User.UserName" placeholder="Enter User Name" class="form-control" id="UserName" />
+                                            <span asp-validation-for="User.UserName" class="text-danger"></span>
+                                            <div id="UserError" class="text-danger" role="alert" style="display: none;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 my-auto " >
+                                        <div class="d-flex align-items-center justify-content-center">
+                                           <div>
+                                                <input asp-for="User.isEmployee" type="checkbox" class="form-check-input" id="IsEmployeeCheckbox" />
+                                                <label asp-for="User.isEmployee" class="form-check-label ms-2" for="IsEmployeeCheckbox">IsEmployee</label>
+                                                <span asp-validation-for="User.isEmployee" class="text-danger ms-3"></span>
+                                           </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label asp-for="Email" class="control-label"></label>
-                                    <input asp-for="Email" placeholder="Enter Email" class="form-control" name="Email" />
-                                    <span asp-validation-for="Email" class="text-danger"></span>
-                                    <div id="EmailError" class="text-danger" role="alert" style="display: none;"></div>
+                                <div id="employeeSection" style="display: none;">
+                                    @{
+                                        <div class="row">
+                                            @if (Model.Companies == null && Model.Companies.Any()){
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label" asp-for="User.CompanyId"></label>
+                                                    <select class="form-control" asp-for="User.CompanyId" id="CompanyDropdown">
+
+                                                        @foreach (var item in Model.Companies)
+                                                        {
+                                                            <option value="@item.Id">@item.Name</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            }else{
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <div class="d-flex justify-content-start ">
+                                                        <a id="CreateUserBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Company</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            }
+                                            @if (Model.Branches == null && Model.Branches.Any())
+                                            {
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label" asp-for="User.BranchId"></label>
+                                                        <select class="form-control" asp-for="User.BranchId" id="BranchDropdown">
+                                                            <option value="">Select Branch</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            }else{
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="d-flex justify-content-start ">
+                                                            <a id="CreateUserBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Branch</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
                                 </div>
+                                
+                               
+
+                               
+                                
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label asp-for="PhoneNumber" class="control-label"></label>
-                                    <input asp-for="PhoneNumber" placeholder="Enter Phone Number" class="form-control" name="PhoneNumber" />
-                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                    <label asp-for="User.Email" class="control-label"></label>
+                                    <input asp-for="User.Email" placeholder="Enter Email" class="form-control" id="Email" />
+                                    <span asp-validation-for="User.Email" class="text-danger"></span>
+                                    <div id="EmailError" class="text-danger" role="alert" style="display: none;"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="Password" class="control-label"></label>
-                                    <input asp-for="Password" type="password" placeholder="Enter Password" class="form-control" name="Password" />
-                                    <span asp-validation-for="Password" class="text-danger"></span>
-                                    <div id="PasswordError" class="text-danger" role="alert" style="display: none;"></div>
+                                    <label asp-for="User.PhoneNumber" class="control-label"></label>
+                                    <input asp-for="User.PhoneNumber" placeholder="Enter Phone Number" id="PhoneNumber" class="form-control"  />
+                                    <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
                                 </div>
-                                <div class="form-group">
-                                    <label asp-for="ConfirmationPassword" class="control-label"></label>
-                                    <input asp-for="ConfirmationPassword" type="password" placeholder="Confirm your Password" class="form-control" name="ConfirmationPassword" />
-                                    <span asp-validation-for="ConfirmationPassword" class="text-danger"></span>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="User.Password" class="control-label"></label>
+                                            <input asp-for="User.Password" type="password" placeholder="Enter Password" id="Password" class="form-control"  />
+                                            <span asp-validation-for="User.Password" class="text-danger"></span>
+                                            <div id="PasswordError" class="text-danger" role="alert" style="display: none;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6  ">
+                                        <div class="form-group">
+                                            <label asp-for="User.ConfirmationPassword" class="control-label"></label>
+                                            <input asp-for="User.ConfirmationPassword" type="password" id="ConfirmationPassword" placeholder="Confirm your Password" class="form-control"  />
+                                            <span asp-validation-for="User.ConfirmationPassword" class="text-danger"></span>
+                                        </div>
+                                    </div>
                                 </div>
+
                                 <div class="form-group">
-                                    <label asp-for="RoleName"></label>
-                                    <select class="form-control" asp-for="RoleName" id="RolesDropdown">
+                                    <label asp-for="User.RoleName"></label>
+                                    <select class="form-control" asp-for="User.RoleName" id="RolesDropdown">
                                         <option value="">Select role</option>
                                     </select>
                                 </div>
-                                <div class="form-group mt-5 form-check">
-                                    <input asp-for="isEmployee" type="checkbox" class="form-check-input" id="IsEmployeeCheckbox" />
-                                    <label asp-for="isEmployee" class="form-check-label" for="IsEmployeeCheckbox">Employee</label>
-                                    <span asp-validation-for="isEmployee" class="text-danger"></span>
-                                </div>
+                               
 
                             </div>
                         </div>

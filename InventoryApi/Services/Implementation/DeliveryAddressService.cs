@@ -23,13 +23,13 @@ namespace InventoryApi.Services.Implementation
             var newdelivaryAddress = new DeliveryAddress
             {
                 Id = Guid.NewGuid().ToString(),
-                CreatedBy = entity.CreatedBy?.Trim(),
+                CreatedBy = entity?.CreatedBy?.Trim(),
                 CreationDate = DateTime.Now, // Set CreationDate here
-                Address = entity.Address.Trim(),
-                Mobile = entity.Mobile.Trim(),
+                Address = entity?.Address?.Trim(),
+                Mobile = entity?.Mobile?.Trim(),
                 Phone = entity.Phone.Trim(),
-                UserId = entity.UserId.Trim(),
-                DeactivatedDate = entity.DeactivatedDate,
+                UserId = entity?.UserId?.Trim(),
+                DeactivatedDate = entity?.DeactivatedDate,
                 IsActive = true,
                 IsDefault = true,
             };
@@ -78,10 +78,10 @@ namespace InventoryApi.Services.Implementation
             }
 
             // Update properties with validation and trimming
-            item.Address = string.IsNullOrWhiteSpace(entity.Address) ? item.Address : entity.Address.Trim();
-            item.Mobile = string.IsNullOrWhiteSpace(entity.Mobile) ? item.Mobile : entity.Mobile.Trim();
-            item.Phone = string.IsNullOrWhiteSpace(entity.Phone) ? item.Phone : entity.Phone.Trim();
-            item.UserId = string.IsNullOrWhiteSpace(entity.UserId) ? item.UserId : entity.UserId.Trim();
+            item.Address =  entity.Address.Trim();
+            item.Mobile =  entity?.Mobile?.Trim();
+            item.Phone =  entity.Phone.Trim();
+            item.UserId =  entity.UserId.Trim();
             item.IsActive = entity.IsActive;
             item.IsDefault = entity.IsDefault;
 

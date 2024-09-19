@@ -23,25 +23,25 @@ namespace InventoryApi.Services.Implementation
             var newProduct = new Product
             {
                 Id = Guid.NewGuid().ToString(),
-                CreatedBy = entity.CreatedBy?.Trim(),
+                CreatedBy = entity?.CreatedBy?.Trim(),
                 CreationDate = DateTime.Now, // Set CreationDate here
                 ProductName = entity?.ProductName?.Trim(),
                 Description = entity?.Description?.Trim(),
-                CategoryID = entity.CategoryID.ToString(),
-                SupplierID = entity.SupplierID.ToString(),
-                QuantityPerUnit = entity.QuantityPerUnit.ToString(),
+                CategoryID = entity?.CategoryID?.ToString(),
+                SupplierID = entity?.SupplierID?.ToString(),
+                QuantityPerUnit = entity?.QuantityPerUnit?.ToString(),
                 UnitPrice=entity.UnitPrice,
-                UnitsInStock=entity.UnitsInStock,
-                ReorderLevel=entity.ReorderLevel,
+                UnitsInStock=entity?.UnitsInStock,
+                ReorderLevel=entity?.ReorderLevel,
                 Discontinued=entity.Discontinued,
-                BatchNumber=entity.BatchNumber,
-                ExpirationDate=entity.ExpirationDate,
-                ImageURL=entity.ImageURL.Trim(),
-                Weight=entity.Weight,
-                Dimensions=entity.Dimensions,
-                UnitChildId=entity.UnitChildId,
-                UnitMasterId=entity.UnitMasterId,
-                
+                BatchNumber=entity?.BatchNumber,
+                ExpirationDate=entity?.ExpirationDate,
+                ImageURL=entity?.ImageURL?.Trim(),
+                Weight=entity?.Weight,
+                Dimensions=entity?.Dimensions,
+                UnitChildId=entity?.UnitChildId,
+                UnitMasterId=entity?.UnitMasterId,
+                Discount=entity?.Discount,
             };
             await _unitOfWorkRepository.productRepository.AddAsync(newProduct);
             await _unitOfWorkRepository.SaveAsync();
@@ -88,22 +88,23 @@ namespace InventoryApi.Services.Implementation
             }
 
             // Update properties with validation and trimming
-            item.ProductName = string.IsNullOrWhiteSpace(entity.ProductName) ? item.ProductName : entity.ProductName.Trim();
-            item.Description = string.IsNullOrWhiteSpace(entity.Description) ? item.Description : entity.Description.Trim();
-            item.CategoryID = entity.CategoryID != null ? entity.CategoryID.ToString() : item.CategoryID;
-            item.SupplierID = entity.SupplierID != null ? entity.SupplierID.ToString() : item.SupplierID;
-            item.QuantityPerUnit = entity.QuantityPerUnit != null ? entity.QuantityPerUnit.ToString() : item.QuantityPerUnit;
-            item.UnitPrice = entity?.UnitPrice != null ? entity.UnitPrice : item.UnitPrice;
-            item.UnitsInStock = entity?.UnitsInStock != null ? entity.UnitsInStock : item.UnitsInStock;
-            item.ReorderLevel = entity?.ReorderLevel != null ? entity.ReorderLevel : item.ReorderLevel;
-            item.Discontinued = entity?.Discontinued != null ? entity.Discontinued : item.Discontinued;
-            item.BatchNumber = entity?.BatchNumber != null ? entity.BatchNumber : item.BatchNumber;
-            item.ExpirationDate = entity?.ExpirationDate != null ? entity.ExpirationDate : item.ExpirationDate;
-            item.ImageURL = string.IsNullOrWhiteSpace(entity?.ImageURL) ? item.ImageURL : entity.ImageURL.Trim();
-            item.Weight = entity?.Weight != null ? entity.Weight : item.Weight;
-            item.Dimensions = entity?.Dimensions != null ? entity.Dimensions : item.Dimensions;
-            item.UnitMasterId = entity.UnitMasterId;
-            item.UnitChildId=entity.UnitChildId;
+            item.ProductName = entity.ProductName.Trim();
+            item.Description =  entity?.Description?.Trim();
+            item.CategoryID = entity.CategoryID ;
+            item.SupplierID = entity.SupplierID ;
+            item.QuantityPerUnit = entity.QuantityPerUnit ;
+            item.UnitPrice = entity.UnitPrice ;
+            item.UnitsInStock = entity?.UnitsInStock ;
+            item.ReorderLevel = entity?.ReorderLevel ;
+            item.Discontinued = entity.Discontinued ;
+            item.BatchNumber = entity?.BatchNumber ;
+            item.ExpirationDate = entity?.ExpirationDate ;
+            item.ImageURL = entity?.ImageURL?.Trim();
+            item.Weight = entity?.Weight ;
+            item.Dimensions = entity?.Dimensions ;
+            item.UnitMasterId = entity?.UnitMasterId;
+            item.UnitChildId=entity?.UnitChildId;
+            item.Discount=entity?.Discount ;
 
 
             // Set the UpdateDate to the current date and time

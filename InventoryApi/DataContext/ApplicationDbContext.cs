@@ -91,6 +91,7 @@ namespace InventoryApi.DataContext
                 .WithMany(w => w.Stocks)
                 .HasForeignKey(s => s.WarehouseID)
                 .OnDelete(DeleteBehavior.Restrict);
+           
         }
     }
 

@@ -99,7 +99,8 @@ namespace InventoryApi.Services.Implementation
                     Address=x.Address,
                     Country=x.Country,
                     Job=x.Job,
-                    
+                    CompanyId=x.CompanyId,
+                    BranchId=x.BranchId,
                 })
                 .ToListAsync();
 
@@ -136,6 +137,8 @@ namespace InventoryApi.Services.Implementation
                 Address = user.Address,
                 About = user.About,
                 NID = user.NID,
+                BranchId = user.BranchId,
+                CompanyId = user.CompanyId,
             };
             return userDto;
         }
@@ -239,6 +242,8 @@ namespace InventoryApi.Services.Implementation
             user.isApproved=model.isApproved;
             user.isApprovedByAdmin=model.isApprovedByAdmin;
             user.isEmployee=model.isEmployee;
+            user.BranchId=model.BranchId;
+            user.CompanyId = model.CompanyId;
             // Perform update operation
             var result = await _userManager.UpdateAsync(user);
 
@@ -271,8 +276,6 @@ namespace InventoryApi.Services.Implementation
             }
 
             return true;
-        }
-
-       
+        } 
     }
 }

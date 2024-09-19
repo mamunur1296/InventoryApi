@@ -17,5 +17,7 @@ namespace InventoryApi.Entities
         public bool? isApproved { get; set; } 
         public bool? isEmployee { get; set; } 
         public bool? isApprovedByAdmin { get; set; }
+        public string? CompanyId { get; set; }
+        public string? BranchId { get; set; }
     }
 }

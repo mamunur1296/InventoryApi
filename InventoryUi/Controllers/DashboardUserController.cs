@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using InventoryUi.ViewModel;
 
 namespace InventoryUi.Controllers
 {
@@ -13,18 +14,33 @@ namespace InventoryUi.Controllers
     {
         private readonly IClientServices<User> _userServices;
         private readonly IClientServices<Register> _registerServices;
+        private readonly IClientServices<Company> _companyServices;
+        private readonly IClientServices<Branch> _branchServices;
         private readonly IFileUploader _fileUploder;
 
-        public DashboardUserController(IClientServices<User> userServices, IClientServices<Register> registerServices, IFileUploader fileUploder)
+        public DashboardUserController(IClientServices<User> userServices,
+            IClientServices<Company> companyServices,
+            IClientServices<Branch> branchServices,
+            IClientServices<Register> registerServices, IFileUploader fileUploder)
         {
             _userServices = userServices;
             _registerServices = registerServices;
             _fileUploder = fileUploder;
+            _companyServices= companyServices;
+            _branchServices = branchServices;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var companys = await _companyServices.GetAllClientsAsync("Company/All");
+            var branch = await _branchServices.GetAllClientsAsync("Branch/All");
+            var vm = new DashboirdUserVm();
+            if (companys.Success)
+            {
+                vm.Companies = companys.Data;
+                vm.Branches = branch.Data;
+            }
+            return View(vm);
         }
         [HttpGet]
         public async Task<IActionResult> Getall()
@@ -54,7 +70,12 @@ namespace InventoryUi.Controllers
         public async Task<IActionResult> GetById(string id)
         {
             var user = await _userServices.GetClientByIdAsync($"User/{id}");
-            return Json(user);
+            var vm = new DashboirdUserVm();
+            if (user.Success)
+            {
+                vm.User = user.Data;
+            }
+            return Json(vm);
         }
         [HttpPost]
         public async Task<IActionResult> Create(Register model)
@@ -64,6 +85,14 @@ namespace InventoryUi.Controllers
             var register = await _registerServices.PostClientAsync("Auth/Register", model);
             return Json(register);
         }
+        [HttpPost]
+        public async Task<IActionResult> Register([FromForm] DashboirdUserVm model)
+        {
+            // Initialize the Roles list with the RoleName value
+            model.User.Roles = new List<string> { model.User.RoleName };
+            var register = await _userServices.PostClientAsync("Auth/Register", model.User);
+            return Json(register);
+        }
         [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
@@ -71,30 +100,30 @@ namespace InventoryUi.Controllers
             return Json(deleted);
         }
         [HttpPut]
-        public async Task<IActionResult> Update(string id, User model)
+        public async Task<IActionResult> Update(string id, DashboirdUserVm model)
         {
             var user = await _userServices.GetClientByIdAsync($"User/{id}");
-            if (model.FormFile != null)
+            if (model.User.FormFile != null)
             {
                 if (user.Data.UserImg != null)
                 {
                     bool deleteImg = await _fileUploder.DeleteFile(user.Data.UserImg,"User");
                 }
-                model.UserImg = await _fileUploder.ImgUploader(model?.FormFile , "User");
+                model.User.UserImg = await _fileUploder.ImgUploader(model?.User?.FormFile , "User");
             }
             else
             {
-                model.UserImg = user.Data.UserImg;
+                model.User.UserImg = user.Data.UserImg;
             }
-            if (model.RoleName == null)
+            if (model.User.RoleName == null)
             {
-                model.Roles = user.Data.Roles;
+                model.User.Roles = user.Data.Roles;
             }
             else
             {
-                model.Roles = new List<string> { model.RoleName };
+                model.User.Roles = new List<string> { model.User.RoleName };
             }
-            var result = await _userServices.UpdateClientAsync($"User/Edit/{id}", model);
+            var result = await _userServices.UpdateClientAsync($"User/Edit/{id}", model.User);
 
             if (result.Success)
             {

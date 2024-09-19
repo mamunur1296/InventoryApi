@@ -23,9 +23,9 @@ const onSuccessUsers = async (categorys) => {
             const subcatagory = catagoryMap[category.parentCategoryID];
             return {
                 id: category?.id,
-                name: category?.categoryName ?? "No Name",
-                description: category?.description ?? "No Address",
-                sub: subcatagory?.categoryName ?? "No Data",
+                name: category?.categoryName ?? "N/A",
+                description: category?.description ?? "N/A",
+                sub: subcatagory?.categoryName ?? category?.categoryName,
             };
         }
         return null;
@@ -35,13 +35,13 @@ const onSuccessUsers = async (categorys) => {
         debugger
         const userSchema = [
             {
-                render: (data, type, row) => row?.name
+                render: (data, type, row) => row?.sub
             },
             {
                 render: (data, type, row) => row?.description
             },
             {
-                render: (data, type, row) => row?.sub
+                render: (data, type, row) => row?.name
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
@@ -100,10 +100,6 @@ const UsrValidae = $('#CategoryForm').validate({
         CategoryName: {
             required: true,
             checkDuplicateCatagoryName: true
-        },
-        Description: {
-            required: true,
-
         }
 
     },
@@ -136,7 +132,7 @@ $('#CreateBtn').off('click').click(async () => {
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
-    await populateDropdown('/Category/GetAll', '#ParentCategoryDropdown', 'id', 'categoryName', "Select Catagory");
+    await populateDropdown('/Category/GetallCatagory', '#ParentCategoryDropdown', 'id', 'categoryName', "Select Catagory");
 });
 
 // Save Button
@@ -178,7 +174,7 @@ window.updateCategory = async (id) => {
     $('#myModalLabelUpdateEmployee').show();
     $('#myModalLabelAddEmployee').hide();
     $('#CategoryForm')[0].reset();
-    await populateDropdown('/Category/GetAll', '#ParentCategoryDropdown', 'id', 'categoryName', "Select Catagory");
+    await populateDropdown('/Category/GetallCatagory', '#ParentCategoryDropdown', 'id', 'categoryName', "Select Catagory");
     const result = await SendRequest({ endpoint: '/Category/GetById/' + id });
     if (result.success) {
         $('#btnSave').hide();

@@ -44,6 +44,44 @@ namespace InventoryUi.Controllers
             var categorys = await _categoryServices.GetAllClientsAsync("Category/All");
             return Json(categorys);
         }
+        
+        [HttpGet]
+        public async Task<IActionResult> GetallSubCatagory()
+        {
+            // Fetch all categories
+            var categoriesResponse = await _categoryServices.GetAllClientsAsync("Category/All");
+
+            // Check if data exists and filter subcategories (ParentCategoryID is not null or empty)
+            if (categoriesResponse?.Data != null)
+            {
+                var subCategories = categoriesResponse.Data
+                    .Where(c => !string.IsNullOrEmpty(c.ParentCategoryID))
+                    .ToList();
+                return Json(data : subCategories);
+            }
+
+            // Return an empty list or handle no subcategories scenario
+            return Json(new List<Category>());
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetallCatagory()
+        {
+            // Fetch all categories
+            var categoriesResponse = await _categoryServices.GetAllClientsAsync("Category/All");
+
+            // Check if data exists and filter subcategories (ParentCategoryID is not null or empty)
+            if (categoriesResponse?.Data != null)
+            {
+                var Categories = categoriesResponse.Data
+                    .Where(c => string.IsNullOrEmpty(c.ParentCategoryID))
+                    .ToList();
+                return Json(data: Categories);
+            }
+
+            // Return an empty list or handle no subcategories scenario
+            return Json(new List<Category>());
+        }
+
         [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {

@@ -23,14 +23,14 @@ const onSuccessUsers = async (branchs, companys) => {
             const company = companysMap[branch.companyId];
             return {
                 id: branch?.id,
-                name: branch?.name ?? "No Name",
-                fullName: branch?.fullName ?? "No Address",
-                contactParson: branch?.contactPerson ?? "No Data",
-                address: branch?.address ?? "No Data",
-                phone: branch?.phoneNo ?? "No Data",
-                fax: branch?.faxNo ?? "No Data",
-                email: branch?.emailNo ?? "No Data",
-                company: company?.fullName ?? "No Data",
+                name: branch?.name ?? "N/A",
+                fullName: branch?.fullName ?? "N/A",
+                contactParson: branch?.contactPerson ?? "N/A",
+                address: branch?.address ?? "N/A",
+                phone: branch?.phoneNo ?? "N/A",
+                fax: branch?.faxNo ?? "N/A",
+                email: branch?.emailNo ?? "N/A",
+                company: company?.name ?? "N/A",
             };
         }
         return null;
@@ -40,28 +40,22 @@ const onSuccessUsers = async (branchs, companys) => {
         debugger
         const userSchema = [
             {
-                render: (data, type, row) => row?.name
+                render: (data, type, row) => row?.company ?? "N/A"
             },
             {
-                render: (data, type, row) => row?.fullName
+                render: (data, type, row) => row?.name ?? "N/A"
             },
             {
-                render: (data, type, row) => row?.contactParson
+                render: (data, type, row) => row?.address ?? "N/A"
             },
             {
-                render: (data, type, row) => row?.address
+                render: (data, type, row) => row?.phone ?? "N/A"
             },
             {
-                render: (data, type, row) => row?.phone
+                render: (data, type, row) => row?.fax ?? "N/A"
             },
             {
-                render: (data, type, row) => row?.fax
-            },
-            {
-                render: (data, type, row) => row?.email
-            },
-            {
-                render: (data, type, row) => row?.company
+                render: (data, type, row) => row?.email ?? "N/A"
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
@@ -119,14 +113,6 @@ const UsrValidae = $('#BranchForm').validate({
     rules: {
         Name: {
             required: true,
-        },
-        FullName: {
-            required: true,
-
-        },
-        ContactPerson: {
-            required: true,
-
         }
         ,
         Address: {
@@ -135,11 +121,6 @@ const UsrValidae = $('#BranchForm').validate({
         }
         ,
         PhoneNo: {
-            required: true,
-
-        }
-        ,
-        FaxNo: {
             required: true,
 
         }
@@ -189,7 +170,7 @@ $('#CreateBtn').off('click').click(async () => {
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
-    await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'fullName', "Select Company");
+    await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'name', "Select Company");
 });
 
 // Save Button
@@ -231,7 +212,7 @@ window.updateBranch = async (id) => {
     $('#myModalLabelUpdateEmployee').show();
     $('#myModalLabelAddEmployee').hide();
     $('#BranchForm')[0].reset();
-    await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'fullName', "Select Company");
+    await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'name', "Select Company");
 
     const result = await SendRequest({ endpoint: '/Branch/GetById/' + id });
     if (result.success) {

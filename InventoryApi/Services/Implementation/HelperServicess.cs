@@ -50,7 +50,10 @@ namespace InventoryApi.Services.Implementation
                         PhoneNumber = model.PhoneNumber,
                         isApproved=model.isApproved,
                         isApprovedByAdmin= model.isApprovedByAdmin,
-                        isEmployee = model.isEmployee
+                        isEmployee = model.isEmployee,
+                        BranchId= model.BranchId,
+                        CompanyId= model.CompanyId,
+                        
                     };
 
                     // Check if all roles exist

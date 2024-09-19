@@ -26,15 +26,15 @@ const onSuccessUsers = async (employeees, users) => {
             const user = usersMap[employee.userId];
             return {
                 id: employee?.id,
-                fName: employee?.firstName ?? "No Name",
-                lName: employee?.lastName ?? "No Name",
-                title: employee?.title ?? "No title",
-                address: employee?.address + ", " + employee?.city + ", " + employee?.region + ", " + employee?.postalCode + ", " + employee?.country ?? "No title",
-                phone: employee?.homePhone ?? "No title",
-                manager: manager ? (manager?.firstName + " " + manager?.lastName) : " No Data",
-                name: employee ? (employee?.firstName + " " + employee?.lastName) : " No Data",
-                photo: employee?.photoPath ?? "No title",
-                user: user?.userName ?? "Null", 
+                fName: employee?.firstName ?? "N/A",
+                lName: employee?.lastName ?? "N/A",
+                title: employee?.title ?? "N/A",
+                address: employee?.address + ", " + employee?.city + ", " + employee?.region + ", " + employee?.postalCode + ", " + employee?.country ?? "N/A",
+                phone: employee?.homePhone ?? "N/A",
+                manager: manager ? (manager?.firstName + " " + manager?.lastName) : " N/A",
+                name: employee ? (employee?.firstName + " " + employee?.lastName) : " N/A",
+                photo: employee?.photoPath ?? "N/A",
+                user: user?.userName ?? "N/A", 
             };
         }
         return null;
@@ -44,7 +44,7 @@ const onSuccessUsers = async (employeees, users) => {
         debugger
         const userSchema = [
             {
-                render: (data, type, row) => `<img src="images/Employee/${row.photo}" alt="User Avatar" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';" />`
+                render: (data, type, row) => `<img src="images/Employee/${row.photo}" alt="User Avatar" class="rounded-circle" style="width: 30px; height: 30px; object-fit: cover;" onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';" />`
             },
             {
                 render: (data, type, row) => row?.name

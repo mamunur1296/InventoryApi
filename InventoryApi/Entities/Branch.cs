@@ -19,8 +19,8 @@ namespace InventoryApi.Entities
         public string CompanyId { get; set; }
 
         [ForeignKey("CompanyId")]
-        public Company Company { get; set; }
+        public Company ?Company { get; set; }
 
-        public ICollection<Warehouse> Warehouses { get; set; }
+        public ICollection<Warehouse> ?Warehouses { get; set; }
     }
 }

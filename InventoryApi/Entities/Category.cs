@@ -13,9 +13,9 @@ namespace InventoryApi.Entities
         public string? ParentCategoryID { get; set; }
 
         //[ForeignKey("ParentCategoryID")]
-        public Category ParentCategory { get; set; }
-        public ICollection<Category> SubCategories { get; set; }
-        public ICollection<Product> Products { get; set; }
+        public Category ?ParentCategory { get; set; }
+        public ICollection<Category>? SubCategories { get; set; }
+        public ICollection<Product>? Products { get; set; }
 
     }
 }

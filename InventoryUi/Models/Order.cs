@@ -48,6 +48,13 @@ namespace InventoryUi.Models
         public string InvoiceNumber { get; set; }
         public bool? IsHold { get; set; }
         public string? HoldReason { get; set; }
+        public decimal? TotalAmountBeforeDiscount { get; set; }
+        public decimal? TotalAmountAfterDiscount { get; set; }
+        public decimal? TotalAmount { get; set; }
+        public decimal? Tax { get; set; }
+        public decimal? Vat { get; set; }
+        public decimal? DelivaryCharge { get; set; }
+        public decimal? OtherExpances { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

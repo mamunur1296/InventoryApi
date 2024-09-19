@@ -4,6 +4,6 @@ namespace InventoryApi.Entities
 {
     public class Role : BaseEntity
     {
-        public string RoleName { get; set; }
+        public string? RoleName { get; set; }
     }
 }

@@ -152,10 +152,10 @@ export const SendRequest = async ({ endpoint, method = 'GET', data = null, heade
     // Perform fetch request
     
     try {
-       
+        debugger
         const response = await fetch(endpoint, options);
         const result = dataType === 'json' ? await response.json() : await response.text();
-        
+        debugger
         if (response.ok) {
             return result;
         } else {
@@ -174,8 +174,13 @@ export function handleError(message) {
 export const populateDropdown = async (endpoint, dropdownSelector, valueField, textField, defaultOption = null) => {
    
     try {
+        
         const response = await SendRequest({ endpoint: endpoint });
-        const data = response.data;
+        let data = response;
+        
+        if (response.data) {
+            data = response.data;
+        } 
 
         // Clear existing options
         $(dropdownSelector).empty();

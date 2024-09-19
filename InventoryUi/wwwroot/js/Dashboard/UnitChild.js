@@ -23,11 +23,11 @@ const onSuccessUsers = async (unitChilds, UnitMasters) => {
             const UnitMasters = UnitMastersMap[unitChild.unitMasterId];
             return {
                 id: unitChild?.id,
-                name: unitChild?.name ?? "No Name",
-                unit: UnitMasters?.name ?? "No Address",
-                UnitShortCode: unitChild?.unitShortCode ?? "No Data",
-                DisplayName: unitChild?.displayName ?? "No Data",
-                UnitDescription: unitChild?.unitDescription ?? "No Data",
+                name: unitChild?.name ?? "N/A",
+                unit: UnitMasters?.name ?? "N/A",
+                UnitShortCode: unitChild?.unitShortCode ?? "N/A",
+                DisplayName: unitChild?.displayName ?? "N/A",
+                UnitDescription: unitChild?.unitDescription ?? "N/A",
             };
         }
         return null;
@@ -113,14 +113,6 @@ const UsrValidae = $('#UnitChildForm').validate({
 
         },
         UnitShortCode: {
-            required: true,
-
-        },
-        DisplayName: {
-            required: true,
-
-        },
-        UnitDescription: {
             required: true,
 
         }

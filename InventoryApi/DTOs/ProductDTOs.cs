@@ -1,7 +1,4 @@
-﻿using InventoryApi.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace InventoryApi.DTOs
 {
@@ -19,7 +16,7 @@ namespace InventoryApi.DTOs
 
        
         //public Supplier Supplier { get; set; }
-        public string QuantityPerUnit { get; set; }
+        public string ?QuantityPerUnit { get; set; }
         public string UnitMasterId { get; set; }
 
         //[ForeignKey("UnitMasterId")]
@@ -35,11 +32,11 @@ namespace InventoryApi.DTOs
 
         public bool Discontinued { get; set; }
         public string BatchNumber { get; set; }
-
+        public decimal? Discount { get; set; }
         public DateTime? ExpirationDate { get; set; }
         public string? ImageURL { get; set; }
         [Precision(18, 2)]
-        public decimal Weight { get; set; }
+        public decimal? Weight { get; set; }
         public string? Dimensions { get; set; }
 
         public int Quentity { get; set; } = 1;
