@@ -4,6 +4,7 @@ import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js'
 
 $(document).ready(async function () {
     await getCompanyList();
+    
 });
 const getCompanyList = async () => {
     debugger
@@ -91,7 +92,7 @@ $.validator.addMethod("checkDuplicateCompanyFullName", createDuplicateCheckValid
 
 
 // Initialize validation
-const UsrValidae = $('#CompanyForm').validate({
+export const isCompnayValidae = $('#CompanyForm').validate({
     onkeyup: function (element) {
         $(element).valid();
     },
@@ -153,15 +154,14 @@ const UsrValidae = $('#CompanyForm').validate({
 });
 
 //Sow Create Model 
-$('#CreateUserBtn').off('click').click(async () => {
-    resetFormValidation('#CompanyForm', UsrValidae);
+$('#CreateCompanyBtn').off('click').click(async () => {
+    resetFormValidation('#CompanyForm', isCompnayValidae);
     clearMessage('successMessage', 'globalErrorMessage');
-    showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
+    showCreateModal('CompanyModelCreate', 'btnSaveCompany', 'btnUpdateCompany');
 });
 
 // Save Button
-
-$('#btnSave').off('click').click(async () => {
+$('#btnSaveCompany').off('click').click(async () => {
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     try {
@@ -177,13 +177,13 @@ $('#btnSave').off('click').click(async () => {
             $('#GeneralError').hide();
             debugger
             if (result.success && result.status === 201) {
-                $('#modelCreate').modal('hide');
+                $('#CompanyModelCreate').modal('hide');
                 notification({ message: "Company Created successfully !", type: "success", title: "Success" });
                 await getCompanyList(); // Update the user list
             }
         }
     } catch (error) {
-        $('#modelCreate').modal('hide');
+        $('#CompanyModelCreate').modal('hide');
         notification({ message: " Company Created failed . Please try again. !", type: "error", title: "Error" });
     }
 });
@@ -193,13 +193,13 @@ $('#btnSave').off('click').click(async () => {
 window.updateCompany = async (id) => {
     debugger
     clearMessage('successMessage', 'globalErrorMessage');
-    resetFormValidation('#CompanyForm', UsrValidae);
-    $('#myModalLabelUpdateEmployee').show();
-    $('#myModalLabelAddEmployee').hide();
+    resetFormValidation('#CompanyForm', isCompnayValidae);
+    $('#myModalLabelUpdateCompany').show();
+    $('#myModalLabelAddCompany').hide();
     const result = await SendRequest({ endpoint: '/Company/GetById/' + id });
     if (result.success) {
-        $('#btnSave').hide();
-        $('#btnUpdate').show();
+        $('#btnSaveCompany').hide();
+        $('#btnUpdateCompany').show();
 
         $('#Name').val(result.data.name);
         $('#FullName').val(result.data.fullName);
@@ -213,20 +213,20 @@ window.updateCompany = async (id) => {
         // Correctly set the checkbox state based on the isActive value
         $('#IsActiveCheckbox').prop('checked', result.data.isActive);
         
-        $('#modelCreate').modal('show');
-        resetValidation(UsrValidae, '#CompanyForm');
-        $('#btnUpdate').off('click').on('click', async () => {
+        $('#CompanyModelCreate').modal('show');
+        resetValidation(isCompnayValidae, '#CompanyForm');
+        $('#btnUpdateCompany').off('click').on('click', async () => {
             debugger
             //const formData = $('#CompanyForm').serialize();
             const formData = new FormData($('#CompanyForm')[0]);
             const result = await SendRequest({ endpoint: '/Company/Update/' + id, method: "PUT", data: formData });
             if (result.success) {
-                $('#modelCreate').modal('hide');
+                $('#CompanyModelCreate').modal('hide');
                 notification({ message: "Company Updated successfully !", type: "success", title: "Success" });
                 
                 await getCompanyList(); // Update the user list
             } else {
-                $('#modelCreate').modal('hide');
+                $('#CompanyModelCreate').modal('hide');
                 notification({ message: " Company Updated failed . Please try again. !", type: "error", title: "Error" });
             }
         });

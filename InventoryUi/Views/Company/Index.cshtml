@@ -36,7 +36,7 @@
                                 <h3 class="card-title font-weight-bold fs-1 color-primary">Company List</h3>
                             </div>
                             <div class="col-md-6 d-flex justify-content-end ">
-                                  <a id="CreateUserBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Company</a>
+                                <a id="CreateCompanyBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Company</a>
                             </div>
                         </div>
                     </div>
@@ -78,93 +78,7 @@
     <!-- /.container-fluid -->
 </section>
 
-
-
-<!-- Modal -->
-<div class="modal fade" id="modelCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAddEmployee" aria-hidden="true">
-    <div class="modal-dialog modal-sm" style="max-width: 65%; max-height: 80%;">
-        <div class="modal-content" style="height: 100%; overflow: hidden;">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabelAddEmployee">Add Company</h4>
-                <h4 class="modal-title" style="display:none;" id="myModalLabelUpdateEmployee">Update Company</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body" style="height: calc(100% - 60px); overflow-y: auto;">
-                <form id="CompanyForm">
-                    <input type="hidden" asp-for="CreatedBy" value="@userName" />
-                    <input type="hidden" asp-for="UpdatedBy" value="@userName" />
-                    <div class="card-body">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Name" class="control-label"></label>
-                                    <input asp-for="Name" placeholder="Enter Company Name (e.g., Acme Corp)" class="form-control" name="Name" />
-                                    <span asp-validation-for="Name" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="FullName" class="control-label"></label>
-                                    <input asp-for="FullName" placeholder="Enter Company Full Name (e.g., Acme Corporation Ltd.)" class="form-control" name="FullName" />
-                                    <span asp-validation-for="FullName" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="ContactPerson" class="control-label"></label>
-                                    <input asp-for="ContactPerson" placeholder="Enter Contact Person Name (e.g., John )" class="form-control" name="ContactPerson" />
-                                    <span asp-validation-for="ContactPerson" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="Address" class="control-label"></label>
-                                    <input asp-for="Address" placeholder="Enter Company Address (e.g., 123 Main St, City)" class="form-control" name="Address" />
-                                    <span asp-validation-for="Address" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="PhoneNo" class="control-label"></label>
-                                    <input asp-for="PhoneNo" placeholder="Enter Company Phone (e.g., +1 234-567-8900)" class="form-control" name="PhoneNo" />
-                                    <span asp-validation-for="PhoneNo" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="FaxNo" class="control-label"></label>
-                                    <input asp-for="FaxNo" placeholder="Enter Company Fax Number (e.g., +1 234-567-8901)" class="form-control" name="FaxNo" />
-                                    <span asp-validation-for="FaxNo" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="EmailNo" class="control-label"></label>
-                                    <input asp-for="EmailNo" placeholder="Enter Company Email Address (e.g., info@acme.com)" class="form-control" name="EmailNo" />
-                                    <span asp-validation-for="EmailNo" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="FormFile" class="control-label"></label>
-                                    <input asp-for="FormFile" placeholder="Enter Company Email Address (e.g., info@acme.com)" class="form-control" name="FormFile" />
-                                    <span asp-validation-for="FormFile" class="text-danger"></span>
-                                </div>
-                                <div class="form-group mt-5 form-check">
-                                    <input asp-for="IsActive" type="checkbox" class="form-check-input" id="IsActiveCheckbox" />
-                                    <label asp-for="IsActive" class="form-check-label" for="IsActiveCheckbox">Is Active</label>
-                                    <span asp-validation-for="IsActive" class="text-danger"></span>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </form>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btnSave">Save</button>
-                <button type="button" class="btn btn-primary" id="btnUpdate">Update</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
+@await Html.PartialAsync("~/Views/Company/_CreateCompanyModel.cshtml", Model)
 
 
 

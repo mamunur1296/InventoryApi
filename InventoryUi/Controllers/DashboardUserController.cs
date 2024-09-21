@@ -37,10 +37,40 @@ namespace InventoryUi.Controllers
             var vm = new DashboirdUserVm();
             if (companys.Success)
             {
-                vm.Companies = companys.Data;
-                vm.Branches = branch.Data;
+                if (companys.Data.Any())
+                {
+                    vm.Company = companys.Data.First();
+                }
+                else
+                {
+                    // Handle the case when there are no companies
+                    vm.Company = null; // Or set to a default value as needed
+                }
             }
+            vm.Branches = branch.Data;
             return View(vm);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetaCompanyForEmpPartial()
+        {
+            var companys = await _companyServices.GetAllClientsAsync("Company/All");
+            var branch = await _branchServices.GetAllClientsAsync("Branch/All");
+            var vm = new DashboirdUserVm();
+            if (companys.Success)
+            {
+                if (companys.Data.Any())
+                {
+                    vm.Company = companys.Data.First();
+                }
+                else
+                {
+                    // Handle the case when there are no companies
+                    vm.Company = null; // Or set to a default value as needed
+                }
+                vm.Branches = branch.Data;
+                return PartialView("_isEmployeeSection", vm); // Fetch fresh data
+            }
+            return NotFound();
         }
         [HttpGet]
         public async Task<IActionResult> Getall()

@@ -2,6 +2,9 @@
 import { notification } from '../Utility/notification.js';
 import { clearMessage, createActionButtons, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
+import { isBranchValidae } from './Branch.js';
+import { isCompnayValidae } from './company.js';
+
 
 $(document).ready(async function () {
     await getUserList();
@@ -122,6 +125,12 @@ const UsrValidae = $('#UserForm').validate({
         },
         "User.RoleName": {
             required: true
+        },
+        "User.CompanyId": {
+            required: true
+        },
+        "User.BranchId": {
+            required: true
         }
     },
     messages: {
@@ -174,24 +183,6 @@ const UsrValidae = $('#UserForm').validate({
 
 
 
-const isEmployee = (isEmp = null) => {
-    // Check the initial value and show/hide the employee section accordingly
-    if (isEmp) {
-        $('#employeeSection').css('display', 'block');
-    } else {
-        $('#employeeSection').css('display', 'none');
-    }
-
-    // Set up event listener for future changes
-    $('#IsEmployeeCheckbox').off('change').on('change', function () {
-        isEmp = $(this).is(':checked'); // Checking if the checkbox is checked
-        if (isEmp) {
-            $('#employeeSection').css('display', 'block'); // Show the section
-        } else {
-            $('#employeeSection').css('display', 'none'); // Hide the section
-        }
-    });
-};
 
 
 
@@ -207,7 +198,6 @@ $('#CreateUserBtn').off('click').click(async () => {
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
     await populateDropdown('/DashboardRole/GetAll', '#RolesDropdown', 'roleName', 'roleName', " Select Role");
     await populateDropdown('/Branch/GetAll', '#BranchDropdown', 'id', 'name', "Select Branch");
-    await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'name',);
     isEmployee();
     
 });
@@ -250,6 +240,24 @@ $('#btnSave').off('click').click(async () => {
     }
 });
 
+const isEmployee = (isEmp = null) => {
+    // Check the initial value and show/hide the employee section accordingly
+    if (isEmp) {
+        $('#employeeSection').css('display', 'block');
+    } else {
+        $('#employeeSection').css('display', 'none');
+    }
+    debugger
+    // Set up event listener for future changes
+    $('#IsEmployeeCheckbox').off('change').on('change', function () {
+        isEmp = $(this).is(':checked'); // Checking if the checkbox is checked
+        if (isEmp) {
+            $('#employeeSection').css('display', 'block'); // Show the section
+        } else {
+            $('#employeeSection').css('display', 'none'); // Hide the section
+        }
+    });
+};
 
 
 window.updateUser = async (id) => {
@@ -260,7 +268,6 @@ window.updateUser = async (id) => {
     $('#myModalLabelAddEmployee').hide();
     await populateDropdown('/DashboardRole/GetAll', '#RolesDropdown', 'roleName', 'roleName', null);
     await populateDropdown('/Branch/GetAll', '#BranchDropdown', 'id', 'name', "Select Branch");
-    await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'name',);
     
     const result = await SendRequest({ endpoint: '/DashboardUser/GetById/' + id });
     debugger
@@ -277,13 +284,13 @@ window.updateUser = async (id) => {
         $('#CompanyDropdown').val(result.user.companyId);
         $('#BranchDropdown').val(result.user.branchId);
 
-
+        debugger
         const isChecked = result.user.isEmployee;
         $('#IsEmployeeCheckbox').prop('checked', isChecked);
         isEmployee(isChecked);
         loger(isChecked);
         $('#modelCreate').modal('show');
-
+        debugger
 
         // Correctly set the checkbox state based on the isActive value
        // $('#IsEmployeeCheckbox').prop('checked', result.data.isActive);
@@ -314,15 +321,24 @@ window.showDetails = async (id) => {
     loger("showDetails id " + id);
 }
 
-window.addEmployee = async (id) => {
-    debugger
-    const result = await mackEmployee(id);
-    if (result) {
-        await getUserList();
-        notification({ message: "Successfully Approved Employee", type: "success", title: "Success" });
-    }
-}
 
+window.addEmployee = async (id) => {
+    loger(id);
+    const result = await SendRequest({ endpoint: '/Employee/CreateEmployee/' + id });
+    if (result.success) {
+        notification({ message: result.detail, type: "success", title: "Success" });
+        await getUserList(); // Reload the employees list on success
+    } else {
+        // Check if the error message contains the specific registration error
+        if (result.detail.includes("An error occurred during Employee registration:")) {
+            // Display a custom error message for an existing customer
+            notification({ message: "This Employee is already registered!", type: "error", title: "Error" });
+        } else {
+            // Display the default error message from the response if it's not a known case
+            notification({ message: result.detail, type: "error", title: "Error" });
+        }
+    }
+};
 
 window.deleteUser = async (id) => {
     clearMessage('successMessage', 'globalErrorMessage');
@@ -335,6 +351,7 @@ window.deleteUser = async (id) => {
         if (result.success) {
             $('#deleteAndDetailsModel').modal('hide');
             notification({ message: "User Deleted successfully !", type: "success", title: "Success" });
+            
             await getUserList(); // Update the category list
         } else {
             // Display the error message in the modal
@@ -342,7 +359,110 @@ window.deleteUser = async (id) => {
         }
     });
 }
+///////////////////////////////////////////////////////
 
 
+// Initialize the modal for creating a new company
+$('#CreateNewCompanyBtn').off('click').click(() => {
+    showCreateModal('CompanyModelCreate', 'btnSaveCompany', 'btnUpdateCompany');
+    isCompnayValidae();
+});
 
+// Save company button handler
+$('#btnSaveCompany').off('click').click(async () => {
+    await handleCompanyFormSubmit();
+});
 
+// Initialize the modal for creating a new branch
+$('#btnNewBranch').off('click').click(async () => {
+    await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'name', "Select Company");
+    showCreateModal('BranchModelCreate', 'BranchBtnSave', 'BranchBtnUpdate');
+    isBranchValidae();
+});
+
+// Save branch button handler
+$('#BranchBtnSave').off('click').click(async () => {
+    await handleBranchFormSubmit();
+});
+
+// Function to handle company form submission
+async function handleCompanyFormSubmit() {
+    clearMessage('successMessage', 'globalErrorMessage');
+
+    try {
+        if ($('#CompanyForm').valid()) {
+            const formData = new FormData($('#CompanyForm')[0]);
+            const result = await SendRequest({ endpoint: '/Company/Create', method: 'POST', data: formData });
+
+            clearPreviousMessages();
+
+            if (result.success && result.status === 201) {
+                await reloadPartialView();
+                $('#CompanyModelCreate').modal('hide');
+                notification({ message: "Company created successfully!", type: "success", title: "Success" });
+            }
+        }
+    } catch (error) {
+        handleError('CompanyModelCreate', "Company creation failed. Please try again.");
+    }
+}
+
+// Function to handle branch form submission
+async function handleBranchFormSubmit() {
+    clearMessage('successMessage', 'globalErrorMessage');
+
+    try {
+        if ($('#BranchForm').valid()) {
+            const formData = $('#BranchForm').serialize();
+            const result = await SendRequest({ endpoint: '/Branch/Create', method: 'POST', data: formData });
+
+            clearPreviousMessages();
+
+            if (result.success && result.status === 201) {
+                await reloadPartialView();
+                $('#BranchModelCreate').modal('hide');
+                await populateDropdown('/Branch/GetAll', '#BranchDropdown', 'id', 'name', "Select Branch");
+                notification({ message: "Branch created successfully!", type: "success", title: "Success" });
+            }
+        }
+    } catch (error) {
+        handleError('BranchModelCreate', "Branch creation failed. Please try again.");
+    }
+}
+
+// Function to reload partial views and reinitialize JS
+async function reloadPartialView() {
+    $('#EmpPartial').load('/DashboardUser/GetaCompanyForEmpPartial', () => {
+        reinitializeJsForPartial();
+    });
+}
+
+// Reinitialize JavaScript event handlers for partial views
+const reinitializeJsForPartial = () => {
+    // Rebind the "New Branch" button
+    $('#btnNewBranch').off('click').click(async () => {
+        await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'name', "Select Company");
+        showCreateModal('BranchModelCreate', 'BranchBtnSave', 'BranchBtnUpdate');
+        isBranchValidae();
+    });
+
+    // Rebind the "Save Branch" button
+    $('#BranchBtnSave').off('click').click(async () => {
+        await handleBranchFormSubmit();
+    });
+}
+
+// Utility function to clear previous messages
+function clearPreviousMessages() {
+    $('#successMessage').hide();
+    $('#UserError').hide();
+    $('#EmailError').hide();
+    $('#PasswordError').hide();
+    $('#GeneralError').hide();
+}
+
+// Utility function to handle errors
+function handleError(modalId, errorMessage) {
+    $(`#${modalId}`).modal('hide');
+    notification({ message: errorMessage, type: "error", title: "Error" });
+}

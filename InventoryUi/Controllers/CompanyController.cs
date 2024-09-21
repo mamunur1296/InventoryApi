@@ -8,6 +8,7 @@ namespace InventoryUi.Controllers
     public class CompanyController : Controller
     {
         private readonly IClientServices<Company> _companyServices;
+        
         private readonly IFileUploader _fileUploader;
 
         public CompanyController(IClientServices<Company> service, IFileUploader fileUploader)
@@ -36,6 +37,8 @@ namespace InventoryUi.Controllers
             var roles = await _companyServices.GetAllClientsAsync("Company/All");
             return Json(roles);
         }
+        
+
         [HttpGet]
         public async Task<IActionResult> GetById(string id)
         {

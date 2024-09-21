@@ -1,5 +1,6 @@
 ﻿using InventoryUi.Models;
 using InventoryUi.Services.Interface;
+using InventoryUi.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,16 +10,20 @@ namespace InventoryUi.Controllers
     public class DashboardController : Controller
     {
         private readonly IClientServices<User> _userServices;
-
-        public DashboardController(IClientServices<User> userServices)
+        private readonly IClientServices<Company> _companyServices;
+        
+        public DashboardController(IClientServices<User> userServices, IClientServices<Company> companyServices)
         {
             _userServices = userServices;
+            _companyServices = companyServices;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return View(); // Still returning DashboirdVm
         }
+
+
         [HttpGet]
         public async Task<IActionResult> GetNotApprovedEmployees()
         {
@@ -32,7 +37,8 @@ namespace InventoryUi.Controllers
             }
             return Json(null);
         }
-
+        
+        
 
     }
 }

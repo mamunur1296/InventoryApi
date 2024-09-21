@@ -25,6 +25,7 @@ public class ClientServices<T> : IClientServices<T> where T : class
         return JsonConvert.DeserializeObject<TResult>(response);
     }
 
+
     public Task<ResponseDto<object>> DeleteClientAsync(string endpoint)
     {
         return SendRequestAsync<ResponseDto<object>>(endpoint, ApiType.Delete);

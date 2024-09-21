@@ -1,5 +1,5 @@
 ﻿import { mackCustomer, mackEmployee } from '../utility/objectmaping.js';
-import {  createActionButtons,  initializeDataTable } from '../utility/helpers.js';
+import {  createActionButtons,  initializeDataTable, loger } from '../utility/helpers.js';
 import { SendRequest } from '../utility/sendrequestutility.js';
 import { notification } from '../utility/notification.js';
 
@@ -61,29 +61,64 @@ const onSuccessUsers = async (employees) => {
 }
 
 window.isEmployee = async (id) => {
-    debugger
-    const result = await mackEmployee(id);
-    if (result) {
-        await getemployeesList();
-        notification({ message: "Successfully Approved Employee", type: "success", title: "Success" });
+    loger(id);
+    const result = await SendRequest({ endpoint: '/Employee/CreateEmployee/' + id });
+    if (result.success) {
+        notification({ message: result.detail, type: "success", title: "Success" });
+        await getemployeesList(); // Reload the employees list on success
+    } else {
+        // Check if the error message contains the specific registration error
+        if (result.detail.includes("An error occurred during Employee registration:")) {
+            // Display a custom error message for an existing customer
+            notification({ message: "This Employee is already registered!", type: "error", title: "Error" });
+        } else {
+            // Display the default error message from the response if it's not a known case
+            notification({ message: result.detail, type: "error", title: "Error" });
+        }
     }
 };
 
 
-
-
-
 window.isCustomer = async (id) => {
-    debugger
-    const result = await mackCustomer(id);
-    if (result) {
-        await getemployeesList();
-        notification({ message: "SuccessFully Add Customer", type: "success", title: "Success" });
+    debugger;
+    const result = await SendRequest({ endpoint: '/Customer/CreateCustomer/' + id });
+    loger(result);
+
+    if (result.success) {
+        notification({ message: result.detail, type: "success", title: "Success" });
+        await getemployeesList(); // Reload the employees list on success
+    } else {
+        // Check if the error message contains the specific registration error
+        if (result.detail.includes("An error occurred during customer registration:")) {
+            // Display a custom error message for an existing customer
+            notification({ message: "This customer is already registered!", type: "error", title: "Error" });
+        } else {
+            // Display the default error message from the response if it's not a known case
+            notification({ message: result.detail, type: "error", title: "Error" });
+        }
     }
 }
 
 
 
+//window.isCustomer = async (id) => {
+//    debugger
+//    const result = await mackCustomer(id);
+//    if (result) {
+//        await getemployeesList();
+//        notification({ message: "SuccessFully Add Customer", type: "success", title: "Success" });
+//    }
+//}
+
+
+//window.isEmployee = async (id) => {
+//    debugger
+//    const result = await mackEmployee(id);
+//    if (result) {
+//        await getemployeesList();
+//        notification({ message: "Successfully Approved Employee", type: "success", title: "Success" });
+//    }
+//};
 
 
 

@@ -36,7 +36,7 @@
                                 <h3 class="card-title font-weight-bold fs-1 color-primary">Branch List</h3>
                             </div>
                             <div class="col-md-6 d-flex justify-content-end ">
-                                <a id="CreateBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Branch</a>
+                                <a id="CreateBranchBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Branch</a>
                             </div>
                         </div>
                     </div>
@@ -77,87 +77,7 @@
     <!-- /.container-fluid -->
 </section>
 
-
-
-<!-- Modal -->
-<div class="modal fade" id="modelCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAddEmployee" aria-hidden="true">
-    <div class="modal-dialog modal-sm" style="max-width: 65%; max-height: 80%;">
-        <div class="modal-content" style="height: 100%; overflow: hidden;">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabelAddEmployee">Add Branch</h4>
-                <h4 class="modal-title" style="display:none;" id="myModalLabelUpdateEmployee">Update Branch</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body" style="height: calc(100% - 60px); overflow-y: auto;">
-                <form id="BranchForm">
-                    <input type="hidden" asp-for="CreatedBy" value="@userName" />
-                    <input type="hidden" asp-for="UpdatedBy" value="@userName" />
-                    <div class="card-body">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="Name" class="control-label"></label>
-                                    <input asp-for="Name" placeholder="Enter  Name (e.g., Electronics)" class="form-control" name="Name" />
-                                    <span asp-validation-for="Name" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="FullName" class="control-label"></label>
-                                    <input asp-for="FullName" placeholder="Enter Category Description (e.g., Devices and gadgets)" class="form-control" name="FullName" />
-                                    <span asp-validation-for="FullName" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="ContactPerson" class="control-label"></label>
-                                    <input asp-for="ContactPerson" placeholder="Enter Category Description (e.g., Devices and gadgets)" class="form-control" name="ContactPerson" />
-                                    <span asp-validation-for="ContactPerson" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="Address" class="control-label"></label>
-                                    <input asp-for="Address" placeholder="Enter  Name (e.g., Electronics)" class="form-control" name="Address" />
-                                    <span asp-validation-for="Address" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="PhoneNo" class="control-label"></label>
-                                    <input asp-for="PhoneNo" placeholder="Enter Category Description (e.g., Devices and gadgets)" class="form-control" name="PhoneNo" />
-                                    <span asp-validation-for="PhoneNo" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="FaxNo" class="control-label"></label>
-                                    <input asp-for="FaxNo" placeholder="Enter Category Description (e.g., Devices and gadgets)" class="form-control" name="FaxNo" />
-                                    <span asp-validation-for="FaxNo" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="EmailNo" class="control-label"></label>
-                                    <input asp-for="EmailNo" placeholder="Enter Category Description (e.g., Devices and gadgets)" class="form-control" name="EmailNo" />
-                                    <span asp-validation-for="EmailNo" class="text-danger"></span>
-                                </div>
-  
-                                <div class="form-group">
-                                    <label class="control-label" asp-for="CompanyId"></label>
-                                    <select class="form-control" asp-for="CompanyId" id="CompanyDropdown">
-                                        <option value="">Select Company</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btnSave">Save</button>
-                <button type="button" class="btn btn-primary" id="btnUpdate">Update</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
+@await Html.PartialAsync("~/Views/Branch/_CreateBranchModel.cshtml", Model)
 
 
 

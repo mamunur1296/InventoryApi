@@ -1,4 +1,5 @@
-﻿@model InventoryUi.ViewModel.DashboirdUserVm
+﻿
+@model InventoryUi.ViewModel.DashboirdUserVm
 
 @{
     ViewData["Title"] = "Index";
@@ -106,54 +107,12 @@
                                     </div>
                                 </div>
                                 <div id="employeeSection" style="display: none;">
-                                    @{
-                                        <div class="row">
-                                            @if (Model.Companies == null && Model.Companies.Any()){
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label" asp-for="User.CompanyId"></label>
-                                                    <select class="form-control" asp-for="User.CompanyId" id="CompanyDropdown">
-
-                                                        @foreach (var item in Model.Companies)
-                                                        {
-                                                            <option value="@item.Id">@item.Name</option>
-                                                        }
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            }else{
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <div class="d-flex justify-content-start ">
-                                                        <a id="CreateUserBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Company</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            }
-                                            @if (Model.Branches == null && Model.Branches.Any())
-                                            {
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label" asp-for="User.BranchId"></label>
-                                                        <select class="form-control" asp-for="User.BranchId" id="BranchDropdown">
-                                                            <option value="">Select Branch</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            }else{
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <div class="d-flex justify-content-start ">
-                                                            <a id="CreateUserBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Branch</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            }
-                                        </div>
-                                    }
+                                    <partial id="EmpPartial">
+                                       @* @await Html.PartialAsync("_isEmployeeSection", Model) *@
+                                        <partial name="_isEmployeeSection" model="Model" />
+                                    </partial>
+                                    
                                 </div>
-                                
-                               
 
                                
                                 
@@ -242,8 +201,20 @@
     </div>
 </div> 
 
+@await Html.PartialAsync("~/Views/Company/_CreateCompanyModel.cshtml", Model.Company)
+@await Html.PartialAsync("~/Views/Branch/_CreateBranchModel.cshtml", Model.Branch) 
 
 @section Scripts {
     
     <script type="module" src="~/js/dashboard/dashboarduser.js" asp-append-version="true"></script>
 }
+
+
+
+
+
+
+
+
+
+

@@ -22,6 +22,7 @@ namespace InventoryApi.Services.Implementation
         {
             var newEmployee = new Employee
             {
+                Id = entity.Id,
                 CreatedBy = entity?.CreatedBy?.Trim(),
                 CreationDate = DateTime.Now, // Set CreationDate here
                 FirstName = entity.FirstName.Trim(),
@@ -43,16 +44,10 @@ namespace InventoryApi.Services.Implementation
                 PhotoPath = string.IsNullOrWhiteSpace(entity?.PhotoPath) ? null : entity?.PhotoPath.Trim(),
                 ManagerId=entity?.ManagerId?.Trim(),
                 UserId=entity?.UserId,
+                BranchId=entity?.BranchId,
+                CompanyId=entity?.CompanyId,
             };
-            // Set the Id conditionally
-            if (entity?.IsEmp == true)
-            {
-                newEmployee.Id = entity.Id;
-            }
-            else
-            {
-                newEmployee.Id = Guid.NewGuid().ToString();
-            }
+            
             await _unitOfWorkRepository.employeeRepository.AddAsync(newEmployee);
             await _unitOfWorkRepository.SaveAsync();
 
@@ -100,29 +95,31 @@ namespace InventoryApi.Services.Implementation
             }
 
             // Update properties with validation and trimming
-            item.FirstName = string.IsNullOrWhiteSpace(entity.FirstName) ? item.FirstName : entity.FirstName.Trim();
-            item.LastName = string.IsNullOrWhiteSpace(entity.LastName) ? item.LastName : entity.LastName.Trim();
-            item.Title = string.IsNullOrWhiteSpace(entity.Title) ? item.Title : entity.Title.Trim();
-            item.TitleOfCourtesy = string.IsNullOrWhiteSpace(entity.TitleOfCourtesy) ? item.TitleOfCourtesy : entity.TitleOfCourtesy.Trim();
-            item.BirthDate = entity.BirthDate != default ? entity.BirthDate : item.BirthDate;
-            item.HireDate = entity.HireDate != default ? entity.HireDate : item.HireDate;
-            item.Address = string.IsNullOrWhiteSpace(entity.Address) ? item.Address : entity.Address.Trim();
-            item.City = string.IsNullOrWhiteSpace(entity.City) ? item.City : entity.City.Trim();
-            item.Region = string.IsNullOrWhiteSpace(entity.Region) ? item.Region : entity.Region.Trim();
-            item.PostalCode = string.IsNullOrWhiteSpace(entity.PostalCode) ? item.PostalCode : entity.PostalCode.Trim();
-            item.Country = string.IsNullOrWhiteSpace(entity.Country) ? item.Country : entity.Country.Trim();
-            item.HomePhone = string.IsNullOrWhiteSpace(entity.HomePhone) ? item.HomePhone : entity.HomePhone.Trim();
-            item.Extension = string.IsNullOrWhiteSpace(entity.Extension) ? item.Extension : entity.Extension.Trim();
-            item.Photo = entity.Photo ?? item.Photo;
-            item.Notes = string.IsNullOrWhiteSpace(entity.Notes) ? item.Notes : entity.Notes.Trim();
-            item.ReportsTo = entity.ReportsTo ?? item.ReportsTo;
-            item.PhotoPath = string.IsNullOrWhiteSpace(entity.PhotoPath) ? item.PhotoPath : entity.PhotoPath.Trim();
+            item.FirstName =  entity.FirstName.Trim();
+            item.LastName = entity.LastName.Trim();
+            item.Title =  entity?.Title?.Trim();
+            item.TitleOfCourtesy =  entity?.TitleOfCourtesy?.Trim();
+            item.BirthDate =    item.BirthDate;
+            item.HireDate = item.HireDate;
+            item.Address =  entity?.Address?.Trim();
+            item.City =  entity?.City?.Trim();
+            item.Region = entity?.Region?.Trim();
+            item.PostalCode =  entity?.PostalCode?.Trim();
+            item.Country = entity?.Country?.Trim();
+            item.HomePhone =  entity?.HomePhone?.Trim();
+            item.Extension =  entity?.Extension?.Trim();
+            item.Photo = entity?.Photo ;
+            item.Notes =  entity?.Notes?.Trim();
+            item.ReportsTo = entity?.ReportsTo ?? item.ReportsTo;
+            item.PhotoPath = entity?.PhotoPath?.Trim();
             item.ManagerId = entity?.ManagerId?.Trim();
             item.UserId = entity?.UserId;
+            item.CompanyId = entity?.CompanyId?.Trim();
+            item.BranchId = entity?.BranchId?.Trim();   
 
 
             // Set the UpdateDate to the current date and time
-            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.UpdatedBy = entity?.UpdatedBy?.Trim();
             item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.employeeRepository.UpdateAsync(item);

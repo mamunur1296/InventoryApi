@@ -35,6 +35,12 @@ namespace InventoryUi.Controllers
             return Json(result);
         }
         [HttpGet]
+        public async Task<IActionResult> CreateEmployee(string id)
+        {
+            var result = await _employeeServices.GetClientByIdAsync($"Employee/CreateByAdmin/{id}");
+            return Json(result);
+        }
+        [HttpGet]
         public async Task<IActionResult> GetById(string id)
         {
             var employee = await _employeeServices.GetClientByIdAsync($"Employee/get/{id}");
@@ -74,8 +80,11 @@ namespace InventoryUi.Controllers
             var result = await _employeeServices.DeleteClientAsync($"Employee/Delete/{id}");
             if (result.Success)
             {
-                
-                await _fileUploder.DeleteFile(employee.Data.PhotoPath, "Employee");
+                if(employee.Data.PhotoPath != null)
+                {
+                    await _fileUploder.DeleteFile(employee.Data.PhotoPath, "Employee");
+                }
+               
             }
             return Json(result);
 

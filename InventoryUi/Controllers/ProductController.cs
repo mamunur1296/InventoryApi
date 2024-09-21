@@ -72,7 +72,10 @@ namespace InventoryUi.Controllers
             var result = await _productServices.DeleteClientAsync($"Product/Delete/{id}");
             if (result.Success)
             {
-                await _fileUploader.DeleteFile(product?.Data?.ImageURL, "Product");
+                if(product?.Data?.ImageURL != null)
+                {
+                  await _fileUploader.DeleteFile(product?.Data?.ImageURL, "Product");
+                }
             }
             return Json(result);
         }

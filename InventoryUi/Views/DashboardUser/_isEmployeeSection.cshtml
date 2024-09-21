@@ -1,0 +1,62 @@
+﻿@model InventoryUi.ViewModel.DashboirdUserVm
+
+@if (Model.Company != null)
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">Company</label>
+                <input type="hidden" asp-for="User.CompanyId" value="@Model.Company.Id" id="CompanyId" />
+                <p>@Model.Company.Name</p>
+            </div>
+        </div>
+
+        @if (Model.Branches != null && Model.Branches.Any())
+        {
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label" asp-for="User.BranchId"></label>
+                    <div class="d-flex">
+                        <select class="form-control" asp-for="User.BranchId" id="BranchDropdown">
+                            <option value="">Select Branch</option>
+                            @foreach (var branch in Model.Branches)
+                            {
+                                <option value="@branch.Id">@branch.Name</option>
+                            }
+                        </select>
+                        <div class="form-group">
+                            <a id="btnNewBranch" class="btn btn-success"><i class="fa fa-plus"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="col-md-6">
+                <div class="form-group" style="height: 100%;">
+                    <div class="d-flex h-100 justify-content-center align-items-center">
+                        <a id="btnNewBranch" class="btn text-primary">
+                            <i class="fa fa-plus"></i> Create New Branch
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        }
+
+    </div>
+}
+else
+{
+    <div class="form-group">
+        <div class="d-flex justify-content-center ">
+            <a id="CreateNewCompanyBtn" class="btn text-primary "> <i class="fa fa-plus"></i> Create New Company</a>
+        </div>
+    </div>
+}
+
+@section Scripts {
+
+    <script type="module" src="~/js/dashboard/dashboarduser.js" asp-append-version="true"></script>
+}

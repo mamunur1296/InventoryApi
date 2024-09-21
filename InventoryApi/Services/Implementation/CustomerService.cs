@@ -22,10 +22,10 @@ namespace InventoryApi.Services.Implementation
         {
             var newCustomer = new Customer
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = entity.Id,
                 CreatedBy = entity?.CreatedBy?.Trim(),
                 CreationDate = DateTime.Now, // Set CreationDate here
-                CustomerName = entity.CustomerName.Trim(),
+                CustomerName = entity?.CustomerName?.Trim(),
                 ContactName = entity?.ContactName?.Trim(),
                 ContactTitle = entity?.ContactTitle?.Trim(),
                 Address = entity?.Address?.Trim(),
@@ -33,10 +33,10 @@ namespace InventoryApi.Services.Implementation
                 Region = entity?.Region?.Trim(),
                 PostalCode = entity?.PostalCode?.Trim(),
                 Country = entity?.Country?.Trim(),
-                Phone = entity.Phone.Trim(),
+                Phone = entity?.Phone?.Trim(),
                 Fax = entity?.Fax?.Trim(),
                 Email = entity?.Email?.Trim(),
-                PasswordHash = entity.PasswordHash.Trim(),
+                PasswordHash = entity?.PasswordHash?.Trim(),
                 DateOfBirth = entity?.DateOfBirth,
                 MedicalHistory= entity?.MedicalHistory?.Trim(),
                 UserId=entity?.UserId,

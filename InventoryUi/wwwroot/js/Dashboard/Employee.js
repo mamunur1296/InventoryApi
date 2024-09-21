@@ -8,33 +8,40 @@ $(document).ready(async function () {
 const getEmployeeList = async () => {
     debugger
     const employeees = await SendRequest({ endpoint: '/Employee/GetAll' });
-    // const company = await SendRequest({ endpoint: '/Company/GetAll' });
+    const company = await SendRequest({ endpoint: '/Company/GetAll' });
     const users = await SendRequest({ endpoint: '/DashboardUser/GetAll' });
+    const branchs = await SendRequest({ endpoint: '/Branch/GetAll' });
     if (employeees.status === 200 && employeees.success) {
-        await onSuccessUsers(employeees.data, users.data);
+        debugger
+        await onSuccessUsers(employeees.data, users.data, company.data, branchs.data);
     }
 }
-
-const onSuccessUsers = async (employeees, users) => {
+const onSuccessUsers = async (employeees, users, company, branchs) => {
     debugger
     const managerMap = dataToMap(employeees, 'id');
     const usersMap = dataToMap(users, 'id');
+    const companyMap = dataToMap(company, 'id');
+    const branchsMap = dataToMap(branchs, 'id');
     const employeeesitem = employeees.map((employee) => {
         if (employee) {
             debugger
             const manager = managerMap[employee?.managerId];
             const user = usersMap[employee.userId];
+            const company = companyMap[employee.companyId];
+            const branch = branchsMap[employee.branchId];
             return {
                 id: employee?.id,
                 fName: employee?.firstName ?? "N/A",
                 lName: employee?.lastName ?? "N/A",
                 title: employee?.title ?? "N/A",
-                address: employee?.address + ", " + employee?.city + ", " + employee?.region + ", " + employee?.postalCode + ", " + employee?.country ?? "N/A",
+                address: employee?.address ?? " " + ", " + employee?.city ?? " " + ", " + employee?.region ?? " " + ", " + employee?.postalCode ?? " " + ", " + employee?.country ?? " " ?? "N/A",
                 phone: employee?.homePhone ?? "N/A",
+                company: company?.name ?? " N/A",
+                branch: branch?.name ?? " N/A",
                 manager: manager ? (manager?.firstName + " " + manager?.lastName) : " N/A",
                 name: employee ? (employee?.firstName + " " + employee?.lastName) : " N/A",
                 photo: employee?.photoPath ?? "N/A",
-                user: user?.userName ?? "N/A", 
+                user: user?.userName ?? "N/A",
             };
         }
         return null;
@@ -53,16 +60,19 @@ const onSuccessUsers = async (employeees, users) => {
                 render: (data, type, row) => row?.title
             },
             {
-                render: (data, type, row) => row?.address
-            },
-            {
                 render: (data, type, row) => row?.phone
             },
             {
-                render: (data, type, row) => row?.manager
+                render: (data, type, row) => row?.address
             },
             {
-                render: (data, type, row) => row?.user
+                render: (data, type, row) => row?.company
+            },
+            {
+                render: (data, type, row) => row?.branch
+            },
+            {
+                render: (data, type, row) => row?.manager
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
@@ -79,6 +89,7 @@ const onSuccessUsers = async (employeees, users) => {
         console.error('Error processing Employee data:', error);
     }
 }
+
 
 //// Fatch duplucate file 
 
@@ -123,48 +134,57 @@ const UsrValidae = $('#EmployeeForm').validate({
         FirstName: {
             required: true,
         },
-        Title: {
+        BranchId: {
             required: true,
         },
-        TitleOfCourtesy: {
+        CompanyId: {
             required: true,
         },
-        BirthDate: {
+        ManagerId: {
             required: true,
         },
-        HireDate: {
-            required: true,
-        },
-        Address: {
-            required: true,
-        },
-        City: {
-            required: true,
-        },
-        Region: {
-            required: true,
-        },
-        PostalCode: {
-            required: true,
-        },
-        Country: {
-            required: true,
-        },
-        HomePhone: {
-            required: true,
-        },
-        Extension: {
-            required: true,
-        },
-        Notes: {
-            required: true,
-        },
-        ReportsTo: {
-            required: true,
-        },
-        Files: {
-            required: true,
-        }
+        //Title: {
+        //    required: true,
+        //},
+        //TitleOfCourtesy: {
+        //    required: true,
+        //},
+        //BirthDate: {
+        //    required: true,
+        //},
+        //HireDate: {
+        //    required: true,
+        //},
+        //Address: {
+        //    required: true,
+        //},
+        //City: {
+        //    required: true,
+        //},
+        //Region: {
+        //    required: true,
+        //},
+        //PostalCode: {
+        //    required: true,
+        //},
+        //Country: {
+        //    required: true,
+        //},
+        //HomePhone: {
+        //    required: true,
+        //},
+        //Extension: {
+        //    required: true,
+        //},
+        //Notes: {
+        //    required: true,
+        //},
+        //ReportsTo: {
+        //    required: true,
+        //},
+        //Files: {
+        //    required: true,
+        //}
     },
     messages: {
         LastName: {
@@ -281,6 +301,8 @@ window.updateEmployee = async (id) => {
     $('#myModalLabelAddEmployee').hide();
     await populateDropdown('/Employee/GetAll', '#ManagerDropdown', 'id', 'firstName', "Select Manager");
     await populateDropdown('/DashboardUser/GetAll', '#UserDropdown', 'id', 'userName', "Select User");
+    await populateDropdown('/Branch/GetAll', '#BranchDropdown', 'id', 'name', "Select Branch");
+    await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'name', "Select Company");
     const result = await SendRequest({ endpoint: '/Employee/GetById/' + id });
     if (result.success) {
         $('#btnSave').hide();
@@ -307,24 +329,29 @@ window.updateEmployee = async (id) => {
         $('#Photo').val(result.data.photo);
         $('#PostalCode').val(result.data.postalCode);
         $('#ManagerDropdown').val(result.data.managerId);
+        $('#CompanyDropdown').val(result.data.companyId);
         $('#UserDropdown').val(result.data.userId);
+        $('#BranchDropdown').val(result.data.branchId);
 
 
         $('#modelCreate').modal('show');
         resetValidation(UsrValidae, '#EmployeeForm');
         $('#btnUpdate').off('click').on('click', async () => {
-            debugger
-            //const formData = $('#EmployeeForm').serialize();
-            const formData = new FormData($('#EmployeeForm')[0]);
-            const result = await SendRequest({ endpoint: '/Employee/Update/' + id, method: "PUT", data: formData });
-            if (result.success) {
-                $('#modelCreate').modal('hide');
-                notification({ message: "Employee Updated successfully !", type: "success", title: "Success" });
-                await getEmployeeList(); // Update the user list
-            } else {
-                $('#modelCreate').modal('hide');
-                notification({ message: " Employee Updated failed . Please try again. !", type: "error", title: "Error" });
+            if ($('#EmployeeForm').valid()) {
+                debugger
+                //const formData = $('#EmployeeForm').serialize();
+                const formData = new FormData($('#EmployeeForm')[0]);
+                const result = await SendRequest({ endpoint: '/Employee/Update/' + id, method: "PUT", data: formData });
+                if (result.success) {
+                    $('#modelCreate').modal('hide');
+                    notification({ message: "Employee Updated successfully !", type: "success", title: "Success" });
+                    await getEmployeeList(); // Update the user list
+                } else {
+                    $('#modelCreate').modal('hide');
+                    notification({ message: " Employee Updated failed . Please try again. !", type: "error", title: "Error" });
+                }
             }
+            
         });
     }
     loger(result);
@@ -347,7 +374,7 @@ window.deleteEmployee = async (id) => {
     $('#btnDelete').off('click').click(async () => {
         debugger
         const result = await SendRequest({ endpoint: '/Employee/Delete', method: "DELETE", data: { id: id } });
-
+        loger(result);
         if (result.success) {
             $('#deleteAndDetailsModel').modal('hide');
             notification({ message: "Employee Deleted successfully !", type: "success", title: "Success" });

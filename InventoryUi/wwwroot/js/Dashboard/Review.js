@@ -26,10 +26,10 @@ const onSuccessUsers = async (reviews, products, customers) => {
             const customer = customersMap[review.customerID];
             return {
                 id: review?.id,
-                product: product?.productName ?? "No Name",
-                customer: customer?.customerName ?? "No Address",
-                rationg: review?.rating ?? "No Address",
-                commend: review?.reviewText ?? "No Address",
+                product: product?.productName ?? "N/A",
+                customer: customer?.customerName ?? "N/A",
+                rationg: review?.rating ?? "N/A",
+                commend: review?.reviewText ?? "N/A",
             };
         }
         return null;

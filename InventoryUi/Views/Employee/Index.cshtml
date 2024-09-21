@@ -36,7 +36,7 @@
                                 <h3 class="card-title font-weight-bold fs-1 color-primary">Employee List</h3>
                             </div>
                             <div class="col-md-6 d-flex justify-content-end ">
-                                <a id="CreateBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Employee</a>
+                                <a id="CreateBtn" class="btn btn-success disabled"> <i class="fa fa-plus"></i> Create New Employee</a>
                             </div>
                         </div>
                     </div>
@@ -57,10 +57,11 @@
                                     <th>Photo</th>
                                     <th>Name</th>
                                     <th>Title</th>
-                                    <th>Address</th>
                                     <th>Phone</th>
+                                    <th>Address</th>
+                                    <th>Compnay</th>
+                                    <th>Branch</th>
                                     <th>Manager</th>
-                                    <th>User</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -125,17 +126,13 @@
                                     <span asp-validation-for="BirthDate" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="HireDate" class="control-label"></label>
-                                    <input asp-for="HireDate" placeholder="Enter hire date (e.g., 01/01/2020)" class="form-control" name="HireDate" />
-                                    <span asp-validation-for="HireDate" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
                                     <label asp-for="Address" class="control-label"></label>
                                     <input asp-for="Address" placeholder="Enter address (e.g., 123 Main St)" class="form-control" name="Address" />
                                     <span asp-validation-for="Address" class="text-danger"></span>
                                 </div>
+                            </div>
+                            <div class="col-md-4">
+                                
                                 <div class="form-group">
                                     <label asp-for="City" class="control-label"></label>
                                     <input asp-for="City" placeholder="Enter city (e.g., Dhaka)" class="form-control" name="City" />
@@ -161,13 +158,14 @@
                                     <input asp-for="HomePhone" placeholder="Enter home phone (e.g., 555-1234)" class="form-control" name="HomePhone" />
                                     <span asp-validation-for="HomePhone" class="text-danger"></span>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label asp-for="Extension" class="control-label"></label>
                                     <input asp-for="Extension" placeholder="Enter extension (e.g., 123)" class="form-control" name="Extension" />
                                     <span asp-validation-for="Extension" class="text-danger"></span>
                                 </div>
+                            </div>
+                            <div class="col-md-4">
+                               
                                 <div class="form-group">
                                     <label asp-for="Notes" class="control-label"></label>
                                     <input asp-for="Notes" placeholder="Enter notes (e.g., Additional info)" class="form-control" name="Notes" />
@@ -185,14 +183,20 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" asp-for="ManagerId"></label>
-                                    <select class="form-control" asp-for="ManagerId" id="ManagerDropdown">
+                                    <select class="form-control" asp-for="ManagerId" name="ManagerId" id="ManagerDropdown">
                                         <option value="">Select manager</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" asp-for="UserId"></label>
-                                    <select class="form-control" asp-for="UserId" id="UserDropdown">
-                                        <option value="">Select</option>
+                                    <label class="control-label" asp-for="CompanyId"></label>
+                                    <select class="form-control" asp-for="CompanyId" name="CompanyId" id="CompanyDropdown">
+                                        <option value="">Select Company</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" asp-for="BranchId"></label>
+                                    <select class="form-control" asp-for="BranchId" name="BranchId" id="BranchDropdown">
+                                        <option value="">Select Branch</option>
                                     </select>
                                 </div>
                             </div>

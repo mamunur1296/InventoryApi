@@ -13,7 +13,7 @@ namespace InventoryApi.DTOs
         public string? Title { get; set; }
         public string? TitleOfCourtesy { get; set; }
         public DateTime? BirthDate { get; set; }
-        public DateTime HireDate { get; set; }
+        public DateTime? HireDate { get; set; }
         public string? Address { get; set; }
         public string? City { get; set; }
         public string? Region { get; set; }
@@ -28,7 +28,9 @@ namespace InventoryApi.DTOs
         public string? PhotoPath { get; set; }
         public bool? IsEmp { get; set; }
         public string? UserId { get; set; }
-       // public ApplicationUser? User { get; set; }
+        public string? CompanyId { get; set; }
+        public string? BranchId { get; set; }
+        // public ApplicationUser? User { get; set; }
         // public Employee Manager { get; set; }
         // public ICollection<Employee> Subordinates { get; set; }
         // public ICollection<Order> Orders { get; set; }

@@ -1,4 +1,5 @@
-﻿@using System.Security.Claims
+﻿
+@using System.Security.Claims
 @using Microsoft.IdentityModel.JsonWebTokens
 
 @{
@@ -146,13 +147,14 @@
         </nav>
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar  sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a asp-action="index" asp-controller="Home" class="brand-link">
                 <img src="~/admin/dist/img/AdminLTELogo.png" alt="Logo" class="brand-image img-circle elevation-3"
                      style="opacity: .8">
                 <span class="brand-text font-weight-light">Inventory</span>
             </a>
+           
 
             <!-- Sidebar -->
             <div class="sidebar">
@@ -162,7 +164,7 @@
                         <img src="/images/User/@img"
                              alt="Profile Image"
                              class="img-circle elevation-2"
-                             style="height: 50px; width: 50px;"
+                             style="height: 40px; width: 40px;"
                              onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
                     </div>
                     <div class="info ">

@@ -23,8 +23,8 @@ const onSuccessUsers = async (shippers) => {
             //const company = companyMap[warehouse.companyId];
             return {
                 id: shipper?.id,
-                name: shipper?.shipperName ?? "No Name",
-                phone: shipper?.phone ?? "No Address",
+                name: shipper?.shipperName ?? "N/A",
+                phone: shipper?.phone ?? "N/A",
             };
         }
         return null;

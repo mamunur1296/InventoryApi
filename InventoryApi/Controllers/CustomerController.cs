@@ -11,16 +11,33 @@ namespace InventoryApi.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly IBaseServices<CustomerDTOs> _service;
+        private readonly IHelperServicess _helperServicess;
 
-        public CustomerController(IBaseServices<CustomerDTOs> service)
+        public CustomerController(IBaseServices<CustomerDTOs> service, IHelperServicess helperServicess)
         {
             _service = service;
+            _helperServicess = helperServicess;
         }
         [HttpPost("Create")]
         public async Task<IActionResult> Create(CustomerDTOs model)
         {
             var result = await _service.CreateAsync(model);
             if (result)
+            {
+                return StatusCode((int)HttpStatusCode.Created, new ResponseDTOs<string>
+                {
+                    Success = true,
+                    Status = HttpStatusCode.Created,
+                    Detail = "Customer Created  successfully !!."
+                });
+            }
+            return StatusCode((int)HttpStatusCode.BadRequest, result);
+        }
+        [HttpGet("CreateByAdmin/{id}")]
+        public async Task<IActionResult> CreateByAdmin(string id)
+        {
+            var result = await _helperServicess.CreateCustomerByAdmin(id);
+            if (result.isSucceed)
             {
                 return StatusCode((int)HttpStatusCode.Created, new ResponseDTOs<string>
                 {

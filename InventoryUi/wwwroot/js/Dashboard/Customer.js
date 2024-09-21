@@ -20,13 +20,13 @@ const onSuccessUsers = async (customers, users) => {
     const customersitem = customers.map((customer) => {
         if (customer) {
             debugger
-            const user = usersMap[customer.userId];
+            const user = usersMap[customer.id];
             return {
                 id: customer?.id,
                 name: customer?.customerName ?? "N/A",
                 contactName: customer?.contactName ?? "N/A",
                 contactTitle: customer?.contactTitle ?? "N/A",
-                address: customer?.address + ", " + customer?.city + ", " + customer?.region + ", " + customer?.postalCode + ", " + customer?.country ?? "N/A",
+                address: customer?.address ?? " " + ", " + customer?.city ?? " " + ", " + customer?.region ?? " " + ", " + customer?.postalCode ?? " " + ", " + customer?.country ?? " " ?? "N/A",
                 phone: customer?.phone ?? "N/A",
                 fax: customer?.fax ?? "N/A",
                 email: customer?.email ?? "N/A",

@@ -26,9 +26,9 @@ const onSuccessUsers = async (stocks, products, warehouses) => {
             const warehouse = warehousesMap[stock.warehouseID];
             return {
                 id: stock?.id,
-                product: product?.productName ?? "No Name",
-                warehouse: warehouse?.warehouseName ?? "No Address",
-                quentity: stock?.quantity ?? "No Quentity"
+                product: product?.productName ?? "N/A",
+                warehouse: warehouse?.warehouseName ?? "N/A",
+                quentity: stock?.quantity ?? "N/A"
             };
         }
         return null;

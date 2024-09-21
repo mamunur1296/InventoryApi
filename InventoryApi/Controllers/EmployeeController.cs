@@ -1,4 +1,5 @@
 ﻿using InventoryApi.DTOs;
+using InventoryApi.Services.Implementation;
 using InventoryApi.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,16 +12,33 @@ namespace InventoryApi.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IBaseServices<EmployeeDTOs> _service;
+        public readonly IHelperServicess _helper;
 
-        public EmployeeController(IBaseServices<EmployeeDTOs> service)
+        public EmployeeController(IBaseServices<EmployeeDTOs> service, IHelperServicess helper)
         {
             _service = service;
+            _helper = helper;
         }
         [HttpPost("Create")]
         public async Task<IActionResult> Create(EmployeeDTOs model)
         {
             var result = await _service.CreateAsync(model);
             if (result)
+            {
+                return StatusCode((int)HttpStatusCode.Created, new ResponseDTOs<string>
+                {
+                    Success = true,
+                    Status = HttpStatusCode.Created,
+                    Detail = "Employee Created  successfully !!."
+                });
+            }
+            return StatusCode((int)HttpStatusCode.BadRequest, result);
+        }
+        [HttpGet("CreateByAdmin/{id}")]
+        public async Task<IActionResult> CreateByAdmin(string id)
+        {
+            var result = await _helper.CreateEmployeeByAdmin(id);
+            if (result.isSucceed)
             {
                 return StatusCode((int)HttpStatusCode.Created, new ResponseDTOs<string>
                 {

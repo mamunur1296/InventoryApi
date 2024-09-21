@@ -391,6 +391,7 @@ window.deleteProduct = async (id) => {
         const result = await SendRequest({ endpoint: '/Product/Delete', method: "DELETE", data: { id: id } });
         if (result.success) {
             $('#deleteAndDetailsModel').modal('hide');
+            debugger
             notification({ message: "Product  Deleted successfully !", type: "success", title: "Success" });
             await getProductList(); // Update the category list
         } else {

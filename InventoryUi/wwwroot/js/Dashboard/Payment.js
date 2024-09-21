@@ -23,11 +23,11 @@ const onSuccessUsers = async (payments, orders) => {
             const order = ordersMap[payment.orderID];
             return {
                 id: payment?.id,
-                orderDate: order?.orderDate ?? "No Name",
-                orderDate: payment?.paymentDate ?? "No Address",
-                method: payment?.paymentMethod ?? "No Address",
-                amount: payment?.amount ?? "No Address",
-                status: payment?.paymentStatus ?? "No Address",
+                orderDate: order?.orderDate ?? "N/A",
+                orderDate: payment?.paymentDate ?? "N/A",
+                method: payment?.paymentMethod ?? "N/A",
+                amount: payment?.amount ?? "N/A",
+                status: payment?.paymentStatus ?? "N/A",
             };
         }
         return null;

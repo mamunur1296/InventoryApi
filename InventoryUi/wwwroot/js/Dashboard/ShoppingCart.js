@@ -23,7 +23,7 @@ const onSuccessUsers = async (shoppingCarts, customers) => {
             const customer = customersMap[shoppingCart.customerID];
             return {
                 id: shoppingCart?.id,
-                customer: customer?.customerName ?? "No Name",
+                customer: customer?.customerName ?? "N/A",
                 
             };
         }

@@ -1,6 +1,7 @@
 ﻿using InventoryUi.Models;
 using InventoryUi.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace InventoryUi.Controllers
 {
@@ -24,6 +25,12 @@ namespace InventoryUi.Controllers
             model.UpdatedBy = null;
             model.PasswordHash = "PasswordHash";
             var result = await _customerServices.PostClientAsync("Customer/Create", model);
+            return Json(result);
+        }
+        [HttpGet]
+        public async Task<IActionResult> CreateCustomer(string id)
+        {
+            var result = await _customerServices.GetClientByIdAsync($"Customer/CreateByAdmin/{id}");
             return Json(result);
         }
         [HttpGet]

@@ -106,7 +106,7 @@ const onSuccessUsers = async (branchs, companys) => {
 
 
 // Initialize validation
-const UsrValidae = $('#BranchForm').validate({
+export const isBranchValidae = $('#BranchForm').validate({
     onkeyup: function (element) {
         $(element).valid();
     },
@@ -165,17 +165,17 @@ const UsrValidae = $('#BranchForm').validate({
 });
 
 //Sow Create Model 
-$('#CreateBtn').off('click').click(async () => {
-    resetFormValidation('#BranchForm', UsrValidae);
+$('#CreateBranchBtn').off('click').click(async () => {
+    resetFormValidation('#BranchForm', isBranchValidae);
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
-    showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
+    showCreateModal('BranchModelCreate', 'BranchBtnSave', 'BranchBtnUpdate');
     await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'name', "Select Company");
 });
 
 // Save Button
 
-$('#btnSave').off('click').click(async () => {
+$('#BranchBtnSave').off('click').click(async () => {
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     try {
@@ -190,14 +190,14 @@ $('#btnSave').off('click').click(async () => {
             $('#GeneralError').hide();
             debugger
             if (result.success && result.status === 201) {
-                $('#modelCreate').modal('hide');
+                $('#BranchModelCreate').modal('hide');
                 notification({ message: "Branch Created successfully !", type: "success", title: "Success" });
                 await getBranchList(); // Update the user list
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
-        $('#modelCreate').modal('hide');
+        $('#BranchModelCreate').modal('hide');
         notification({ message: " Branch Created failed . Please try again. !", type: "error", title: "Error" });
     }
 
@@ -206,18 +206,18 @@ $('#btnSave').off('click').click(async () => {
 
 
 window.updateBranch = async (id) => {
-    resetFormValidation('#BranchForm', UsrValidae);
+    resetFormValidation('#BranchForm', isBranchValidae);
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
-    $('#myModalLabelUpdateEmployee').show();
-    $('#myModalLabelAddEmployee').hide();
+    $('#myModalLabelUpdateBranch').show();
+    $('#myModalLabelAddBranch').hide();
     $('#BranchForm')[0].reset();
     await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'name', "Select Company");
 
     const result = await SendRequest({ endpoint: '/Branch/GetById/' + id });
     if (result.success) {
-        $('#btnSave').hide();
-        $('#btnUpdate').show();
+        $('#BranchBtnSave').hide();
+        $('#BranchBtnUpdate').show();
 
         $('#Name').val(result.data.name);
         $('#FullName').val(result.data.fullName);
@@ -231,19 +231,19 @@ window.updateBranch = async (id) => {
 
    
 
-        $('#modelCreate').modal('show');
-        resetValidation(UsrValidae, '#BranchForm');
-        $('#btnUpdate').off('click').on('click', async () => {
+        $('#BranchModelCreate').modal('show');
+        resetValidation(isBranchValidae, '#BranchForm');
+        $('#BranchBtnUpdate').off('click').on('click', async () => {
             debugger
             const formData = $('#BranchForm').serialize();
             const result = await SendRequest({ endpoint: '/Branch/Update/' + id, method: "PUT", data: formData });
             if (result.success) {
-                $('#modelCreate').modal('hide');
+                $('#BranchModelCreate').modal('hide');
                 notification({ message: "Branch Updated successfully !", type: "success", title: "Success" });
 
                 await getBranchList(); // Update the user list
             } else {
-                $('#modelCreate').modal('hide');
+                $('#BranchModelCreate').modal('hide');
                 notification({ message: " Branch Updated failed . Please try again. !", type: "error", title: "Error" });
             }
         });

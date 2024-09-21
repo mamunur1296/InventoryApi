@@ -23,11 +23,11 @@ const onSuccessUsers = async (prescriptions, customers) => {
             const customer = customersMap[prescription.customerID];
             return {
                 id: prescription?.id,
-                customer: customer?.customerName ?? "No Name",
-                doctor: prescription?.doctorName ?? "No Address",
-                date: prescription?.prescriptionDate ?? "No Address",
-                details: prescription?.medicationDetails ?? "No Address",
-                inst: prescription?.dosageInstructions ?? "No Address",
+                customer: customer?.customerName ?? "N/A",
+                doctor: prescription?.doctorName ?? "N/A",
+                date: prescription?.prescriptionDate ?? "N/A",
+                details: prescription?.medicationDetails ?? "N/A",
+                inst: prescription?.dosageInstructions ?? "N/A",
             };
         }
         return null;

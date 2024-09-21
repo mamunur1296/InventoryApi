@@ -20,45 +20,47 @@ namespace InventoryUi.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            // Create ViewModel
+            var viewModel = new ProductListVm();
             var allProducts = await _productServices.GetAllClientsAsync("Product/All");
-            if(allProducts.Success)
+            if (allProducts.Success && allProducts.Data.Count() > 0)
             {
-                // Create ViewModel
-                var viewModel = new ProductListVm
-                {
-                    Products = allProducts?.Data?.Take(8)
-
-                };
+                viewModel.Products = allProducts?.Data?.Take(8);
                 return View(viewModel);
             }
-            return View();
+            
+
+            return View(viewModel);
         }
         [HttpGet]
         public async Task<IActionResult> Shops(int page = 1, int pageSize = 10)
         {
             // Fetch all products
             var allProducts = await _productServices.GetAllClientsAsync("Product/All");
-
-            // Apply pagination
-            var pagedProducts = allProducts?.Data?
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
-
-            // Calculate total pages
-            var totalItems = allProducts?.Data?.Count();
-            var totalPages = (int)Math.Ceiling((int)totalItems / (double)pageSize);
-
-            // Create ViewModel
-            var viewModel = new ProductListVm
+            if (allProducts.Success)
             {
-                Products = pagedProducts,
-                CurrentPage = page,
-                TotalPages = totalPages,
-                TotalItems = (int)totalItems
-            };
+                // Apply pagination
+                var pagedProducts = allProducts?.Data?
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
 
-            return View(viewModel);
+                // Calculate total pages
+                var totalItems = allProducts?.Data?.Count();
+                var totalPages = (int)Math.Ceiling((int)totalItems / (double)pageSize);
+
+                // Create ViewModel
+                var viewModel = new ProductListVm
+                {
+                    Products = pagedProducts,
+                    CurrentPage = page,
+                    TotalPages = totalPages,
+                    TotalItems = (int)totalItems
+                };
+
+                return View(viewModel);
+            }
+            return View();
         }
 
         [HttpGet]
