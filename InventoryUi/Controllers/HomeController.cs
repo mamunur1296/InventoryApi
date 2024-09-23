@@ -2,7 +2,6 @@
 using InventoryUi.Services.Interface;
 using InventoryUi.ViewModel;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Diagnostics;
 
 namespace InventoryUi.Controllers
@@ -25,10 +24,10 @@ namespace InventoryUi.Controllers
             var allProducts = await _productServices.GetAllClientsAsync("Product/All");
             if (allProducts.Success && allProducts.Data.Count() > 0)
             {
-                viewModel.Products = allProducts?.Data?.Take(8);
+                viewModel.Products = allProducts?.Data?.Take(12);
                 return View(viewModel);
             }
-            
+            viewModel.Products = null;
 
             return View(viewModel);
         }

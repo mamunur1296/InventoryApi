@@ -316,7 +316,7 @@ window.updateProduct = async (id) => {
     debugger
     $('#myModalLabelUpdateEmployee').show();
     $('#myModalLabelAddEmployee').hide();
-    await populateDropdown('/Category/GetAll', '#CategoryDropdown', 'id', 'categoryName', "Select Catagory");
+    await populateDropdown('/Category/GetallSubCatagory', '#CategoryDropdown', 'id', 'categoryName', "Select Catagory");
     await populateDropdown('/Supplier/GetAll', '#SupplierDropdown', 'id', 'supplierName', "Select Supplier");
     await populateDropdown('/UnitMaster/GetAll', '#UnitMasterDropdown', 'id', 'name', "Select Master Unit");
     //await populateDropdown('/UnitChild/GetAll', '#UnitChildDropdown', 'id', 'name', "Select Sub Unit");

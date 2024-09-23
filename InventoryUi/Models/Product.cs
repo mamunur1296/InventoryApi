@@ -75,8 +75,8 @@ namespace InventoryUi.Models
         [StringLength(255, ErrorMessage = "Dimensions cannot be longer than 255 characters.")]
         [DisplayName("Dimensions")]
         public string? Dimensions { get; set; }
-        public int Quentity { get; set; } = 1;
-        public decimal Disc { get; set; } = 0;
+        public int Quentity { get; set; } 
+        public decimal Disc { get; set; } 
         public int TotalPrice { get; set; }
         public int TotalPriceWithoutDiscount { get; set; }
         public int TotlaDiscAmount { get; set; }

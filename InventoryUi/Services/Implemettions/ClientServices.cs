@@ -26,33 +26,33 @@ public class ClientServices<T> : IClientServices<T> where T : class
     }
 
 
-    public Task<ResponseDto<object>> DeleteClientAsync(string endpoint)
+    public async Task<ResponseDto<object>> DeleteClientAsync(string endpoint)
     {
-        return SendRequestAsync<ResponseDto<object>>(endpoint, ApiType.Delete);
+        return  await SendRequestAsync<ResponseDto<object>>(endpoint, ApiType.Delete);
     }
 
-    public Task<ResponseDto<IEnumerable<T>>> GetAllClientsAsync(string endpoint)
+    public async Task<ResponseDto<IEnumerable<T>>> GetAllClientsAsync(string endpoint)
     {
-        return SendRequestAsync<ResponseDto<IEnumerable<T>>>(endpoint, ApiType.Get);
+        return await SendRequestAsync<ResponseDto<IEnumerable<T>>>(endpoint, ApiType.Get);
     }
 
-    public Task<ResponseDto<T>> GetClientByIdAsync(string endpoint)
+    public async Task<ResponseDto<T>> GetClientByIdAsync(string endpoint)
     {
-        return SendRequestAsync<ResponseDto<T>>(endpoint, ApiType.Get);
+        return await SendRequestAsync<ResponseDto<T>>(endpoint, ApiType.Get);
     }
 
-    public Task<ResponseDto<object>> PostClientAsync(string endpoint, T client)
+    public async Task<ResponseDto<object>> PostClientAsync(string endpoint, T client)
     {
-        return SendRequestAsync<ResponseDto<object>>(endpoint, ApiType.Post, client);
+        return await SendRequestAsync<ResponseDto<object>>(endpoint, ApiType.Post, client);
     }
 
-    public Task<ResponseDto<object>> UpdateClientAsync(string endpoint, T client)
+    public async Task<ResponseDto<object>> UpdateClientAsync(string endpoint, T client)
     {
-        return SendRequestAsync<ResponseDto<object>>(endpoint, ApiType.Put, client);
+        return await SendRequestAsync<ResponseDto<object>>(endpoint, ApiType.Put, client);
     }
 
-    public Task<ResponseDto<LoginResponseDto>> Login(string endpoint, T client)
+    public async Task<ResponseDto<LoginResponseDto>> Login(string endpoint, T client)
     {
-        return SendRequestAsync<ResponseDto<LoginResponseDto>>(endpoint, ApiType.Post, client, includeToken: false);
+        return await SendRequestAsync<ResponseDto<LoginResponseDto>>(endpoint, ApiType.Post, client, includeToken: false);
     }
 }

@@ -11,18 +11,19 @@ $(document).ready(async function () {
 let allProducts = [];
 let filteredProducts = [];
 let currentPage = 1;
-const pageSize = 10; // Number of products per page
+const pageSize = 12; // Number of products per page
 let selectedCategories = []; // Array to store selected categories
 
 // Fetch and display categories
 const CatagoryList = async () => {
     try {
-        const categoryResponse = await SendRequest({ endpoint: '/Category/GetAll' });
-
-        if (categoryResponse.status === 200 && categoryResponse.success) {
+        debugger
+        const categoryResponse = await SendRequest({ endpoint: '/Category/GetallSubCatagory' });
+        debugger
+        if (categoryResponse) {
             const $categoryList = $('#category-list'); // Targeting the category list
 
-            categoryResponse.data.forEach(function (category) {
+            categoryResponse.forEach(function (category) {
                 $categoryList.append(`
                     <div class="form-check">
                         <input class="form-check-input custom-checkbox" type="checkbox" id="cat-${category.id}" data-id="${category.id}">
@@ -74,67 +75,119 @@ const fetchAllProducts = async () => {
 
 // Display products based on the current page and filter
 const displayProducts = () => {
-    const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
+    const $container = $('#product-container');
+    const $pagination = $('#pagination');
+    $container.empty(); // Clear previous content
+    $pagination.empty(); // Clear previous pagination controls
 
     // Filter products based on the selected categories
     filteredProducts = selectedCategories.length > 0
         ? allProducts.filter(product => selectedCategories.includes(product.categoryID))
         : allProducts;
 
-    const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
-
-    const $container = $('#product-container');
-    const $pagination = $('#pagination');
-    $container.empty(); // Clear previous content
-
-    paginatedProducts.forEach(function (product) {
+    if (filteredProducts.length === 0) {
+        // Display a professional message when no products are available
         $container.append(`
-            <div class="col-md-3 mb-4">
-                <div class="card" style="width: 100%;">
-                    <img src="/images/Product/${product.imageURL}"
-                         alt="${product.productName}"
-                         class="card-img-top"
-                         width="150"
-                         height="200"
-                         onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
-                    <div class="card-body">
-                        <p class="text-success">${product.unitsInStock > 0 ? 'In Stock' : 'Out of Stock'}</p>
-                        <h5 class="card-title">${product.productName}</h5>
-                        <div class="d-flex align-items-center mb-2">
-                            ${generateStars(product.unitPrice)}
-                            <span class="ms-2">(${product.unitsInStock})</span>
-                        </div>
-                        <div>
-                            ${product.totalPriceWithoutDiscount > product.unitPrice
-                ? `<span class="text-decoration-line-through text-muted">${formatPrice(product.totalPriceWithoutDiscount)}</span>`
-                : ''}
-                            <span class="fw-bold fs-5 d-block">${formatPrice(product.unitPrice)}</span>
+            <div class="col-12 text-center">
+                <h3 class="text-muted">No Products Found</h3>
+                <p class="text-muted">We couldn't find any products matching your criteria. Please try adjusting your filters or check back later.</p>
+            </div>
+        `);
+    } else {
+        // Existing code to display products and pagination
+        const startIndex = (currentPage - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
+        const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
+
+        paginatedProducts.forEach(function (product) {
+            $container.append(`
+                <div class="col-md-2 mb-4 d-flex align-items-stretch">
+                    <div class="card d-flex flex-column" style="width: 100%;">
+                        <!-- Product Image -->
+                        <img src="/images/Product/${product.imageURL || 'default-user.png'}"
+                             alt="${product.productName}"
+                             class="card-img-top"
+                             width="150"
+                             height="200"
+                             onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
+
+                        <div class="card-body d-flex flex-column">
+                            <!-- Stock Status -->
+                            ${product.unitsInStock > 0
+                    ? '<p class="text-success mb-2">In Stock</p>'
+                    : '<p class="text-danger mb-2">Out of Stock</p>'}
+
+                            <!-- Product Name -->
+                            <h5 class="card-title">${product.productName}</h5>
+
+                            <!-- Star Rating -->
+                            <div class="d-flex align-items-center mb-3">
+                                ${generateStars(product.unitPrice)}
+                                <span class="ms-2">(${product.unitsInStock})</span>
+                            </div>
+
+                            <!-- Pricing Logic -->
+                            <div class="mt-auto">
+                                ${product.discount > 0
+                    ? `
+                                        <span class="text-decoration-line-through text-muted me-2">
+                                            ৳${product.unitPrice}
+                                        </span>
+                                        <span class="fw-bold fs-5 d-block text-success">
+                                            ৳${(product.unitPrice - (product.unitPrice * product.discount / 100)).toFixed(2)}
+                                        </span>
+                                        <span class="badge bg-danger">${product.discount}% Off</span>
+                                    `
+                    : `<span class="fw-bold fs-5 d-block">৳${product.unitPrice.toFixed(2)}</span>`}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        `);
-    });
+            `);
+        });
 
-    // Update pagination controls
-    $pagination.empty(); // Clear previous pagination controls
-    const totalPages = Math.ceil(filteredProducts.length / pageSize);
-    if (totalPages > 1) {
-        for (let i = 1; i <= totalPages; i++) {
+        // Pagination controls
+        const totalPages = Math.ceil(filteredProducts.length / pageSize);
+        if (totalPages > 1) {
             $pagination.append(`
-                <button class="btn btn-outline-primary mx-1 ${i === currentPage ? 'active' : ''}" data-page="${i}">
-                    ${i}
+                <button class="btn btn-outline-primary mx-1 ${currentPage === 1 ? 'disabled' : ''}" id="prevPage">
+                    Previous
                 </button>
             `);
-        }
+            for (let i = 1; i <= totalPages; i++) {
+                $pagination.append(`
+                    <button class="btn btn-outline-primary mx-1 ${i === currentPage ? 'active' : ''}" data-page="${i}">
+                        ${i}
+                    </button>
+                `);
+            }
+            $pagination.append(`
+                <button class="btn btn-outline-primary mx-1 ${currentPage === totalPages ? 'disabled' : ''}" id="nextPage">
+                    Next
+                </button>
+            `);
 
-        $('.btn[data-page]').on('click', function () {
-            currentPage = $(this).data('page');
-            displayProducts();
-        });
+            $('.btn[data-page]').on('click', function () {
+                currentPage = $(this).data('page');
+                displayProducts();
+            });
+            $('#prevPage').on('click', function () {
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayProducts();
+                }
+            });
+            $('#nextPage').on('click', function () {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    displayProducts();
+                }
+            });
+        }
     }
 };
+
+
 
 function generateStars(rating) {
     const totalStars = 5;
