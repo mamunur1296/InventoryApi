@@ -88,166 +88,215 @@
     
    
 </head>
-<body class="mx-auto" style="width: 90%;">
-     
+<body >
     <div class="shadow-sm">
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <!-- Logo -->
-                <a class="navbar-brand fs-2 fw-bolder text-black" href="#">LOGO</a>
+        <div class="mx-auto" style="width:80%">
+            <nav class="navbar  navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                    <!-- Logo -->
+                    <a class="navbar-brand fs-2 fw-bolder text-black" href="#">LOGO</a>
 
-                <!-- Toggler for mobile view -->
-                <button class="navbar-toggler text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                    <!-- Toggler for mobile view -->
+                    <button class="navbar-toggler text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
 
-                <!-- Navbar content -->
-                <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+                    <!-- Navbar content -->
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
 
-                    <!-- Search form (centered and larger) -->
-                    <form class="d-flex mx-auto w-75" role="search">
-                        <input class="form-control ms-5 me-2 fs-5 fw-bold" type="search" placeholder="Search For Logo" aria-label="Search">
-                        <button class="btn btn-dark text-white fw-bold fs-5" type="submit">Search</button>
-                    </form>
+                        <!-- Search form (centered and larger) -->
+                        <form class="d-flex mx-auto w-75" role="search">
+                            <input class="form-control ms-5 me-2 fs-5 fw-bold" type="search" placeholder="Search For Logo" aria-label="Search">
+                            <button class="btn btn-dark text-white fw-bold fs-5" type="submit">Search</button>
+                        </form>
 
-                    <!-- Right side (Shopping cart and Sign In buttons) -->
-                    <div>
-                        <div class="d-flex align-items-center">
-                            <!-- Shopping cart button with icon and tooltip -->
-                            <a href="#" class="btn position-relative">
-                                <!-- Shopping cart icon -->
-                                <i class="fas fa-shopping-cart fs-4"></i>
+                        <!-- Right side (Shopping cart and Sign In buttons) -->
+                        <div>
+                            <div class="d-flex align-items-center">
+                                <!-- Shopping cart button with icon and tooltip -->
+                                <a href="#" class="btn position-relative">
+                                    <!-- Shopping cart icon -->
+                                    <i class="fas fa-shopping-cart fs-4"></i>
 
-                                <!-- Red badge indicating the number of items in the cart -->
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success border border-light">
-                                    3 <!-- Change this number dynamically with JavaScript if needed -->
-                                    <span class="visually-hidden">Cart items</span>
-                                </span>
-                            </a>
+                                    <!-- Red badge indicating the number of items in the cart -->
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success border border-light">
+                                        3 <!-- Change this number dynamically with JavaScript if needed -->
+                                        <span class="visually-hidden">Cart items</span>
+                                    </span>
+                                </a>
 
 
-                            <!-- Sign-in button with icon -->
-                            @{
-                                if (User.Identity.IsAuthenticated)
-                                {
+                                <!-- Sign-in button with icon -->
+                                @{
+                                    if (User.Identity.IsAuthenticated)
+                                    {
 
-                                    <div class="nav-item dropdown">
-                                        <a class="nav-link   d-flex align-items-center" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                                            <span class="btn">
-                                                <img src="/images/User/@img"
-                                                     alt="Profile Image"
-                                                     class="rounded-circle mb-2"
-                                                     width="40"
-                                                     height="40"
-                                                     onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
-                                            </span>
+                                        <div class="nav-item dropdown">
+                                            <a class="nav-link   d-flex align-items-center" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                                                <span class="btn">
+                                                    <img src="/images/User/@img"
+                                                         alt="Profile Image"
+                                                         class="rounded-circle mb-2"
+                                                         width="40"
+                                                         height="40"
+                                                         onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
+                                                </span>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                <li class="dropdown-header text-center">
+                                                    <img src="/images/User/@img"
+                                                         alt="Profile Image"
+                                                         class="rounded-circle mb-2"
+                                                         width="60"
+                                                         height="60"
+                                                         onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
+                                                    <span>@userName</span>
+                                                    <p class="dropdown-item-text">@fName @lName</p>
+                                                </li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item" asp-action="Profile" asp-controller="User" asp-route-id="@userId">My Profile</a></li>
+                                                <li><a class="dropdown-item" asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
+                                                <li><a class="dropdown-item" href="#">Need Help?</a></li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item" asp-controller="Auth" asp-action="LogOut">Sign Out</a></li>
+                                            </ul>
+                                        </div>
+                                    }
+                                    else
+                                    {
+
+                                        <a asp-action="Login" asp-controller="Auth" class="btn fs-5 text-primary fw-bold">
+                                            <i class="fas fa-sign-in-alt"></i> Sign In
                                         </a>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li class="dropdown-header text-center">
-                                                <img src="/images/User/@img"
-                                                     alt="Profile Image"
-                                                     class="rounded-circle mb-2"
-                                                     width="60"
-                                                     height="60"
-                                                     onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
-                                                <span>@userName</span>
-                                                <p class="dropdown-item-text">@fName @lName</p>
-                                            </li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item" asp-action="Profile" asp-controller="User" asp-route-id="@userId">My Profile</a></li>
-                                            <li><a class="dropdown-item" asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
-                                            <li><a class="dropdown-item" href="#">Need Help?</a></li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item" asp-controller="Auth" asp-action="LogOut">Sign Out</a></li>
-                                        </ul>
-                                    </div>
+                                    }
                                 }
-                                else
-                                {
 
-                                    <a asp-action="Login" asp-controller="Auth" class="btn fs-5 text-primary fw-bold">
-                                        <i class="fas fa-sign-in-alt"></i> Sign In
-                                    </a>
-                                }
-                            }
-                            
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </nav>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <!-- Home Nav Item -->
-                        <li class="nav-item me-3">
-                            <a class="nav-link active fs-5 fw-bold" aria-current="page" asp-action="index" asp-controller="Home">
-                                <i class="fas fa-home me-1"></i> <!-- Home Icon -->
-                                Home
-                            </a>
-                        </li>
+            </nav>
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <!-- Home Nav Item -->
+                            <li class="nav-item me-3">
+                                <a class="nav-link active fs-5 " aria-current="page" asp-action="index" asp-controller="Home">
+                                    <i class="fas fa-home me-1"></i> <!-- Home Icon -->
+                                    Home
+                                </a>
+                            </li>
 
-                        <!-- Shops Nav Item -->
-                        <li class="nav-item me-3">
-                            <a class="nav-link active fs-5 fw-bold" aria-current="page" asp-action="Shops" asp-controller="Home">
-                                <i class="fas fa-store me-1"></i> <!-- Shops Icon -->
-                                Shops
-                            </a>
-                        </li>
+                            <!-- Shops Nav Item -->
+                            <li class="nav-item me-3">
+                                <a class="nav-link active fs-5 " aria-current="page" asp-action="Shops" asp-controller="Home">
+                                    <i class="fas fa-store me-1"></i> <!-- Shops Icon -->
+                                    Shops
+                                </a>
+                            </li>
 
-                        <!-- Categories Nav Item -->
-                        <li class="nav-item me-3">
-                            <a class="nav-link active fs-5 fw-bold" aria-current="page" href="#">
-                                <i class="fas fa-th-large me-1"></i> <!-- Categories Icon -->
-                                Categories
-                            </a>
-                        </li>
-                        @{
-                            if (User.Identity.IsAuthenticated)
-                            {
-                                <!-- Orders Nav Item -->
-                                <li class="nav-item me-3">
-                                    <a class="nav-link active fs-5 fw-bold" aria-current="page" href="#">
-                                        <i class="fas fa-box me-1"></i> <!-- Orders Icon -->
-                                        Orders
-                                    </a>
-                                </li>
+                            <!-- Categories Nav Item -->
+                            <li class="nav-item me-3">
+                                <a class="nav-link active fs-5 " aria-current="page" href="#">
+                                    <i class="fas fa-th-large me-1"></i> <!-- Categories Icon -->
+                                    Categories
+                                </a>
+                            </li>
+                            @{
+                                if (User.Identity.IsAuthenticated)
+                                {
+                                    <!-- Orders Nav Item -->
+                                    <li class="nav-item me-3">
+                                        <a class="nav-link active fs-5 " aria-current="page" href="#">
+                                            <i class="fas fa-box me-1"></i> <!-- Orders Icon -->
+                                            Orders
+                                        </a>
+                                    </li>
 
-                                <!-- My eStore Nav Item -->
-                                <li class="nav-item me-3">
-                                    <a class="nav-link active fs-5 fw-bold" aria-current="page" href="#">
-                                        <i class="fas fa-store me-1"></i> <!-- eStore Icon -->
-                                        My eStore
-                                    </a>
-                                </li>
+                                    <!-- My eStore Nav Item -->
+                                    <li class="nav-item me-3">
+                                        <a class="nav-link active fs-5 " aria-current="page" href="#">
+                                            <i class="fas fa-store me-1"></i> <!-- eStore Icon -->
+                                            My eStore
+                                        </a>
+                                    </li>
 
-                                <!-- Delivery Address Nav Item -->
-                                <li class="nav-item me-3">
-                                    <a class="nav-link active fs-5 fw-bold" aria-current="page" href="#">
-                                        <i class="fas fa-map-marker-alt me-1"></i> <!-- Delivery Address Icon -->
-                                        Delivery Address
-                                    </a>
-                                </li>
+                                    <!-- Delivery Address Nav Item -->
+                                    <li class="nav-item me-3">
+                                        <a class="nav-link active fs-5 " aria-current="page" href="#">
+                                            <i class="fas fa-map-marker-alt me-1"></i> <!-- Delivery Address Icon -->
+                                            Delivery Address
+                                        </a>
+                                    </li>
 
-                                
+
+                                }
+
                             }
-                            
-                        }
-                    </ul>
+                        </ul>
+                    </div>
+
                 </div>
+            </nav>
+        </div>
+     </div>
 
-            </div>
-        </nav>
-    </div>
 
-    <main role="main">
+    <main class="container" role="main">
         @RenderBody()
     </main>
-  
+    <footer class="bg-dark text-white pt-5 mt-5 pb-4">
+        <div class="container text-center text-md-left">
+            <div class="row text-center text-md-left">
+                <!-- Evaly Logo and Description -->
+                <div class="col-md-4 col-lg-4 col-xl-3 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4 font-weight-bold">LOGO</h5>
+                    <p>Largest product search engine, maximum categorized online shopping mall and quickest home delivery system.</p>
+                    <h6>Follow Us</h6>
+                    <a href="#" class="text-white me-2"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+                </div>
+
+                <!-- Contact Us -->
+                <div class="col-md-4 col-lg-4 col-xl-3 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4 font-weight-bold">Contact Us</h5>
+                    <p><i class="fas fa-home mr-3"></i> House #8, Road #14, Dhanmondi, Dhaka-1209</p>
+                    <p><i class="fas fa-envelope mr-3"></i> support@e-valy.com</p>
+                    <p><i class="fas fa-phone mr-3"></i> 305611677</p>
+                </div>
+
+                <!-- Let Us Help You -->
+                <div class="col-md-4 col-lg-4 col-xl-2 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4 font-weight-bold">Let Us Help You</h5>
+                    <p><a href="#" class="text-white" style="text-decoration: none;">Your Account</a></p>
+                    <p><a href="#" class="text-white" style="text-decoration: none;">Your Order</a></p>
+                    <p><a href="#" class="text-white" style="text-decoration: none;">Terms & Conditions</a></p>
+                    <p><a href="#" class="text-white" style="text-decoration: none;">Return & Refund Policy</a></p>
+                    <p><a href="#" class="text-white" style="text-decoration: none;">FAQ</a></p>
+                </div>
+
+                <!-- Get Evaly App -->
+                <div class="col-md-4 col-lg-4 col-xl-2 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4 font-weight-bold">Get Evaly App</h5>
+                    <a href="#"><img src="https://via.placeholder.com/150x50?text=Google+Play" alt="Google Play"></a><br>
+                    <a href="#"><img src="https://via.placeholder.com/150x50?text=App+Store" alt="App Store"></a>
+                </div>
+            </div>
+            <hr />
+            <!-- Bottom Text and Logo -->
+            <div class="row align-items-center mt-4">
+                <div class="col-md-7 col-lg-8">
+                    <p class="text-left">© 2024 E-valy.com Limited. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

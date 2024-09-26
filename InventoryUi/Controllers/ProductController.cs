@@ -1,5 +1,6 @@
 ﻿using InventoryUi.Models;
 using InventoryUi.Services.Interface;
+using InventoryUi.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryUi.Controllers
@@ -37,6 +38,21 @@ namespace InventoryUi.Controllers
         {
             var product = await _productServices.GetClientByIdAsync($"Product/get/{id}");
             return Json(product);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Details(string id)
+        {
+            var product = await _productServices.GetClientByIdAsync($"Product/get/{id}");
+            var products = await _productServices.GetAllClientsAsync("Product/All");
+            var reletedProduct = products?.Data?.Where(po=>po.CategoryID == product?.Data?.CategoryID);
+            var vm = new ProductDetailsVm();
+            if (product.Success)
+            {
+                vm.Product = product.Data;
+                vm.reletedProduct = reletedProduct;
+                
+            }
+            return View(vm);
         }
         [HttpPut]
         public async Task<IActionResult> Update(string id, Product model)

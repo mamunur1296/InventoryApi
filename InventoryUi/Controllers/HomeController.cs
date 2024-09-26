@@ -19,17 +19,15 @@ namespace InventoryUi.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            // Create ViewModel
-            var viewModel = new ProductListVm();
-            var allProducts = await _productServices.GetAllClientsAsync("Product/All");
-            if (allProducts.Success && allProducts.Data.Count() > 0)
-            {
-                viewModel.Products = allProducts?.Data?.Take(12);
-                return View(viewModel);
-            }
-            viewModel.Products = null;
 
-            return View(viewModel);
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get8Product()
+        {
+            var allProducts = await _productServices.GetAllClientsAsync("Product/All");
+            return Json(allProducts?.Data?.Take(8));
         }
         [HttpGet]
         public async Task<IActionResult> Shops(int page = 1, int pageSize = 10)

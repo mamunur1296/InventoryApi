@@ -101,15 +101,16 @@ const displayProducts = () => {
 
         paginatedProducts.forEach(function (product) {
             $container.append(`
-                <div class="col-md-2 mb-4 d-flex align-items-stretch">
+                <div class="col-md-3 mb-4 d-flex align-items-stretch">
                     <div class="card d-flex flex-column" style="width: 100%;">
                         <!-- Product Image -->
+                        <a href="/product/details/${product.id}">
                         <img src="/images/Product/${product.imageURL || 'default-user.png'}"
                              alt="${product.productName}"
                              class="card-img-top"
-                             width="150"
-                             height="200"
+                             width="150" height="250"
                              onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
+                           </a>
 
                         <div class="card-body d-flex flex-column">
                             <!-- Stock Status -->
@@ -118,7 +119,9 @@ const displayProducts = () => {
                     : '<p class="text-danger mb-2">Out of Stock</p>'}
 
                             <!-- Product Name -->
-                            <h5 class="card-title">${product.productName}</h5>
+                             <a href="/product/details/${product.id}">
+                            <h5 class="card-title">${product.productName || 'Unnamed Product'}</h5>
+                           </a>
 
                             <!-- Star Rating -->
                             <div class="d-flex align-items-center mb-3">
@@ -202,3 +205,9 @@ function generateStars(rating) {
 function formatPrice(price) {
     return `৳${price.toFixed(2)}`;
 }
+
+
+
+
+
+

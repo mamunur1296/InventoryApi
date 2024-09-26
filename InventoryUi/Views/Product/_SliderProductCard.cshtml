@@ -1,16 +1,14 @@
 ﻿@model InventoryUi.Models.Product
-<div class="col-md-3 mb-4 d-flex align-items-stretch">
-    <div class="card d-flex flex-column" style="width: 100%;">
+<div class="swiper-slide">
+    <!-- Views/Shared/_ProductCard.cshtml -->
+    <div class="card" style="width: 15rem;">
         <!-- Product Image -->
-        <a asp-action="DetailsPartial" asp-controller="Product" asp-route-id="@Model?.Id">
-            <img src="/images/Product/@Model?.ImageURL"
-                 alt="Product Image"
-                 class="card-img-top"
-                 width="150"
-                 height="250"
-                 onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
-        </a>
-        
+        <img src="/images/Product/@Model?.ImageURL"
+             alt="Product Image"
+             class="card-img-top"
+             width="150"
+             height="250"
+             onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
 
         <div class="card-body d-flex flex-column">
             <!-- Stock Status -->
@@ -60,5 +58,5 @@
             </div>
         </div>
     </div>
-</div>
 
+</div>

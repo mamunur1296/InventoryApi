@@ -1,0 +1,90 @@
+﻿@model InventoryUi.ViewModel.ProductDetailsVm
+@{
+    ViewData["Title"] = "Details";
+}
+
+<section class="container my-5">
+    <div class="row">
+        <!-- Product Image Column -->
+        <div class="col-md-6">
+            <img src="/images/Product/@Model?.Product.ImageURL"
+                 alt="Product Image"
+                 class="img-fluid rounded shadow-sm"
+                 style="width: 100%; height: 100%; object-fit: cover;"
+                 onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
+        </div>
+
+        <!-- Product Details Column -->
+        <div class="col-md-6">
+            <h1 class="display-5 mb-3">@Model?.Product?.ProductName</h1>
+
+            <!-- Category and Brand Info -->
+            <div class="d-flex align-items-center mb-3">
+                <span class="fw-bold me-2">Category:</span>
+                <span>Product Category</span>
+                <span class="mx-2 text-muted">|</span>
+                <span class="fw-bold me-2">Brand:</span>
+                <span>Product Brand</span>
+            </div>
+
+            <!-- Specifications -->
+            <div class="mb-3">
+                <p class="fw-bold">Specifications:</p>
+                <ul class="list-unstyled">
+                    <li><strong>Brand:</strong> Product Brand</li>
+                    <li><strong>Product Type:</strong> Product Type</li>
+                    <li><strong>Weight:</strong> Product Weight</li>
+                </ul>
+            </div>
+
+            <!-- Vendor/Delivery Section -->
+            <div class="bg-light p-4 rounded shadow-sm mb-3">
+                <div class="d-flex mb-2">
+                    <!-- Vendor Image (Placeholder for now) -->
+                    <div class="me-3">
+                        <img src="/images/vendor-placeholder.png" alt="Vendor" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                    </div>
+                    <div>
+                        <h5 class="m-0">Vendor Name</h5>
+                        <small class="text-muted">Delivery in 1-15 Days</small>
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <i class="bi bi-geo-alt-fill"></i> Sherebanglanagar, Dhaka, Dhaka
+                </div>
+                <div class="mb-2">
+                    <i class="bi bi-truck"></i> Delivery: ৳130 (৳190 Outside Area)
+                </div>
+                <div class="mb-2">
+                    <i class="bi bi-box-seam"></i> Stock: 83 items
+                </div>
+                <div class="mb-2">
+                    <span class="fw-bold text-success">৳925</span>
+                    <span class="text-muted text-decoration-line-through">৳1750</span>
+                </div>
+
+                <!-- Add to Cart Button -->
+                <div>
+                    <button class="btn btn-primary w-100">
+                        <i class="bi bi-cart"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="mt-5">
+        <div class="row m-5">
+            <div id="RelatedProductSection" data-existing-product-category-id="@Model?.Product?.CategoryID" data-existing-product-id="@Model?.Product?.Id" class="row">
+                <!-- The related product cards will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts {
+    <script type="module" src="~/js/home/home.js" asp-append-version="true"></script>
+}
