@@ -66,6 +66,7 @@ namespace ProjectApi
             services.AddScoped<IBaseServices<BranchDTOs>, BranchService>();
             services.AddScoped<IBaseServices<UnitChildhDTOs>, UnitChildService>();
             services.AddScoped<IBaseServices<UnitMasterDTOs>, UnitMasterService>();
+            services.AddScoped<IDeliveryAddressServices, DeliveryAddressServices>();
             services.AddAutoMapper(typeof(MappingProfile));
             return services;
         }

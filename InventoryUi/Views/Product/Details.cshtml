@@ -21,7 +21,7 @@
             <!-- Category and Brand Info -->
             <div class="d-flex align-items-center mb-3">
                 <span class="fw-bold me-2">Category:</span>
-                <span>Product Category</span>
+                <span>@Model?.Category?.CategoryName</span>
                 <span class="mx-2 text-muted">|</span>
                 <span class="fw-bold me-2">Brand:</span>
                 <span>Product Brand</span>
@@ -37,44 +37,94 @@
                 </ul>
             </div>
 
-            <!-- Vendor/Delivery Section -->
-            <div class="bg-light p-4 rounded shadow-sm mb-3">
-                <div class="d-flex mb-2">
-                    <!-- Vendor Image (Placeholder for now) -->
-                    <div class="me-3">
-                        <img src="/images/vendor-placeholder.png" alt="Vendor" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-                    </div>
-                    <div>
-                        <h5 class="m-0">Vendor Name</h5>
-                        <small class="text-muted">Delivery in 1-15 Days</small>
-                    </div>
-                </div>
-
-                <div class="mb-2">
-                    <i class="bi bi-geo-alt-fill"></i> Sherebanglanagar, Dhaka, Dhaka
-                </div>
-                <div class="mb-2">
-                    <i class="bi bi-truck"></i> Delivery: ৳130 (৳190 Outside Area)
-                </div>
-                <div class="mb-2">
-                    <i class="bi bi-box-seam"></i> Stock: 83 items
-                </div>
-                <div class="mb-2">
-                    <span class="fw-bold text-success">৳925</span>
-                    <span class="text-muted text-decoration-line-through">৳1750</span>
-                </div>
-
-                <!-- Add to Cart Button -->
-                <div>
-                    <button class="btn btn-primary w-100">
-                        <i class="bi bi-cart"></i> Add to Cart
-                    </button>
-                </div>
-            </div>
+            
         </div>
     </div>
 </section>
 <section>
+    <h6>Buy From</h6>
+   <div class="row">
+        <!-- Vendor/Delivery Section -->
+        <div class="bg-white p-4 rounded shadow-sm mb-4 col-md-3">
+            <!-- Vendor Header -->
+            <div class="d-flex align-items-center mb-3">
+                <!-- Vendor Image -->
+                <div class="me-3">
+                    <img src="/images/vendor-placeholder.png"
+                         alt="Vendor"
+                         class="rounded-circle border"
+                         style="width: 60px; height: 60px; object-fit: cover;"
+                         onerror="this.onerror=null;this.src='/ProjectRootImg/defoltlogo.png';">
+                </div>
+                <!-- Vendor Details -->
+                <div>
+                    <h5 class="m-0 fw-bold">@Model?.Supplier?.SupplierName</h5>
+                    <small class="text-muted">Delivery in 1-15 Days</small>
+                </div>
+            </div>
+
+            <!-- Vendor Location -->
+            <div class="text-muted mb-2">
+                <i class="bi bi-geo-alt-fill"></i> @Model?.Supplier?.Address
+            </div>
+
+            <!-- Delivery Information -->
+            <div class="text-muted mb-2">
+                <i class="bi bi-truck"></i> Delivery:
+                <span class="fw-semibold">৳130</span>
+                <small class="text-muted">(৳190 Outside Area)</small>
+            </div>
+
+            <!-- Stock Information -->
+            <div class="text-muted mb-2">
+                <i class="bi bi-box-seam"></i> Stock:
+                <span class="fw-semibold">@Model?.Product?.UnitsInStock</span>
+            </div>
+
+            <!-- Price Section with Discount Logic -->
+            <div class="mb-3">
+                @{
+                    var originalPrice = @Model?.Product?.UnitPrice ?? 0;
+                    var discount = @Model?.Product?.Discount ?? 0;
+                    var discountedPrice = originalPrice - (originalPrice * discount / 100);
+                }
+
+                @if (discount > 0)
+                {
+                    <span class="fw-bold fs-4 text-success">৳@discountedPrice.ToString("0.00")</span>
+                    <span class="text-muted text-decoration-line-through">৳@originalPrice.ToString("0.00")</span>
+                    <span class="badge bg-danger">@discount% Off</span>
+                }
+                else
+                {
+                    <span class="fw-bold fs-4">৳@originalPrice.ToString("0.00")</span>
+                }
+            </div>
+
+            <!-- Add to Cart Button - Disable if out of stock -->
+            <div>
+                @if (@Model?.Product?.UnitsInStock > 0)
+                {
+                    <button class="btn btn-primary w-100 py-2">
+                        <i class="bi bi-cart-fill me-2"></i> Add to Cart
+                    </button>
+                }
+                else
+                {
+                    <button class="btn btn-secondary w-100 py-2" disabled>
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i> Out of Stock
+                    </button>
+                }
+            </div>
+        </div>
+
+
+
+   </div>
+  
+</section>
+<section>
+    <h5>Releted Product</h5>
     <div class="mt-5">
         <div class="row m-5">
             <div id="RelatedProductSection" data-existing-product-category-id="@Model?.Product?.CategoryID" data-existing-product-id="@Model?.Product?.Id" class="row">

@@ -8,14 +8,22 @@ namespace InventoryUi.Controllers
     public class ProductController : Controller
     {
         private readonly IClientServices<Product> _productServices;
+        private readonly IClientServices<Category> _categoryServices;
+        private readonly IClientServices<Supplier> _supplierServices;
         private readonly IUtilityHelper _utilityHelper;
         private readonly IFileUploader _fileUploader;
 
-        public ProductController(IClientServices<Product> service, IUtilityHelper utilityHelper, IFileUploader fileUploader)
+        public ProductController(IClientServices<Product> service,
+            IUtilityHelper utilityHelper,
+            IFileUploader fileUploader,
+            IClientServices<Category> categoryServices,
+            IClientServices<Supplier> supplierServices)
         {
             _productServices = service;
             _utilityHelper = utilityHelper;
             _fileUploader = fileUploader;
+            _categoryServices = categoryServices;
+            _supplierServices = supplierServices;
         }
         public IActionResult Index()
         {
@@ -44,13 +52,16 @@ namespace InventoryUi.Controllers
         {
             var product = await _productServices.GetClientByIdAsync($"Product/get/{id}");
             var products = await _productServices.GetAllClientsAsync("Product/All");
+            var supplier = await _supplierServices.GetClientByIdAsync($"Supplier/get/{product?.Data?.SupplierID}");
+            var category = await _categoryServices.GetClientByIdAsync($"Category/get/{product?.Data?.CategoryID}");
             var reletedProduct = products?.Data?.Where(po=>po.CategoryID == product?.Data?.CategoryID);
             var vm = new ProductDetailsVm();
             if (product.Success)
             {
                 vm.Product = product.Data;
                 vm.reletedProduct = reletedProduct;
-                
+                vm.Category = category?.Data;
+                vm.Supplier = supplier?.Data;
             }
             return View(vm);
         }

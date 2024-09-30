@@ -10,11 +10,13 @@ namespace InventoryApi.Controllers
     public class DeliveryAddressController : ControllerBase
     {
         private readonly IBaseServices<DeliveryAddressDTOs> _service;
-
-        public DeliveryAddressController(IBaseServices<DeliveryAddressDTOs> service)
+        private readonly IDeliveryAddressServices _ideliveryAddressServices;
+        public DeliveryAddressController(IBaseServices<DeliveryAddressDTOs> service, IDeliveryAddressServices ideliveryAddressServices)
         {
             _service = service;
+            _ideliveryAddressServices = ideliveryAddressServices;
         }
+
         [HttpPost("Create")]
         public async Task<IActionResult> Create(DeliveryAddressDTOs model)
         {
@@ -80,6 +82,22 @@ namespace InventoryApi.Controllers
         public async Task<IActionResult> getById(string id)
         {
             var result = await _service.GetByIdAsync(id);
+            if (result != null)
+            {
+                return StatusCode((int)HttpStatusCode.OK, new ResponseDTOs<DeliveryAddressDTOs>
+                {
+                    Success = true,
+                    Data = result,
+                    Status = HttpStatusCode.OK,
+                    Detail = "Delivery Address  get   successfully !!."
+                });
+            }
+            return StatusCode((int)HttpStatusCode.BadRequest, result);
+        }
+        [HttpGet("get/ByUserId/{UserId}")]
+        public async Task<IActionResult> getByUserId(string UserId)
+        {
+            var result = await _ideliveryAddressServices.GetByUserIdAsync(UserId);
             if (result != null)
             {
                 return StatusCode((int)HttpStatusCode.OK, new ResponseDTOs<DeliveryAddressDTOs>

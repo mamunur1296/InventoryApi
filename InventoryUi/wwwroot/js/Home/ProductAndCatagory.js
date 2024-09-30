@@ -5,7 +5,37 @@ $(document).ready(async function () {
     loger("This is category page");
     await CatagoryList();
     await fetchAllProducts(); // Fetch all products once
+
+    let isAscending = true; // Variable to track sorting order
+
+    // Add event listener for sorting by price
+    $('#sortPrice').on('click', function (e) {
+        e.preventDefault();
+        sortByPrice(isAscending); // Pass the sorting order
+        updateSortButtonText(isAscending); // Update button text based on sorting order
+        isAscending = !isAscending; // Toggle sorting order for next click
+        displayProducts(); // Re-display products after sorting
+    });
 });
+
+// Function to sort products by price
+const sortByPrice = (isAscending) => {
+    filteredProducts.sort((a, b) => {
+        if (isAscending) {
+            return a.unitPrice - b.unitPrice; // Sort ascending
+        } else {
+            return b.unitPrice - a.unitPrice; // Sort descending
+        }
+    });
+};
+
+// Function to update the sort button text
+function updateSortButtonText(isAscending) {
+    $('#sortPrice').text(isAscending ? 'Sort by Price: Low to High' : 'Sort by Price: High to Low');
+}
+
+// Other existing code remains unchanged...
+
 
 // Variables to store products data
 let allProducts = [];
@@ -73,10 +103,12 @@ const fetchAllProducts = async () => {
     }
 };
 
-// Display products based on the current page and filter
+// Display products and update results count
 const displayProducts = () => {
     const $container = $('#product-container');
     const $pagination = $('#pagination');
+    const $resultsCount = $('#results-count');
+
     $container.empty(); // Clear previous content
     $pagination.empty(); // Clear previous pagination controls
 
@@ -84,6 +116,9 @@ const displayProducts = () => {
     filteredProducts = selectedCategories.length > 0
         ? allProducts.filter(product => selectedCategories.includes(product.categoryID))
         : allProducts;
+
+    // Update the results count dynamically
+    $resultsCount.text(`Showing ${filteredProducts.length} results for`);
 
     if (filteredProducts.length === 0) {
         // Display a professional message when no products are available
@@ -94,7 +129,7 @@ const displayProducts = () => {
             </div>
         `);
     } else {
-        // Existing code to display products and pagination
+        // Display paginated products
         const startIndex = (currentPage - 1) * pageSize;
         const endIndex = startIndex + pageSize;
         const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
@@ -105,12 +140,12 @@ const displayProducts = () => {
                     <div class="card d-flex flex-column" style="width: 100%;">
                         <!-- Product Image -->
                         <a href="/product/details/${product.id}">
-                        <img src="/images/Product/${product.imageURL || 'default-user.png'}"
-                             alt="${product.productName}"
-                             class="card-img-top"
-                             width="150" height="250"
-                             onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
-                           </a>
+                            <img src="/images/Product/${product.imageURL || 'default-user.png'}"
+                                 alt="${product.productName}"
+                                 class="card-img-top"
+                                 width="150" height="250"
+                                 onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
+                        </a>
 
                         <div class="card-body d-flex flex-column">
                             <!-- Stock Status -->
@@ -119,9 +154,9 @@ const displayProducts = () => {
                     : '<p class="text-danger mb-2">Out of Stock</p>'}
 
                             <!-- Product Name -->
-                             <a href="/product/details/${product.id}">
-                            <h5 class="card-title">${product.productName || 'Unnamed Product'}</h5>
-                           </a>
+                            <a href="/product/details/${product.id}">
+                                <h5 class="card-title">${product.productName || 'Unnamed Product'}</h5>
+                            </a>
 
                             <!-- Star Rating -->
                             <div class="d-flex align-items-center mb-3">
@@ -149,7 +184,7 @@ const displayProducts = () => {
             `);
         });
 
-        // Pagination controls
+        // Pagination controls logic remains the same
         const totalPages = Math.ceil(filteredProducts.length / pageSize);
         if (totalPages > 1) {
             $pagination.append(`
@@ -170,6 +205,7 @@ const displayProducts = () => {
                 </button>
             `);
 
+            // Event listeners for pagination controls
             $('.btn[data-page]').on('click', function () {
                 currentPage = $(this).data('page');
                 displayProducts();
@@ -190,8 +226,7 @@ const displayProducts = () => {
     }
 };
 
-
-
+// Helper function to generate star ratings
 function generateStars(rating) {
     const totalStars = 5;
     let starsHtml = '';
@@ -201,13 +236,3 @@ function generateStars(rating) {
     }
     return starsHtml;
 }
-
-function formatPrice(price) {
-    return `৳${price.toFixed(2)}`;
-}
-
-
-
-
-
-

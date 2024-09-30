@@ -1,0 +1,110 @@
+﻿@model InventoryUi.Models.DeliveryAddress
+@using System.Security.Claims
+@using Microsoft.IdentityModel.JsonWebTokens
+@{
+    ViewData["Title"] = "DeliveryAddress";
+}
+
+
+@{
+    var userName = string.Empty;
+    var userId = string.Empty;
+    var fName = string.Empty;
+    var userRole = string.Empty;
+    var lName = string.Empty;
+    var email = string.Empty;
+    var img = string.Empty;
+
+    if (User.Identity.IsAuthenticated)
+    {
+        var claimsIdentity = User.Identity as ClaimsIdentity;
+        if (claimsIdentity != null)
+        {
+            // Extract the username from claims
+            var userNameClaim = claimsIdentity.FindFirst(ClaimTypes.Name);
+            if (userNameClaim != null)
+            {
+                userName = userNameClaim.Value;
+            }
+
+            // Extract the user ID from claims
+            var userIdClaim = claimsIdentity.FindFirst("UserId") ?? claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim != null)
+            {
+                userId = userIdClaim.Value;
+            }
+
+            // Extract the user role from claims
+            var userRoleClaim = claimsIdentity.FindFirst(ClaimTypes.Role);
+            if (userRoleClaim != null)
+            {
+                userRole = userRoleClaim.Value;
+            }
+
+            // Extract the first name from claims
+            var fNameClaim = claimsIdentity.FindFirst("FName");
+            if (fNameClaim != null)
+            {
+                fName = fNameClaim.Value;
+            }
+
+            // Extract the last name from claims
+            var lNameClaim = claimsIdentity.FindFirst("LName");
+            if (lNameClaim != null)
+            {
+                lName = lNameClaim.Value;
+            }
+
+            // Extract the email from claims
+            var emailClaim = claimsIdentity.FindFirst("Email");
+            if (emailClaim != null)
+            {
+                email = emailClaim.Value;
+            }
+
+            // Extract the image URL from claims
+            var imgClaim = claimsIdentity.FindFirst("Img");
+            if (imgClaim != null)
+            {
+                img = imgClaim.Value;
+            }
+        }
+
+    }
+
+}
+<section>
+    <div class="container w-50 mt-5">
+        <!-- Delivery Address Header -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">Delivery Address</h5>
+            <button class="btn btn-dark btn-sm">Add Address</button>
+        </div>
+        @{
+            if(Model !=null)
+            {
+                <!-- Address Card -->
+                <div class="card bg-dark text-white p-3 rounded">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-0">@fName @lName</h6>
+                            <span class="badge bg-primary">Default</span>
+                        </div>
+                        <button class="btn btn-outline-light btn-sm">Edit</button>
+                    </div>
+                    <div class="mt-3">
+                        <p class="mb-1">@Model?.Phone</p>
+                        <p class="mb-0">@Model?.Address</p>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">No delivery address available. Please add a new one.</p>
+            }
+        }
+        
+    </div>
+</section>
+
+

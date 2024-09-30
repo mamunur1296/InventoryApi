@@ -3,6 +3,7 @@ using InventoryUi.Services.Interface;
 using InventoryUi.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace InventoryUi.Controllers
 {
@@ -10,11 +11,13 @@ namespace InventoryUi.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IClientServices<Product> _productServices;
+        private readonly IClientServices<DeliveryAddress> _deliveryAddressServices;
 
-        public HomeController(ILogger<HomeController> logger, IClientServices<Product> productServices)
+        public HomeController(ILogger<HomeController> logger, IClientServices<Product> productServices, IClientServices<DeliveryAddress> deliveryAddressServices)
         {
             _logger = logger;
             _productServices = productServices;
+            _deliveryAddressServices = deliveryAddressServices;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -71,6 +74,20 @@ namespace InventoryUi.Controllers
 
             };
             return View(viewModel);
+        }
+       
+        public async Task<IActionResult> MyEstore()
+        {
+           
+            return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> DeliveryAddress()
+        {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            var userIdClaim = claimsIdentity?.FindFirst("UserId") ?? claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
+            var deliveryAddres = await _deliveryAddressServices.GetClientByIdAsync($"DeliveryAddress/get/ByUserId/{userIdClaim?.Value}");
+            return View(deliveryAddres?.Data);
         }
 
 
