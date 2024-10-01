@@ -56,6 +56,10 @@ namespace InventoryApi.UnitOfWork
 
         public IUnitMasterRepository unitMasterRepository { get; private set; }
 
+        public IPurchaseDetailRepository purchaseDetailRepository { get; private set; }
+
+        public IPurchaseRepository purchaseRepository { get; private set; }
+
         public UnitOfWorkRepository(ApplicationDbContext applicationDbContext)
         {
             _applicationDbContext = applicationDbContext;
@@ -84,6 +88,8 @@ namespace InventoryApi.UnitOfWork
             branchRepository = new BranchRepository(applicationDbContext);
             unitChildRepository = new UnitChildRepository(applicationDbContext);
             unitMasterRepository = new UnitMasterRepository(applicationDbContext);
+            purchaseDetailRepository= new PurchaseDetailRepository(applicationDbContext);
+            purchaseRepository= new PurchaseRepository(applicationDbContext);
 
         }
 

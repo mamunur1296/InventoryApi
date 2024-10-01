@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using InventoryApi.DTOs;
 using InventoryApi.Entities;
-using InventoryApi.Entities.Base;
 
 namespace InventoryApi
 {
@@ -33,6 +32,8 @@ namespace InventoryApi
             CreateMap<Branch, BranchDTOs>().ReverseMap();
             CreateMap<UnitMaster, UnitMasterDTOs>().ReverseMap();
             CreateMap<UnitChild, UnitChildhDTOs>().ReverseMap();
+            CreateMap<Purchase, PurchaseDTOs>().ReverseMap();
+            CreateMap<PurchaseDetail, PurchaseDetailDTOs>().ReverseMap();
         } 
     }
 }

@@ -29,6 +29,8 @@ namespace InventoryApi.UnitOfWork
         IBranchRepository branchRepository { get; }
         IUnitChildRepository unitChildRepository { get; }
         IUnitMasterRepository unitMasterRepository { get; }
+        IPurchaseDetailRepository purchaseDetailRepository { get; }
+        IPurchaseRepository purchaseRepository { get; }
 
         Task SaveAsync();
     }

@@ -4,7 +4,6 @@ using InventoryApi.Middlewares;
 using InventoryApi.Services.Implementation;
 using InventoryApi.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;

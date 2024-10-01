@@ -1,7 +1,6 @@
 ﻿using InventoryApi.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
 namespace InventoryApi.DataContext
 {
@@ -31,6 +30,9 @@ namespace InventoryApi.DataContext
         public DbSet<UnitChild> UnitChilds { get; set; }
         public DbSet<Branch> BranchItems { get; set; }
         public DbSet<UnitMaster> UnitMasterItems { get; set; }
+        public DbSet<Purchase> Purchases { get; set; }
+        public DbSet<PurchaseDetail> PurchasesDetails { get; set; }
+        public DbSet<Department> Departments { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -91,7 +93,19 @@ namespace InventoryApi.DataContext
                 .WithMany(w => w.Stocks)
                 .HasForeignKey(s => s.WarehouseID)
                 .OnDelete(DeleteBehavior.Restrict);
-           
+
+            builder.Entity<Purchase>()
+                    .HasMany(p => p.PurchaseDetails)
+                    .WithOne(pd => pd.Purchase)
+                    .HasForeignKey(pd => pd.PurchaseID)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<PurchaseDetail>()
+                    .HasOne(pd => pd.Product)
+                    .WithMany()
+                    .HasForeignKey(pd => pd.ProductID)
+                    .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 
