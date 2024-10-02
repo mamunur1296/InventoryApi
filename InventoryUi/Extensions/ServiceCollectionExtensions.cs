@@ -60,6 +60,7 @@ namespace InventoryUi.Extensions
             services.AddScoped<IClientServices<SalesSummary>, ClientServices<SalesSummary>>();
             services.AddScoped<IClientServices<Purchase>, ClientServices<Purchase>>();
             services.AddScoped<IClientServices<PurchaseDetail>, ClientServices<PurchaseDetail>>();
+            services.AddScoped<IClientServices<PurchaseItem>, ClientServices<PurchaseItem>>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

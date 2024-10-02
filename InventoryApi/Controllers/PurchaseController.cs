@@ -1,6 +1,5 @@
 ﻿using InventoryApi.DTOs;
 using InventoryApi.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -11,10 +10,12 @@ namespace InventoryApi.Controllers
     public class PurchaseController : ControllerBase
     {
         private readonly IBaseServices<PurchaseDTOs> _service;
+        private readonly IPurchaseServices _purchaseServices;
 
-        public PurchaseController(IBaseServices<PurchaseDTOs> service)
+        public PurchaseController(IBaseServices<PurchaseDTOs> service, IPurchaseServices purchaseServices)
         {
             _service = service;
+            _purchaseServices = purchaseServices;
         }
         [HttpPost("Create")]
         public async Task<IActionResult> Create(PurchaseDTOs model)
@@ -27,6 +28,21 @@ namespace InventoryApi.Controllers
                     Success = true,
                     Status = HttpStatusCode.Created,
                     Detail = " Purchase Created  successfully !!."
+                });
+            }
+            return StatusCode((int)HttpStatusCode.BadRequest, result);
+        }
+        [HttpPost("Purchase")]
+        public async Task<IActionResult> Purchase(PurchaseItemDTOs model)
+        {
+            var result = await _purchaseServices.PurchaseProduct(model);
+            if (result)
+            {
+                return StatusCode((int)HttpStatusCode.Created, new ResponseDTOs<string>
+                {
+                    Success = true,
+                    Status = HttpStatusCode.Created,
+                    Detail = " Purchase successfully !!."
                 });
             }
             return StatusCode((int)HttpStatusCode.BadRequest, result);

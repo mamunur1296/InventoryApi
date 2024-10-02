@@ -68,6 +68,7 @@ namespace ProjectApi
             services.AddScoped<IBaseServices<UnitMasterDTOs>, UnitMasterService>();
             services.AddScoped<IBaseServices<PurchaseDetailDTOs>, PurchaseDetailService>();
             services.AddScoped<IBaseServices<PurchaseDTOs>, PurchaseService>();
+            services.AddScoped<IPurchaseServices, PurchaseService>();
             services.AddScoped<IDeliveryAddressServices, DeliveryAddressServices>();
             services.AddAutoMapper(typeof(MappingProfile));
             return services;

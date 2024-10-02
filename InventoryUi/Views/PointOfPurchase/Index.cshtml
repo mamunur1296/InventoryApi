@@ -1,0 +1,131 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class=" m-2">
+    <div class="row">
+        <div class="col-md-6 p-3">
+            <div class="row">
+                <div class="col-12 mb-3">
+                    <h1>Purchase Summary</h1>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <a asp-action="index" asp-controller="NewOrder" class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                                <p class="fa-2x">00</p>
+                                <p class="fa-1x mb-0">Today Purchase</p>
+                            </a>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <a asp-action="index" asp-controller="NewOrder" class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                                <p class="fa-2x">00.00 </p>
+                                <p class="fa-1x mb-0">Last Day Purchase</p>
+                            </a>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <a asp-action="index" asp-controller="NewOrder" class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                                <p class="fa-2x">00.00 </p>
+                                <p class="fa-1x mb-0">Current Month Purchase</p>
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a asp-action="index" asp-controller="NewOrder" class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                                <p class="fa-2x">00.00 </p>
+                                <p class="fa-1x mb-0">Last Month Purchase</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 mb-3">
+                    Parses Summary
+                </div>
+                <div class="col-12">
+                    Dayagram
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <!-- Button Grid -->
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <button class="btn btn-light border  shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#128336;</p>
+                        <p class="fa-1x mb-0">Time Clock</p>
+                    </button>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <a asp-action="index" asp-controller="NewPurchase" class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#128196;</p>
+                        <p class="fa-1x mb-0">New Purchase</p>
+                    </a>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#128200;</p>
+                        <p class="fa-1x mb-0">Reports</p>
+                    </button>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#128240;</p>
+                        <p class="fa-1x mb-0">Purchase</p>
+                    </button>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#128281;</p>
+                        <p class="fa-1x mb-0">Return</p>
+                    </button>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#127869;</p>
+                        <p class="fa-1x mb-0">Tables</p>
+                    </button>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#128666;</p>
+                        <p class="fa-1x mb-0">Delivery Management</p>
+                    </button>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#9881;</p>
+                        <p class="fa-1x mb-0">Product Setup</p>
+                    </button>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#128179;</p>
+                        <p class="fa-1x mb-0">Invoices</p>
+                    </button>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#127942;</p>
+                        <p class="fa-1x mb-0">Reward Cards</p>
+                    </button>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#127873;</p>
+                        <p class="fa-1x mb-0">Gift Cards</p>
+                    </button>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <button class="btn btn-light border shadow-sm w-100 py-3 text-primary fw-semibold">
+                        <p class="icon fa-2x mb-1">&#128179;</p>
+                        <p class="fa-1x mb-0">Store Credit</p>
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+

@@ -1,5 +1,4 @@
-﻿
-@using System.Security.Claims
+﻿@using System.Security.Claims
 @using Microsoft.IdentityModel.JsonWebTokens
 
 @{
@@ -250,13 +249,20 @@
                                         <i class="fas fa-shopping-cart nav-icon"></i>
                                         <p>Point Of Salse</p>
                                     </a>
-                                </li> 
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-action="Index" asp-controller="PointOfPurchase" class="nav-link">
+                                        <i class="fas fa-receipt nav-icon"></i> <!-- Changed icon to receipt -->
+                                        <p>Point Of Purchase</p>
+                                    </a>
+                                </li>
                                 <li class="nav-item">
                                     <a asp-action="Index" asp-controller="Purchase" class="nav-link">
-                                        <i class="fas fa-shopping-cart nav-icon"></i>
+                                        <i class="fas fa-shopping-cart nav-icon"></i> <!-- Kept the original shopping cart icon -->
                                         <p>Purchase</p>
                                     </a>
                                 </li>
+
                                 <li class="nav-item">
                                     <a asp-action="Index" asp-controller="Company" class="nav-link">
                                         <i class="fas fa-building nav-icon"></i> <!-- Company icon -->

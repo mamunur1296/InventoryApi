@@ -91,13 +91,22 @@ namespace InventoryUi.Controllers
             }
 
             _tokenService.SaveToken(loginResponse.Data.token);
+            // Extract role from JWT token before UserLogin
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(loginResponse.Data.token);
+
+            // Extract the roles from the token claims
+            var roleClaims = jwtToken.Claims.Where(c => c.Type == ClaimTypes.Role).Select(r => r.Value).ToList();
+            string roleName = roleClaims.FirstOrDefault();
             await UserLogin(loginResponse.Data.token);
 
             if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
             {
                 return Redirect(ReturnUrl);
             }
-
+            if(roleName == "Admin") {
+                return RedirectToAction("Index", "Dashboard");
+            }
             return RedirectToAction("Index", "Home");
 
         }

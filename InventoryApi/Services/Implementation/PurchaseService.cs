@@ -1,21 +1,25 @@
 ﻿using AutoMapper;
+using InventoryApi.DataContext;
 using InventoryApi.DTOs;
 using InventoryApi.Entities;
 using InventoryApi.Exceptions;
 using InventoryApi.Services.Interfaces;
 using InventoryApi.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 
 namespace InventoryApi.Services.Implementation
 {
-    public class PurchaseService : IBaseServices<PurchaseDTOs>
+    public class PurchaseService : IBaseServices<PurchaseDTOs>,IPurchaseServices
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
+        private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
 
-        public PurchaseService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper)
+        public PurchaseService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper, ApplicationDbContext context)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
             _mapper = mapper;
+            _context = context;
         }
         public async Task<bool> CreateAsync(PurchaseDTOs entity)
         {
@@ -88,6 +92,80 @@ namespace InventoryApi.Services.Implementation
             return result;
         }
 
+        public async Task<bool> PurchaseProduct(PurchaseItemDTOs entitys)
+        {
+            // Validate the input data
+            if (entitys == null || entitys.Products == null || !entitys.Products.Any())
+            {
+                throw new ValidationException("Invalid purchase item data.");
+            }
+
+            // Start a new database transaction
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                // Create the new purchase record
+                var newPurchase = new Purchase
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    CreationDate = DateTime.Now,
+                    PurchaseDate = DateTime.Now,
+                    SupplierID = entitys.SupplierID,
+                };
+
+                // Add the purchase record to the context
+                await _context.Purchases.AddAsync(newPurchase);
+
+                // Initialize a list to hold the purchase details
+                var purchaseDetails = new List<PurchaseDetail>();
+
+                // Process each product in the purchase
+                foreach (var productDto in entitys.Products)
+                {
+                    var newPurchaseDetail = new PurchaseDetail
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        CreationDate = DateTime.Now,
+                        PurchaseID = newPurchase.Id,
+                        ProductID = productDto.ProductID,
+                        Quantity = productDto.Quantity,
+                        UnitPrice = productDto.Price,
+                        Discount = productDto.Discount,
+                    };
+
+                    // Add the purchase detail to the list
+                    purchaseDetails.Add(newPurchaseDetail);
+                }
+
+                // Add all purchase details at once
+                await _context.PurchasesDetails.AddRangeAsync(purchaseDetails);
+
+                // Update the stock for each product
+                foreach (var productDto in entitys.Products)
+                {
+                    var product = await _context.Products.FindAsync(productDto.ProductID);
+
+                    if (product != null)
+                    {
+                        product.UnitsInStock += productDto.Quantity; // Assuming stock should decrease
+                        _context.Products.Update(product);
+                    }
+                }
+
+                // Save all changes and commit the transaction
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Rollback in case of an error
+                await transaction.RollbackAsync();
+                throw new ValidationException($"An error occurred during the purchase: {ex.Message}");
+            }
+        }
 
     }
 }
