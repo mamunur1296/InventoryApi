@@ -16,7 +16,7 @@
             <div class="row mb-5">
                 <!-- First column with button and form -->
                 <div class="col-4 d-flex align-items-center justify-content-start">
-                    <button id="addNewCustomerButton" type="button" class="btn btn-success">
+                    <button id="addNewSupplirButton" type="button" class="btn btn-success">
                         <i class="fa fa-plus"></i>
                     </button>
                     <form asp-action="AddCustomer" id="addCustomerForm" method="post" class="w-75 d-flex">
@@ -51,7 +51,7 @@
                     </div>
 
                     <div class="col-1 d-flex justify-content-between">
-                        <button id="addNewProductButton" class="btn btn-success" title="Add Product"><i class="fa fa-plus"></i></button>
+                        <button id="CreateProductBtn" class="btn btn-success" title="Add Product"><i class="fa fa-plus"></i></button>
                     </div>
                 </div>
 
@@ -121,7 +121,8 @@
         </div>
     </div>
 </div>
-
+@await Html.PartialAsync("~/Views/Product/_CreateProductModal.cshtml")
+@await Html.PartialAsync("~/Views/Supplier/_SupplierModal.cshtml")
 
 @section Scripts {
     <script type="module" src="~/js/pointofpurchase/newpurchase.js" asp-append-version="true"></script>

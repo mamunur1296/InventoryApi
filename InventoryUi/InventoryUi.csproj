@@ -26,10 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Shared\NewOrder\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\Repots\Invoice.rdlc" />
     <None Include="wwwroot\Repots\OrderXl.rdlc" />
   </ItemGroup>

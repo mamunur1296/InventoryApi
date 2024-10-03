@@ -31,7 +31,7 @@ namespace InventoryApi.DTOs
         public int ReorderLevel { get; set; }
 
         public bool Discontinued { get; set; }
-        public string BatchNumber { get; set; }
+        public string ?BatchNumber { get; set; }
         public decimal? Discount { get; set; }
         public DateTime? ExpirationDate { get; set; }
         public string? ImageURL { get; set; }

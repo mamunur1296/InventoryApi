@@ -36,7 +36,7 @@
                                 <h3 class="card-title font-weight-bold fs-1 color-primary">Supplier List</h3>
                             </div>
                             <div class="col-md-6 d-flex justify-content-end ">
-                                <a id="CreateBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Supplier</a>
+                                <a id="CreateSupplierBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Supplier</a>
                             </div>
                         </div>
                     </div>
@@ -80,122 +80,9 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="modelCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAddEmployee" aria-hidden="true">
-    <div class="modal-dialog modal-sm" style="max-width: 65%; max-height: 80%;">
-        <div class="modal-content" style="height: 100%; overflow: hidden;">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabelAddEmployee">Add Supplier</h4>
-                <h4 class="modal-title" style="display:none;" id="myModalLabelUpdateEmployee">Update Supplier</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body" style="height: calc(100% - 60px); overflow-y: auto;">
-                <form id="SupplierForm">
-                    <input type="hidden" asp-for="CreatedBy" value="@userName" />
-                    <input type="hidden" asp-for="UpdatedBy" value="@userName" />
-                    <div class="card-body">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="SupplierName" class="control-label"></label>
-                                    <input asp-for="SupplierName" placeholder="Enter supplier name (e.g., Acme Corporation)" class="form-control" name="SupplierName" />
-                                    <span asp-validation-for="SupplierName" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="ContactName" class="control-label"></label>
-                                    <input asp-for="ContactName" placeholder="Enter contact name (e.g., John)" class="form-control" name="ContactName" />
-                                    <span asp-validation-for="ContactName" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="ContactTitle" class="control-label"></label>
-                                    <input asp-for="ContactTitle" placeholder="Enter contact title (e.g., Sales Manager)" class="form-control" name="ContactTitle" />
-                                    <span asp-validation-for="ContactTitle" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="Address" class="control-label"></label>
-                                    <input asp-for="Address" placeholder="Enter address (e.g., 456 Dhaka)" class="form-control" name="Address" />
-                                    <span asp-validation-for="Address" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="City" class="control-label"></label>
-                                    <input asp-for="City" placeholder="Enter city (e.g., Dhaka)" class="form-control" name="City" />
-                                    <span asp-validation-for="City" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="Region" class="control-label"></label>
-                                    <input asp-for="Region" placeholder="Enter region (e.g., Dhaka)" class="form-control" name="Region" />
-                                    <span asp-validation-for="Region" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="PostalCode" class="control-label"></label>
-                                    <input asp-for="PostalCode" placeholder="Enter postal code (e.g., 62704)" class="form-control" name="PostalCode" />
-                                    <span asp-validation-for="PostalCode" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="Country" class="control-label"></label>
-                                    <input asp-for="Country" placeholder="Enter country (e.g., Bangladesh)" class="form-control" name="Country" />
-                                    <span asp-validation-for="Country" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="Phone" class="control-label"></label>
-                                    <input asp-for="Phone" placeholder="Enter phone number (e.g., +1 234 567 890)" class="form-control" name="Phone" />
-                                    <span asp-validation-for="Phone" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="Fax" class="control-label"></label>
-                                    <input asp-for="Fax" placeholder="Enter fax number (e.g., +1 234 567 891)" class="form-control" name="Fax" />
-                                    <span asp-validation-for="Fax" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+@await Html.PartialAsync("~/Views/Supplier/_SupplierModal.cshtml", Model)
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btnSave">Save</button>
-                <button type="button" class="btn btn-primary" id="btnUpdate">Update</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteAndDetailsModel" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                Are you sure you want to delete the following Supplier ?
-            </div>
-            <div id="DeleteErrorMessage" class="modal-header" role="alert" style="display: none;">
-                <!-- Error message will be displayed here if deletion fails -->
-            </div>
-            <div class="modal-body" id="companyDetails">
-                <!-- Company details will be populated dynamically by jQuery -->
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="btnDelete">Delete</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
+@await Html.PartialAsync("~/Views/Shared/_DeleteModel.cshtml")
 
 
 @section Scripts {

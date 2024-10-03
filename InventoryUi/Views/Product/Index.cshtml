@@ -36,7 +36,7 @@
                                 <h3 class="card-title font-weight-bold fs-1 color-primary">Product List</h3>
                             </div>
                             <div class="col-md-6 d-flex justify-content-end ">
-                                <a id="CreateBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Product</a>
+                                <a id="CreateProductBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Product</a>
                             </div>
                         </div>
                     </div>
@@ -78,155 +78,12 @@
     </div>
     <!-- /.container-fluid -->
 </section>
-
-
-
-
-
-
-
-
 <!-- Modal -->
-<div class="modal fade" id="modelCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAddEmployee" aria-hidden="true">
-    <div class="modal-dialog modal-sm" style="max-width: 65%; max-height: 80%;">
-        <div class="modal-content" style="height: 100%; overflow: hidden;">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabelAddEmployee">Add Product</h4>
-                <h4 class="modal-title" style="display:none;" id="myModalLabelUpdateEmployee">Update Product</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body" style="height: calc(100% - 60px); overflow-y: auto;">
-                <form id="ProductForm">
-                    <input type="hidden" asp-for="CreatedBy" value="@userName" />
-                    <input type="hidden" asp-for="UpdatedBy" value="@userName" />
-                    <div class="card-body">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="ProductName" class="control-label"></label>
-                                    <input asp-for="ProductName" placeholder="Enter product name" class="form-control" name="ProductName" />
-                                    <span asp-validation-for="ProductName" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="Description" class="control-label"></label>
-                                    <input asp-for="Description" placeholder="Enter product description" class="form-control" name="Description" />
-                                    <span asp-validation-for="Description" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label" asp-for="CategoryID"></label>
-                                    <select class="form-control" asp-for="CategoryID" id="CategoryDropdown">
-                                        <option value="">Select category</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label" asp-for="SupplierID"></label>
-                                    <select class="form-control" asp-for="SupplierID" id="SupplierDropdown">
-                                        <option value="">Select supplier</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="ExpirationDate" class="control-label"></label>
-                                    <input asp-for="ExpirationDate" placeholder="Enter expiration date (e.g., 2024-12-31)" class="form-control" name="ExpirationDate" />
-                                    <span asp-validation-for="ExpirationDate" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="UnitPrice" class="control-label"></label>
-                                    <input asp-for="UnitPrice" placeholder="Enter unit price (e.g., 25.00)" class="form-control" name="UnitPrice" />
-                                    <span asp-validation-for="UnitPrice" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="UnitsInStock" class="control-label"></label>
-                                    <input asp-for="UnitsInStock" placeholder="Enter units in stock (e.g., 100)" class="form-control" name="UnitsInStock" />
-                                    <span asp-validation-for="UnitsInStock" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="ReorderLevel" class="control-label"></label>
-                                    <input asp-for="ReorderLevel" placeholder="Enter reorder level (e.g., 20)" class="form-control" name="ReorderLevel" />
-                                    <span asp-validation-for="ReorderLevel" class="text-danger"></span>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label asp-for="BatchNumber" class="control-label"></label>
-                                    <input asp-for="BatchNumber" placeholder="Enter batch number" class="form-control" name="BatchNumber" />
-                                    <span asp-validation-for="BatchNumber" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="Discount" class="control-label"></label>
-                                    <input asp-for="Discount" placeholder="Enter Discount (e.g,10%)" class="form-control" name="Discount" />
-                                    <span asp-validation-for="Discount" class="text-danger"></span>
-                                </div>
-                               
-                            </div>
-                            <div class="col-md-4">
-                                
-                                <div class="form-group">
-                                    <label asp-for="Files" class="control-label"></label>
-                                    <input asp-for="Files" placeholder="Enter img URL(e.g.http://ex.com/img.jpg)" class="form-control" name="Files" />
-                                    <span asp-validation-for="Files" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="Weight" class="control-label"></label>
-                                    <input asp-for="Weight" placeholder="Enter weight (e.g., 1.5 kg)" class="form-control" name="Weight" />
-                                    <span asp-validation-for="Weight" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="Dimensions" class="control-label"></label>
-                                    <input asp-for="Dimensions" placeholder="Enter dimensions (e.g., 10x20x15 cm)" class="form-control" name="Dimensions" />
-                                    <span asp-validation-for="Dimensions" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label" asp-for="UnitMasterId"></label>
-                                    <select class="form-control" asp-for="UnitMasterId" id="UnitMasterDropdown">
-                                        <option value="">Select category</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label" asp-for="UnitChildId"></label>
-                                    <select class="form-control" asp-for="UnitChildId" id="UnitChildDropdown">
-                                        <option value="">Select supplier</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btnSave">Save</button>
-                <button type="button" class="btn btn-primary" id="btnUpdate">Update</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+@await Html.PartialAsync("~/Views/Product/_ProductModal.cshtml", Model)
+@await Html.PartialAsync("~/Views/Shared/_DeleteModel.cshtml")
 
 
 
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteAndDetailsModel" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                Are you sure you want to delete the following Product ?
-            </div>
-            <div id="DeleteErrorMessage" class="modal-header" role="alert" style="display: none;">
-                <!-- Error message will be displayed here if deletion fails -->
-            </div>
-            <div class="modal-body" id="companyDetails">
-                <!-- Company details will be populated dynamically by jQuery -->
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="btnDelete">Delete</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 @section Scripts {

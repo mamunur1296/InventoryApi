@@ -1,0 +1,159 @@
+﻿@model InventoryUi.Models.Product
+@using System.Security.Claims
+@using Microsoft.IdentityModel.JsonWebTokens
+
+@{
+    var userName = string.Empty;
+
+    if (User.Identity.IsAuthenticated)
+    {
+        var claimsIdentity = User.Identity as ClaimsIdentity;
+        if (claimsIdentity != null)
+        {
+            // Extract the username from claims
+            var userNameClaim = claimsIdentity.FindFirst(ClaimTypes.Name);
+            if (userNameClaim != null)
+            {
+                userName = userNameClaim.Value;
+            }
+        }
+    }
+}
+<!-- Modal -->
+<div class="modal fade" id="ProductModelCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAddEmployee" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="max-width: 65%; max-height: 80%;">
+        <div class="modal-content" style="height: 100%; overflow: hidden;">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabelAddEmployee">Add Product</h4>
+                <h4 class="modal-title" style="display:none;" id="myModalLabelUpdateEmployee">Update Product</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="height: calc(100% - 60px); overflow-y: auto;">
+                <form id="ProductForm" enctype="application/x-www-form-urlencoded" asp-action="Create" asp-controller="Product" method="post">
+                    <input type="hidden" asp-for="CreatedBy" value="@userName" />
+                    <input type="hidden" asp-for="UpdatedBy" value="@userName" />
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="ProductName" class="control-label"></label>
+                                    <input asp-for="ProductName" placeholder="Enter product name" class="form-control" name="ProductName" />
+                                    <span asp-validation-for="ProductName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Description" class="control-label"></label>
+                                    <input asp-for="Description" placeholder="Enter product description" class="form-control" name="Description" />
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                                <div class=" form-group ">
+                                    <label class="control-label" asp-for="CategoryID"></label>
+                                    <div class="d-flex">
+                                        <select class="form-control" asp-for="CategoryID" id="CategoryDropdown">
+                                            <option value="">Select category</option>
+                                        </select>
+                                        <button id="addNewCatagoryButton" class="btn btn-success" title="Add Category"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                    
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" asp-for="SupplierID"></label>
+                                    <div class="d-flex">
+                                        <select class="form-control" asp-for="SupplierID" id="SupplierDropdown">
+                                            <option value="">Select supplier</option>
+                                        </select>
+                                        <button id="addNewSupplirButton2" class="btn btn-success" title="Add Supplier"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="QuantityPerUnit" class="control-label"></label>
+                                    <input asp-for="QuantityPerUnit" placeholder="Enter quantity per unit (e.g., 10 boxes)" class="form-control" name="QuantityPerUnit" />
+                                    <span asp-validation-for="QuantityPerUnit" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="UnitPrice" class="control-label"></label>
+                                    <input asp-for="UnitPrice" placeholder="Enter unit price (e.g., 25.00)" class="form-control" name="UnitPrice" />
+                                    <span asp-validation-for="UnitPrice" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="UnitsInStock" class="control-label"></label>
+                                    <input asp-for="UnitsInStock" placeholder="Enter units in stock (e.g., 100)" class="form-control" name="UnitsInStock" />
+                                    <span asp-validation-for="UnitsInStock" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ReorderLevel" class="control-label"></label>
+                                    <input asp-for="ReorderLevel" placeholder="Enter reorder level (e.g., 20)" class="form-control" name="ReorderLevel" />
+                                    <span asp-validation-for="ReorderLevel" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="BatchNumber" class="control-label"></label>
+                                    <input asp-for="BatchNumber" placeholder="Enter batch number" class="form-control" name="BatchNumber" />
+                                    <span asp-validation-for="BatchNumber" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ExpirationDate" class="control-label"></label>
+                                    <input asp-for="ExpirationDate" placeholder="Enter expiration date (e.g., 2024-12-31)" class="form-control" name="ExpirationDate" />
+                                    <span asp-validation-for="ExpirationDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="form-group">
+                                    <label asp-for="Files" class="control-label"></label>
+                                    <input asp-for="Files"  class="form-control" name="Files"/>
+                                    <span asp-validation-for="Files" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Weight" class="control-label"></label>
+                                    <input asp-for="Weight" placeholder="Enter weight (e.g., 1.5 kg)" class="form-control" name="Weight" />
+                                    <span asp-validation-for="Weight" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Dimensions" class="control-label"></label>
+                                    <input asp-for="Dimensions" placeholder="Enter dimensions (e.g., 10x20x15 cm)" class="form-control" name="Dimensions" />
+                                    <span asp-validation-for="Dimensions" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" asp-for="UnitMasterId"></label>
+                                    <div class="d-flex">
+                                        <select class="form-control" asp-for="UnitMasterId" id="UnitMasterDropdown">
+                                            <option value="">Select category</option>
+                                        </select>
+                                        <button id="MasterUnitButton" class="btn btn-success" title="Add Master Unit"><i class="fa fa-plus"></i></button>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" asp-for="UnitChildId"></label>
+                                    <div class="d-flex">
+                                        <select class="form-control" asp-for="UnitChildId" id="UnitChildDropdown">
+                                            <option value="">Select supplier</option>
+                                        </select>
+                                        <button id="ChildUnitButton" class="btn btn-success" title="Add Child Unit"><i class="fa fa-plus"></i></button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="ProductBtnSave">Save</button>
+                        <button type="button" class="btn btn-primary" id="ProductbtnUpdate">Update</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("~/Views/Category/_CreateCategoryModal.cshtml")
+@await Html.PartialAsync("~/Views/Supplier/_SupplierModal.cshtml")
+@await Html.PartialAsync("~/Views/UnitChild/_UnitChildCreateModel.cshtml")
+@await Html.PartialAsync("~/Views/UnitMaster/_UnitMasterCreateModel.cshtml")
+
+

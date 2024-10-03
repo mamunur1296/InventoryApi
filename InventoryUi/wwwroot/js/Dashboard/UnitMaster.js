@@ -4,6 +4,7 @@ import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js'
 
 $(document).ready(async function () {
     await getUnitMasterList();
+    await UnitMasteCreateBtn('#UnitMasterCreateBtn');
 });
 const getUnitMasterList = async () => {
     debugger
@@ -119,18 +120,20 @@ const UsrValidae = $('#UnitMasterForm').validate({
     }
 });
 
-//Sow Create Model 
-$('#CreateBtn').off('click').click(async () => {
-    resetFormValidation('#UnitMasterForm', UsrValidae);
-    clearMessage('successMessage', 'globalErrorMessage');
-    debugger
-    showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
-    
-});
+export const UnitMasteCreateBtn = async (createBtnId) => {
+    $(createBtnId).off('click').click(async (e) => {
+        e.preventDefault();
+        resetFormValidation('#UnitMasterForm', UsrValidae);
+        clearMessage('successMessage', 'globalErrorMessage');
+        debugger
+        showCreateModal('UnitMasterModelCreate', 'UnitMasterbtnSave', 'UnitMasterbtnUpdate');
+    });
+}
 
 // Save Button
 
-$('#btnSave').off('click').click(async () => {
+$('#UnitMasterbtnSave').off('click').click(async (e) => {
+    e.preventDefault();
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     try {
@@ -145,14 +148,14 @@ $('#btnSave').off('click').click(async () => {
             $('#GeneralError').hide();
             debugger
             if (result.success && result.status === 201) {
-                $('#modelCreate').modal('hide');
+                $('#UnitMasterModelCreate').modal('hide');
                 notification({ message: "Unit Master Created successfully !", type: "success", title: "Success" });
                 await getUnitMasterList(); // Update the user list
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
-        $('#modelCreate').modal('hide');
+        $('#UnitMasterModelCreate').modal('hide');
         notification({ message: " Unit Master Created failed . Please try again. !", type: "error", title: "Error" });
     }
 
@@ -170,24 +173,24 @@ window.updateUnitMaster = async (id) => {
 
     const result = await SendRequest({ endpoint: '/UnitMaster/GetById/' + id });
     if (result.success) {
-        $('#btnSave').hide();
-        $('#btnUpdate').show();
+        $('#UnitMasterbtnSave').hide();
+        $('#UnitMasterbtnUpdate').show();
         $('#Name').val(result.data.name);
         $('#UnitMasterDescription').val(result.data.unitMasterDescription);
   
-        $('#modelCreate').modal('show');
+        $('#UnitMasterModelCreate').modal('show');
         resetValidation(UsrValidae, '#UnitMasterForm');
-        $('#btnUpdate').off('click').on('click', async () => {
+        $('#UnitMasterbtnUpdate').off('click').on('click', async () => {
             debugger
             const formData = $('#UnitMasterForm').serialize();
             const result = await SendRequest({ endpoint: '/UnitMaster/Update/' + id, method: "PUT", data: formData });
             if (result.success) {
-                $('#modelCreate').modal('hide');
+                $('#UnitMasterModelCreate').modal('hide');
                 notification({ message: "UnitMaster Updated successfully !", type: "success", title: "Success" });
 
                 await getUnitMasterList(); // Update the user list
             } else {
-                $('#modelCreate').modal('hide');
+                $('#UnitMasterModelCreate').modal('hide');
                 notification({ message: " UnitMaster Updated failed . Please try again. !", type: "error", title: "Error" });
             }
         });

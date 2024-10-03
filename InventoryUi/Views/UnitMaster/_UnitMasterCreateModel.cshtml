@@ -1,0 +1,65 @@
+﻿@model InventoryUi.Models.UnitMaster
+@using System.Security.Claims
+@using Microsoft.IdentityModel.JsonWebTokens
+
+@{
+    var userName = string.Empty;
+
+    if (User.Identity.IsAuthenticated)
+    {
+        var claimsIdentity = User.Identity as ClaimsIdentity;
+        if (claimsIdentity != null)
+        {
+            // Extract the username from claims
+            var userNameClaim = claimsIdentity.FindFirst(ClaimTypes.Name);
+            if (userNameClaim != null)
+            {
+                userName = userNameClaim.Value;
+            }
+        }
+    }
+}
+<!-- Modal -->
+<div class="modal fade" id="UnitMasterModelCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAddEmployee" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="max-width: 65%; max-height: 80%;">
+        <div class="modal-content" style="height: 100%; overflow: hidden;">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabelAddEmployee">Add Unit Master</h4>
+                <h4 class="modal-title" style="display:none;" id="myModalLabelUpdateEmployee">Update Unit Master</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="height: calc(100% - 60px); overflow-y: auto;">
+                <form id="UnitMasterForm">
+                    <input type="hidden" asp-for="CreatedBy" value="@userName" />
+                    <input type="hidden" asp-for="UpdatedBy" value="@userName" />
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Name" class="control-label"></label>
+                                    <input asp-for="Name" placeholder="Enter Unit Name (e.g., Kilogram)" class="form-control" name="Name" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="UnitMasterDescription" class="control-label"></label>
+                                    <input asp-for="UnitMasterDescription" placeholder="Enter Category Description (e.g., Devices and gadgets)" class="form-control" name="UnitMasterDescription" />
+                                    <span asp-validation-for="UnitMasterDescription" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="UnitMasterbtnSave">Save</button>
+                <button type="button" class="btn btn-primary" id="UnitMasterbtnUpdate">Update</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

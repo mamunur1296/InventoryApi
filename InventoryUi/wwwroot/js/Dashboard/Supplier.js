@@ -4,6 +4,7 @@ import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js'
 
 $(document).ready(async function () {
     await getSupplierList();
+    await CreateSupplierBtn('#CreateSupplierBtn');
 });
 const getSupplierList = async () => {
     debugger
@@ -105,7 +106,7 @@ const onSuccessUsers = async (suppliers) => {
 
 
 // Initialize validation
-const UsrValidae = $('#SupplierForm').validate({
+export const SupplierFormValidae = $('#SupplierForm').validate({
     onkeyup: function (element) {
         $(element).valid();
     },
@@ -176,18 +177,22 @@ const UsrValidae = $('#SupplierForm').validate({
     }
 });
 
-//Sow Create Model 
-$('#CreateBtn').off('click').click(async () => {
-    resetFormValidation('#SupplierForm', UsrValidae);
-    clearMessage('successMessage', 'globalErrorMessage');
-    debugger
-    showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
+export const CreateSupplierBtn = async (CreateBtnId) => {
+    //Sow Create Model 
+    $(CreateBtnId).off('click').click(async (e) => {
+        e.preventDefault();
+        resetFormValidation('#SupplierForm', SupplierFormValidae);
+        clearMessage('successMessage', 'globalErrorMessage');
+        debugger
+        showCreateModal('SupplierModelCreate', 'SupplierbtnSave', 'SupplierbtnUpdate');
+    });
+} 
 
-});
 
 // Save Button
 
-$('#btnSave').off('click').click(async () => {
+$('#SupplierbtnSave').off('click').click(async (e) => {
+    e.preventDefault();
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     try {
@@ -202,14 +207,14 @@ $('#btnSave').off('click').click(async () => {
             $('#GeneralError').hide();
             debugger
             if (result.success && result.status === 201) {
-                $('#modelCreate').modal('hide');
+                $('#SupplierModelCreate').modal('hide');
                 notification({ message: "Supplier Created successfully !", type: "success", title: "Success" });
                 await getSupplierList(); // Update the user list
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
-        $('#modelCreate').modal('hide');
+        $('#SupplierModelCreate').modal('hide');
         notification({ message: " Supplier Created failed . Please try again. !", type: "error", title: "Error" });
     }
 
@@ -218,7 +223,7 @@ $('#btnSave').off('click').click(async () => {
 
 
 window.updateSupplier = async (id) => {
-    resetFormValidation('#SupplierForm', UsrValidae);
+    resetFormValidation('#SupplierForm', SupplierFormValidae);
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#myModalLabelUpdateEmployee').show();
@@ -226,8 +231,8 @@ window.updateSupplier = async (id) => {
 
     const result = await SendRequest({ endpoint: '/Supplier/GetById/' + id });
     if (result.success) {
-        $('#btnSave').hide();
-        $('#btnUpdate').show();
+        $('#SupplierbtnSave').hide();
+        $('#SupplierbtnUpdate').show();
 
         $('#SupplierName').val(result.data.supplierName);
         $('#ContactName').val(result.data.contactName);
@@ -242,19 +247,19 @@ window.updateSupplier = async (id) => {
         $('#HomePage').val(result.data.homePage);
 
 
-        $('#modelCreate').modal('show');
-        resetValidation(UsrValidae, '#SupplierForm');
-        $('#btnUpdate').off('click').on('click', async () => {
+        $('#SupplierModelCreate').modal('show');
+        resetValidation(SupplierFormValidae, '#SupplierForm');
+        $('#SupplierbtnUpdate').off('click').on('click', async () => {
             debugger
             const formData = $('#SupplierForm').serialize();
             const result = await SendRequest({ endpoint: '/Supplier/Update/' + id, method: "PUT", data: formData });
             if (result.success) {
-                $('#modelCreate').modal('hide');
+                $('#SupplierModelCreate').modal('hide');
                 notification({ message: "Supplier Updated successfully !", type: "success", title: "Success" });
 
                 await getSupplierList(); // Update the user list
             } else {
-                $('#modelCreate').modal('hide');
+                $('#SupplierModelCreate').modal('hide');
                 notification({ message: " Supplier Updated failed . Please try again. !", type: "error", title: "Error" });
             }
 

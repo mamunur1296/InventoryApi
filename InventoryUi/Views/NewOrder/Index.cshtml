@@ -22,11 +22,9 @@
                         </form>
                     </div>
 
-                    <div class="col-1 d-flex justify-content-between">
+                   @*  <div class="col-1 d-flex justify-content-between">
                         <button id="addNewProductButton" class="btn btn-success" title="Add Product"><i class="fa fa-plus"></i></button>
-                         
-                    </div>
-
+                    </div> *@
                 </div>
 
                 <!-- Product Table -->
@@ -43,8 +41,9 @@
     <!-- Container for dynamically loaded modal -->
     <div id="modalSuccess"></div>
 </div>
-@await Html.PartialAsync("_CreateProductModal", Model)
 @await Html.PartialAsync("_SuccessModal", Model)
+
+
 
 @section Scripts {
     <script type="module" src="~/js/powerofsales/neworder.js" asp-append-version="true"></script>

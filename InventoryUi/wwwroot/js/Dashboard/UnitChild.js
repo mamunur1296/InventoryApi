@@ -4,6 +4,7 @@ import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js'
 
 $(document).ready(async function () {
     await getUnitChildList();
+    await UnitChildCreateBtn('#UnitChildCreateBtn');
 });
 const getUnitChildList = async () => {
     debugger
@@ -140,18 +141,23 @@ const UsrValidae = $('#UnitChildForm').validate({
     }
 });
 
-//Sow Create Model 
-$('#CreateBtn').off('click').click(async () => {
-    resetFormValidation('#UnitChildForm', UsrValidae);
-    clearMessage('successMessage', 'globalErrorMessage');
-    debugger
-    showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
-    await populateDropdown('/UnitMaster/GetAll', '#UnitMasterDropdown', 'id', 'name', "Select Master Unit");
-});
+export const UnitChildCreateBtn = async (createBtnId) => {
+    //Sow Create Model 
+    $(createBtnId).off('click').click(async (e) => {
+        e.preventDefault();
+        resetFormValidation('#UnitChildForm', UsrValidae);
+        clearMessage('successMessage', 'globalErrorMessage');
+        debugger
+        showCreateModal('UnitChildModelCreate', 'UnitChildbtnSave', 'UnitChildbtnUpdate');
+        await populateDropdown('/UnitMaster/GetAll', '#UnitMasterDropdown', 'id', 'name', "Select Master Unit");
+    });
+}
+
 
 // Save Button
 
-$('#btnSave').off('click').click(async () => {
+$('#UnitChildbtnSave').off('click').click(async (e) => {
+    e.preventDefault();
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     try {
@@ -166,14 +172,14 @@ $('#btnSave').off('click').click(async () => {
             $('#GeneralError').hide();
             debugger
             if (result.success && result.status === 201) {
-                $('#modelCreate').modal('hide');
+                $('#UnitChildModelCreate').modal('hide');
                 notification({ message: "UnitChild Created successfully !", type: "success", title: "Success" });
                 await getUnitChildList(); // Update the user list
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
-        $('#modelCreate').modal('hide');
+        $('#UnitChildModelCreate').modal('hide');
         notification({ message: " UnitChild Created failed . Please try again. !", type: "error", title: "Error" });
     }
 
@@ -193,8 +199,8 @@ window.updateUnitChild = async (id) => {
 
     const result = await SendRequest({ endpoint: '/UnitChild/GetById/' + id });
     if (result.success) {
-        $('#btnSave').hide();
-        $('#btnUpdate').show();
+        $('#UnitChildbtnSave').hide();
+        $('#UnitChildbtnUpdate').show();
 
 
         $('#Name').val(result.data.name);
@@ -204,19 +210,19 @@ window.updateUnitChild = async (id) => {
         $('#UnitDescription').val(result.data.unitDescription);
 
 
-        $('#modelCreate').modal('show');
+        $('#UnitChildModelCreate').modal('show');
         resetValidation(UsrValidae, '#UnitChildForm');
-        $('#btnUpdate').off('click').on('click', async () => {
+        $('#UnitChildbtnUpdate').off('click').on('click', async () => {
             debugger
             const formData = $('#UnitChildForm').serialize();
             const result = await SendRequest({ endpoint: '/UnitChild/Update/' + id, method: "PUT", data: formData });
             if (result.success) {
-                $('#modelCreate').modal('hide');
+                $('#UnitChildModelCreate').modal('hide');
                 notification({ message: "UnitChild Updated successfully !", type: "success", title: "Success" });
 
                 await getUnitChildList(); // Update the user list
             } else {
-                $('#modelCreate').modal('hide');
+                $('#UnitChildModelCreate').modal('hide');
                 notification({ message: " UnitChild Updated failed . Please try again. !", type: "error", title: "Error" });
             }
         });

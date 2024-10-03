@@ -4,6 +4,7 @@ import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js'
 
 $(document).ready(async function () {
     await getCategoryList();
+    await CreateCategoryBtn('#CreateCategoryBtn');
 });
 const getCategoryList = async () => {
     debugger
@@ -92,7 +93,7 @@ $.validator.addMethod("checkDuplicateCatagoryName", createDuplicateCheckValidato
 
 
 // Initialize validation
-const UsrValidae = $('#CategoryForm').validate({
+const CategoryValidae = $('#CategoryForm').validate({
     onkeyup: function (element) {
         $(element).valid();
     },
@@ -126,18 +127,22 @@ const UsrValidae = $('#CategoryForm').validate({
     }
 });
 
-//Sow Create Model 
-$('#CreateBtn').off('click').click(async () => {
-    resetFormValidation('#CategoryForm', UsrValidae);
-    clearMessage('successMessage', 'globalErrorMessage');
-    debugger
-    showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
-    await populateDropdown('/Category/GetallCatagory', '#ParentCategoryDropdown', 'id', 'categoryName', "Select Catagory");
-});
+export const CreateCategoryBtn = async (CreateBtnId) => {
+    //Sow Create Model 
+    $(CreateBtnId).off('click').click(async (e) => {
+        e.preventDefault(); 
+        resetFormValidation('#CategoryForm', CategoryValidae);
+        clearMessage('successMessage', 'globalErrorMessage');
+        debugger
+        showCreateModal('CategoryModelCreate', 'CategorybtnSave', 'CategorybtnUpdate');
+        await populateDropdown('/Category/GetallCatagory', '#ParentCategoryDropdown', 'id', 'categoryName', "Select Catagory");
+    });
+}
+
 
 // Save Button
 
-$('#btnSave').off('click').click(async () => {
+$('#CategorybtnSave').off('click').click(async () => {
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     try {
@@ -152,14 +157,14 @@ $('#btnSave').off('click').click(async () => {
             $('#GeneralError').hide();
             debugger
             if (result.success && result.status === 201) {
-                $('#modelCreate').modal('hide');
+                $('#CategoryModelCreate').modal('hide');
                 notification({ message: "Category Created successfully !", type: "success", title: "Success" });
                 await getCategoryList(); // Update the user list
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
-        $('#modelCreate').modal('hide');
+        $('#CategoryModelCreate').modal('hide');
         notification({ message: " Category Created failed . Please try again. !", type: "error", title: "Error" });
     }
 
@@ -168,7 +173,7 @@ $('#btnSave').off('click').click(async () => {
 
 
 window.updateCategory = async (id) => {
-    resetFormValidation('#CategoryForm', UsrValidae);
+    resetFormValidation('#CategoryForm', CategoryValidae);
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#myModalLabelUpdateEmployee').show();
@@ -177,24 +182,24 @@ window.updateCategory = async (id) => {
     await populateDropdown('/Category/GetallCatagory', '#ParentCategoryDropdown', 'id', 'categoryName', "Select Catagory");
     const result = await SendRequest({ endpoint: '/Category/GetById/' + id });
     if (result.success) {
-        $('#btnSave').hide();
-        $('#btnUpdate').show();
+        $('#CategorybtnSave').hide();
+        $('#CategorybtnUpdate').show();
         $('#CategoryName').val(result.data.categoryName);
         $('#Description').val(result.data.description);
         $('#ParentCategoryDropdown').val(result.data.parentCategoryID);
-        $('#modelCreate').modal('show');
-        resetValidation(UsrValidae, '#CategoryForm');
-        $('#btnUpdate').off('click').on('click', async () => {
+        $('#CategoryModelCreate').modal('show');
+        resetValidation(CategoryValidae, '#CategoryForm');
+        $('#CategorybtnUpdate').off('click').on('click', async () => {
             debugger
             const formData = $('#CategoryForm').serialize();
             const result = await SendRequest({ endpoint: '/Category/Update/' + id, method: "PUT", data: formData });
             if (result.success) {
-                $('#modelCreate').modal('hide');
+                $('#CategoryModelCreate').modal('hide');
                 notification({ message: "Category Updated successfully !", type: "success", title: "Success" });
 
                 await getCategoryList(); // Update the user list
             } else {
-                $('#modelCreate').modal('hide');
+                $('#CategoryModelCreate').modal('hide');
                 notification({ message: " Category Updated failed . Please try again. !", type: "error", title: "Error" });
             }
         });

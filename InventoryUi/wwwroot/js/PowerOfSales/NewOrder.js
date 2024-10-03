@@ -1,9 +1,19 @@
 ﻿
+import { CreateCategoryBtn } from "../Dashboard/Category.js";
+import { ProductCreateBtn } from "../Dashboard/Product.js";
+import { CreateSupplierBtn } from "../dashboard/supplier.js";
+import { UnitChildCreateBtn } from "../Dashboard/UnitChild.js";
+import { UnitMasteCreateBtn } from "../Dashboard/UnitMaster.js";
 import { CatagoryValidae, ProductValidator, SupplierValidate, validateUnitChildForm, validateUnitMasterForm } from "../utility/allvalidator.js";
 import { notification } from "../Utility/notification.js";
 
-$(document).ready(function () {
+$(document).ready(async function () {
     initializeFunctions();
+    await ProductCreateBtn('#CreateProductBtn');
+    await CreateCategoryBtn(`#addNewCatagoryButton`);
+    await CreateSupplierBtn('#addNewSupplirButton2');
+    await UnitMasteCreateBtn('#MasterUnitButton');
+    await UnitChildCreateBtn('#ChildUnitButton');
 });
 
 const initializeFunctions = () => {

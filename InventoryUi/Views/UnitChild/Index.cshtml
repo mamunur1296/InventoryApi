@@ -36,7 +36,7 @@
                                 <h3 class="card-title font-weight-bold fs-1 color-primary">Unit Child List</h3>
                             </div>
                             <div class="col-md-6 d-flex justify-content-end ">
-                                <a id="CreateBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Unit Child</a>
+                                <a id="UnitChildCreateBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Unit Child</a>
                             </div>
                         </div>
                     </div>
@@ -78,66 +78,6 @@
 
 
 
-<!-- Modal -->
-<div class="modal fade" id="modelCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAddEmployee" aria-hidden="true">
-    <div class="modal-dialog modal-sm" style="max-width: 65%; max-height: 80%;">
-        <div class="modal-content" style="height: 100%; overflow: hidden;">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabelAddEmployee">Add Unit Child</h4>
-                <h4 class="modal-title" style="display:none;" id="myModalLabelUpdateEmployee">Update Unit Child</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body" style="height: calc(100% - 60px); overflow-y: auto;">
-                <form id="UnitChildForm">
-                    <input type="hidden" asp-for="CreatedBy" value="@userName" />
-                    <input type="hidden" asp-for="UpdatedBy" value="@userName" />
-                    <div class="card-body">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Name" class="control-label"></label>
-                                    <input asp-for="Name" placeholder="Enter Unit Name (e.g., Kilogram)" class="form-control" name="Name" />
-                                    <span asp-validation-for="Name" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="UnitShortCode" class="control-label"></label>
-                                    <input asp-for="UnitShortCode" placeholder="Enter Short Code (e.g., KG)" class="form-control" name="UnitShortCode" />
-                                    <span asp-validation-for="UnitShortCode" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="DisplayName" class="control-label"></label>
-                                    <input asp-for="DisplayName" placeholder="Enter Display Name (e.g., Kilogram)" class="form-control" name="DisplayName" />
-                                    <span asp-validation-for="DisplayName" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="UnitDescription" class="control-label"></label>
-                                    <input asp-for="UnitDescription" placeholder="Enter Unit Description (e.g., Measurement for mass)" class="form-control" name="UnitDescription" />
-                                    <span asp-validation-for="UnitDescription" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label" asp-for="UnitMasterId"></label>
-                                    <select class="form-control" asp-for="UnitMasterId" id="UnitMasterDropdown">
-                                        <option value="">Select Master Unit</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btnSave">Save</button>
-                <button type="button" class="btn btn-primary" id="btnUpdate">Update</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
@@ -148,28 +88,8 @@
 
 
 
-
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteAndDetailsModel" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                Are you sure you want to delete the following Unit Child ?
-            </div>
-            <div id="DeleteErrorMessage" class="modal-header" role="alert" style="display: none;">
-                <!-- Error message will be displayed here if deletion fails -->
-            </div>
-            <div class="modal-body" id="companyDetails">
-                <!-- Company details will be populated dynamically by jQuery -->
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="btnDelete">Delete</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
+@await Html.PartialAsync("~/Views/UnitChild/_UnitChildCreateModel.cshtml",Model)
+@await Html.PartialAsync("~/Views/Shared/_DeleteModel.cshtml")
 
 
 @section Scripts {

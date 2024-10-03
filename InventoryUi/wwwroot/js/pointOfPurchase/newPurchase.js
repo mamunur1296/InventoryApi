@@ -1,13 +1,10 @@
-﻿// Import necessary validation and utility functions
-import {
-    CatagoryValidae,
-    ProductValidator,
-    SupplierValidate,
-    validateUnitChildForm,
-    validateUnitMasterForm
-} from "../utility/allvalidator.js";
-import { loger } from "../utility/helpers.js";
-import { notification } from "../Utility/notification.js";
+﻿import { CreateCategoryBtn } from "../Dashboard/Category.js";
+import { ProductCreateBtn } from "../Dashboard/Product.js";
+import { UnitChildCreateBtn } from "../Dashboard/UnitChild.js";
+import { UnitMasteCreateBtn } from "../Dashboard/UnitMaster.js";
+import { CreateSupplierBtn} from "../dashboard/supplier.js";
+import { clearMessage, loger, resetFormValidation, showCreateModal } from "../utility/helpers.js";
+import { notification } from "../utility/notification.js";
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 // Initialize the purchase functionality when the document is ready
@@ -15,11 +12,17 @@ $(document).ready(async function () {
     loger("This is new purchase");
     await searchProducts();
     await searchSupplair();
-    loadProductsFromLocalStorage(); 
+    loadProductsFromLocalStorage();
     PurchaseProductVawserControler();
     loadSupplierFromLocalStorage();
     togglePurchaseButton();
-});
+    await ProductCreateBtn('#CreateProductBtn');
+    await CreateCategoryBtn(`#addNewCatagoryButton`);
+    await CreateSupplierBtn('#addNewSupplirButton');
+    await CreateSupplierBtn('#addNewSupplirButton2');
+    await UnitMasteCreateBtn('#MasterUnitButton');
+    await UnitChildCreateBtn('#ChildUnitButton');
+});  
 
 // Function to set up autocomplete for product search
 const searchProducts = () => {
@@ -358,12 +361,6 @@ const clearAll = () => {
     loadSupplierFromLocalStorage();
 }
 
-
-
-
-
-
-
 // Function to toggle the 'Purchase' button based on the result of isActivePurchesButton
 const togglePurchaseButton = () => {
     const purchaseButton = document.getElementById("paymentButton");
@@ -417,8 +414,6 @@ const calculatePaymentTotal = (productList) => {
     // Assuming the total payment is the subtotal minus any additional discounts
     return calculateSubtotal(productList);
 };
-
-
 
 
 

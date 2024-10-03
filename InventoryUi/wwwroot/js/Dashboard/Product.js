@@ -4,7 +4,9 @@ import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js'
 
 $(document).ready(async function () {
     await getProductList();
+    await ProductCreateBtn('#CreateProductBtn'); 
 });
+
 const getProductList = async () => {
     debugger
     const products = await SendRequest({ endpoint: '/Product/GetAll' });
@@ -85,7 +87,7 @@ const onSuccessUsers = async (products, categorys, suppliers, unitMasters) => {
     }
 }
 
-//// Fatch duplucate file 
+//// Fatch duplucate file
 
 //const createDuplicateCheckValidator = (endpoint, key, errorMessage) => {
 //    return function (value, element) {
@@ -114,10 +116,7 @@ const onSuccessUsers = async (products, categorys, suppliers, unitMasters) => {
 
 
 
-
-
-// Initialize validation
-const UsrValidae = $('#ProductForm').validate({
+export const ProductFormValidae = $('#ProductForm').validate({
     onkeyup: function (element) {
         $(element).valid();
     },
@@ -133,35 +132,9 @@ const UsrValidae = $('#ProductForm').validate({
             required: true,
 
         },
-        QuantityPerUnit: {
-            required: true,
-
-        },
         UnitPrice: {
             required: true,
 
-        },
-        ReorderLevel: {
-            required: true,
-
-        },
-        BatchNumber: {
-            required: true,
-
-        },
-        ImageURL: {
-            required: true,
-
-        },
-        Weight: {
-            required: true,
-
-        },
-        UnitsInStock: {
-            required: true,
-        },
-        Dimensions: {
-            required: true,
         }
         ,
         UnitMasterId: {
@@ -191,27 +164,6 @@ const UsrValidae = $('#ProductForm').validate({
         },
         UnitPrice: {
             required: "Unit Price is required.",
-        },
-        UnitsInStock: {
-            required: "Units in Stock is required.",
-        },
-        ReorderLevel: {
-            required: "Reorder Level is required.",
-        },
-        BatchNumber: {
-            required: "Batch Number is required.",
-        },
-        ExpirationDate: {
-            required: "Expiration Date is required.",
-        },
-        ImageURL: {
-            required: "Image URL is required.",
-        },
-        Weight: {
-            required: "Weight is required.",
-        },
-        Dimensions: {
-            required: "Dimensions are required.",
         }
     },
 
@@ -230,7 +182,9 @@ const UsrValidae = $('#ProductForm').validate({
 
 
 
-const selectChildUnit = async (selectedChildId = null) => {
+
+
+export const selectChildUnit = async (selectedChildId = null) => {
     $('#UnitMasterDropdown').off('change').on('change', async function () {
         var id = $(this).val();
         var $unitChildDropdown = $('#UnitChildDropdown');
@@ -262,56 +216,64 @@ const selectChildUnit = async (selectedChildId = null) => {
 };
 
 
+// Product.js
 
-//Sow Create Model 
-$('#CreateBtn').off('click').click(async () => {
-    resetFormValidation('#ProductForm', UsrValidae);
+export const ProductCreateBtn = async (CreateBtnId) => {
+    // Attach click handler for the Create button
+    $(CreateBtnId).off('click').on('click', async (event) => {
+        event.preventDefault(); // Prevent default action (if any)
+        resetFormValidation('#ProductForm', ProductFormValidae);
+        clearMessage('successMessage', 'globalErrorMessage');
+        showCreateModal('ProductModelCreate', 'ProductBtnSave', 'ProductbtnUpdate');
+        await populateDropdown('/Category/GetallSubCatagory', '#CategoryDropdown', 'id', 'categoryName', "Select Catagory");
+        await populateDropdown('/Supplier/GetAll', '#SupplierDropdown', 'id', 'supplierName', "Select Supplier");
+        await populateDropdown('/UnitMaster/GetAll', '#UnitMasterDropdown', 'id', 'name', "Select Master Unit");
+        await selectChildUnit();
+    });
+}
+
+$('#ProductBtnSave').off('click').on('click', async (event) => {
+    event.preventDefault(); // Prevent form submission and page reload
     clearMessage('successMessage', 'globalErrorMessage');
-    debugger
-    showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
-    await populateDropdown('/Category/GetallSubCatagory', '#CategoryDropdown', 'id', 'categoryName', "Select Catagory");
-    await populateDropdown('/Supplier/GetAll', '#SupplierDropdown', 'id', 'supplierName', "Select Supplier");
-    await populateDropdown('/UnitMaster/GetAll', '#UnitMasterDropdown', 'id', 'name', "Select Master Unit");
-    await selectChildUnit();
-    //await populateDropdown('/UnitChild/GetAll', '#UnitChildDropdown', 'id', 'name', "Select Sub Unit");
-});
 
-// Save Button
-
-$('#btnSave').off('click').click(async () => {
-    clearMessage('successMessage', 'globalErrorMessage');
-    debugger
     try {
         if ($('#ProductForm').valid()) {
-            //const formData = $('#ProductForm').serialize();
             const formData = new FormData($('#ProductForm')[0]);
             loger(formData);
-            const result = await SendRequest({ endpoint: '/Product/Create', method: 'POST', data: formData });
-            // Clear previous messages
+
+            // Send the request using AJAX
+            const result = await SendRequest({
+                endpoint: '/Product/Create',
+                method: 'POST',
+                data: formData,
+                processData: false, // Ensure FormData is handled properly
+                contentType: false   // Disable contentType for FormData
+            });
+
+            // Hide all previous error messages
             $('#successMessage').hide();
             $('#UserError').hide();
             $('#EmailError').hide();
             $('#PasswordError').hide();
             $('#GeneralError').hide();
-            debugger
+
+            // Check the result and handle accordingly
             if (result.success && result.status === 201) {
-                $('#modelCreate').modal('hide');
-                notification({ message: "Product Created successfully !", type: "success", title: "Success" });
-                await getProductList(); // Update the user list
+                $('#ProductModelCreate').modal('hide');
+                notification({ message: "Product Created successfully!", type: "success", title: "Success" });
+                await getProductList(); // Refresh product list
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
-        $('#modelCreate').modal('hide');
-        notification({ message: " Product Created failed . Please try again. !", type: "error", title: "Error" });
+        $('#ProductModelCreate').modal('hide');
+        notification({ message: "Product creation failed. Please try again!", type: "error", title: "Error" });
     }
-
 });
 
 
-
 window.updateProduct = async (id) => {
-    resetFormValidation('#ProductForm', UsrValidae);
+    resetFormValidation('#ProductForm', ProductFormValidae);
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#myModalLabelUpdateEmployee').show();
@@ -323,8 +285,8 @@ window.updateProduct = async (id) => {
     
     const result = await SendRequest({ endpoint: '/Product/GetById/' + id });
     if (result.success) {
-        $('#btnSave').hide();
-        $('#btnUpdate').show();
+        $('#ProductBtnSave').hide();
+        $('#ProductbtnUpdate').show();
 
         $('#ProductName').val(result.data.productName);
         $('#Description').val(result.data.description);
@@ -350,21 +312,21 @@ window.updateProduct = async (id) => {
         await selectChildUnit(result.data.unitChildId);
 
 
-        $('#modelCreate').modal('show');
-        resetValidation(UsrValidae, '#ProductForm');
-        $('#btnUpdate').off('click').on('click', async () => {
+        $('#ProductModelCreate').modal('show');
+        resetValidation(ProductFormValidae, '#ProductForm');
+        $('#ProductbtnUpdate').off('click').on('click', async () => {
             debugger
             //const formData = $('#ProductForm').serialize();
             const formData = new FormData($('#ProductForm')[0]);
             const result = await SendRequest({ endpoint: '/Product/Update/' + id, method: "PUT", data: formData });
             debugger
             if (result.success) {
-                $('#modelCreate').modal('hide');
+                $('#ProductModelCreate').modal('hide');
                 notification({ message: "Product Updated successfully !", type: "success", title: "Success" });
 
                 await getProductList(); // Update the user list
             } else {
-                $('#modelCreate').modal('hide');
+                $('#ProductModelCreate').modal('hide');
                 notification({ message: " Product Updated failed . Please try again. !", type: "error", title: "Error" });
             }
 
