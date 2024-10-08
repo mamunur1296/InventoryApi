@@ -1,4 +1,6 @@
 ﻿using InventoryApi.Entities.Base;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InventoryApi.Entities
@@ -32,6 +34,15 @@ namespace InventoryApi.Entities
         public Employee? Manager { get; set; }
         public ICollection<Employee> ?  Subordinates { get; set; }
         public ICollection<Order>? Orders { get; set; }
+        [Required(ErrorMessage = "Salary is required")]
+        [Range(1, int.MaxValue, ErrorMessage = "Salary must be positive")]
+        [Precision(18, 2)]
+        public decimal Salary { get; set; }
+        public string ?DepartmentId { get; set; }
+        [ForeignKey("DepartmentId")]
+        public Department ?Department { get; set; }
 
+        public ICollection<Attendance>? Attendances { get; set; }
+        public ICollection<Payroll>? Payrolls { get; set; }
     }
 }

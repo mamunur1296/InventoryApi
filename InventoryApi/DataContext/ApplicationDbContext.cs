@@ -33,6 +33,11 @@ namespace InventoryApi.DataContext
         public DbSet<Purchase> Purchases { get; set; }
         public DbSet<PurchaseDetail> PurchasesDetails { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<Holiday> Holidays { get; set; }
+        public DbSet<Leave> Leaves { get; set; }
+        public DbSet<Payroll> Payrolls { get; set; }
+        public DbSet<Shift> Shifts { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
