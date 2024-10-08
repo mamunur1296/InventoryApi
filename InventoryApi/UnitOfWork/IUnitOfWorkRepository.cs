@@ -31,6 +31,12 @@ namespace InventoryApi.UnitOfWork
         IUnitMasterRepository unitMasterRepository { get; }
         IPurchaseDetailRepository purchaseDetailRepository { get; }
         IPurchaseRepository purchaseRepository { get; }
+        IAttendanceRepository attendanceRepository { get; }
+        IDepartmentRepository departmentRepository { get; }
+        IHolidayRepository holidayRepository { get; }
+        ILeaveRepository leaveRepository { get; }
+        IPayrollRepository payrollRepository { get; }
+        IShiftRepository shiftRepository { get; }
 
         Task SaveAsync();
     }

@@ -1,5 +1,6 @@
 ﻿using InventoryApi.DTOs;
 using InventoryApi.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -7,16 +8,16 @@ namespace InventoryApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BranchController : ControllerBase
+    public class LeaveController : ControllerBase
     {
-        private readonly IBaseServices<BranchDTOs> _service;
+        private readonly IBaseServices<LeaveDTOs> _service;
 
-        public BranchController(IBaseServices<BranchDTOs> service)
+        public LeaveController(IBaseServices<LeaveDTOs> service)
         {
             _service = service;
         }
         [HttpPost("Create")]
-        public async Task<IActionResult> Create(BranchDTOs model)
+        public async Task<IActionResult> Create(LeaveDTOs model)
         {
             var result = await _service.CreateAsync(model);
             if (result)
@@ -25,7 +26,7 @@ namespace InventoryApi.Controllers
                 {
                     Success = true,
                     Status = HttpStatusCode.Created,
-                    Detail = "Branch Created  successfully !!."
+                    Detail = "Leave Created  successfully !!."
                 });
             }
             return StatusCode((int)HttpStatusCode.BadRequest, result);
@@ -36,12 +37,12 @@ namespace InventoryApi.Controllers
             var result = await _service.GetAllAsync();
             if (result != null)
             {
-                return StatusCode((int)HttpStatusCode.OK, new ResponseDTOs<IEnumerable<BranchDTOs>>
+                return StatusCode((int)HttpStatusCode.OK, new ResponseDTOs<IEnumerable<LeaveDTOs>>
                 {
                     Success = true,
                     Data = result,
                     Status = HttpStatusCode.OK,
-                    Detail = "Branch List   successfully !!."
+                    Detail = "Leave List   successfully !!."
                 });
             }
             return StatusCode((int)HttpStatusCode.BadRequest, result);
@@ -52,12 +53,12 @@ namespace InventoryApi.Controllers
             var result = await _service.GetByIdAsync(id);
             if (result != null)
             {
-                return StatusCode((int)HttpStatusCode.OK, new ResponseDTOs<BranchDTOs>
+                return StatusCode((int)HttpStatusCode.OK, new ResponseDTOs<LeaveDTOs>
                 {
                     Success = true,
                     Data = result,
                     Status = HttpStatusCode.OK,
-                    Detail = "Branch  get   successfully !!."
+                    Detail = "Leave  get   successfully !!."
                 });
             }
             return StatusCode((int)HttpStatusCode.BadRequest, result);
@@ -72,13 +73,13 @@ namespace InventoryApi.Controllers
                 {
                     Success = true,
                     Status = HttpStatusCode.OK,
-                    Detail = "Branch deleted successfully"
+                    Detail = "Leave deleted successfully"
                 });
             }
             return StatusCode((int)HttpStatusCode.BadRequest, result);
         }
         [HttpPut("Update/{id}")]
-        public async Task<IActionResult> Update(string id, BranchDTOs model)
+        public async Task<IActionResult> Update(string id, LeaveDTOs model)
         {
             var result = await _service.UpdateAsync(id, model);
             if (result)
@@ -87,7 +88,7 @@ namespace InventoryApi.Controllers
                 {
                     Success = true,
                     Status = HttpStatusCode.OK,
-                    Detail = "Branch updated successfully"
+                    Detail = "Leave updated successfully"
                 });
             }
             return StatusCode((int)HttpStatusCode.BadRequest, result);

@@ -34,6 +34,12 @@ namespace InventoryApi
             CreateMap<UnitChild, UnitChildhDTOs>().ReverseMap();
             CreateMap<Purchase, PurchaseDTOs>().ReverseMap();
             CreateMap<PurchaseDetail, PurchaseDetailDTOs>().ReverseMap();
+            CreateMap<Attendance, AttendanceDTOs>().ReverseMap();
+            CreateMap<Department, DepartmentDTOs>().ReverseMap();
+            CreateMap<Holiday, HolidayDTOs>().ReverseMap();
+            CreateMap<Leave, LeaveDTOs>().ReverseMap();
+            CreateMap<Payroll, PayrollDTOs>().ReverseMap();
+            CreateMap<Shift, ShiftDTOs>().ReverseMap();
         } 
     }
 }

@@ -4,8 +4,6 @@ using InventoryApi.Entities;
 using InventoryApi.Exceptions;
 using InventoryApi.Services.Interfaces;
 using InventoryApi.UnitOfWork;
-using System.Net;
-using System.Xml.Linq;
 
 namespace InventoryApi.Services.Implementation
 {

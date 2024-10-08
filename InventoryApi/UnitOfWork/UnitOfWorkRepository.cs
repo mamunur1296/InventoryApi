@@ -60,6 +60,18 @@ namespace InventoryApi.UnitOfWork
 
         public IPurchaseRepository purchaseRepository { get; private set; }
 
+        public IAttendanceRepository attendanceRepository { get; private set; }
+
+        public IDepartmentRepository departmentRepository { get; private set; }
+
+        public IHolidayRepository holidayRepository { get; private set; }
+
+        public ILeaveRepository leaveRepository { get; private set; }
+
+        public IPayrollRepository payrollRepository { get; private set; }
+
+        public IShiftRepository shiftRepository { get; private set; }
+
         public UnitOfWorkRepository(ApplicationDbContext applicationDbContext)
         {
             _applicationDbContext = applicationDbContext;
@@ -90,7 +102,12 @@ namespace InventoryApi.UnitOfWork
             unitMasterRepository = new UnitMasterRepository(applicationDbContext);
             purchaseDetailRepository= new PurchaseDetailRepository(applicationDbContext);
             purchaseRepository= new PurchaseRepository(applicationDbContext);
-
+            attendanceRepository = new AttendanceRepository(applicationDbContext);
+            departmentRepository = new DepartmentRepository(applicationDbContext);
+            holidayRepository = new HolidayRepository(applicationDbContext);
+            leaveRepository = new LeaveRepository(applicationDbContext);
+            payrollRepository = new PayrollRepository(applicationDbContext);
+            shiftRepository = new ShiftRepository(applicationDbContext);
         }
 
         public async Task SaveAsync()

@@ -7,16 +7,16 @@ namespace InventoryApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BranchController : ControllerBase
+    public class ShiftController : ControllerBase
     {
-        private readonly IBaseServices<BranchDTOs> _service;
+        private readonly IBaseServices<ShiftDTOs> _service;
 
-        public BranchController(IBaseServices<BranchDTOs> service)
+        public ShiftController(IBaseServices<ShiftDTOs> service)
         {
             _service = service;
         }
         [HttpPost("Create")]
-        public async Task<IActionResult> Create(BranchDTOs model)
+        public async Task<IActionResult> Create(ShiftDTOs model)
         {
             var result = await _service.CreateAsync(model);
             if (result)
@@ -25,7 +25,7 @@ namespace InventoryApi.Controllers
                 {
                     Success = true,
                     Status = HttpStatusCode.Created,
-                    Detail = "Branch Created  successfully !!."
+                    Detail = "Shift Created  successfully !!."
                 });
             }
             return StatusCode((int)HttpStatusCode.BadRequest, result);
@@ -36,12 +36,12 @@ namespace InventoryApi.Controllers
             var result = await _service.GetAllAsync();
             if (result != null)
             {
-                return StatusCode((int)HttpStatusCode.OK, new ResponseDTOs<IEnumerable<BranchDTOs>>
+                return StatusCode((int)HttpStatusCode.OK, new ResponseDTOs<IEnumerable<ShiftDTOs>>
                 {
                     Success = true,
                     Data = result,
                     Status = HttpStatusCode.OK,
-                    Detail = "Branch List   successfully !!."
+                    Detail = "Shift List   successfully !!."
                 });
             }
             return StatusCode((int)HttpStatusCode.BadRequest, result);
@@ -52,12 +52,12 @@ namespace InventoryApi.Controllers
             var result = await _service.GetByIdAsync(id);
             if (result != null)
             {
-                return StatusCode((int)HttpStatusCode.OK, new ResponseDTOs<BranchDTOs>
+                return StatusCode((int)HttpStatusCode.OK, new ResponseDTOs<ShiftDTOs>
                 {
                     Success = true,
                     Data = result,
                     Status = HttpStatusCode.OK,
-                    Detail = "Branch  get   successfully !!."
+                    Detail = "Shift  get   successfully !!."
                 });
             }
             return StatusCode((int)HttpStatusCode.BadRequest, result);
@@ -72,13 +72,13 @@ namespace InventoryApi.Controllers
                 {
                     Success = true,
                     Status = HttpStatusCode.OK,
-                    Detail = "Branch deleted successfully"
+                    Detail = "Shift deleted successfully"
                 });
             }
             return StatusCode((int)HttpStatusCode.BadRequest, result);
         }
         [HttpPut("Update/{id}")]
-        public async Task<IActionResult> Update(string id, BranchDTOs model)
+        public async Task<IActionResult> Update(string id, ShiftDTOs model)
         {
             var result = await _service.UpdateAsync(id, model);
             if (result)
@@ -87,7 +87,7 @@ namespace InventoryApi.Controllers
                 {
                     Success = true,
                     Status = HttpStatusCode.OK,
-                    Detail = "Branch updated successfully"
+                    Detail = "Shift updated successfully"
                 });
             }
             return StatusCode((int)HttpStatusCode.BadRequest, result);
