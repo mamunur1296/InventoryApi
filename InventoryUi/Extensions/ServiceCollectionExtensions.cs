@@ -60,6 +60,12 @@ namespace InventoryUi.Extensions
             services.AddScoped<IClientServices<SalesSummary>, ClientServices<SalesSummary>>();
             services.AddScoped<IClientServices<Purchase>, ClientServices<Purchase>>();
             services.AddScoped<IClientServices<PurchaseDetail>, ClientServices<PurchaseDetail>>();
+            services.AddScoped<IClientServices<Attendance>, ClientServices<Attendance>>();
+            services.AddScoped<IClientServices<Department>, ClientServices<Department>>();
+            services.AddScoped<IClientServices<Shift>, ClientServices<Shift>>();
+            services.AddScoped<IClientServices<Payroll>, ClientServices<Payroll>>();
+            services.AddScoped<IClientServices<Leave>, ClientServices<Leave>>();
+            services.AddScoped<IClientServices<Holiday>, ClientServices<Holiday>>();
             services.AddScoped<IClientServices<PurchaseItem>, ClientServices<PurchaseItem>>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

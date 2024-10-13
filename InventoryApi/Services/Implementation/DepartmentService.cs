@@ -24,7 +24,8 @@ namespace InventoryApi.Services.Implementation
                 Id = Guid.NewGuid().ToString(),
                 CreatedBy = entity.CreatedBy?.Trim(),
                 CreationDate = DateTime.Now, // Set CreationDate here
-                
+                DepartmentName=entity.DepartmentName,
+                Description=entity.Description,
             };
             await _unitOfWorkRepository.departmentRepository.AddAsync(newDepartment);
             await _unitOfWorkRepository.SaveAsync();
@@ -41,7 +42,8 @@ namespace InventoryApi.Services.Implementation
 
             // Update properties with validation
             // item.CartID = string.IsNullOrWhiteSpace(entity.CartID) ? item.CartID : entity.CartID.Trim();
-
+            item.DepartmentName = entity.DepartmentName;
+            item.Description=entity.Description;
             // Set the UpdateDate to the current date and time
             item.UpdatedBy = entity.UpdatedBy?.Trim();
             item.SetUpdateDate(DateTime.Now);

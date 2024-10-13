@@ -24,7 +24,11 @@ namespace InventoryApi.Services.Implementation
                 Id = Guid.NewGuid().ToString(),
                 CreatedBy = entity.CreatedBy?.Trim(),
                 CreationDate = DateTime.Now, // Set CreationDate here
-                
+                EmployeeId= entity.EmployeeId,
+                Date=entity.Date,
+                CheckInTime=entity.CheckInTime,
+                CheckOutTime=entity.CheckOutTime,
+                IsPresent=entity.IsPresent,
             };
             await _unitOfWorkRepository.attendanceRepository.AddAsync(newAttendance);
             await _unitOfWorkRepository.SaveAsync();
@@ -41,7 +45,11 @@ namespace InventoryApi.Services.Implementation
 
             // Update properties with validation
             // item.CartID = string.IsNullOrWhiteSpace(entity.CartID) ? item.CartID : entity.CartID.Trim();
-
+            item.EmployeeId=entity.EmployeeId;
+            item.Date=entity.Date;
+            item.CheckInTime=entity.CheckInTime;
+            item.CheckOutTime = entity.CheckInTime;
+            item.IsPresent=entity.IsPresent;
             
             // Set the UpdateDate to the current date and time
             item.UpdatedBy = entity.UpdatedBy?.Trim();

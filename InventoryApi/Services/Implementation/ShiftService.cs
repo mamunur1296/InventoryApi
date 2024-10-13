@@ -24,6 +24,10 @@ namespace InventoryApi.Services.Implementation
                 Id = Guid.NewGuid().ToString(),
                 CreatedBy = entity.CreatedBy?.Trim(),
                 CreationDate = DateTime.Now, // Set CreationDate here
+                ShiftName = entity.ShiftName,
+                StartTime=entity.StartTime,
+                EndTime=entity.EndTime,
+
                
             };
             await _unitOfWorkRepository.shiftRepository.AddAsync(newShift);
@@ -39,6 +43,9 @@ namespace InventoryApi.Services.Implementation
             }
             // Update properties with validation
             // item.CartID = string.IsNullOrWhiteSpace(entity.CartID) ? item.CartID : entity.CartID.Trim();
+            item.ShiftName=entity.ShiftName; 
+            item.StartTime=entity.StartTime; 
+            item.EndTime=entity.EndTime;
             // Set the UpdateDate to the current date and time
             item.UpdatedBy = entity.UpdatedBy?.Trim();
             item.SetUpdateDate(DateTime.Now);

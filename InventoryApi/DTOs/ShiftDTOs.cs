@@ -12,6 +12,6 @@ namespace InventoryApi.DTOs
         [Required(ErrorMessage = "Shift end time is required")]
         public TimeSpan EndTime { get; set; }
 
-        public ICollection<EmployeeDTOs> Employees { get; set; }
+        //public ICollection<EmployeeDTOs> Employees { get; set; }
     }
 }

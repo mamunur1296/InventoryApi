@@ -46,6 +46,8 @@ namespace InventoryApi.Services.Implementation
                 UserId=entity?.UserId,
                 BranchId=entity?.BranchId,
                 CompanyId=entity?.CompanyId,
+                Salary=entity.Salary,
+
             };
             
             await _unitOfWorkRepository.employeeRepository.AddAsync(newEmployee);

@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace InventoryApi.DTOs
+namespace InventoryUi.Models
 {
-    public class DepartmentDTOs : BaseDTOs
+    public class Department : BaseModel
     {
         public string DepartmentName { get; set; }
 
         [MaxLength(200)]
         public string Description { get; set; }
 
-        //public ICollection<EmployeeDTOs> Employees { get; set; }
+        public ICollection<Employee> Employees { get; set; }
     }
 }

@@ -37,7 +37,7 @@ namespace InventoryApi.DataContext
         public DbSet<Holiday> Holidays { get; set; }
         public DbSet<Leave> Leaves { get; set; }
         public DbSet<Payroll> Payrolls { get; set; }
-        public DbSet<Shift> Shifts { get; set; }
+        public DbSet<Shift> Shiftss { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

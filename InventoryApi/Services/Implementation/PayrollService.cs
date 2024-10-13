@@ -24,7 +24,12 @@ namespace InventoryApi.Services.Implementation
                 Id = Guid.NewGuid().ToString(),
                 CreatedBy = entity.CreatedBy?.Trim(),
                 CreationDate = DateTime.Now, // Set CreationDate here
-                
+                EmployeeId = entity.EmployeeId,
+                BaseSalary = entity.BaseSalary,
+                Bonus = entity.Bonus,
+                Deductions = entity.Deductions,
+                NetSalary = entity.NetSalary,
+                PaymentDate = entity.PaymentDate,
             };
             await _unitOfWorkRepository.payrollRepository.AddAsync(newPayroll);
             await _unitOfWorkRepository.SaveAsync();
@@ -40,7 +45,12 @@ namespace InventoryApi.Services.Implementation
 
             // Update properties with validation
             // item.CartID = string.IsNullOrWhiteSpace(entity.CartID) ? item.CartID : entity.CartID.Trim();
-
+            item.EmployeeId= entity.EmployeeId;
+            item.BaseSalary= entity.BaseSalary;
+            item.Bonus= entity.Bonus;
+            item.Deductions= entity.Deductions;
+            item.NetSalary= entity.NetSalary;
+            item.PaymentDate= entity.PaymentDate;
            
             // Set the UpdateDate to the current date and time
             item.UpdatedBy = entity.UpdatedBy?.Trim();

@@ -1,0 +1,76 @@
+﻿@model InventoryUi.Models.Attendance
+@using System.Security.Claims
+@using Microsoft.IdentityModel.JsonWebTokens
+
+@{
+    var userName = string.Empty;
+
+    if (User.Identity.IsAuthenticated)
+    {
+        var claimsIdentity = User.Identity as ClaimsIdentity;
+        if (claimsIdentity != null)
+        {
+            // Extract the username from claims
+            var userNameClaim = claimsIdentity.FindFirst(ClaimTypes.Name);
+            if (userNameClaim != null)
+            {
+                userName = userNameClaim.Value;
+            }
+        }
+    }
+}
+<!-- Modal -->
+<div class="modal fade" id="AttendanceModelCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAddEmployee" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="max-width: 65%; max-height: 80%;">
+        <div class="modal-content" style="height: 100%; overflow: hidden;">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabelAddBranch">Add Attendance</h4>
+                <h4 class="modal-title" style="display:none;" id="myModalLabelUpdateBranch">Update Attendance</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="height: calc(100% - 60px); overflow-y: auto;">
+                <form id="AttendanceForm">
+                    <input type="hidden" asp-for="CreatedBy" value="@userName" />
+                    <input type="hidden" asp-for="UpdatedBy" value="@userName" />
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label" asp-for="EmployeeId"></label>
+                                    <select class="form-control" asp-for="EmployeeId" id="EmployeeDropdown">
+                                        <option value="">Select Employee</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="CheckInTime" class="control-label"></label>
+                                    <input type="time" asp-for="CheckInTime" placeholder="Enter check-in time (e.g., 09:00 AM)" class="form-control" name="CheckInTime" />
+                                    <span asp-validation-for="CheckInTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group mt-5 mx-5 d-flex align-items-center">
+                                    <input asp-for="IsPresent" type="checkbox" class="form-check-input" id="IsPresentCheckbox" />
+                                    <label asp-for="IsPresent" class="form-check-label ms-2" for="IsPresentCheckbox">Is Present</label>
+                                    <span asp-validation-for="IsPresent" class="text-danger ms-3"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="CheckOutTime" class="control-label"></label>
+                                    <input type="time" asp-for="CheckOutTime" placeholder="Enter check-out time (e.g., 06:00 PM)" class="form-control" name="CheckOutTime" />
+                                    <span asp-validation-for="CheckOutTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="AttendanceBtnSave">Save</button>
+                <button type="button" class="btn btn-primary" id="AttendanceBtnUpdate">Update</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

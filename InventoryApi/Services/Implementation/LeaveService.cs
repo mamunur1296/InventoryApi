@@ -24,6 +24,12 @@ namespace InventoryApi.Services.Implementation
                 Id = Guid.NewGuid().ToString(),
                 CreatedBy = entity.CreatedBy?.Trim(),
                 CreationDate = DateTime.Now, // Set CreationDate here
+                EmployeeId= entity.EmployeeId,
+                LeaveType = entity.LeaveType,
+                StartDate = entity.StartDate,
+                EndDate = entity.EndDate,
+                Reason = entity.Reason,
+                IsApproved = entity.IsApproved,
                
             };
             await _unitOfWorkRepository.leaveRepository.AddAsync(newLeave);
@@ -41,7 +47,12 @@ namespace InventoryApi.Services.Implementation
 
             // Update properties with validation
             // item.CartID = string.IsNullOrWhiteSpace(entity.CartID) ? item.CartID : entity.CartID.Trim();
-
+            item.EmployeeId= entity.EmployeeId;
+            item.LeaveType= entity.LeaveType;
+            item.StartDate= entity.StartDate;
+            item.EndDate= entity.EndDate;
+            item.Reason= entity.Reason;
+            item.IsApproved= entity.IsApproved;
             
             // Set the UpdateDate to the current date and time
             item.UpdatedBy = entity.UpdatedBy?.Trim();
