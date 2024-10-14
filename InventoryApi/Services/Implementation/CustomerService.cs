@@ -22,7 +22,7 @@ namespace InventoryApi.Services.Implementation
         {
             var newCustomer = new Customer
             {
-                Id = entity.Id,
+               
                 CreatedBy = entity?.CreatedBy?.Trim(),
                 CreationDate = DateTime.Now, // Set CreationDate here
                 CustomerName = entity?.CustomerName?.Trim(),
@@ -41,6 +41,16 @@ namespace InventoryApi.Services.Implementation
                 MedicalHistory= entity?.MedicalHistory?.Trim(),
                 UserId=entity?.UserId,
             };
+            if (entity.Id != Guid.Empty.ToString() && entity.Id != null)
+            {
+                newCustomer.Id = entity.Id;
+            }
+            else
+            {
+                newCustomer.Id = Guid.NewGuid().ToString();
+            }
+
+
             await _unitOfWorkRepository.customerRepository.AddAsync(newCustomer);
             await _unitOfWorkRepository.SaveAsync();
             return true;

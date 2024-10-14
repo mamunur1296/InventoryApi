@@ -52,8 +52,6 @@
                                     </select>
                                     <span asp-validation-for="LeaveType" class="text-danger"></span>
                                 </div>
-
-
                                 <div class="form-group">
                                     <label asp-for="Reason" class="control-label"></label>
                                     <input asp-for="Reason" placeholder="Enter check-out time (e.g., 06:00 PM)" class="form-control" name="Reason" />
@@ -72,7 +70,6 @@
                                     <input  asp-for="EndDate" placeholder="Enter check-out time (e.g., 06:00 PM)" class="form-control" name="EndDate" />
                                     <span asp-validation-for="EndDate" class="text-danger"></span>
                                 </div>
-                               
                                 <div class="form-group mt-5 mx-5 d-flex align-items-center">
                                     <input asp-for="IsApproved" type="checkbox" class="form-check-input" id="IsApprovedCheckbox" />
                                     <label asp-for="IsApproved" class="form-check-label ms-2" for="IsApprovedCheckbox">IsApproved</label>
@@ -82,8 +79,6 @@
                         </div>
                     </div>
                 </form>
-
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="LeaveBtnSave">Save</button>
