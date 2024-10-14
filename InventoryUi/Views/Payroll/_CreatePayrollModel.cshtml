@@ -1,0 +1,86 @@
+﻿@model InventoryUi.Models.Payroll
+@using System.Security.Claims
+@using Microsoft.IdentityModel.JsonWebTokens
+
+@{
+    var userName = string.Empty;
+
+    if (User.Identity.IsAuthenticated)
+    {
+        var claimsIdentity = User.Identity as ClaimsIdentity;
+        if (claimsIdentity != null)
+        {
+            // Extract the username from claims
+            var userNameClaim = claimsIdentity.FindFirst(ClaimTypes.Name);
+            if (userNameClaim != null)
+            {
+                userName = userNameClaim.Value;
+            }
+        }
+    }
+}
+<!-- Modal -->
+<div class="modal fade" id="PayrollModelCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAddEmployee" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="max-width: 65%; max-height: 80%;">
+        <div class="modal-content" style="height: 100%; overflow: hidden;">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabelAddBranch">Add Payroll</h4>
+                <h4 class="modal-title" style="display:none;" id="myModalLabelUpdateBranch">Update Payroll</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="height: calc(100% - 60px); overflow-y: auto;">
+                <form id="PayrollForm">
+                    <input type="hidden" asp-for="CreatedBy" value="@userName" />
+                    <input type="hidden" asp-for="UpdatedBy" value="@userName" />
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label" asp-for="EmployeeId"></label>
+                                    <select class="form-control" asp-for="EmployeeId" id="EmployeeDropdown">
+                                        <option value="">Select Employee</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="BaseSalary" class="control-label"></label>
+                                    <input  asp-for="BaseSalary" placeholder="Enter check-in time (e.g., 09:00 AM)" class="form-control" name="BaseSalary" />
+                                    <span asp-validation-for="BaseSalary" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Bonus" class="control-label"></label>
+                                    <input asp-for="Bonus" placeholder="Enter check-in time (e.g., 09:00 AM)" class="form-control" name="Bonus" />
+                                    <span asp-validation-for="Bonus" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="Deductions" class="control-label"></label>
+                                    <input  asp-for="Deductions" placeholder="Enter check-in time (e.g., 09:00 AM)" class="form-control" name="Deductions" />
+                                    <span asp-validation-for="Deductions" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="NetSalary" class="control-label"></label>
+                                    <input  asp-for="NetSalary" placeholder="Enter check-in time (e.g., 09:00 AM)" class="form-control" name="NetSalary" />
+                                    <span asp-validation-for="NetSalary" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="PaymentDate" class="control-label"></label>
+                                    <input  asp-for="PaymentDate" placeholder="Enter check-in time (e.g., 09:00 AM)" class="form-control" name="PaymentDate" />
+                                    <span asp-validation-for="PaymentDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="PayrollBtnSave">Save</button>
+                <button type="button" class="btn btn-primary" id="PayrollBtnUpdate">Update</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

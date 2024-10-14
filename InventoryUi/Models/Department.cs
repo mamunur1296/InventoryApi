@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace InventoryUi.Models
 {
     public class Department : BaseModel
     {
+        [DisplayName("Name")]
         public string DepartmentName { get; set; }
 
         [MaxLength(200)]

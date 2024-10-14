@@ -1,7 +1,83 @@
-﻿
+﻿@model InventoryUi.Models.Shift
+@using System.Security.Claims
+@using Microsoft.IdentityModel.JsonWebTokens
+
+@{
+    var userName = string.Empty;
+
+    if (User.Identity.IsAuthenticated)
+    {
+        var claimsIdentity = User.Identity as ClaimsIdentity;
+        if (claimsIdentity != null)
+        {
+            // Extract the username from claims
+            var userNameClaim = claimsIdentity.FindFirst(ClaimTypes.Name);
+            if (userNameClaim != null)
+            {
+                userName = userNameClaim.Value;
+            }
+        }
+    }
+}
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>ShiftController</h1>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <!-- /.card -->
+                <div class="card">
+                    <div class="card-header ">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title font-weight-bold fs-1 color-primary">Shift List</h3>
+                            </div>
+                            <div class="col-md-6 d-flex justify-content-end ">
+                                <a id="CreateShiftBtn" class="btn btn-success"> <i class="fa fa-plus"></i> Create New Shift</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="successMessage" class="alert alert-success" role="alert" style="display: none;">
+                        <button id="btnClose" type="button" class="btn-close" aria-label="Close"></button>
+                    </div>
+                    <div id="globalErrorMessage" class="alert alert-danger" role="alert" style="display: none;">
+                        <button id="btnClose" type="button" class="btn-close" aria-label="Close"></button>
+                    </div>
 
+                    <!-- /.card-header -->
+
+                    <div class="card-body">
+                        <table id="ShiftTable" class="table table-bordered table-striped">
+
+                            <thead>
+                                <tr>
+                                    <th>Shift</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+@await Html.PartialAsync("~/Views/Shift/_CreateShiftModel.cshtml", Model)
+@await Html.PartialAsync("~/Views/Shared/_DeleteModel.cshtml")
+
+
+@section Scripts {
+    <script type="module" src="~/js/dashboard/shift.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,64 @@
+﻿@model InventoryUi.Models.Department
+@using System.Security.Claims
+@using Microsoft.IdentityModel.JsonWebTokens
+
+@{
+    var userName = string.Empty;
+
+    if (User.Identity.IsAuthenticated)
+    {
+        var claimsIdentity = User.Identity as ClaimsIdentity;
+        if (claimsIdentity != null)
+        {
+            // Extract the username from claims
+            var userNameClaim = claimsIdentity.FindFirst(ClaimTypes.Name);
+            if (userNameClaim != null)
+            {
+                userName = userNameClaim.Value;
+            }
+        }
+    }
+}
+<!-- Modal -->
+<div class="modal fade" id="DepartmentModelCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAddEmployee" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="max-width: 65%; max-height: 80%;">
+        <div class="modal-content" style="height: 100%; overflow: hidden;">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabelAddBranch">Add Department</h4>
+                <h4 class="modal-title" style="display:none;" id="myModalLabelUpdateBranch">Update Department</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="height: calc(100% - 60px); overflow-y: auto;">
+                <form id="DepartmentForm">
+                    <input type="hidden" asp-for="CreatedBy" value="@userName" />
+                    <input type="hidden" asp-for="UpdatedBy" value="@userName" />
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="DepartmentName" class="control-label"></label>
+                                    <input asp-for="DepartmentName" placeholder="Enter  Department Name " class="form-control" name="DepartmentName" />
+                                    <span asp-validation-for="DepartmentName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="Description" class="control-label"></label>
+                                    <input asp-for="Description" placeholder="Enter  Description " class="form-control" name="Description" />
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="DepartmentBtnSave">Save</button>
+                <button type="button" class="btn btn-primary" id="DepartmentBtnUpdate">Update</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

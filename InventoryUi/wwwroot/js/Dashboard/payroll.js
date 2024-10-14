@@ -3,31 +3,34 @@ import { clearMessage, createActionButtons, dataToMap, displayNotification, init
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
-    await getAttendanceList();
+    await getPayrollList();
 });
-const getAttendanceList = async () => {
+const getPayrollList = async () => {
     debugger
-    const attendance = await SendRequest({ endpoint: '/Attendance/GetAll' });
+    const Payroll = await SendRequest({ endpoint: '/Payroll/GetAll' });
     const employee = await SendRequest({ endpoint: '/Employee/GetAll' });
-    if (attendance.status === 200 && attendance.success) {
-        await onSuccessUsers(attendance.data, employee.data);
+    if (Payroll.status === 200 && Payroll.success) {
+        await onSuccessUsers(Payroll.data, employee.data);
     }
 }
 
-const onSuccessUsers = async (attendances, employee) => {
+const onSuccessUsers = async (Payrolls, employee) => {
     debugger
     const employeeMap = dataToMap(employee, 'id');
-    const attendanceItem = attendances.map((attendance) => {
-        if (attendance) {
+    const PayrollItem = Payrolls.map((Payroll) => {
+        if (Payroll) {
             debugger
-            const employee = employeeMap[attendance.employeeId];
+            const employee = employeeMap[Payroll.employeeId];
             return {
-                id: attendance?.id,
+                id: Payroll?.id,
                 empName: employee?.firstName + " " + employee?.lastName ?? "N/A",
-                ispresent: attendance?.isPresent == true ? "Present" : attendance?.isPresent == false ? "Absent" : "N/A",
-                checkintime: attendance?.checkInTime ?? "N/A",
-                checkOuttime: attendance?.checkOutTime ?? "N/A",
-               
+                baseSalary: Payroll?.baseSalary ?? "N/A",
+                bonus: Payroll?.bonus ?? "N/A",
+                deducation: Payroll?.deductions ?? "N/A",
+                netSalary: Payroll?.netSalary ?? "N/A",
+                paymentDate: Payroll?.PaymentDate ?? "N/A",
+             
+
             };
         }
         return null;
@@ -40,32 +43,33 @@ const onSuccessUsers = async (attendances, employee) => {
                 render: (data, type, row) => row?.empName ?? "N/A"
             },
             {
-                render: (data, type, row) => {
-                    const isPresentText = row?.ispresent ?? "N/A";
-                    const colorClass = isPresentText === "Present" ? "text-success" :
-                        isPresentText === "Absent" ? "text-danger" : "text-muted";
-                    return `<span class="${colorClass}">${isPresentText}</span>`;
-                }
+                render: (data, type, row) => row?.baseSalary ?? "N/A"
             },
             {
-                render: (data, type, row) => row?.checkintime ?? "N/A"
+                render: (data, type, row) => row?.bonus ?? "N/A"
             },
             {
-                render: (data, type, row) => row?.checkOuttime ?? "N/A"
+                render: (data, type, row) => row?.deducation ?? "N/A"
+            },
+            {
+                render: (data, type, row) => row?.netSalary ?? "N/A"
+            },
+            {
+                render: (data, type, row) => row?.paymentDate ?? "N/A"
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
-                    { label: 'Edit', btnClass: 'btn-primary', callback: 'updateAttendance' },
-                    { label: 'Details', btnClass: 'btn-info', callback: 'showAttendance', disabled: true },
-                    { label: 'Delete', btnClass: 'btn-danger', callback: 'deleteAttendance' }
+                    { label: 'Edit', btnClass: 'btn-primary', callback: 'updatePayroll' },
+                    { label: 'Details', btnClass: 'btn-info', callback: 'showPayroll', disabled: true },
+                    { label: 'Delete', btnClass: 'btn-danger', callback: 'deletePayroll' }
                 ])
             }
         ];
-        if (attendances) {
-            await initializeDataTable(attendanceItem, userSchema, 'AttendanceTable');
+        if (Payrolls) {
+            await initializeDataTable(PayrollItem, userSchema, 'PayrollTable');
         }
     } catch (error) {
-        console.error('Error processing Attendance data:', error);
+        console.error('Error processing Payroll data:', error);
     }
 }
 
@@ -102,7 +106,7 @@ const onSuccessUsers = async (attendances, employee) => {
 
 
 // Initialize validation
-export const isAttendanceValidae = $('#AttendanceForm').validate({
+export const isPayrollValidae = $('#PayrollForm').validate({
     onkeyup: function (element) {
         $(element).valid();
     },
@@ -111,16 +115,30 @@ export const isAttendanceValidae = $('#AttendanceForm').validate({
             required: true,
         }
         ,
-        CheckInTime: {
+        BaseSalary: {
             required: true,
 
         }
         ,
-        CheckOutTime: {
+        Bonus: {
             required: true,
 
         }
-        
+        ,
+        Deductions: {
+            required: true,
+
+        }
+        ,
+        NetSalary: {
+            required: true,
+
+        }
+        ,
+        PaymentDate: {
+            required: true,
+
+        }
     },
     messages: {
         CategoryName: {
@@ -145,23 +163,23 @@ export const isAttendanceValidae = $('#AttendanceForm').validate({
 });
 
 //Sow Create Model 
-$('#CreateAttendanceBtn').off('click').click(async () => {
-    resetFormValidation('#AttendanceForm', isAttendanceValidae);
+$('#CreatePayrollBtn').off('click').click(async () => {
+    resetFormValidation('#PayrollForm', isPayrollValidae);
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
-    showCreateModal('AttendanceModelCreate', 'AttendanceBtnSave', 'AttendanceBtnUpdate');
+    showCreateModal('PayrollModelCreate', 'PayrollBtnSave', 'PayrollBtnUpdate');
     await populateDropdown('/Employee/GetAll', '#EmployeeDropdown', 'id', 'firstName', "Select Employee");
 });
 
 // Save Button
 
-$('#AttendanceBtnSave').off('click').click(async () => {
+$('#PayrollBtnSave').off('click').click(async () => {
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     try {
-        if ($('#AttendanceForm').valid()) {
-            const formData = $('#AttendanceForm').serialize();
-            const result = await SendRequest({ endpoint: '/Attendance/Create', method: 'POST', data: formData });
+        if ($('#PayrollForm').valid()) {
+            const formData = $('#PayrollForm').serialize();
+            const result = await SendRequest({ endpoint: '/Payroll/Create', method: 'POST', data: formData });
             // Clear previous messages
             $('#successMessage').hide();
             $('#UserError').hide();
@@ -170,54 +188,56 @@ $('#AttendanceBtnSave').off('click').click(async () => {
             $('#GeneralError').hide();
             debugger
             if (result.success && result.status === 201) {
-                $('#AttendanceModelCreate').modal('hide');
-                notification({ message: "Attendance Created successfully !", type: "success", title: "Success" });
-                await getAttendanceList(); // Update the user list
+                $('#PayrollModelCreate').modal('hide');
+                notification({ message: "Payroll Created successfully !", type: "success", title: "Success" });
+                await getPayrollList(); // Update the user list
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
-        $('#AttendanceModelCreate').modal('hide');
-        notification({ message: " Attendance Created failed . Please try again. !", type: "error", title: "Error" });
+        $('#PayrollModelCreate').modal('hide');
+        notification({ message: " Payroll Created failed . Please try again. !", type: "error", title: "Error" });
     }
 
 });
 
 
 
-window.updateAttendance = async (id) => {
-    resetFormValidation('#AttendanceForm', isAttendanceValidae);
+window.updatePayroll = async (id) => {
+    resetFormValidation('#PayrollForm', isPayrollValidae);
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#myModalLabelUpdateBranch').show();
     $('#myModalLabelAddBranch').hide();
-    $('#AttendanceForm')[0].reset();
+    $('#PayrollForm')[0].reset();
     await populateDropdown('/Employee/GetAll', '#EmployeeDropdown', 'id', 'firstName', "Select Employee");
 
-    const result = await SendRequest({ endpoint: '/Attendance/GetById/' + id });
+    const result = await SendRequest({ endpoint: '/Payroll/GetById/' + id });
     if (result.success) {
-        $('#AttendanceBtnSave').hide();
-        $('#AttendanceBtnUpdate').show();
+        $('#PayrollBtnSave').hide();
+        $('#PayrollBtnUpdate').show();
         //buind item
         $('#EmployeeDropdown').val(result.data.employeeId);
-        $('#CheckInTime').val(result.data.checkInTime);
-        $('#IsPresent').val(result.data.isPresent);
-        $('#CheckOutTime').val(result.data.checkOutTime);
+        $('#BaseSalary').val(result.data.baseSalary);
+        $('#Bonus').val(result.data.bonus);
+        $('#Deductions').val(result.data.deductions);
+        $('#NetSalary').val(result.data.netSalary);
+        $('#PaymentDate').val(result.data.paymentDate);
 
-        $('#AttendanceModelCreate').modal('show');
-        resetValidation(isAttendanceValidae, '#AttendanceForm');
-        $('#AttendanceBtnUpdate').off('click').on('click', async () => {
+        $('#PayrollModelCreate').modal('show');
+        resetValidation(isPayrollValidae, '#PayrollForm');
+        $('#PayrollBtnUpdate').off('click').on('click', async () => {
             debugger
-            const formData = $('#AttendanceForm').serialize();
-            const result = await SendRequest({ endpoint: '/Attendance/Update/' + id, method: "PUT", data: formData });
+            const formData = $('#PayrollForm').serialize();
+            const result = await SendRequest({ endpoint: '/Payroll/Update/' + id, method: "PUT", data: formData });
             if (result.success) {
-                $('#AttendanceModelCreate').modal('hide');
-                notification({ message: "Attendance Updated successfully !", type: "success", title: "Success" });
+                $('#PayrollModelCreate').modal('hide');
+                notification({ message: "Payroll Updated successfully !", type: "success", title: "Success" });
 
-                await getAttendanceList(); // Update the user list
+                await getPayrollList(); // Update the user list
             } else {
-                $('#AttendanceModelCreate').modal('hide');
-                notification({ message: " Attendance Updated failed . Please try again. !", type: "error", title: "Error" });
+                $('#PayrollModelCreate').modal('hide');
+                notification({ message: " Payroll Updated failed . Please try again. !", type: "error", title: "Error" });
             }
         });
     }
@@ -232,7 +252,7 @@ window.updateAttendance = async (id) => {
 ////}
 
 
-window.deleteAttendance = async (id) => {
+window.deletePayroll = async (id) => {
     clearMessage('successMessage', 'globalErrorMessage');
     debugger;
     $('#deleteAndDetailsModel').modal('show');
@@ -241,12 +261,12 @@ window.deleteAttendance = async (id) => {
     $('#DeleteErrorMessage').hide(); // Hide error message initially
     $('#btnDelete').off('click').on('click', async () => {
         debugger;
-        const result = await SendRequest({ endpoint: '/Attendance/Delete', method: "DELETE", data: { id: id } });
+        const result = await SendRequest({ endpoint: '/Payroll/Delete', method: "DELETE", data: { id: id } });
 
         if (result.success) {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: "Attendance Deleted successfully !", type: "success", title: "Success" });
-            await getAttendanceList(); // Update the category list
+            notification({ message: "Payroll Deleted successfully !", type: "success", title: "Success" });
+            await getPayrollList(); // Update the category list
 
         } else {
             $('#deleteAndDetailsModel').modal('hide');

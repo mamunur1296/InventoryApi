@@ -3,31 +3,33 @@ import { clearMessage, createActionButtons, dataToMap, displayNotification, init
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
-    await getAttendanceList();
+    await getLeaveList();
 });
-const getAttendanceList = async () => {
+const getLeaveList = async () => {
     debugger
-    const attendance = await SendRequest({ endpoint: '/Attendance/GetAll' });
+    const Leave = await SendRequest({ endpoint: '/Leave/GetAll' });
     const employee = await SendRequest({ endpoint: '/Employee/GetAll' });
-    if (attendance.status === 200 && attendance.success) {
-        await onSuccessUsers(attendance.data, employee.data);
+    if (Leave.status === 200 && Leave.success) {
+        await onSuccessUsers(Leave.data, employee.data);
     }
 }
 
-const onSuccessUsers = async (attendances, employee) => {
+const onSuccessUsers = async (Leaves, employee) => {
     debugger
     const employeeMap = dataToMap(employee, 'id');
-    const attendanceItem = attendances.map((attendance) => {
-        if (attendance) {
+    const LeaveItem = Leaves.map((Leave) => {
+        if (Leave) {
             debugger
-            const employee = employeeMap[attendance.employeeId];
+            const employee = employeeMap[Leave.employeeId];
             return {
-                id: attendance?.id,
+                id: Leave?.id,
                 empName: employee?.firstName + " " + employee?.lastName ?? "N/A",
-                ispresent: attendance?.isPresent == true ? "Present" : attendance?.isPresent == false ? "Absent" : "N/A",
-                checkintime: attendance?.checkInTime ?? "N/A",
-                checkOuttime: attendance?.checkOutTime ?? "N/A",
-               
+                ispresent: Leave?.isApproved == true ? "Approved" : Leave?.isApproved == false ? "Not Approved" : "N/A",
+                livetype: Leave?.leaveType ?? "N/A",
+                reson: Leave?.reason ?? "N/A",
+                edate: Leave?.endDate ?? "N/A",
+                sdate: Leave?.startDate ?? "N/A",
+
             };
         }
         return null;
@@ -40,32 +42,38 @@ const onSuccessUsers = async (attendances, employee) => {
                 render: (data, type, row) => row?.empName ?? "N/A"
             },
             {
+                render: (data, type, row) => row?.sdate ?? "N/A"
+            },
+            {
+                render: (data, type, row) => row?.edate ?? "N/A"
+            },
+            {
+                render: (data, type, row) => row?.livetype ?? "N/A"
+            },
+            {
+                render: (data, type, row) => row?.reson ?? "N/A"
+            },
+            {
                 render: (data, type, row) => {
                     const isPresentText = row?.ispresent ?? "N/A";
-                    const colorClass = isPresentText === "Present" ? "text-success" :
-                        isPresentText === "Absent" ? "text-danger" : "text-muted";
+                    const colorClass = isPresentText === "Approved" ? "text-success" :
+                        isPresentText === "Not Approved" ? "text-danger" : "text-muted";
                     return `<span class="${colorClass}">${isPresentText}</span>`;
                 }
             },
             {
-                render: (data, type, row) => row?.checkintime ?? "N/A"
-            },
-            {
-                render: (data, type, row) => row?.checkOuttime ?? "N/A"
-            },
-            {
                 render: (data, type, row) => createActionButtons(row, [
-                    { label: 'Edit', btnClass: 'btn-primary', callback: 'updateAttendance' },
-                    { label: 'Details', btnClass: 'btn-info', callback: 'showAttendance', disabled: true },
-                    { label: 'Delete', btnClass: 'btn-danger', callback: 'deleteAttendance' }
+                    { label: 'Edit', btnClass: 'btn-primary', callback: 'updateLeave' },
+                    { label: 'Details', btnClass: 'btn-info', callback: 'showLeave', disabled: true },
+                    { label: 'Delete', btnClass: 'btn-danger', callback: 'deleteLeave' }
                 ])
             }
         ];
-        if (attendances) {
-            await initializeDataTable(attendanceItem, userSchema, 'AttendanceTable');
+        if (Leaves) {
+            await initializeDataTable(LeaveItem, userSchema, 'LeaveTable');
         }
     } catch (error) {
-        console.error('Error processing Attendance data:', error);
+        console.error('Error processing Leave data:', error);
     }
 }
 
@@ -102,7 +110,7 @@ const onSuccessUsers = async (attendances, employee) => {
 
 
 // Initialize validation
-export const isAttendanceValidae = $('#AttendanceForm').validate({
+export const isLeaveValidae = $('#LeaveForm').validate({
     onkeyup: function (element) {
         $(element).valid();
     },
@@ -111,16 +119,24 @@ export const isAttendanceValidae = $('#AttendanceForm').validate({
             required: true,
         }
         ,
-        CheckInTime: {
+        LeaveType: {
             required: true,
 
         }
         ,
-        CheckOutTime: {
+        StartDate: {
             required: true,
 
         }
-        
+        ,
+        EndDate: {
+            required: true,
+
+        },
+        Reason: {
+            required: true,
+
+        }
     },
     messages: {
         CategoryName: {
@@ -145,23 +161,23 @@ export const isAttendanceValidae = $('#AttendanceForm').validate({
 });
 
 //Sow Create Model 
-$('#CreateAttendanceBtn').off('click').click(async () => {
-    resetFormValidation('#AttendanceForm', isAttendanceValidae);
+$('#CreateLeaveBtn').off('click').click(async () => {
+    resetFormValidation('#LeaveForm', isLeaveValidae);
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
-    showCreateModal('AttendanceModelCreate', 'AttendanceBtnSave', 'AttendanceBtnUpdate');
+    showCreateModal('LeaveModelCreate', 'LeaveBtnSave', 'LeaveBtnUpdate');
     await populateDropdown('/Employee/GetAll', '#EmployeeDropdown', 'id', 'firstName', "Select Employee");
 });
 
 // Save Button
 
-$('#AttendanceBtnSave').off('click').click(async () => {
+$('#LeaveBtnSave').off('click').click(async () => {
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     try {
-        if ($('#AttendanceForm').valid()) {
-            const formData = $('#AttendanceForm').serialize();
-            const result = await SendRequest({ endpoint: '/Attendance/Create', method: 'POST', data: formData });
+        if ($('#LeaveForm').valid()) {
+            const formData = $('#LeaveForm').serialize();
+            const result = await SendRequest({ endpoint: '/Leave/Create', method: 'POST', data: formData });
             // Clear previous messages
             $('#successMessage').hide();
             $('#UserError').hide();
@@ -170,54 +186,56 @@ $('#AttendanceBtnSave').off('click').click(async () => {
             $('#GeneralError').hide();
             debugger
             if (result.success && result.status === 201) {
-                $('#AttendanceModelCreate').modal('hide');
-                notification({ message: "Attendance Created successfully !", type: "success", title: "Success" });
-                await getAttendanceList(); // Update the user list
+                $('#LeaveModelCreate').modal('hide');
+                notification({ message: "Leave Created successfully !", type: "success", title: "Success" });
+                await getLeaveList(); // Update the user list
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
-        $('#AttendanceModelCreate').modal('hide');
-        notification({ message: " Attendance Created failed . Please try again. !", type: "error", title: "Error" });
+        $('#LeaveModelCreate').modal('hide');
+        notification({ message: " Leave Created failed . Please try again. !", type: "error", title: "Error" });
     }
 
 });
 
 
 
-window.updateAttendance = async (id) => {
-    resetFormValidation('#AttendanceForm', isAttendanceValidae);
+window.updateLeave = async (id) => {
+    resetFormValidation('#LeaveForm', isLeaveValidae);
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     $('#myModalLabelUpdateBranch').show();
     $('#myModalLabelAddBranch').hide();
-    $('#AttendanceForm')[0].reset();
+    $('#LeaveForm')[0].reset();
     await populateDropdown('/Employee/GetAll', '#EmployeeDropdown', 'id', 'firstName', "Select Employee");
 
-    const result = await SendRequest({ endpoint: '/Attendance/GetById/' + id });
+    const result = await SendRequest({ endpoint: '/Leave/GetById/' + id });
     if (result.success) {
-        $('#AttendanceBtnSave').hide();
-        $('#AttendanceBtnUpdate').show();
+        $('#LeaveBtnSave').hide();
+        $('#LeaveBtnUpdate').show();
         //buind item
         $('#EmployeeDropdown').val(result.data.employeeId);
-        $('#CheckInTime').val(result.data.checkInTime);
-        $('#IsPresent').val(result.data.isPresent);
-        $('#CheckOutTime').val(result.data.checkOutTime);
+        $('#LeaveType').val(result.data.leaveType);
+        $('#StartDate').val(result.data.startDate);
+        $('#EndDate').val(result.data.endDate);
+        $('#Reason').val(result.data.reason);
+        $('#IsApproved').val(result.data.isApproved);
 
-        $('#AttendanceModelCreate').modal('show');
-        resetValidation(isAttendanceValidae, '#AttendanceForm');
-        $('#AttendanceBtnUpdate').off('click').on('click', async () => {
+        $('#LeaveModelCreate').modal('show');
+        resetValidation(isLeaveValidae, '#LeaveForm');
+        $('#LeaveBtnUpdate').off('click').on('click', async () => {
             debugger
-            const formData = $('#AttendanceForm').serialize();
-            const result = await SendRequest({ endpoint: '/Attendance/Update/' + id, method: "PUT", data: formData });
+            const formData = $('#LeaveForm').serialize();
+            const result = await SendRequest({ endpoint: '/Leave/Update/' + id, method: "PUT", data: formData });
             if (result.success) {
-                $('#AttendanceModelCreate').modal('hide');
-                notification({ message: "Attendance Updated successfully !", type: "success", title: "Success" });
+                $('#LeaveModelCreate').modal('hide');
+                notification({ message: "Leave Updated successfully !", type: "success", title: "Success" });
 
-                await getAttendanceList(); // Update the user list
+                await getLeaveList(); // Update the user list
             } else {
-                $('#AttendanceModelCreate').modal('hide');
-                notification({ message: " Attendance Updated failed . Please try again. !", type: "error", title: "Error" });
+                $('#LeaveModelCreate').modal('hide');
+                notification({ message: " Leave Updated failed . Please try again. !", type: "error", title: "Error" });
             }
         });
     }
@@ -232,7 +250,7 @@ window.updateAttendance = async (id) => {
 ////}
 
 
-window.deleteAttendance = async (id) => {
+window.deleteLeave = async (id) => {
     clearMessage('successMessage', 'globalErrorMessage');
     debugger;
     $('#deleteAndDetailsModel').modal('show');
@@ -241,12 +259,12 @@ window.deleteAttendance = async (id) => {
     $('#DeleteErrorMessage').hide(); // Hide error message initially
     $('#btnDelete').off('click').on('click', async () => {
         debugger;
-        const result = await SendRequest({ endpoint: '/Attendance/Delete', method: "DELETE", data: { id: id } });
+        const result = await SendRequest({ endpoint: '/Leave/Delete', method: "DELETE", data: { id: id } });
 
         if (result.success) {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: "Attendance Deleted successfully !", type: "success", title: "Success" });
-            await getAttendanceList(); // Update the category list
+            notification({ message: "Leave Deleted successfully !", type: "success", title: "Success" });
+            await getLeaveList(); // Update the category list
 
         } else {
             $('#deleteAndDetailsModel').modal('hide');
