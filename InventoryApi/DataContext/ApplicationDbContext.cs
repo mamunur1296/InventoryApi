@@ -39,6 +39,7 @@ namespace InventoryApi.DataContext
         public DbSet<Payroll> Payrolls { get; set; }
         public DbSet<Shift> Shiftss { get; set; }
 
+        public DbSet<ErrorLog> ErrorLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

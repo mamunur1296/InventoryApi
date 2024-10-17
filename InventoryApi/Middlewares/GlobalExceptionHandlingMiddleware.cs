@@ -1,4 +1,6 @@
-﻿using InventoryApi.Exceptions;
+﻿using InventoryApi.DataContext;
+using InventoryApi.Entities;
+using InventoryApi.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +12,12 @@ namespace InventoryApi.Middlewares
     public class GlobalExceptionHandlingMiddleware : IMiddleware
     {
         private readonly ILogger<GlobalExceptionHandlingMiddleware> _logger;
+        private readonly ApplicationDbContext _dbContext;
 
-        public GlobalExceptionHandlingMiddleware(ILogger<GlobalExceptionHandlingMiddleware> logger)
+        public GlobalExceptionHandlingMiddleware(ILogger<GlobalExceptionHandlingMiddleware> logger, ApplicationDbContext dbContext)
         {
             _logger = logger;
+            _dbContext = dbContext;
         }
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
@@ -25,31 +29,46 @@ namespace InventoryApi.Middlewares
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An exception occurred: {Message}", ex.Message);
+                await LogErrorInDatabase(context, ex);
                 await HandleExceptionAsync(context, ex);
             }
         }
 
-        private static IActionResult CreateActionResult(HttpContext context, HttpStatusCode status, string title, string message)
+        
+        private async Task LogErrorInDatabase(HttpContext context, Exception exception)
         {
-            var problemDetails = new ProblemDetails
+            var errorLog = new ErrorLog
             {
-                Status = (int)status,
-                Title = title,
-                Detail = message,
-                Instance = context.Request.Path
+                Id = Guid.NewGuid().ToString(),
+                Message = exception.Message,
+                StackTrace = exception.StackTrace,
+                Source = exception.Source,
+                LogDate = DateTime.UtcNow,
+                Url = context.Request.Path,
+                ExceptionType = exception.GetType().Name,
+                InnerException = exception.InnerException?.ToString(),
+                HttpMethod = context.Request.Method,
+                RequestHeaders = string.Join(", ", context.Request.Headers.Select(h => $"{h.Key}: {h.Value}")),
+                UserIpAddress = context.Connection.RemoteIpAddress?.ToString(),
+                UserId = context.User?.FindFirst("UserId")?.Value,
+                FormData = " " 
             };
 
-            return status switch
+            try
             {
-                HttpStatusCode.BadRequest => new BadRequestObjectResult(problemDetails),
-                HttpStatusCode.NotFound => new NotFoundObjectResult(problemDetails),
-                HttpStatusCode.Unauthorized => new UnauthorizedObjectResult(problemDetails),
-                HttpStatusCode.Forbidden => new ObjectResult(problemDetails) { StatusCode = (int)HttpStatusCode.Forbidden },
-                HttpStatusCode.Conflict => new ConflictObjectResult(problemDetails),
-                HttpStatusCode.RequestTimeout => new ObjectResult(problemDetails) { StatusCode = (int)HttpStatusCode.RequestTimeout },
-                _ => new ObjectResult(problemDetails) { StatusCode = (int)HttpStatusCode.InternalServerError }
-            };
+                await _dbContext.ErrorLogs.AddAsync(errorLog);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (DbUpdateException dbEx)
+            {
+                _logger.LogError(dbEx, "Failed to log error in database: {Message}. Inner Exception: {InnerException}", dbEx.Message, dbEx.InnerException?.Message);
+
+            }
+            
         }
+
+
+
 
         private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {

@@ -1,0 +1,79 @@
+﻿@model InventoryUi.Models.Login
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - InventoryUi</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/InventoryUi.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%;">
+            <div class="card-body">
+                <h2 class="text-center mb-4">Login to Inventory</h2>
+
+                <form asp-action="LoginUser" asp-controller="Auth">
+                    <input type="hidden" name="ReturnUrl" value="@ViewData["ReturnUrl"]" />
+
+                    <!-- Validation Summary -->
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <!-- Username Field -->
+                    <div class="mb-3">
+                        <label asp-for="UserName" class="form-label"></label>
+                        <div class="input-group">
+                            <input asp-for="UserName" class="form-control" placeholder="Enter User Name" />
+                            <span class="input-group-text">
+                                <img src="~/projectrootimg/user_name.jpeg" alt="Username Icon" class="img-fluid" style="height: 20px;" />
+                            </span>
+                        </div>
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <input type="password" asp-for="Password" class="form-control" placeholder="Enter Password" />
+                            <span class="input-group-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+                                    <path d="M8 1a3 3 0 0 0-3 3v3H4V4a4 4 0 1 1 8 0v3h-1V4a3 3 0 0 0-3-3z" />
+                                    <path d="M4.5 8.5v6A1.5 1.5 0 0 0 6 16h4a1.5 1.5 0 0 0 1.5-1.5v-6A1.5 1.5 0 0 0 10 7H6a1.5 1.5 0 0 0-1.5 1.5zM8 9.5a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-dark">Login</button>
+                    </div>
+                </form>
+
+                <!-- Registration Link -->
+                <div class="text-center mt-4">
+                    <p class="text-muted">
+                        Don't have an account?
+                        <a asp-action="Register" asp-controller="Auth" class="text-primary text-decoration-underline">Sign up</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+</body>
+</html>

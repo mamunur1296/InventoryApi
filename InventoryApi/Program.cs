@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProjectApi;
-using System.Net;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -60,7 +59,7 @@ builder.Services.AddSingleton<ITokenGenerator>(new TokenGenerator(_key, _issuer,
 
 // Include Infrastructur Dependency
 builder.Services.AddInfrastructure(builder.Configuration);
-
+builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
 // Configuration Add Controllers
 builder.Services.AddControllers()
         .AddJsonOptions(options =>
@@ -86,9 +85,9 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "Your API Title",
+        Title = "Dashboard",  // Set the title to "Dashboard"
         Version = "v1",
-        Description = "Your API Description",
+        Description = "API documentation for the dashboard. [Login to Dashboard](https://localhost:7033/Dashboard/login)",  // Add a clickable link in the description
     });
 
     // Add JWT Bearer authentication button
@@ -118,7 +117,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
+
 
 var app = builder.Build();
 

@@ -31,11 +31,11 @@ public static class SeedData
         var adminUser = new ApplicationUser
         {
             UserName = "admin@123",
-            Email = "admin@Gmail.com",
-            FirstName = "Mamunur Rudhid",
+            Email = "admin@gmail.com", 
+            FirstName = "Super", 
             LastName = "Admin",
-            PhoneNumber = "01767988385",
-            isApproved = true,
+            PhoneNumber = "01711223344",
+            isApproved = true,  
             isApprovedByAdmin = false,
             isEmployee = false,
         };

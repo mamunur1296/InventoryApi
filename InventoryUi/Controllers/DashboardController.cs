@@ -1,6 +1,5 @@
 ﻿using InventoryUi.Models;
 using InventoryUi.Services.Interface;
-using InventoryUi.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +22,12 @@ namespace InventoryUi.Controllers
             return View(); // Still returning DashboirdVm
         }
 
-
+        [HttpGet]
+        public IActionResult Login(string? ReturnUrl = null)
+        {
+            ViewData["ReturnUrl"] = ReturnUrl;
+            return View();
+        }
         [HttpGet]
         public async Task<IActionResult> GetNotApprovedEmployees()
         {
