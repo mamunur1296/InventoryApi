@@ -72,12 +72,7 @@ namespace InventoryUi.Controllers
             ViewData["ReturnUrl"] = ReturnUrl;
             return View();
         }
-        [HttpGet]
-        public IActionResult DashboirdLogin(string? ReturnUrl = null)
-        {
-            ViewData["ReturnUrl"] = ReturnUrl;
-            return View();
-        }
+        
         [HttpPost]
         public async Task<IActionResult> LoginUser(Login model, string? ReturnUrl)
         {
