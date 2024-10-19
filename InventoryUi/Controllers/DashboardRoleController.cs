@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryUi.Controllers
 {
-    [Authorize]
+    
     public class DashboardRoleController : Controller
     {
         private readonly IClientServices<Roles> _roleServices;
@@ -14,7 +14,7 @@ namespace InventoryUi.Controllers
         {
             _roleServices = roleServices;
         }
-
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public IActionResult Index()
         {
             return View();

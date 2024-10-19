@@ -3,6 +3,7 @@ using InventoryUi.Helpers;
 using InventoryUi.Models;
 using InventoryUi.Services.Interface;
 using InventoryUi.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -88,6 +89,7 @@ namespace InventoryUi.Controllers
             return Ok(filteredCustomers);
         }
         [HttpGet]
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public async Task<IActionResult> Index(string searchTerm, bool isPartial = false)
         {
             // Retrieve the list of products from the session or initialize a new list

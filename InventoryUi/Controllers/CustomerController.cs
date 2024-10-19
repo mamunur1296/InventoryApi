@@ -1,10 +1,11 @@
 ﻿using InventoryUi.Models;
 using InventoryUi.Services.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection;
 
 namespace InventoryUi.Controllers
 {
+    
     public class CustomerController : Controller
     {
         private readonly IClientServices<Customer> _customerServices;
@@ -15,6 +16,7 @@ namespace InventoryUi.Controllers
             _customerServices = service;
             _utilityHelper = utilityHelper;
         }
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public IActionResult Index()
         {
             return View();

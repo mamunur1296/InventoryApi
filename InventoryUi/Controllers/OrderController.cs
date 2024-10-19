@@ -1,5 +1,6 @@
 ﻿using InventoryUi.Models;
 using InventoryUi.Services.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Text;
@@ -16,6 +17,7 @@ namespace InventoryUi.Controllers
             _orderServices = service;
             _utilityHelper = utilityHelper;
         }
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public IActionResult Index()
         {
             return View();

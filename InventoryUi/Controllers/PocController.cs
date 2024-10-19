@@ -1,6 +1,7 @@
 ﻿using InventoryUi.DTOs;
 using InventoryUi.Services.Interface;
 using InventoryUi.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryUi.Controllers
@@ -14,6 +15,7 @@ namespace InventoryUi.Controllers
             _salesSummaryServices = salesSummaryServices;
         }
         [HttpGet]
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public async Task<IActionResult> Index()
         {
             var vm = new SalesSummaryVm();

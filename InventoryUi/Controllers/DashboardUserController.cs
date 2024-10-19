@@ -9,7 +9,7 @@ using InventoryUi.ViewModel;
 
 namespace InventoryUi.Controllers
 {
-    [Authorize]
+    
     public class DashboardUserController : Controller
     {
         private readonly IClientServices<User> _userServices;
@@ -29,7 +29,7 @@ namespace InventoryUi.Controllers
             _companyServices= companyServices;
             _branchServices = branchServices;
         }
-
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public async Task<IActionResult> Index()
         {
             var companys = await _companyServices.GetAllClientsAsync("Company/All");

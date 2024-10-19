@@ -105,9 +105,9 @@ namespace InventoryUi.Controllers
             {
                 return Redirect(ReturnUrl);
             }
-            if(roleName == "Admin") {
-                return RedirectToAction("Index", "Dashboard");
-            }
+            //if(roleName == "Admin") {
+            //    return RedirectToAction("Index", "Dashboard");
+            //}
             return RedirectToAction("Index", "Home");
 
         }

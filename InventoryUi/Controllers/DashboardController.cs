@@ -14,15 +14,17 @@ namespace InventoryUi.Controllers
     {
         private readonly IClientServices<User> _userServices;
         private readonly IClientServices<Company> _companyServices;
-        
-        public DashboardController(IClientServices<User> userServices, IClientServices<Company> companyServices)
+        private readonly IClientServices<Login> _loginServices;
+        private readonly ITokenService _tokenService;
+
+        public DashboardController(IClientServices<User> userServices, IClientServices<Company> companyServices, IClientServices<Login> loginServices, ITokenService tokenService)
         {
             _userServices = userServices;
             _companyServices = companyServices;
-            _tokenService = tokenService;
             _loginServices = loginServices;
+            _tokenService = tokenService;
         }
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public async Task<IActionResult> Index()
         {
             return View(); // Still returning DashboirdVm
@@ -74,8 +76,10 @@ namespace InventoryUi.Controllers
             }
             if (roleName == "User")
             {
-                 return RedirectToAction("Index", "Home");
+                TempData["LoginMessage"] = "Access denied. This login page is restricted to administrators only.";
+                return RedirectToAction("Login", "Dashboard");
             }
+
             return RedirectToAction("Index", "Dashboard");
 
         }
@@ -84,7 +88,7 @@ namespace InventoryUi.Controllers
             var handler = new JwtSecurityTokenHandler();
             var jwt = handler.ReadJwtToken(token);
 
-            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+            var identity = new ClaimsIdentity("AuthSchemeDashboard");
 
             foreach (var claim in jwt.Claims)
             {
@@ -92,7 +96,7 @@ namespace InventoryUi.Controllers
             }
 
             var principal = new ClaimsPrincipal(identity);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+            await HttpContext.SignInAsync("AuthSchemeDashboard", principal);
 
             // Optionally extract and log user details
             var userId = jwt.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
@@ -100,7 +104,7 @@ namespace InventoryUi.Controllers
             var roles = jwt.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
         }
         [HttpGet]
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public async Task<IActionResult> GetNotApprovedEmployees()
         {
             var users = await _userServices.GetAllClientsAsync("User/GetAll");

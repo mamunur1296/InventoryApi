@@ -2,6 +2,7 @@
 using InventoryUi.Helpers;
 using InventoryUi.Models;
 using InventoryUi.Services.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryUi.Controllers
@@ -32,7 +33,7 @@ namespace InventoryUi.Controllers
             _employeeServices = employeeServices;
             _productServices = productServices;
         }
-
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public IActionResult Index()
         {
             return View();

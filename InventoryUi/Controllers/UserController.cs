@@ -26,7 +26,7 @@ namespace InventoryUi.Controllers
             _changePasswordServices = changePasswordServices;
             _tokenService = tokenService;
         }
-
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public IActionResult Index()
         {
             return View();

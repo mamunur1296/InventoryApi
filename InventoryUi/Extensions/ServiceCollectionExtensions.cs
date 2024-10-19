@@ -70,12 +70,20 @@ namespace InventoryUi.Extensions
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = "/Auth/Login";
-                    options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
-                    options.ReturnUrlParameter = "ReturnUrl";
-                });
+                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                 {
+                     options.LoginPath = "/Auth/Login";
+                     options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
+                     options.ReturnUrlParameter = "ReturnUrl";
+                 })
+                 .AddCookie("AuthSchemeDashboard", options =>
+                 {
+                     options.LoginPath = "/Dashboard/Login";
+                     options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
+                     options.ReturnUrlParameter = "ReturnUrl";
+                 });
+
+
 
             services.AddSession(options =>
             {

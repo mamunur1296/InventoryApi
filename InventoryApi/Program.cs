@@ -87,8 +87,9 @@ builder.Services.AddSwaggerGen(options =>
     {
         Title = "Dashboard",  // Set the title to "Dashboard"
         Version = "v1",
-        Description = "API documentation for the dashboard. [Login to Dashboard](https://localhost:7033/Dashboard/login)",  // Add a clickable link in the description
+        Description = "API documentation for the dashboard. <a href='https://localhost:7033/Dashboard' target='_blank'>Login to Dashboard</a>"  // Add a clickable link in the description
     });
+
 
     // Add JWT Bearer authentication button
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

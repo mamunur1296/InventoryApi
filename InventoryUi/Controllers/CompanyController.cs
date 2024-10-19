@@ -1,5 +1,6 @@
 ﻿using InventoryUi.Models;
 using InventoryUi.Services.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared.CodeModifier.CodeChange;
 
@@ -16,6 +17,7 @@ namespace InventoryUi.Controllers
             _companyServices = service;
             _fileUploader = fileUploader;
         }
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public IActionResult Index()
         {
             return View();

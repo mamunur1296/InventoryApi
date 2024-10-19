@@ -1,6 +1,7 @@
 ﻿using InventoryUi.Models;
 using InventoryUi.Services.Interface;
 using InventoryUi.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryUi.Controllers
@@ -25,6 +26,7 @@ namespace InventoryUi.Controllers
             _categoryServices = categoryServices;
             _supplierServices = supplierServices;
         }
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public IActionResult Index()
         {
             return View();

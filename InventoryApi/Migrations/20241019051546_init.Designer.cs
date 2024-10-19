@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241011081140_init")]
+    [Migration("20241019051546_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -641,6 +641,53 @@ namespace InventoryApi.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("InventoryApi.Entities.ErrorLog", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ExceptionType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FormData")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HttpMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InnerException")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LogDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RequestHeaders")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Source")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StackTrace")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserIpAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ErrorLogs");
                 });
 
             modelBuilder.Entity("InventoryApi.Entities.Holiday", b =>

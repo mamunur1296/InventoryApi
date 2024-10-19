@@ -144,6 +144,9 @@
                 </li>
             </ul>
         </nav>
+
+        
+
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar  sidebar-dark-primary elevation-4">
@@ -492,6 +495,22 @@
             <!-- /.sidebar -->
         </aside>
         <div class="content-wrapper">
+            @{
+                // Check if the logged-in email matches the default admin email
+                string defaultAdminEmail = "admin@gmail.com"; // Corrected email domain
+                if (email == defaultAdminEmail)
+                {
+                    <div class="mt-4">
+                        <div class="alert alert-warning alert-dismissible fade show text-center fw-bold" role="alert">
+                            You are currently logged in with the default admin account. Please create a new admin account and delete the default admin account for better security!
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+
+                }
+            }
             @RenderBody()
         </div>
         <!-- /.content-wrapper -->

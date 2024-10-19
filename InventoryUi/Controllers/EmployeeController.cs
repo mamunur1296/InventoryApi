@@ -1,5 +1,6 @@
 ﻿using InventoryUi.Models;
 using InventoryUi.Services.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -18,6 +19,7 @@ namespace InventoryUi.Controllers
             _imageProcessor = imageProcessor;
             _fileUploder = fileUploder;
         }
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public IActionResult Index()
         {
             return View();

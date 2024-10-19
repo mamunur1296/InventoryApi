@@ -1,6 +1,7 @@
 ﻿using InventoryUi.Models;
 using InventoryUi.POC;
 using InventoryUi.Services.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -14,7 +15,7 @@ namespace InventoryUi.Controllers
         {
             _menuServices = menuServices;
         }
-
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public async Task<IActionResult> Index()
         {
             var menus = await _menuServices.GetAllClientsAsync("Menu/All");
