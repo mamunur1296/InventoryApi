@@ -14,10 +14,8 @@ namespace InventoryUi.Controllers
     {
         private readonly IClientServices<User> _userServices;
         private readonly IClientServices<Company> _companyServices;
-        private readonly ITokenService _tokenService;
-        private readonly IClientServices<Login> _loginServices;
-
-        public DashboardController(IClientServices<User> userServices, IClientServices<Company> companyServices, ITokenService tokenService, IClientServices<Login> loginServices)
+        
+        public DashboardController(IClientServices<User> userServices, IClientServices<Company> companyServices)
         {
             _userServices = userServices;
             _companyServices = companyServices;
