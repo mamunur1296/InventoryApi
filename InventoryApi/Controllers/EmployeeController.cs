@@ -1,7 +1,5 @@
 ﻿using InventoryApi.DTOs;
-using InventoryApi.Services.Implementation;
 using InventoryApi.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -9,6 +7,7 @@ namespace InventoryApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+   
     public class EmployeeController : ControllerBase
     {
         private readonly IBaseServices<EmployeeDTOs> _service;

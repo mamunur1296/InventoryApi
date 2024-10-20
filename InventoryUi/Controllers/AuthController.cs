@@ -132,10 +132,11 @@ namespace InventoryUi.Controllers
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-            // Optionally extract and log user details
+            // Log user details if needed
             var userId = jwt.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
             var userName = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
             var roles = jwt.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
         }
+
     }
 }

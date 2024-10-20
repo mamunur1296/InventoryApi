@@ -4,7 +4,6 @@ using InventoryApi.Exceptions;
 using InventoryApi.Entities;
 using InventoryApi.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using System;
 
 namespace InventoryApi.Services.Implementation
 {
@@ -184,7 +183,6 @@ namespace InventoryApi.Services.Implementation
 
         public async Task<(bool isSucceed, string userId, string errorMessage)> CreateUserAndCustomerAsync(RegistrationDTOs model)
         {
-
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
                 try
@@ -192,7 +190,7 @@ namespace InventoryApi.Services.Implementation
                     // Ensure roles are provided
                     if (model.Roles == null || model.Roles.Count == 0)
                     {
-                        throw new ValidationException("Role names must be provided.");
+                        return (false, null, "Role names must be provided.");
                     }
 
                     // Create user entity
@@ -203,11 +201,11 @@ namespace InventoryApi.Services.Implementation
                         UserName = model.UserName,
                         Email = model.Email,
                         PhoneNumber = model.PhoneNumber,
-                        isApproved=model.isApproved,
-                        isApprovedByAdmin= model.isApprovedByAdmin,
+                        isApproved = model.isApproved,
+                        isApprovedByAdmin = model.isApprovedByAdmin,
                         isEmployee = model.isEmployee,
-                        BranchId= model.BranchId,
-                        CompanyId= model.CompanyId,
+                        BranchId = model.BranchId,
+                        CompanyId = model.CompanyId,
                     };
 
                     // Check if all roles exist
@@ -215,7 +213,7 @@ namespace InventoryApi.Services.Implementation
                     {
                         if (await _roleManager.FindByNameAsync(role) == null)
                         {
-                            throw new ValidationException("One or more roles are invalid.");
+                            return (false, null, "One or more roles are invalid.");
                         }
                     }
 
@@ -224,7 +222,9 @@ namespace InventoryApi.Services.Implementation
                     if (!result.Succeeded)
                     {
                         await transaction.RollbackAsync();
-                        return (false, null, string.Join("; ", result.Errors.Select(e => e.Description)));
+                        // Create an error message from the result errors
+                        string errorMessage = string.Join("; ", result.Errors.Select(e => e.Description));
+                        return (false, null, errorMessage);
                     }
 
                     // Add user to roles
@@ -254,7 +254,7 @@ namespace InventoryApi.Services.Implementation
                             PasswordHash = model.Password, // Hash the password
                             DateOfBirth = DateTime.Now, // Adjust as needed
                             MedicalHistory = " ",
-                            Id= user.Id,
+                            Id = user.Id,
                         };
 
                         var customerResult = await _customer.CreateAsync(customer);
@@ -276,7 +276,6 @@ namespace InventoryApi.Services.Implementation
                 }
             }
         }
-
 
     }
 }

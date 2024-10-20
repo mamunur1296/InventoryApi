@@ -133,11 +133,14 @@ using (var scope = app.Services.CreateScope())
 
 
 // Configure the HTTP request pipeline.
+// Ensure this runs only in development environment
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
 app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 app.UseAuthentication();

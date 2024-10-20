@@ -34,7 +34,7 @@ namespace InventoryApi.Middlewares
             }
         }
 
-        
+
         private async Task LogErrorInDatabase(HttpContext context, Exception exception)
         {
             var errorLog = new ErrorLog
@@ -51,7 +51,7 @@ namespace InventoryApi.Middlewares
                 RequestHeaders = string.Join(", ", context.Request.Headers.Select(h => $"{h.Key}: {h.Value}")),
                 UserIpAddress = context.Connection.RemoteIpAddress?.ToString(),
                 UserId = context.User?.FindFirst("UserId")?.Value,
-                FormData = " " 
+                FormData = " "
             };
 
             try
@@ -64,7 +64,7 @@ namespace InventoryApi.Middlewares
                 _logger.LogError(dbEx, "Failed to log error in database: {Message}. Inner Exception: {InnerException}", dbEx.Message, dbEx.InnerException?.Message);
 
             }
-            
+
         }
 
 

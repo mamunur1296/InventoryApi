@@ -229,7 +229,7 @@ $('#btnSave').off('click').click(async () => {
                 await getUserList(); // Update the user list
             } else {
                 $('#modelCreate').modal('hide');
-                notification({ message: " User Create failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error" });
             }
         }
     } catch (error) {
@@ -354,7 +354,7 @@ window.deleteUser = async (id) => {
             await getUserList(); // Update the category list
         } else {
             // Display the error message in the modal
-            $('#DeleteErrorMessage').removeClass('alert-success').addClass('text-danger').text(result.detail).show();
+            notification({ message: result.detail, type: "error", title: "Error" });
         }
     });
 }

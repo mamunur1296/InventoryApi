@@ -2,6 +2,7 @@
 using InventoryApi.DataContext;
 using InventoryApi.DTOs;
 using InventoryApi.Entities;
+using InventoryApi.Middlewares;
 using InventoryApi.Services.Implementation;
 using InventoryApi.Services.Interfaces;
 using InventoryApi.UnitOfWork;
@@ -77,6 +78,7 @@ namespace ProjectApi
             services.AddScoped<IPurchaseServices, PurchaseService>();
             services.AddScoped<IDeliveryAddressServices, DeliveryAddressServices>();
             services.AddAutoMapper(typeof(MappingProfile));
+           
             return services;
         }
     }

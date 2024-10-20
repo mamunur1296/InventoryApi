@@ -1,7 +1,6 @@
 ﻿using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
 
-
 namespace InventoryApi.Exceptions
 {
     public class ValidationException : Exception
@@ -52,16 +51,22 @@ namespace InventoryApi.Exceptions
 
         public IDictionary<string, string[]> Errors { get; }
 
+        // This method creates a user-friendly error message from ValidationFailure objects
         private static string CreateErrorMessage(IEnumerable<ValidationFailure> failures)
         {
-            var errorMessages = failures.Select(f => $"{f.PropertyName}: {f.ErrorMessage}");
-            return string.Join("; ", errorMessages);
+            return string.Join("; ", failures.Select(f => $"{f.PropertyName}: {f.ErrorMessage}"));
         }
 
+        // This method creates a user-friendly error message from IdentityError objects
         private static string CreateErrorMessage(IEnumerable<IdentityError> errors)
         {
-            var errorMessages = errors.Select(e => $"{e.Code}: {e.Description}");
-            return string.Join("; ", errorMessages);
+            return string.Join("; ", errors.Select(e => $"{e.Code}: {e.Description}"));
+        }
+
+        // New method to generate a summary of errors for logging or display
+        public string GetSummary()
+        {
+            return string.Join("\n", Errors.Select(kvp => $"{kvp.Key}: {string.Join(", ", kvp.Value)}"));
         }
     }
 }

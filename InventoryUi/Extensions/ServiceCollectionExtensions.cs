@@ -69,19 +69,24 @@ namespace InventoryUi.Extensions
             services.AddScoped<IClientServices<PurchaseItem>, ClientServices<PurchaseItem>>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
-                 {
-                     options.LoginPath = "/Auth/Login";
-                     options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
-                     options.ReturnUrlParameter = "ReturnUrl";
-                 })
-                 .AddCookie("AuthSchemeDashboard", options =>
-                 {
-                     options.LoginPath = "/Dashboard/Login";
-                     options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
-                     options.ReturnUrlParameter = "ReturnUrl";
-                 });
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+            {
+                options.LoginPath = "/Auth/Login";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
+                options.ReturnUrlParameter = "ReturnUrl";
+            })
+            .AddCookie("AuthSchemeDashboard", options =>
+            {
+                options.LoginPath = "/Dashboard/Login";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
+                options.ReturnUrlParameter = "ReturnUrl";
+            });
+
+
 
 
 

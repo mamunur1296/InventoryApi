@@ -1,6 +1,5 @@
 ﻿using InventoryUi.Models;
 using InventoryUi.Services.Interface;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +8,7 @@ using System.Security.Claims;
 
 namespace InventoryUi.Controllers
 {
-    
+   
     public class DashboardController : Controller
     {
         private readonly IClientServices<User> _userServices;
@@ -38,7 +37,7 @@ namespace InventoryUi.Controllers
         }
         public async Task<IActionResult> LogOut()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync("AuthSchemeDashboard");
             _tokenService.ClearToken();
             return RedirectToAction("Login");
         }
@@ -68,7 +67,7 @@ namespace InventoryUi.Controllers
             // Extract the roles from the token claims
             var roleClaims = jwtToken.Claims.Where(c => c.Type == ClaimTypes.Role).Select(r => r.Value).ToList();
             string roleName = roleClaims.FirstOrDefault();
-            await UserLogin(loginResponse.Data.token);
+            await DashboardUserLogin(loginResponse.Data.token);
 
             if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
             {
@@ -83,7 +82,7 @@ namespace InventoryUi.Controllers
             return RedirectToAction("Index", "Dashboard");
 
         }
-        private async Task UserLogin(string token)
+        private async Task DashboardUserLogin(string token)
         {
             var handler = new JwtSecurityTokenHandler();
             var jwt = handler.ReadJwtToken(token);
@@ -98,11 +97,12 @@ namespace InventoryUi.Controllers
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync("AuthSchemeDashboard", principal);
 
-            // Optionally extract and log user details
+            // Log user details if needed
             var userId = jwt.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
             var userName = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
             var roles = jwt.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
         }
+
         [HttpGet]
         [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public async Task<IActionResult> GetNotApprovedEmployees()

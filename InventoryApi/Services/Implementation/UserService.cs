@@ -56,7 +56,10 @@ namespace InventoryApi.Services.Implementation
         {
             
             var result = await _helperServicess.CreateUserAndCustomerAsync(model);
-
+            if (!result.isSucceed)
+            {
+                throw new ValidationException(result.errorMessage);
+            }
             return (result.isSucceed, result.userId);
         }
 
