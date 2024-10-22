@@ -14,6 +14,6 @@ namespace InventoryUi.Models
         [DisplayName("Date")]
         public DateTime Date { get; set; }
         [DisplayName("Description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
     }
 }

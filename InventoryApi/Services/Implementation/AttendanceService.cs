@@ -4,25 +4,29 @@ using InventoryApi.Entities;
 using InventoryApi.Exceptions;
 using InventoryApi.Services.Interfaces;
 using InventoryApi.UnitOfWork;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InventoryApi.Services.Implementation
 {
+    
     public class AttendanceService : IBaseServices<AttendanceDTOs>
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
         private readonly IMapper _mapper;
+        private readonly IUserContextService _userContextService;
 
-        public AttendanceService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper)
+        public AttendanceService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper, IUserContextService userContextService)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
             _mapper = mapper;
+            _userContextService = userContextService;
         }
         public async Task<bool> CreateAsync(AttendanceDTOs entity)
         {
             var newAttendance = new Attendance
             {
                 Id = Guid.NewGuid().ToString(),
-                CreatedBy = entity.CreatedBy?.Trim(),
+                CreatedBy = _userContextService.UserName,
                 CreationDate = DateTime.Now, // Set CreationDate here
                 EmployeeId= entity.EmployeeId,
                 Date=entity.Date,
@@ -52,7 +56,7 @@ namespace InventoryApi.Services.Implementation
             item.IsPresent=entity.IsPresent;
             
             // Set the UpdateDate to the current date and time
-            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.UpdatedBy = _userContextService.UserName;
             item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.attendanceRepository.UpdateAsync(item);

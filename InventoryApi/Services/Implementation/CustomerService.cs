@@ -10,12 +10,14 @@ namespace InventoryApi.Services.Implementation
     public class CustomerService : IBaseServices<CustomerDTOs>
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
+        private readonly IUserContextService _userContextService;
         private readonly IMapper _mapper;
 
-        public CustomerService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper)
+        public CustomerService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper, IUserContextService userContextService)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
             _mapper = mapper;
+            _userContextService = userContextService;
         }
 
         public async Task<bool> CreateAsync(CustomerDTOs entity)
@@ -23,7 +25,7 @@ namespace InventoryApi.Services.Implementation
             var newCustomer = new Customer
             {
                
-                CreatedBy = entity?.CreatedBy?.Trim(),
+                CreatedBy = _userContextService.UserName,
                 CreationDate = DateTime.Now, // Set CreationDate here
                 CustomerName = entity?.CustomerName?.Trim(),
                 ContactName = entity?.ContactName?.Trim(),
@@ -40,6 +42,7 @@ namespace InventoryApi.Services.Implementation
                 DateOfBirth = entity?.DateOfBirth,
                 MedicalHistory= entity?.MedicalHistory?.Trim(),
                 UserId=entity?.UserId,
+                
             };
             if (entity.Id != Guid.Empty.ToString() && entity.Id != null)
             {
@@ -82,7 +85,7 @@ namespace InventoryApi.Services.Implementation
 
 
             // Set the UpdateDate to the current date and time
-            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.UpdatedBy = _userContextService.UserName;
             item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.customerRepository.UpdateAsync(item);

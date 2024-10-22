@@ -11,21 +11,23 @@ namespace InventoryApi.Services.Implementation
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
         private readonly IMapper _mapper;
+        private readonly IUserContextService _userContextService;
 
-        public HolidayService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper)
+        public HolidayService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper, IUserContextService userContextService)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
             _mapper = mapper;
+            _userContextService = userContextService;
         }
         public async Task<bool> CreateAsync(HolidayDTOs entity)
         {
             var newHoliday = new Holiday
             {
                 Id = Guid.NewGuid().ToString(),
-                CreatedBy = entity.CreatedBy?.Trim(),
+                CreatedBy = _userContextService.UserName,
                 CreationDate = DateTime.Now, // Set CreationDate here
                 Date= DateTime.Now,
-                Description = entity.Description,
+                Description = entity?.Description,
                 HolidayName = entity.HolidayName,
                 
                 
@@ -46,10 +48,10 @@ namespace InventoryApi.Services.Implementation
             // Update properties with validation
             // item.CartID = string.IsNullOrWhiteSpace(entity.CartID) ? item.CartID : entity.CartID.Trim();
             item.HolidayName = entity.HolidayName;
-            item.Description = entity.Description;
+            item.Description = entity?.Description;
             item.Date = entity.Date;
             // Set the UpdateDate to the current date and time
-            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.UpdatedBy = _userContextService.UserName;
             item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.holidayRepository.UpdateAsync(item);

@@ -11,18 +11,20 @@ namespace InventoryApi.Services.Implementation
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
         private readonly IMapper _mapper;
+        private readonly IUserContextService _userContextService;
 
-        public ReviewService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper)
+        public ReviewService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper, IUserContextService userContextService)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
             _mapper = mapper;
+            _userContextService = userContextService;
         }
         public async Task<bool> CreateAsync(ReviewDTOs entity)
         {
             var newReview = new Review
             {
                 Id = Guid.NewGuid().ToString(),
-                CreatedBy = entity.CreatedBy?.Trim(),
+                CreatedBy = _userContextService.UserName,
                 CreationDate = DateTime.Now, // Set CreationDate here
                 ProductID = entity.ProductID.Trim(),
                 CustomerID = entity.CustomerID.Trim(),
@@ -83,7 +85,7 @@ namespace InventoryApi.Services.Implementation
 
 
             // Set the UpdateDate to the current date and time
-            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.UpdatedBy = _userContextService.UserName;
             item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.reviewRepository.UpdateAsync(item);

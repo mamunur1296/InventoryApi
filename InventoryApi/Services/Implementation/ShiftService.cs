@@ -11,18 +11,20 @@ namespace InventoryApi.Services.Implementation
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
         private readonly IMapper _mapper;
+        private readonly IUserContextService _userContextService;
 
-        public ShiftService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper)
+        public ShiftService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper, IUserContextService userContextService)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
             _mapper = mapper;
+            _userContextService = userContextService;
         }
         public async Task<bool> CreateAsync(ShiftDTOs entity)
         {
             var newShift = new Shift
             {
                 Id = Guid.NewGuid().ToString(),
-                CreatedBy = entity.CreatedBy?.Trim(),
+                CreatedBy = _userContextService.UserName,
                 CreationDate = DateTime.Now, // Set CreationDate here
                 ShiftName = entity.ShiftName,
                 StartTime=entity.StartTime,
@@ -47,7 +49,7 @@ namespace InventoryApi.Services.Implementation
             item.StartTime=entity.StartTime; 
             item.EndTime=entity.EndTime;
             // Set the UpdateDate to the current date and time
-            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.UpdatedBy = _userContextService.UserName;
             item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.shiftRepository.UpdateAsync(item);

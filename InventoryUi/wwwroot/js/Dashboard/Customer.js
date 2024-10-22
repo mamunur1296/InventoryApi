@@ -23,16 +23,16 @@ const onSuccessUsers = async (customers, users) => {
             const user = usersMap[customer.id];
             return {
                 id: customer?.id,
-                name: customer?.customerName ?? "N/A",
-                contactName: customer?.contactName ?? "N/A",
-                contactTitle: customer?.contactTitle ?? "N/A",
-                address: customer?.address ?? " " + ", " + customer?.city ?? " " + ", " + customer?.region ?? " " + ", " + customer?.postalCode ?? " " + ", " + customer?.country ?? " " ?? "N/A",
-                phone: customer?.phone ?? "N/A",
-                fax: customer?.fax ?? "N/A",
-                email: customer?.email ?? "N/A",
-                birthDate: customer?.dateOfBirth ?? "N/A",
-                medicalHistory: customer?.medicalHistory ?? "N/A",
-                user: user?.userName ?? "N/A", 
+                name: customer?.customerName ?? "Null",
+                contactName: customer?.contactName ?? "Null",
+                contactTitle: customer?.contactTitle ?? "Null",
+                address: customer?.address ?? " " + customer?.city ?? " " + ", " + customer?.region ?? " " + ", " + customer?.postalCode ?? " " + ", " + customer?.country ?? " " ?? "Null",
+                phone: customer?.phone ?? "Null",
+                fax: customer?.fax ?? "Null",
+                email: customer?.email ?? "Null",
+                birthDate: customer?.dateOfBirth ?? "Null",
+                medicalHistory: customer?.medicalHistory ?? "Null",
+                user: user?.userName ?? "Null", 
             };
         }
         return null;

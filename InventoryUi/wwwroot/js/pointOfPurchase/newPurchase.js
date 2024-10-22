@@ -24,6 +24,16 @@ $(document).ready(async function () {
     await UnitChildCreateBtn('#ChildUnitButton');
 });  
 
+
+
+
+
+
+
+
+
+
+
 // Function to set up autocomplete for product search
 const searchProducts = () => {
     $("#tagsProduct").autocomplete({

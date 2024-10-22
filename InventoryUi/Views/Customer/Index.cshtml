@@ -36,7 +36,7 @@
                                 <h3 class="card-title font-weight-bold fs-1 color-primary">Customer List</h3>
                             </div>
                             <div class="col-md-6 d-flex justify-content-end ">
-                                <a id="CreateBtn" class="btn btn-success disabled"> <i class="fa fa-plus"></i> Create New Customer</a>
+                                <a id="CreateBtn" class="btn btn-success "> <i class="fa fa-plus"></i> Create New Customer</a>
                             </div>
                         </div>
                     </div>
@@ -46,9 +46,7 @@
                     <div id="globalErrorMessage" class="alert alert-danger" role="alert" style="display: none;">
                         <button id="btnClose" type="button" class="btn-close" aria-label="Close"></button>
                     </div>
-
                     <!-- /.card-header -->
-
                     <div class="card-body">
                         <table id="CustomerTable" class="table table-bordered table-striped">
 
@@ -89,8 +87,6 @@
             </div>
             <div class="modal-body" style="height: calc(100% - 60px); overflow-y: auto;">
                 <form id="CustomerForm">
-                    <input type="hidden" asp-for="CreatedBy" value="@userName" />
-                    <input type="hidden" asp-for="UpdatedBy" value="@userName" />
                     <div class="card-body">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="row">
@@ -170,7 +166,6 @@
                         </div>
                     </div>
                 </form>
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="btnSave">Save</button>

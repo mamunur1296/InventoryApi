@@ -116,7 +116,8 @@ const UsrValidae = $('#UserForm').validate({
         },
         "User.Password": {
             required: true,
-            minlength: 6
+            minlength: 6,
+            pwcheck: true 
         },
         "User.ConfirmationPassword": {
             required: true,
@@ -156,7 +157,8 @@ const UsrValidae = $('#UserForm').validate({
         },
         "User.Password": {
             required: "Password is required.",
-            minlength: "Password must be at least 6 characters long."
+            minlength: "Password must be at least 6 characters long.",
+            pwcheck: "Password must contain at least one lowercase letter (a-z)." 
         },
         "User.ConfirmationPassword": {
             required: "Confirmation Password is required.",
@@ -180,7 +182,9 @@ const UsrValidae = $('#UserForm').validate({
 });
 
 
-
+$.validator.addMethod("pwcheck", function (value) {
+    return /[a-z]/.test(value); // At least one lowercase letter
+});
 
 
 
@@ -209,11 +213,6 @@ $('#btnSave').off('click').click(async () => {
     try {
         if ($('#UserForm').valid()) {
             const formData = $('#UserForm').serialize();
-            //const formData = new FormData($('#UserForm')[0]);
-            //const formData = new FormData(document.querySelector('#UserForm'));
-            //for (const [key, value] of formData.entries()) {
-            //    console.log(`${key}: ${value}`);
-            //}
             const result = await SendRequest({ endpoint: '/DashboardUser/Register', method: 'POST', data: formData });
             // Clear previous messages
             $('#successMessage').hide();

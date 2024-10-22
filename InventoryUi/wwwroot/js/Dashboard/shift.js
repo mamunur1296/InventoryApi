@@ -20,9 +20,9 @@ const onSuccessUsers = async (Shifts) => {
             debugger
             return {
                 id: Shift?.id,
-                name: Shift?.shiftName ?? "N/A",
-                start: Shift?.startTime ?? "N/A",
-                end: Shift?.endTime ?? "N/A",
+                name: Shift?.shiftName ?? "Null",
+                start: Shift?.startTime ?? "Null",
+                end: Shift?.endTime ?? "Null",
 
             };
         }
@@ -33,13 +33,13 @@ const onSuccessUsers = async (Shifts) => {
         debugger
         const userSchema = [
             {
-                render: (data, type, row) => row?.name ?? "N/A"
+                render: (data, type, row) => row?.name 
             },
             {
-                render: (data, type, row) => row?.start ?? "N/A"
+                render: (data, type, row) => row?.start 
             },
             {
-                render: (data, type, row) => row?.end ?? "N/A"
+                render: (data, type, row) => row?.end 
             },
             {
                 render: (data, type, row) => createActionButtons(row, [

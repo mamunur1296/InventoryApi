@@ -322,6 +322,8 @@ namespace InventoryUi.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Index");
         }
+
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public async Task<IActionResult> Payment()
         {
             var productList = HttpContext.Session.GetObject<List<Product>>("ProductList") ?? new List<Product>();

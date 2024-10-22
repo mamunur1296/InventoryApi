@@ -11,11 +11,13 @@ namespace InventoryApi.Services.Implementation
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
         private readonly IMapper _mapper;
+        private readonly IUserContextService _userContextService;
 
-        public OrderProductService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper)
+        public OrderProductService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper, IUserContextService userContextService)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
             _mapper = mapper;
+            _userContextService = userContextService;
         }
 
         public async Task<bool> CreateAsync(OrderProductDTOs entity)
@@ -23,7 +25,7 @@ namespace InventoryApi.Services.Implementation
             var newOrderProduct = new OrderProduct
             {
                 Id = Guid.NewGuid().ToString(),
-                ProductId = entity.ProductId?.Trim(),
+                ProductId = _userContextService.UserName,
                 CreatedBy = entity.CreatedBy?.Trim(),
                 CreationDate = DateTime.Now, // Set CreationDate here
 
@@ -75,7 +77,7 @@ namespace InventoryApi.Services.Implementation
             item.ProductId=entity.ProductId;
 
             // Set the UpdateDate to the current date and time
-            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.UpdatedBy = _userContextService.UserName;
             item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.orderProductRepository.UpdateAsync(item);

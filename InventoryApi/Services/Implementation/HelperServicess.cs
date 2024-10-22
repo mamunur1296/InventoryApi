@@ -4,7 +4,6 @@ using InventoryApi.Exceptions;
 using InventoryApi.Entities;
 using InventoryApi.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
-
 namespace InventoryApi.Services.Implementation
 {
     public class HelperServicess : IHelperServicess
@@ -14,20 +13,23 @@ namespace InventoryApi.Services.Implementation
         private readonly IBaseServices<CustomerDTOs> _customer;
         private readonly IBaseServices<EmployeeDTOs> _employee;
         private readonly ApplicationDbContext _context;
+        private readonly IUserContextService _userContextService;
 
         public HelperServicess(
             UserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationRole> roleManager, 
-            IBaseServices<CustomerDTOs> customer, 
+            RoleManager<ApplicationRole> roleManager,
+            IBaseServices<CustomerDTOs> customer,
             ApplicationDbContext context,
             IBaseServices<EmployeeDTOs> employee
-            )
+,
+            IUserContextService userContextService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _customer = customer;
             _context = context;
             _employee = employee;
+            _userContextService = userContextService;
         }
 
         public async Task<(bool isSucceed, string CustomerId, string errorMessage)> CreateCustomerByAdmin(string id)
@@ -143,6 +145,7 @@ namespace InventoryApi.Services.Implementation
                         ReportsTo = null,
                         PhotoPath = null,
                         ManagerId = null,
+                        Salary = 100,
                         UserId = existingUser.Id,
                         Id = existingUser.Id,
                         CompanyId = existingUser.CompanyId,
@@ -241,19 +244,19 @@ namespace InventoryApi.Services.Implementation
                         var customer = new CustomerDTOs
                         {
                             CustomerName = $"{model.FirstName} {model.LastName}",
-                            ContactName = " ",
-                            ContactTitle = " ",
-                            Address = "",
-                            City = " ",
-                            Region = " ",
-                            PostalCode = " ",
-                            Country = " ",
-                            Phone = " ",
-                            Fax = " ",
+                            ContactName = null,
+                            ContactTitle = null,
+                            Address = null,
+                            City = null,
+                            Region = null,
+                            PostalCode = null,
+                            Country = null,
+                            Phone = model.PhoneNumber,
+                            Fax = null,
                             Email = model.Email, // Ensure this is provided as it's required
                             PasswordHash = model.Password, // Hash the password
                             DateOfBirth = DateTime.Now, // Adjust as needed
-                            MedicalHistory = " ",
+                            MedicalHistory = null,
                             Id = user.Id,
                         };
 

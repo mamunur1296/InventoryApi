@@ -23,12 +23,12 @@ const onSuccessUsers = async (Leaves, employee) => {
             const employee = employeeMap[Leave.employeeId];
             return {
                 id: Leave?.id,
-                empName: employee?.firstName + " " + employee?.lastName ?? "N/A",
-                ispresent: Leave?.isApproved == true ? "Approved" : Leave?.isApproved == false ? "Not Approved" : "N/A",
-                livetype: Leave?.leaveType ?? "N/A",
-                reson: Leave?.reason ?? "N/A",
-                edate: Leave?.endDate ?? "N/A",
-                sdate: Leave?.startDate ?? "N/A",
+                empName: employee?.firstName + " " + employee?.lastName ?? "Null",
+                ispresent: Leave?.isApproved == true ? "Approved" : Leave?.isApproved == false ? "Not Approved" : "Null",
+                livetype: Leave?.leaveType ?? "Null",
+                reson: Leave?.reason ?? "Null",
+                edate: Leave?.endDate ?? "Null",
+                sdate: Leave?.startDate ?? "Null",
 
             };
         }
@@ -39,23 +39,23 @@ const onSuccessUsers = async (Leaves, employee) => {
         debugger
         const userSchema = [
             {
-                render: (data, type, row) => row?.empName ?? "N/A"
+                render: (data, type, row) => row?.empName 
             },
             {
-                render: (data, type, row) => row?.sdate ?? "N/A"
+                render: (data, type, row) => row?.sdate 
             },
             {
-                render: (data, type, row) => row?.edate ?? "N/A"
+                render: (data, type, row) => row?.edate 
             },
             {
-                render: (data, type, row) => row?.livetype ?? "N/A"
+                render: (data, type, row) => row?.livetype 
             },
             {
-                render: (data, type, row) => row?.reson ?? "N/A"
+                render: (data, type, row) => row?.reson 
             },
             {
                 render: (data, type, row) => {
-                    const isPresentText = row?.ispresent ?? "N/A";
+                    const isPresentText = row?.ispresent ?? "Null";
                     const colorClass = isPresentText === "Approved" ? "text-success" :
                         isPresentText === "Not Approved" ? "text-danger" : "text-muted";
                     return `<span class="${colorClass}">${isPresentText}</span>`;

@@ -8,7 +8,7 @@ namespace InventoryApi.Entities
         public string DepartmentName { get; set; }
 
         [MaxLength(200)]
-        public string Description { get; set; }
+        public string ?Description { get; set; }
 
         public ICollection<Employee> Employees { get; set; }
     }

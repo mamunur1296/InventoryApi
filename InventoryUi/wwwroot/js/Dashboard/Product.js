@@ -1,10 +1,11 @@
 ﻿import { notification } from '../Utility/notification.js';
 import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
-import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
+import { SendRequest, populateDropdown, setupDropdownChange } from '../utility/sendrequestutility.js';
 
 $(document).ready(async function () {
     await getProductList();
     await ProductCreateBtn('#CreateProductBtn'); 
+    
 });
 
 const getProductList = async () => {
@@ -185,7 +186,8 @@ export const ProductFormValidae = $('#ProductForm').validate({
 
 
 export const selectChildUnit = async (selectedChildId = null) => {
-    $('#UnitMasterDropdown').off('change').on('change', async function () {
+    $('#UnitMasterDropdown').off('change').on('change', async function (e) {
+        e.preventDefault(); 
         var id = $(this).val();
         var $unitChildDropdown = $('#UnitChildDropdown');
         $unitChildDropdown.empty();
@@ -231,6 +233,37 @@ export const ProductCreateBtn = async (CreateBtnId) => {
         await selectChildUnit();
     });
 }
+
+$('#CategoryDropdown').off("focus").on("focus", async function (e) {
+    e.preventDefault(); 
+    await populateDropdown('/Category/GetallSubCatagory', '#CategoryDropdown', 'id', 'categoryName', "Select Catagory");
+});
+$('#SupplierDropdown').off("focus").on("focus", async function (e) {
+    e.preventDefault();
+    await populateDropdown('/Supplier/GetAll', '#SupplierDropdown', 'id', 'supplierName', "Select Supplier");
+});
+$('#UnitMasterDropdown').off("focus").on("focus", async function (e) {
+    e.preventDefault();
+    await populateDropdown('/UnitMaster/GetAll', '#UnitMasterDropdown', 'id', 'name', "Select Master Unit");
+    await selectChildUnit();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 $('#ProductBtnSave').off('click').on('click', async (event) => {
     event.preventDefault(); // Prevent form submission and page reload

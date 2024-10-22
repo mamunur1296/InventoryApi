@@ -20,8 +20,8 @@ const onSuccessUsers = async (departments) => {
             debugger
             return {
                 id: department?.id,
-                name: department?.departmentName ?? "N/A",
-                dis: department?.description ?? "N/A",
+                name: department?.departmentName ?? "Null",
+                dis: department?.description ?? "Null",
 
             };
         }
@@ -32,10 +32,10 @@ const onSuccessUsers = async (departments) => {
         debugger
         const userSchema = [
             {
-                render: (data, type, row) => row?.name ?? "N/A"
+                render: (data, type, row) => row?.name 
             },
             {
-                render: (data, type, row) => row?.dis ?? "N/A"
+                render: (data, type, row) => row?.dis 
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
@@ -94,11 +94,7 @@ export const isDepartmentValidae = $('#DepartmentForm').validate({
         DepartmentName: {
             required: true,
         }
-        ,
-        Description: {
-            required: true,
-
-        }
+       
         
         
     },

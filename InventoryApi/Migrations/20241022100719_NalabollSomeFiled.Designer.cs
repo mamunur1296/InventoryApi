@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241019051546_init")]
-    partial class init
+    [Migration("20241022100719_NalabollSomeFiled")]
+    partial class NalabollSomeFiled
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -517,7 +517,6 @@ namespace InventoryApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
@@ -706,7 +705,6 @@ namespace InventoryApi.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HolidayName")
@@ -1080,7 +1078,7 @@ namespace InventoryApi.Migrations
                     b.Property<DateTime?>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("Deductions")
+                    b.Property<decimal?>("Deductions")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 

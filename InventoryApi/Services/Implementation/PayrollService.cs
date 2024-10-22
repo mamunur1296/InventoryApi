@@ -11,23 +11,25 @@ namespace InventoryApi.Services.Implementation
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
         private readonly IMapper _mapper;
+        private readonly IUserContextService _userContextService;
 
-        public PayrollService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper)
+        public PayrollService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper, IUserContextService userContextService)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
             _mapper = mapper;
+            _userContextService = userContextService;
         }
         public async Task<bool> CreateAsync(PayrollDTOs entity)
         {
             var newPayroll = new Payroll
             {
                 Id = Guid.NewGuid().ToString(),
-                CreatedBy = entity.CreatedBy?.Trim(),
+                CreatedBy = _userContextService.UserName,
                 CreationDate = DateTime.Now, // Set CreationDate here
                 EmployeeId = entity.EmployeeId,
                 BaseSalary = entity.BaseSalary,
                 Bonus = entity.Bonus,
-                Deductions = entity.Deductions,
+                Deductions = entity?.Deductions,
                 NetSalary = entity.NetSalary,
                 PaymentDate = entity.PaymentDate,
             };
@@ -48,12 +50,12 @@ namespace InventoryApi.Services.Implementation
             item.EmployeeId= entity.EmployeeId;
             item.BaseSalary= entity.BaseSalary;
             item.Bonus= entity.Bonus;
-            item.Deductions= entity.Deductions;
+            item.Deductions= entity?.Deductions;
             item.NetSalary= entity.NetSalary;
             item.PaymentDate= entity.PaymentDate;
            
             // Set the UpdateDate to the current date and time
-            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.UpdatedBy = _userContextService.UserName;
             item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.payrollRepository.UpdateAsync(item);

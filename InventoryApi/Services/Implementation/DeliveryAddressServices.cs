@@ -9,10 +9,12 @@ namespace InventoryApi.Services.Implementation
     public class DeliveryAddressServices : IDeliveryAddressServices
     {
         private readonly ApplicationDbContext _context;
+        private readonly IUserContextService _userContextService;
 
-        public DeliveryAddressServices(ApplicationDbContext context)
+        public DeliveryAddressServices(ApplicationDbContext context, IUserContextService userContextService)
         {
             _context = context;
+            _userContextService = userContextService;
         }
 
         public async Task<DeliveryAddressDTOs> GetByUserIdAsync(string userId)

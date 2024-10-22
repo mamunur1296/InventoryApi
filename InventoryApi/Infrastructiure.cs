@@ -77,8 +77,9 @@ namespace ProjectApi
             services.AddScoped<IBaseServices<ShiftDTOs>, ShiftService>();
             services.AddScoped<IPurchaseServices, PurchaseService>();
             services.AddScoped<IDeliveryAddressServices, DeliveryAddressServices>();
+            services.AddScoped<IUserContextService, UserContextService>();
             services.AddAutoMapper(typeof(MappingProfile));
-           
+            services.AddHttpContextAccessor();
             return services;
         }
     }

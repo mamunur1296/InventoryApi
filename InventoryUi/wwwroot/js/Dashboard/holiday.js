@@ -21,9 +21,9 @@ const onSuccessUsers = async (holidays) => {
             debugger
             return {
                 id: holiday?.id,
-                name: holiday?.holidayName ?? "N/A",
-                dis: holiday?.description ?? "N/A",
-                dat: holiday?.date ?? "N/A",
+                name: holiday?.holidayName ?? "Null",
+                dis: holiday?.description ?? "Null",
+                dat: holiday?.date ?? "Null",
 
             };
         }
@@ -99,11 +99,7 @@ export const isHolidayValidae = $('#HolidayForm').validate({
         HolidayName: {
             required: true,
         }
-        ,
-        Description: {
-            required: true,
-
-        }
+       
         ,
         Date: {
             required: true,

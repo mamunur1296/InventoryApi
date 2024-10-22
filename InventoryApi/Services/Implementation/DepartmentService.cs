@@ -11,20 +11,22 @@ namespace InventoryApi.Services.Implementation
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
         private readonly IMapper _mapper;
+        private readonly IUserContextService _userContextService;
 
-        public DepartmentService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper)
+        public DepartmentService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper, IUserContextService userContextService)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
             _mapper = mapper;
+            _userContextService = userContextService;
         }
         public async Task<bool> CreateAsync(DepartmentDTOs entity)
         {
             var newDepartment = new Department
             {
                 Id = Guid.NewGuid().ToString(),
-                CreatedBy = entity.CreatedBy?.Trim(),
+                CreatedBy = _userContextService.UserName,
                 CreationDate = DateTime.Now, // Set CreationDate here
-                DepartmentName=entity.DepartmentName,
+                DepartmentName=entity?.DepartmentName,
                 Description=entity.Description,
             };
             await _unitOfWorkRepository.departmentRepository.AddAsync(newDepartment);
@@ -42,10 +44,10 @@ namespace InventoryApi.Services.Implementation
 
             // Update properties with validation
             // item.CartID = string.IsNullOrWhiteSpace(entity.CartID) ? item.CartID : entity.CartID.Trim();
-            item.DepartmentName = entity.DepartmentName;
+            item.DepartmentName = entity?.DepartmentName;
             item.Description=entity.Description;
             // Set the UpdateDate to the current date and time
-            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.UpdatedBy = _userContextService.UserName;
             item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.departmentRepository.UpdateAsync(item);

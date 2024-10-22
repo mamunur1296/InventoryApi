@@ -172,7 +172,7 @@ export function handleError(message) {
 }
 
 export const populateDropdown = async (endpoint, dropdownSelector, valueField, textField, defaultOption = null) => {
-   
+    debugger
     try {
         
         const response = await SendRequest({ endpoint: endpoint });
@@ -190,7 +190,7 @@ export const populateDropdown = async (endpoint, dropdownSelector, valueField, t
            
             $(dropdownSelector).append(`<option value="">${defaultOption}</option>`);
         } 
-
+        debugger
         // Check if data is null or empty
         if (!data || data.length === 0) {
           
@@ -201,7 +201,7 @@ export const populateDropdown = async (endpoint, dropdownSelector, valueField, t
 
         // Add options from the fetched data
         $.each(data, function (index, item) {
-            
+            debugger
             $(dropdownSelector).append(`<option value="${item[valueField]}">${item[textField]}</option>`);
         });
     } catch (error) {
@@ -213,3 +213,12 @@ export const populateDropdown = async (endpoint, dropdownSelector, valueField, t
     }
 }
 
+export const setupDropdownChange = (endpoint, dropdownSelector, valueField, textField, defaultOption = null) => {
+    debugger
+    $(dropdownSelector).off("focus").on("focus", async function (e) {
+        e.preventDefault();  // Corrected the typo
+        debugger
+        // Call the populateDropdown function to refresh data
+        await populateDropdown(endpoint, dropdownSelector, valueField, textField, defaultOption = null);  // Removed unnecessary assignment
+    });
+};

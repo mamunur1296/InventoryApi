@@ -31,17 +31,17 @@ const onSuccessUsers = async (employeees, users, company, branchs) => {
             const branch = branchsMap[employee.branchId];
             return {
                 id: employee?.id,
-                fName: employee?.firstName ?? "N/A",
-                lName: employee?.lastName ?? "N/A",
-                title: employee?.title ?? "N/A",
-                address: employee?.address ?? " " + ", " + employee?.city ?? " " + ", " + employee?.region ?? " " + ", " + employee?.postalCode ?? " " + ", " + employee?.country ?? " " ?? "N/A",
-                phone: employee?.homePhone ?? "N/A",
-                company: company?.name ?? " N/A",
-                branch: branch?.name ?? " N/A",
-                manager: manager ? (manager?.firstName + " " + manager?.lastName) : " N/A",
-                name: employee ? (employee?.firstName + " " + employee?.lastName) : " N/A",
-                photo: employee?.photoPath ?? "N/A",
-                user: user?.userName ?? "N/A",
+                fName: employee?.firstName ?? "Null",
+                lName: employee?.lastName ?? "Null",
+                title: employee?.title ?? "Null",
+                address: employee?.address ?? " "  + employee?.city ?? " " + ", " + employee?.region ?? " " + ", " + employee?.postalCode ?? " " + ", " + employee?.country ?? " " ?? "Null",
+                phone: employee?.homePhone ?? "Null",
+                company: company?.name ?? " Null",
+                branch: branch?.name ?? " Null",
+                manager: manager ? (manager?.firstName + " " + manager?.lastName) : " Null",
+                name: employee ? (employee?.firstName + " " + employee?.lastName) : " Null",
+                photo: employee?.photoPath ?? "Null",
+                user: user?.userName ?? "Null",
             };
         }
         return null;
@@ -140,12 +140,15 @@ const UsrValidae = $('#EmployeeForm').validate({
         CompanyId: {
             required: true,
         },
-        ManagerId: {
+        DepartmentId: {
             required: true,
         },
-        //Title: {
-        //    required: true,
-        //},
+        UserId: {
+            required: true,
+        },
+        Salary: {
+            required: true,
+        },
         //TitleOfCourtesy: {
         //    required: true,
         //},
@@ -258,6 +261,9 @@ $('#CreateBtn').off('click').click(async () => {
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
     await populateDropdown('/Employee/GetAll', '#ManagerDropdown', 'id', 'firstName', "Select Manager");
     await populateDropdown('/DashboardUser/GetAll', '#UserDropdown', 'id', 'userName', "Select User");
+    await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'name', "Select Company");
+    await populateDropdown('/Branch/GetAll', '#BranchDropdown', 'id', 'name', "Select Branch");
+    await populateDropdown('/Department/GetAll', '#DepartmentDropdown', 'id', 'departmentName', "Select Department");
 });
 
 // Save Button
@@ -281,6 +287,9 @@ $('#btnSave').off('click').click(async () => {
                 $('#modelCreate').modal('hide');
                 notification({ message: "Employee Created successfully !", type: "success", title: "Success" });
                 await getEmployeeList(); // Update the user list
+            } else {
+                notification({ message: result.detail, type: "error", title: "Error" });
+                $('#modelCreate').modal('hide');
             }
         }
     } catch (error) {
@@ -301,8 +310,9 @@ window.updateEmployee = async (id) => {
     $('#myModalLabelAddEmployee').hide();
     await populateDropdown('/Employee/GetAll', '#ManagerDropdown', 'id', 'firstName', "Select Manager");
     await populateDropdown('/DashboardUser/GetAll', '#UserDropdown', 'id', 'userName', "Select User");
-    await populateDropdown('/Branch/GetAll', '#BranchDropdown', 'id', 'name', "Select Branch");
     await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'name', "Select Company");
+    await populateDropdown('/Branch/GetAll', '#BranchDropdown', 'id', 'name', "Select Branch");
+    await populateDropdown('/Department/GetAll', '#DepartmentDropdown', 'id', 'departmentName', "Select Department");
     const result = await SendRequest({ endpoint: '/Employee/GetById/' + id });
     if (result.success) {
         $('#btnSave').hide();
@@ -332,6 +342,10 @@ window.updateEmployee = async (id) => {
         $('#CompanyDropdown').val(result.data.companyId);
         $('#UserDropdown').val(result.data.userId);
         $('#BranchDropdown').val(result.data.branchId);
+        $('#HireDate').val(result.data.hireDate);
+        $('#Salary').val(result.data.salary);
+        $('#DepartmentDropdown').val(result.data.departmentId);
+        
 
 
         $('#modelCreate').modal('show');

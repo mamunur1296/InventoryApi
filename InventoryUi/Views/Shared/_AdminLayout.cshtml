@@ -150,18 +150,19 @@
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar  sidebar-dark-primary elevation-4">
-            <!-- Brand Logo -->
-            <a asp-action="index" asp-controller="Home" class="brand-link">
-                <img src="~/admin/dist/img/AdminLTELogo.png" alt="Logo" class="brand-image img-circle elevation-3"
-                     style="opacity: .8">
-                <span class="brand-text font-weight-light">Inventory</span>
-            </a>
-           
-
             <!-- Sidebar -->
             <div class="sidebar">
+                <div class="brand-link" id="company-info">
+                    <div class="user-panel  pb-3  d-flex align-items-center">
+                        <div id="company-logo"></div>
+                        <div class="info ">
+                            <p class="h6 mb-0" id="company-name"></p>
+                            <span class="d-block text-muted font-weight-bold" id="inventory-text"></span>
+                        </div>
+                    </div>
+                </div>
                 <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
+                <div class="user-panel  pb-3 mb-3 d-flex align-items-center">
                     <div class="image">
                         <img src="/images/User/@img"
                              alt="Profile Image"
@@ -582,6 +583,8 @@
     <script type="module" asp-src-include="~/js/utility/objectmaping.js" asp-append-version="true"></script>
     <script type="module" asp-src-include="~/js/utility/sendrequestutility.js" asp-append-version="true"></script>
     <script type="module" asp-src-include="~/js/utility/allvalidator.js" asp-append-version="true"></script>
+    <script type="module" src="~/js/layout/dashboirdlayout.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
    
 </body>

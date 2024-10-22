@@ -18,7 +18,7 @@ namespace InventoryApi.DTOs
         public decimal Bonus { get; set; }
 
         [Precision(18, 2)]
-        public decimal Deductions { get; set; }
+        public decimal?Deductions { get; set; }
 
         [Required(ErrorMessage = "Net salary is required")]
         [Precision(18, 2)]

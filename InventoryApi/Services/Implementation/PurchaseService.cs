@@ -14,19 +14,20 @@ namespace InventoryApi.Services.Implementation
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-
-        public PurchaseService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper, ApplicationDbContext context)
+        private readonly IUserContextService _userContextService;
+        public PurchaseService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper, ApplicationDbContext context, IUserContextService userContextService)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
             _mapper = mapper;
             _context = context;
+            _userContextService = userContextService;
         }
         public async Task<bool> CreateAsync(PurchaseDTOs entity)
         {
             var newBranch = new Purchase
             {
                 Id = Guid.NewGuid().ToString(),
-                CreatedBy = entity.CreatedBy?.Trim(),
+                CreatedBy = _userContextService.UserName,
                 CreationDate = DateTime.Now, // Set CreationDate here
                 PurchaseDate = DateTime.Now,
                 SupplierID = entity.SupplierID,
@@ -54,7 +55,7 @@ namespace InventoryApi.Services.Implementation
 
 
             // Set the UpdateDate to the current date and time
-            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.UpdatedBy = _userContextService.UserName;
             item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.purchaseRepository.UpdateAsync(item);
@@ -109,6 +110,7 @@ namespace InventoryApi.Services.Implementation
                 var newPurchase = new Purchase
                 {
                     Id = Guid.NewGuid().ToString(),
+                    CreatedBy= _userContextService.UserName,
                     CreationDate = DateTime.Now,
                     PurchaseDate = DateTime.Now,
                     SupplierID = entitys.SupplierID,
@@ -126,6 +128,7 @@ namespace InventoryApi.Services.Implementation
                     var newPurchaseDetail = new PurchaseDetail
                     {
                         Id = Guid.NewGuid().ToString(),
+                        CreatedBy= _userContextService.UserName,
                         CreationDate = DateTime.Now,
                         PurchaseID = newPurchase.Id,
                         ProductID = productDto.ProductID,
@@ -148,6 +151,8 @@ namespace InventoryApi.Services.Implementation
 
                     if (product != null)
                     {
+                        product.UpdatedBy = _userContextService.UserName;
+                        product.SetUpdateDate(DateTime.Now);
                         product.UnitsInStock += productDto.Quantity; // Assuming stock should decrease
                         _context.Products.Update(product);
                     }

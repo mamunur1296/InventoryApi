@@ -23,12 +23,12 @@ const onSuccessUsers = async (Payrolls, employee) => {
             const employee = employeeMap[Payroll.employeeId];
             return {
                 id: Payroll?.id,
-                empName: employee?.firstName + " " + employee?.lastName ?? "N/A",
-                baseSalary: Payroll?.baseSalary ?? "N/A",
-                bonus: Payroll?.bonus ?? "N/A",
-                deducation: Payroll?.deductions ?? "N/A",
-                netSalary: Payroll?.netSalary ?? "N/A",
-                paymentDate: Payroll?.PaymentDate ?? "N/A",
+                empName: employee?.firstName + " " + employee?.lastName ?? "Null",
+                baseSalary: Payroll?.baseSalary ?? "Null",
+                bonus: Payroll?.bonus ?? "Null",
+                deducation: Payroll?.deductions ?? "Null",
+                netSalary: Payroll?.netSalary ?? "Null",
+                paymentDate: Payroll?.PaymentDate ?? "Null",
              
 
             };
@@ -125,7 +125,7 @@ export const isPayrollValidae = $('#PayrollForm').validate({
 
         }
         ,
-        Deductions: {
+        Deductionss: {
             required: true,
 
         }

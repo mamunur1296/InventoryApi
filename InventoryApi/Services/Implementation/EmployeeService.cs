@@ -4,6 +4,7 @@ using InventoryApi.Entities;
 using InventoryApi.Exceptions;
 using InventoryApi.Services.Interfaces;
 using InventoryApi.UnitOfWork;
+using Microsoft.AspNetCore.Identity;
 
 namespace InventoryApi.Services.Implementation
 {
@@ -11,19 +12,27 @@ namespace InventoryApi.Services.Implementation
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
         private readonly IMapper _mapper;
+        private readonly IUserContextService _userContextService;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public EmployeeService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper)
+        public EmployeeService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper, IUserContextService userContextService, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
             _mapper = mapper;
+            _userContextService = userContextService;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         public async Task<bool> CreateAsync(EmployeeDTOs entity)
         {
             var newEmployee = new Employee
             {
-                Id = entity.Id,
-                CreatedBy = entity?.CreatedBy?.Trim(),
+                
+                CreatedBy = _userContextService.UserName,
                 CreationDate = DateTime.Now, // Set CreationDate here
                 FirstName = entity.FirstName.Trim(),
                 LastName = entity.LastName.Trim(),
@@ -47,9 +56,17 @@ namespace InventoryApi.Services.Implementation
                 BranchId=entity?.BranchId,
                 CompanyId=entity?.CompanyId,
                 Salary=entity.Salary,
+                DepartmentId=entity.DepartmentId,
 
             };
-            
+            if (entity.Id != Guid.Empty.ToString() && entity.Id != null)
+            {
+                newEmployee.Id = entity.Id;
+            }
+            else
+            {
+                newEmployee.Id = Guid.NewGuid().ToString();
+            }
             await _unitOfWorkRepository.employeeRepository.AddAsync(newEmployee);
             await _unitOfWorkRepository.SaveAsync();
 
@@ -59,16 +76,39 @@ namespace InventoryApi.Services.Implementation
 
         public async Task<bool> DeleteAsync(string id)
         {
-            var deleteItem = await _unitOfWorkRepository.employeeRepository.GetByIdAsync(id);
+            // Fetch the employee entity using the repository
+            var employee = await _unitOfWorkRepository.employeeRepository.GetByIdAsync(id);
 
-            if (deleteItem == null)
+            if (employee == null)
             {
-                throw new NotFoundException($"Employee with id = {id} not found");
+                throw new NotFoundException($"Employee with ID '{id}' was not found.");
             }
-            await _unitOfWorkRepository.employeeRepository.DeleteAsync(deleteItem);
+
+            // Fetch the related user
+            var user = await _userManager.FindByIdAsync(employee.UserId);
+
+            // Proceed with employee deletion
+            await _unitOfWorkRepository.employeeRepository.DeleteAsync(employee);
+
+            // Save changes to the database
             await _unitOfWorkRepository.SaveAsync();
-            return true;
+
+            // If deletion is successful, update the user's isEmployee flag
+            if (user != null)
+            {
+                user.isApprovedByAdmin = false;
+                var updateResult = await _userManager.UpdateAsync(user);
+
+                // Handle potential issues when updating the user
+                if (!updateResult.Succeeded)
+                {
+                    throw new Exception($"Failed to update user with ID '{user.Id}' after employee deletion.");
+                }
+            }
+
+            return true; // Return true on successful deletion
         }
+
 
         public async Task<IEnumerable<EmployeeDTOs>> GetAllAsync()
         {
@@ -117,11 +157,12 @@ namespace InventoryApi.Services.Implementation
             item.ManagerId = entity?.ManagerId?.Trim();
             item.UserId = entity?.UserId;
             item.CompanyId = entity?.CompanyId?.Trim();
-            item.BranchId = entity?.BranchId?.Trim();   
-
+            item.BranchId = entity?.BranchId?.Trim();
+            item.DepartmentId = entity.DepartmentId;
+            item.Salary = entity.Salary;
 
             // Set the UpdateDate to the current date and time
-            item.UpdatedBy = entity?.UpdatedBy?.Trim();
+            item.UpdatedBy = _userContextService.UserName;
             item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.employeeRepository.UpdateAsync(item);

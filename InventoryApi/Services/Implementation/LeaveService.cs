@@ -11,18 +11,19 @@ namespace InventoryApi.Services.Implementation
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
         private readonly IMapper _mapper;
-
-        public LeaveService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper)
+        private readonly IUserContextService _userContextService;
+        public LeaveService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper, IUserContextService userContextService)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
             _mapper = mapper;
+            _userContextService = userContextService;
         }
         public async Task<bool> CreateAsync(LeaveDTOs entity)
         {
             var newLeave = new Leave
             {
                 Id = Guid.NewGuid().ToString(),
-                CreatedBy = entity.CreatedBy?.Trim(),
+                CreatedBy = _userContextService.UserName,
                 CreationDate = DateTime.Now, // Set CreationDate here
                 EmployeeId= entity.EmployeeId,
                 LeaveType = entity.LeaveType,
@@ -55,7 +56,7 @@ namespace InventoryApi.Services.Implementation
             item.IsApproved= entity.IsApproved;
             
             // Set the UpdateDate to the current date and time
-            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.UpdatedBy = _userContextService.UserName;
             item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.leaveRepository.UpdateAsync(item);

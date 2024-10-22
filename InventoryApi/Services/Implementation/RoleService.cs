@@ -10,11 +10,13 @@ namespace InventoryApi.Services.Implementation
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly IUserContextService _userContextService;
 
-        public RoleService(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+        public RoleService(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, IUserContextService userContextService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _userContextService = userContextService;
         }
 
         public async Task<bool> AssignUserToRole(string userName, IList<string> roles)

@@ -11,18 +11,20 @@ namespace InventoryApi.Services.Implementation
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
         private readonly IMapper _mapper;
+        private readonly IUserContextService _userContextService;
 
-        public BranchService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper)
+        public BranchService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper, IUserContextService userContextService)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
             _mapper = mapper;
+            _userContextService = userContextService;
         }
         public async Task<bool> CreateAsync(BranchDTOs entity)
         {
             var newBranch = new Branch
             {
                 Id = Guid.NewGuid().ToString(),
-                CreatedBy = entity.CreatedBy?.Trim(),
+                CreatedBy = _userContextService.UserName,
                 CreationDate = DateTime.Now, // Set CreationDate here
                 Name = entity.Name?.Trim(),
                 FullName = entity.FullName?.Trim(),
@@ -60,7 +62,7 @@ namespace InventoryApi.Services.Implementation
             item.IsActive = entity.IsActive;
             item.CompanyId = entity.CompanyId;
             // Set the UpdateDate to the current date and time
-            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.UpdatedBy = _userContextService.UserName;
             item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.branchRepository.UpdateAsync(item);

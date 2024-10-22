@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InventoryUi.Models
 {
@@ -58,5 +59,11 @@ namespace InventoryUi.Models
         public string? BranchId { get; set; }
         public ICollection<Employee>? Subordinates { get; set; }
         public ICollection<Order>? Orders { get; set; }
+        public decimal? Salary { get; set; }
+        public string? DepartmentId { get; set; }
+        public Department? Department { get; set; }
+
+        public ICollection<Attendance>? Attendances { get; set; }
+        public ICollection<Payroll>? Payrolls { get; set; }
     }
 }

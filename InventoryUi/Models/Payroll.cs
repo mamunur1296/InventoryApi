@@ -19,7 +19,7 @@ namespace InventoryUi.Models
         public decimal Bonus { get; set; }
 
         [DisplayName("Deductions")]
-        public decimal Deductions { get; set; }
+        public decimal ?Deductions { get; set; }
 
         [Required(ErrorMessage = "Net salary is required")]
         [DisplayName("Net Salary")]

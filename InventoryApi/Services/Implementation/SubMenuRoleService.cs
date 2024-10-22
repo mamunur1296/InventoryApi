@@ -11,11 +11,13 @@ namespace InventoryApi.Services.Implementation
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
         private readonly IMapper _mapper;
+        private readonly IUserContextService _userContextService;
 
-        public SubMenuRoleService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper)
+        public SubMenuRoleService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper, IUserContextService userContextService)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
             _mapper = mapper;
+            _userContextService = userContextService;
         }
 
         public async Task<bool> CreateAsync(SubMenuRoleDTOs entity)

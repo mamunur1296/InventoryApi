@@ -12,18 +12,20 @@ namespace InventoryApi.Services.Implementation
     {
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
         private readonly IMapper _mapper;
+        private readonly IUserContextService _userContextService;
 
-        public DeliveryAddressService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper)
+        public DeliveryAddressService(IUnitOfWorkRepository unitOfWorkRepository, IMapper mapper, IUserContextService userContextService)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
             _mapper = mapper;
+            _userContextService = userContextService;
         }
         public async Task<bool> CreateAsync(DeliveryAddressDTOs entity)
         {
             var newdelivaryAddress = new DeliveryAddress
             {
                 Id = Guid.NewGuid().ToString(),
-                CreatedBy = entity?.CreatedBy?.Trim(),
+                CreatedBy = _userContextService.UserName,
                 CreationDate = DateTime.Now, // Set CreationDate here
                 Address = entity?.Address?.Trim(),
                 Mobile = entity?.Mobile?.Trim(),
@@ -87,7 +89,7 @@ namespace InventoryApi.Services.Implementation
 
 
             // Set the UpdateDate to the current date and time
-            item.UpdatedBy = entity.UpdatedBy?.Trim();
+            item.UpdatedBy = _userContextService.UserName;
             item.SetUpdateDate(DateTime.Now);
             // Perform update operation
             await _unitOfWorkRepository.deliveryAddressRepository.UpdateAsync(item);

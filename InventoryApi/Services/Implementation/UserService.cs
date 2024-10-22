@@ -104,6 +104,7 @@ namespace InventoryApi.Services.Implementation
                     Job=x.Job,
                     CompanyId=x.CompanyId,
                     BranchId=x.BranchId,
+                   
                 })
                 .ToListAsync();
 
