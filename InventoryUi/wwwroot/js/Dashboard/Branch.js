@@ -193,6 +193,9 @@ $('#BranchBtnSave').off('click').click(async () => {
                 $('#BranchModelCreate').modal('hide');
                 notification({ message: "Branch Created successfully !", type: "success", title: "Success" });
                 await getBranchList(); // Update the user list
+            } else {
+                notification({ message: result.detail, type: "error", title: "Error" });
+                $('#BranchModelCreate').modal('hide');
             }
         }
     } catch (error) {

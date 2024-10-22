@@ -161,6 +161,9 @@ $('#ShiftBtnSave').off('click').click(async () => {
                 $('#ShiftModelCreate').modal('hide');
                 notification({ message: "Shift Created successfully !", type: "success", title: "Success" });
                 await getShiftList(); // Update the user list
+            } else {
+                notification({ message: result.detail, type: "error", title: "Error" });
+                $('#ShiftModelCreate').modal('hide');
             }
         }
     } catch (error) {

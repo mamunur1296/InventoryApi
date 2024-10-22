@@ -159,6 +159,9 @@ $('#PurchaseBtnSave').off('click').click(async () => {
                 $('#PurchaseModelCreate').modal('hide');
                 notification({ message: "Purchase Created successfully !", type: "success", title: "Success" });
                 await getPurchaseList(); // Update the user list
+            } else {
+                notification({ message: result.detail, type: "error", title: "Error" });
+                $('#PurchaseModelCreate').modal('hide');
             }
         }
     } catch (error) {

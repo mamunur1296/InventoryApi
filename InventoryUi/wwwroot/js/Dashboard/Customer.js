@@ -20,7 +20,7 @@ const onSuccessUsers = async (customers, users) => {
     const customersitem = customers.map((customer) => {
         if (customer) {
             debugger
-            const user = usersMap[customer.id];
+            const user = usersMap[customer.userId];
             return {
                 id: customer?.id,
                 name: customer?.customerName ?? "Null",
@@ -228,6 +228,9 @@ $('#btnSave').off('click').click(async () => {
                 $('#modelCreate').modal('hide');
                 notification({ message: "Customer Created successfully !", type: "success", title: "Success" });
                 await getCustomerList(); // Update the user list
+            } else {
+                notification({ message: result.detail, type: "error", title: "Error" });
+                $('#modelCreate').modal('hide');
             }
         }
     } catch (error) {

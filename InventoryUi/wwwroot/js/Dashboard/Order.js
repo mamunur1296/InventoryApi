@@ -259,6 +259,9 @@ $('#btnSave').off('click').click(async () => {
                 $('#modelCreate').modal('hide');
                 notification({ message: "Order Created successfully !", type: "success", title: "Success" });
                 await getOrderList(); // Update the user list
+            } else {
+                notification({ message: result.detail, type: "error", title: "Error" });
+                $('#modelCreate').modal('hide');
             }
         }
     } catch (error) {

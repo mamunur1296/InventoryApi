@@ -191,6 +191,9 @@ $('#PayrollBtnSave').off('click').click(async () => {
                 $('#PayrollModelCreate').modal('hide');
                 notification({ message: "Payroll Created successfully !", type: "success", title: "Success" });
                 await getPayrollList(); // Update the user list
+            } else {
+                notification({ message: result.detail, type: "error", title: "Error" });
+                $('#PayrollModelCreate').modal('hide');
             }
         }
     } catch (error) {

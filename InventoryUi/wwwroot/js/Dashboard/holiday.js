@@ -157,6 +157,9 @@ $('#HolidayBtnSave').off('click').click(async () => {
                 $('#HolidayModelCreate').modal('hide');
                 notification({ message: "Holiday Created successfully !", type: "success", title: "Success" });
                 await getHolidayList(); // Update the user list
+            } else {
+                notification({ message: result.detail, type: "error", title: "Error" });
+                $('#HolidayModelCreate').modal('hide');
             }
         }
     } catch (error) {

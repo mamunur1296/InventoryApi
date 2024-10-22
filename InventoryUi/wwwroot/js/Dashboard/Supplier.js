@@ -210,6 +210,9 @@ $('#SupplierbtnSave').off('click').click(async (e) => {
                 $('#SupplierModelCreate').modal('hide');
                 notification({ message: "Supplier Created successfully !", type: "success", title: "Success" });
                 await getSupplierList(); // Update the user list
+            } else {
+                notification({ message: result.detail, type: "error", title: "Error" });
+                $('#SupplierModelCreate').modal('hide');
             }
         }
     } catch (error) {

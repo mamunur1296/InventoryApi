@@ -25,7 +25,7 @@ namespace InventoryUi.Models
         [DisplayName("End Date")]
         public DateTime EndDate { get; set; }
         [DisplayName("Reason")]
-        public string Reason { get; set; }
+        public string ?Reason { get; set; }
         [DisplayName("IsApproved")]
         public bool IsApproved { get; set; }
     }

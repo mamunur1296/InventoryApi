@@ -180,6 +180,9 @@ $('#btnSaveCompany').off('click').click(async () => {
                 $('#CompanyModelCreate').modal('hide');
                 notification({ message: "Company Created successfully !", type: "success", title: "Success" });
                 await getCompanyList(); // Update the user list
+            } else {
+                notification({ message: result.detail, type: "error", title: "Error" });
+                $('#CompanyModelCreate').modal('hide');
             }
         }
     } catch (error) {

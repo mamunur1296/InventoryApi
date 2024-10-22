@@ -160,6 +160,9 @@ $('#CategorybtnSave').off('click').click(async () => {
                 $('#CategoryModelCreate').modal('hide');
                 notification({ message: "Category Created successfully !", type: "success", title: "Success" });
                 await getCategoryList(); // Update the user list
+            } else {
+                notification({ message: result.detail, type: "error", title: "Error" });
+                $('#CategoryModelCreate').modal('hide');
             }
         }
     } catch (error) {

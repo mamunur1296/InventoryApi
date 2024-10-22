@@ -151,6 +151,9 @@ $('#btnSave').off('click').click(async () => {
                 $('#modelCreate').modal('hide');
                 notification({ message: "Shipper Created successfully !", type: "success", title: "Success" });
                 await getShipperList(); // Update the user list
+            } else {
+                notification({ message: result.detail, type: "error", title: "Error" });
+                $('#modelCreate').modal('hide');
             }
         }
     } catch (error) {

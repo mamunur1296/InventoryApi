@@ -183,6 +183,9 @@ $('#btnSave').off('click').click(async () => {
                 $('#modelCreate').modal('hide');
                 notification({ message: "Delivery Address Created successfully !", type: "success", title: "Success" });
                 await getDeliveryAddressList(); // Update the user list
+            } else {
+                $('#modelCreate').modal('hide');
+                notification({ message: result.detail, type: "error", title: "Error" });
             }
         }
     } catch (error) {

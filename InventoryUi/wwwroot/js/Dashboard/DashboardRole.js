@@ -122,6 +122,9 @@ $('#btnSave').off('click').click(async () => {
                 $('#modelCreate').modal('hide');
                 notification({ message: "Role Created successfully !", type: "success", title: "Success" });
                 await getRoleList(); // Update the user list
+            } else {
+                notification({ message: result.detail, type: "error", title: "Error" });
+                $('#modelCreate').modal('hide');
             }
         }
     } catch (error) {

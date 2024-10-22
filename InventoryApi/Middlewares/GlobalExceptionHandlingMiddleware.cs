@@ -167,15 +167,45 @@ namespace InventoryApi.Middlewares
 
                             case 2601: // Unique index violation
                             case 2627: // Violation of primary key constraint
-                                message = "Save Failed: The data you are trying to save already exists. Duplicate entries are not allowed. Please ensure the data is unique and try again.";
-                                title = "Duplicate Key Violation";
-                                status = HttpStatusCode.Conflict;
+                                if (sqlException.Message.Contains("INSERT"))
+                                {
+                                    var regex = new Regex(@"'([^']*)'");
+                                    var matches = regex.Matches(sqlException.Message);
+
+                                    string column = matches[0].Groups[1].Value;  
+                                    string table = matches[1].Groups[1].Value;   
+                                    message = $"Save Failed: The '{column}' field in the '{table}' table cannot be null. Please provide a value and try again.";
+                                    title = "Null Constraint Violation";
+                                    status = HttpStatusCode.BadRequest;
+                                }
+                                else
+                                {
+                                    message = "Save Failed: The data you are trying to save already exists. Duplicate entries are not allowed. Please ensure the data is unique and try again.";
+                                    title = "Duplicate Key Violation";
+                                    status = HttpStatusCode.Conflict;
+                                }
+
                                 break;
 
                             case 515: // Cannot insert null into a non-nullable column
-                                message = "Save Failed: A required field is missing. Please ensure all mandatory fields are filled out and try again.";
-                                title = "Null Value Violation";
-                                status = HttpStatusCode.BadRequest;
+                                if (sqlException.Message.Contains("INSERT"))
+                                {
+                                    var regex = new Regex(@"'([^']*)'");
+                                    var matches = regex.Matches(sqlException.Message);
+
+                                    string column = matches[0].Groups[1].Value;
+                                    string fullTableName = matches[1].Groups[1].Value;
+                                    string table = fullTableName.Split('.').Last();
+                                    message = $"Save Failed: The '{column}' field in the '{table}' table cannot be null. Please provide a value and try again.";
+                                    title = "Null Constraint Violation";
+                                    status = HttpStatusCode.BadRequest;
+                                }
+                                else
+                                {
+                                    message = "Save Failed: The data you are trying to save already exists. Duplicate entries are not allowed. Please ensure the data is unique and try again.";
+                                    title = "Duplicate Key Violation";
+                                    status = HttpStatusCode.Conflict;
+                                }
                                 break;
 
                             case 208: // Invalid object name

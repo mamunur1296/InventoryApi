@@ -133,7 +133,7 @@ export const isLeaveValidae = $('#LeaveForm').validate({
             required: true,
 
         },
-        Reason: {
+        Reasosn: {
             required: true,
 
         }
@@ -189,6 +189,9 @@ $('#LeaveBtnSave').off('click').click(async () => {
                 $('#LeaveModelCreate').modal('hide');
                 notification({ message: "Leave Created successfully !", type: "success", title: "Success" });
                 await getLeaveList(); // Update the user list
+            } else {
+                notification({ message: result.detail, type: "error", title: "Error" });
+                $('#LeaveModelCreate').modal('hide');
             }
         }
     } catch (error) {

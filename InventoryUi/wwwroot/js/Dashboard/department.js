@@ -149,6 +149,9 @@ $('#DepartmentBtnSave').off('click').click(async () => {
                 $('#DepartmentModelCreate').modal('hide');
                 notification({ message: "Department Created successfully !", type: "success", title: "Success" });
                 await getDepartmentList(); // Update the user list
+            } else {
+                notification({ message: result.detail, type: "error", title: "Error" });
+                $('#DepartmentModelCreate').modal('hide');
             }
         }
     } catch (error) {

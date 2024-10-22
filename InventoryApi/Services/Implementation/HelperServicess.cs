@@ -258,6 +258,7 @@ namespace InventoryApi.Services.Implementation
                             DateOfBirth = DateTime.Now, // Adjust as needed
                             MedicalHistory = null,
                             Id = user.Id,
+                            UserId = user.Id,
                         };
 
                         var customerResult = await _customer.CreateAsync(customer);

@@ -161,6 +161,12 @@
                                     <input asp-for="Email" placeholder="Enter Customer Email (e.g., example@domain.com)" class="form-control" name="Email" />
                                     <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
+                                <div class="form-group">
+                                    <label class="control-label" asp-for="UserId"></label>
+                                    <select class="form-control" asp-for="UserId" name="UserId" id="UserDropdown">
+                                        <option value="">Select manager</option>
+                                    </select>
+                                </div>
                                 
                             </div>
                         </div>

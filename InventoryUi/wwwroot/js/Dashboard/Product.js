@@ -295,6 +295,9 @@ $('#ProductBtnSave').off('click').on('click', async (event) => {
                 $('#ProductModelCreate').modal('hide');
                 notification({ message: "Product Created successfully!", type: "success", title: "Success" });
                 await getProductList(); // Refresh product list
+            } else {
+                notification({ message: result.detail, type: "error", title: "Error" });
+                $('#ProductModelCreate').modal('hide');
             }
         }
     } catch (error) {

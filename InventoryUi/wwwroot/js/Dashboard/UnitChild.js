@@ -175,6 +175,9 @@ $('#UnitChildbtnSave').off('click').click(async (e) => {
                 $('#UnitChildModelCreate').modal('hide');
                 notification({ message: "UnitChild Created successfully !", type: "success", title: "Success" });
                 await getUnitChildList(); // Update the user list
+            } else {
+                notification({ message: result.detail, type: "error", title: "Error" });
+                $('#UnitChildModelCreate').modal('hide');
             }
         }
     } catch (error) {

@@ -151,6 +151,9 @@ $('#UnitMasterbtnSave').off('click').click(async (e) => {
                 $('#UnitMasterModelCreate').modal('hide');
                 notification({ message: "Unit Master Created successfully !", type: "success", title: "Success" });
                 await getUnitMasterList(); // Update the user list
+            } else {
+                notification({ message: result.detail, type: "error", title: "Error" });
+                $('#UnitMasterModelCreate').modal('hide');
             }
         }
     } catch (error) {

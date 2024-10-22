@@ -173,6 +173,9 @@ $('#AttendanceBtnSave').off('click').click(async () => {
                 $('#AttendanceModelCreate').modal('hide');
                 notification({ message: "Attendance Created successfully !", type: "success", title: "Success" });
                 await getAttendanceList(); // Update the user list
+            } else {
+                notification({ message: result.detail, type: "error", title: "Error" });
+                $('#AttendanceModelCreate').modal('hide');
             }
         }
     } catch (error) {
