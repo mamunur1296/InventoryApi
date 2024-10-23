@@ -13,6 +13,8 @@ using System.Security.Claims;
 
 namespace InventoryUi.Controllers
 {
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+    [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
     public class NewOrderController : Controller
     {
         private readonly IClientServices<Product> _productServices;

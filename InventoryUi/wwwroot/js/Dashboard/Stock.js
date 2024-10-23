@@ -164,14 +164,14 @@ $('#btnSave').off('click').click(async () => {
                 notification({ message: "Stock Created successfully !", type: "success", title: "Success" });
                 await getStockList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#modelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#modelCreate').modal('hide');
-        notification({ message: " Stock Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Stock Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -209,7 +209,7 @@ window.updateStock = async (id) => {
                 await getStockList(); // Update the user list
             } else {
                 $('#modelCreate').modal('hide');
-                notification({ message: " Stock Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Stock Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
         });
     }
@@ -240,7 +240,7 @@ window.deleteStock = async (id) => {
             await getStockList(); // Update the category list
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
 
         }
     });

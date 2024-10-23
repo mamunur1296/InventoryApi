@@ -4,6 +4,7 @@ using InventoryApi.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241023055246_NalabolDataAndBonus")]
+    partial class NalabolDataAndBonus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -569,7 +571,7 @@ namespace InventoryApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("HireDate")
+                    b.Property<DateTime>("HireDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("HomePhone")
@@ -601,7 +603,7 @@ namespace InventoryApi.Migrations
                     b.Property<int?>("ReportsTo")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("Salary")
+                    b.Property<decimal>("Salary")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 

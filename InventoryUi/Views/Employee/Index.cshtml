@@ -122,12 +122,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="BirthDate" class="control-label"></label>
-                                    <input asp-for="BirthDate" placeholder="Enter birth date (01/01/1990)" class="form-control" name="BirthDate" />
+                                    <input asp-for="BirthDate" type="date" placeholder="Enter birth date (01/01/1990)" class="form-control" name="BirthDate" />
                                     <span asp-validation-for="BirthDate" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="HireDate" class="control-label"></label>
-                                    <input asp-for="HireDate" placeholder="Enter Hire date (01/01/1990)" class="form-control" name="HireDate" />
+                                    <input asp-for="HireDate" type="date" placeholder="Enter Hire date (01/01/1990)" class="form-control" name="HireDate" />
                                     <span asp-validation-for="HireDate" class="text-danger"></span>
                                 </div>
                                 
@@ -191,22 +191,15 @@
                                     <input asp-for="Files" placeholder="Upload photo (photo.jpg)" class="form-control" name="Files" />
                                     <span asp-validation-for="Files" class="text-danger"></span>
                                 </div>
-                               
-                               
-                            </div>
-                            <div class="col-md-3">
+
                                 <div class="form-group">
                                     <label class="control-label" asp-for="ManagerId"></label>
                                     <select class="form-control" asp-for="ManagerId" name="ManagerId" id="ManagerDropdown">
                                         <option value="">Select manager</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label" asp-for="UserId"></label>
-                                    <select class="form-control" asp-for="UserId" name="UserId" id="UserDropdown">
-                                        <option value="">Select manager</option>
-                                    </select>
-                                </div>
+                            </div>
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label" asp-for="CompanyId"></label>
                                     <select class="form-control" asp-for="CompanyId" name="CompanyId" id="CompanyDropdown">
@@ -224,6 +217,21 @@
                                     <select class="form-control" asp-for="DepartmentId" name="DepartmentId" id="DepartmentDropdown">
                                         <option value="">Select Branch</option>
                                     </select>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Email" class="control-label"></label>
+                                    <input asp-for="Email" placeholder="Enter User Name" class="form-control" name="Email" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                 <div class="form-group">
+                                    <label asp-for="UserName" class="control-label"></label>
+                                    <input asp-for="UserName" placeholder="Enter User Name" class="form-control" name="UserName" />
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Password" class="control-label"></label>
+                                    <input asp-for="Password" placeholder="Enter Password" class="form-control" name="Password" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
                                 </div>
                                 
                             </div>

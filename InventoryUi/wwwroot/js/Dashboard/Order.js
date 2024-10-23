@@ -260,14 +260,14 @@ $('#btnSave').off('click').click(async () => {
                 notification({ message: "Order Created successfully !", type: "success", title: "Success" });
                 await getOrderList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#modelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#modelCreate').modal('hide');
-        notification({ message: " Order Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Order Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -318,7 +318,7 @@ window.updateOrder = async (id) => {
                 await getOrderList(); // Update the user list
             } else {
                 $('#modelCreate').modal('hide');
-                notification({ message: " Order Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Order Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
 
         });
@@ -352,7 +352,7 @@ window.deleteOrder = async (id) => {
             await getOrderList(); // Update the category list
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
 
         }
 

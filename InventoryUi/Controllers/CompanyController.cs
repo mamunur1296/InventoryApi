@@ -6,6 +6,8 @@ using Microsoft.DotNet.Scaffolding.Shared.CodeModifier.CodeChange;
 
 namespace InventoryUi.Controllers
 {
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+    [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
     public class CompanyController : Controller
     {
         private readonly IClientServices<Company> _companyServices;

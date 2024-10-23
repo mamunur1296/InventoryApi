@@ -123,14 +123,14 @@ $('#btnSave').off('click').click(async () => {
                 notification({ message: "Role Created successfully !", type: "success", title: "Success" });
                 await getRoleList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#modelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#modelCreate').modal('hide');
-        notification({ message: " Role Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Role Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 });
 
@@ -189,7 +189,7 @@ window.deleteRole = async (id) => {
             await getRoleList(); // Update the category list
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
         }
     });
 }

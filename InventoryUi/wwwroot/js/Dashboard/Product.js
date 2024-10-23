@@ -296,14 +296,14 @@ $('#ProductBtnSave').off('click').on('click', async (event) => {
                 notification({ message: "Product Created successfully!", type: "success", title: "Success" });
                 await getProductList(); // Refresh product list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#ProductModelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#ProductModelCreate').modal('hide');
-        notification({ message: "Product creation failed. Please try again!", type: "error", title: "Error" });
+        notification({ message: "Product creation failed. Please try again!", type: "error", title: "Error", time: 0 });
     }
 });
 
@@ -363,7 +363,7 @@ window.updateProduct = async (id) => {
                 await getProductList(); // Update the user list
             } else {
                 $('#ProductModelCreate').modal('hide');
-                notification({ message: " Product Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Product Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
 
         });
@@ -394,7 +394,7 @@ window.deleteProduct = async (id) => {
             await getProductList(); // Update the category list
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
 
         }
     });

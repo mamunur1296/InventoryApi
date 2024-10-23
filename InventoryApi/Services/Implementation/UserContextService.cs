@@ -1,6 +1,5 @@
 ﻿using InventoryApi.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 
 public class UserContextService : IUserContextService
@@ -11,8 +10,11 @@ public class UserContextService : IUserContextService
     {
         _httpContextAccessor = httpContextAccessor;
 
-        // Parse the token and store claims in HttpContext Items
-        ParseToken();
+        // Parse the token only if the route is not public and the method is Create/Update
+        if (IsCreateOrUpdateMethod())
+        {
+            ParseToken();
+        }
     }
 
     public string UserName => _httpContextAccessor.HttpContext?.Items["UserName"]?.ToString();
@@ -47,5 +49,41 @@ public class UserContextService : IUserContextService
         _httpContextAccessor.HttpContext.Items["UserId"] = userId;
         _httpContextAccessor.HttpContext.Items["UserRole"] = userRole;
     }
-}
 
+    // Check if the current route is public (no token required)
+    private bool IsPublicRoute()
+    {
+        var path = _httpContextAccessor.HttpContext?.Request.Path.ToString().ToLower();
+
+        // Define public URL patterns, allowing for dynamic product IDs (GUID)
+        var publicPaths = new List<string>
+        {
+            "/api/product/all",
+            "/api/product/get/"
+        };
+
+        // Check static public paths
+        if (publicPaths.Any(p => path.Contains(p)))
+        {
+            return true;
+        }
+
+        // Define dynamic path pattern for GUIDs
+        var dynamicPathPatterns = new List<string>
+        {
+            @"^/api/product/get/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+        };
+
+        // Check if the path matches any of the dynamic patterns (like GUID paths)
+        return dynamicPathPatterns.Any(pattern => System.Text.RegularExpressions.Regex.IsMatch(path, pattern));
+    }
+
+    // Check if the current HTTP method is for Create or Update
+    private bool IsCreateOrUpdateMethod()
+    {
+        var method = _httpContextAccessor.HttpContext?.Request.Method.ToLower();
+
+        // Only trigger token parsing for Create (POST) or Update (PUT/PATCH) operations
+        return method == "post" || method == "put" || method == "patch";
+    }
+}

@@ -158,14 +158,14 @@ $('#HolidayBtnSave').off('click').click(async () => {
                 notification({ message: "Holiday Created successfully !", type: "success", title: "Success" });
                 await getHolidayList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#HolidayModelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#HolidayModelCreate').modal('hide');
-        notification({ message: " Holiday Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Holiday Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -204,7 +204,7 @@ window.updateHoliday = async (id) => {
                 await getHolidayList(); // Update the user list
             } else {
                 $('#HolidayModelCreate').modal('hide');
-                notification({ message: " Holiday Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Holiday Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
         });
     }
@@ -237,7 +237,7 @@ window.deleteHoliday = async (id) => {
 
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
         }
     });
 }

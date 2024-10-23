@@ -9,7 +9,8 @@ using InventoryUi.ViewModel;
 
 namespace InventoryUi.Controllers
 {
-    
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+    [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
     public class DashboardUserController : Controller
     {
         private readonly IClientServices<User> _userServices;
@@ -51,6 +52,7 @@ namespace InventoryUi.Controllers
             return View(vm);
         }
         [HttpGet]
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public async Task<IActionResult> GetaCompanyForEmpPartial()
         {
             var companys = await _companyServices.GetAllClientsAsync("Company/All");
@@ -73,12 +75,14 @@ namespace InventoryUi.Controllers
             return NotFound();
         }
         [HttpGet]
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public async Task<IActionResult> Getall()
         {
             var users = await _userServices.GetAllClientsAsync("User/GetAll");
             return Json(users);
         }
         [HttpGet]
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public async Task<IActionResult> CheckDuplicate(string key, string val)
         {
             var usersResponse = await _userServices.GetAllClientsAsync("User/GetAll");
@@ -97,6 +101,7 @@ namespace InventoryUi.Controllers
             return Json(false);
         }
         [HttpGet]
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public async Task<IActionResult> GetById(string id)
         {
             var user = await _userServices.GetClientByIdAsync($"User/{id}");
@@ -108,6 +113,7 @@ namespace InventoryUi.Controllers
             return Json(vm);
         }
         [HttpPost]
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public async Task<IActionResult> Create(Register model)
         {
             // Initialize the Roles list with the RoleName value
@@ -116,6 +122,7 @@ namespace InventoryUi.Controllers
             return Json(register);
         }
         [HttpPost]
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public async Task<IActionResult> Register([FromForm] DashboirdUserVm model)
         {
             // Initialize the Roles list with the RoleName value
@@ -124,12 +131,14 @@ namespace InventoryUi.Controllers
             return Json(register);
         }
         [HttpDelete]
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public async Task<IActionResult> Delete(string id)
         {
             var deleted = await _userServices.DeleteClientAsync($"User/{id}");
             return Json(deleted);
         }
         [HttpPut]
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public async Task<IActionResult> Update(string id, DashboirdUserVm model)
         {
             var user = await _userServices.GetClientByIdAsync($"User/{id}");

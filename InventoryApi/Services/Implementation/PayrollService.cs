@@ -28,10 +28,10 @@ namespace InventoryApi.Services.Implementation
                 CreationDate = DateTime.Now, // Set CreationDate here
                 EmployeeId = entity.EmployeeId,
                 BaseSalary = entity.BaseSalary,
-                Bonus = entity.Bonus,
+                Bonus = entity?.Bonus,
                 Deductions = entity?.Deductions,
                 NetSalary = entity.NetSalary,
-                PaymentDate = entity.PaymentDate,
+                PaymentDate = entity?.PaymentDate,
             };
             await _unitOfWorkRepository.payrollRepository.AddAsync(newPayroll);
             await _unitOfWorkRepository.SaveAsync();
@@ -49,10 +49,10 @@ namespace InventoryApi.Services.Implementation
             // item.CartID = string.IsNullOrWhiteSpace(entity.CartID) ? item.CartID : entity.CartID.Trim();
             item.EmployeeId= entity.EmployeeId;
             item.BaseSalary= entity.BaseSalary;
-            item.Bonus= entity.Bonus;
+            item.Bonus= entity?.Bonus;
             item.Deductions= entity?.Deductions;
             item.NetSalary= entity.NetSalary;
-            item.PaymentDate= entity.PaymentDate;
+            item.PaymentDate= entity?.PaymentDate;
            
             // Set the UpdateDate to the current date and time
             item.UpdatedBy = _userContextService.UserName;

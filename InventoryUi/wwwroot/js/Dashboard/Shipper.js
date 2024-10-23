@@ -152,14 +152,14 @@ $('#btnSave').off('click').click(async () => {
                 notification({ message: "Shipper Created successfully !", type: "success", title: "Success" });
                 await getShipperList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#modelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#modelCreate').modal('hide');
-        notification({ message: " Shipper Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Shipper Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -194,7 +194,7 @@ window.updateShipper = async (id) => {
                 await getShipperList(); // Update the user list
             } else {
                 $('#modelCreate').modal('hide');
-                notification({ message: " Shipper Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Shipper Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
 
         });
@@ -225,7 +225,7 @@ window.deleteShipper = async (id) => {
             await getShipperList(); // Update the category list
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
 
         }
     });

@@ -7,6 +7,8 @@ using System.Text;
 
 namespace InventoryUi.Controllers
 {
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+    [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
     public class OrderController : Controller
     {
         private readonly IClientServices<Order> _orderServices;

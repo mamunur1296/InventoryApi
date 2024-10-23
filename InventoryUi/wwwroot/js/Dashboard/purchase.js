@@ -160,14 +160,14 @@ $('#PurchaseBtnSave').off('click').click(async () => {
                 notification({ message: "Purchase Created successfully !", type: "success", title: "Success" });
                 await getPurchaseList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#PurchaseModelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#PurchaseModelCreate').modal('hide');
-        notification({ message: " Purchase Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Purchase Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -213,7 +213,7 @@ window.updatePurchase = async (id) => {
                 await getBranchList(); // Update the user list
             } else {
                 $('#BranchModelCreate').modal('hide');
-                notification({ message: " Branch Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Branch Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
         });
     }
@@ -246,7 +246,7 @@ window.deletePurchase = async (id) => {
 
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
         }
     });
 }

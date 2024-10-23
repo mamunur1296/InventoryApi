@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryUi.Controllers
 {
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+    [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
     public class DeliveryAddressController : Controller
     {
         private readonly IClientServices<DeliveryAddress> _deliveryAddressServices;

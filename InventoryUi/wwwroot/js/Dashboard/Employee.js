@@ -91,33 +91,37 @@ const onSuccessUsers = async (employeees, users, company, branchs) => {
 }
 
 
-//// Fatch duplucate file 
+const createDuplicateCheckValidator = (endpoint, key, errorMessage) => {
+    return function (value, element) {
+        let isValid = false;
+        $.ajax({
+            type: "GET",
+            url: endpoint,
+            data: { key: key, val: value },
+            async: false,
+            success: function (response) {
+                isValid = !response;
+            },
+            error: function () {
+                isValid = false;
+            }
+        });
+        return isValid;
+    };
+}
 
-//const createDuplicateCheckValidator = (endpoint, key, errorMessage) => {
-//    return function (value, element) {
-//        let isValid = false;
-//        $.ajax({
-//            type: "GET",
-//            url: endpoint,
-//            data: { key: key, val: value },
-//            async: false,
-//            success: function (response) {
-//                isValid = !response;
-//            },
-//            error: function () {
-//                isValid = false;
-//            }
-//        });
-//        return isValid;
-//    };
-//}
-
-//$.validator.addMethod("checkDuplicateWarehouseName", createDuplicateCheckValidator(
-//    "/Warehouse/CheckDuplicate",
-//    "WarehouseName"
-//));
+$.validator.addMethod("checkDuplicateUsername", createDuplicateCheckValidator(
+    "/DashboardUser/CheckDuplicate",
+    "UserName",
+    "Username already exists."
+));
 
 
+$.validator.addMethod("checkDuplicateEmail", createDuplicateCheckValidator(
+    "/DashboardUser/CheckDuplicate",
+    "Email",
+    "Email already exists."
+));
 
 
 
@@ -143,51 +147,25 @@ const UsrValidae = $('#EmployeeForm').validate({
         DepartmentId: {
             required: true,
         },
-        UserId: {
+        BirthDate: {
             required: true,
         },
-        Salary: {
+        HireDate: {
             required: true,
         },
-        //TitleOfCourtesy: {
-        //    required: true,
-        //},
-        //BirthDate: {
-        //    required: true,
-        //},
-        //HireDate: {
-        //    required: true,
-        //},
-        //Address: {
-        //    required: true,
-        //},
-        //City: {
-        //    required: true,
-        //},
-        //Region: {
-        //    required: true,
-        //},
-        //PostalCode: {
-        //    required: true,
-        //},
-        //Country: {
-        //    required: true,
-        //},
-        //HomePhone: {
-        //    required: true,
-        //},
-        //Extension: {
-        //    required: true,
-        //},
-        //Notes: {
-        //    required: true,
-        //},
-        //ReportsTo: {
-        //    required: true,
-        //},
-        //Files: {
-        //    required: true,
-        //}
+        UserName: {
+            required: true,
+            checkDuplicateUsername: true
+        },
+        Email: {
+            required: true,
+            checkDuplicateEmail: true
+        },
+        Password: {
+            required: true,
+            minlength: 6,
+            pwcheck: true
+        }
     },
     messages: {
         LastName: {
@@ -237,6 +215,19 @@ const UsrValidae = $('#EmployeeForm').validate({
         },
         Files: {
             required: "Photo Path is required.",
+        },
+        UserName: {
+            required: "User Name is required.",
+            checkDuplicateUsername: "This username is already taken."
+        },
+        Email: {
+            required: "Email is required.",
+            checkDuplicateEmail: "This email is already registered."
+        },
+        Password: {
+            required: "Password is required.",
+            minlength: "Password must be at least 6 characters long.",
+            pwcheck: "Password must contain at least one lowercase letter (a-z)."
         }
     },
     errorElement: 'div',
@@ -251,7 +242,9 @@ const UsrValidae = $('#EmployeeForm').validate({
         $(element).removeClass('is-invalid');
     }
 });
-
+$.validator.addMethod("pwcheck", function (value) {
+    return /[a-z]/.test(value); // At least one lowercase letter
+});
 
 //Sow Create Model 
 $('#CreateBtn').off('click').click(async () => {
@@ -288,14 +281,14 @@ $('#btnSave').off('click').click(async () => {
                 notification({ message: "Employee Created successfully !", type: "success", title: "Success" });
                 await getEmployeeList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#modelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#modelCreate').modal('hide');
-        notification({ message: " Employee Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Employee Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 });
 
@@ -362,7 +355,7 @@ window.updateEmployee = async (id) => {
                     await getEmployeeList(); // Update the user list
                 } else {
                     $('#modelCreate').modal('hide');
-                    notification({ message: " Employee Updated failed . Please try again. !", type: "error", title: "Error" });
+                    notification({ message: " Employee Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
                 }
             }
             
@@ -395,7 +388,7 @@ window.deleteEmployee = async (id) => {
             await getEmployeeList(); // Update the category list
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
         }
     });
 }

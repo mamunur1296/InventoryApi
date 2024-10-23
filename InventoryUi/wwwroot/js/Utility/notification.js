@@ -7,16 +7,7 @@ export const notification = ({
     time = 5000,
     position = "toast-top-center" // Default position, can be overridden
 } = {}) => {
-    // Default position, can be overridden
-    // Default position, can be overridden
-    // Default position, can be overridden
-    // Default position, can be overridden
-    // Default position, can be overridden
-    // Default position, can be overridden
-    
-    
-    
-  
+
     debugger
     console.log("Notification");
     // Set the options for Toastr
@@ -41,6 +32,55 @@ export const notification = ({
     // Determine the type of notification to display
     switch (type.toLowerCase()) {
         
+        case 'success':
+            toastr.success(message, title);
+            break;
+        case 'error':
+            toastr.error(message, title);
+            break;
+        case 'warning':
+            toastr.warning(message, title);
+            break;
+        case 'info':
+            toastr.info(message, title);
+            break;
+        default:
+            toastr.info(message, title);
+            break;
+    }
+}
+export const notificationErrors = ({
+    message = "",
+    type = "error",
+    title = "Error",
+    time = 15000,
+    position = "toast-top-center" // Default position, can be overridden
+} = {}) => {
+
+    debugger
+    console.log("Notification");
+    // Set the options for Toastr
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": position, // Use the dynamic position here
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": time,
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
+    // Determine the type of notification to display
+    switch (type.toLowerCase()) {
+
         case 'success':
             toastr.success(message, title);
             break;

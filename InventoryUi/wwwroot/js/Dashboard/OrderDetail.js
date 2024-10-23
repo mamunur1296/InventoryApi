@@ -186,14 +186,14 @@ $('#btnSave').off('click').click(async () => {
                 notification({ message: "Order Detail Created successfully !", type: "success", title: "Success" });
                 await getOrderDetailList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#modelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#modelCreate').modal('hide');
-        notification({ message: " Order Detail Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Order Detail Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -234,7 +234,7 @@ window.updateOrderDetail = async (id) => {
                 await getOrderDetailList(); // Update the user list
             } else {
                 $('#modelCreate').modal('hide');
-                notification({ message: " Order Detail Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Order Detail Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
 
         });
@@ -265,7 +265,7 @@ window.deleteOrderDetail = async (id) => {
             await getOrderDetailList(); // Update the category list
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
 
         }
     });

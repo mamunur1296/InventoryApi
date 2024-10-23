@@ -1,9 +1,12 @@
 ﻿using InventoryUi.Models;
 using InventoryUi.Services.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryUi.Controllers
 {
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+    [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
     public class SubMenuRoleController : Controller
     {
         private readonly IClientServices<SubMenuRole> _subMenuRoleServices;

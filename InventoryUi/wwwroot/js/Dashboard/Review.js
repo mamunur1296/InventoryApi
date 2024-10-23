@@ -178,14 +178,14 @@ $('#btnSave').off('click').click(async () => {
                 notification({ message: "Review Created successfully !", type: "success", title: "Success" });
                 await getReviewList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#modelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#modelCreate').modal('hide');
-        notification({ message: " Review Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Review Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -225,7 +225,7 @@ window.updateReview = async (id) => {
                 await getReviewList(); // Update the user list
             } else {
                 $('#modelCreate').modal('hide');
-                notification({ message: " Review Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Review Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
 
         });
@@ -256,7 +256,7 @@ window.deleteReview = async (id) => {
             await getReviewList(); // Update the category list
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
 
         }
     });

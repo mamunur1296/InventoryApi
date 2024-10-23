@@ -194,14 +194,14 @@ $('#BranchBtnSave').off('click').click(async () => {
                 notification({ message: "Branch Created successfully !", type: "success", title: "Success" });
                 await getBranchList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#BranchModelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#BranchModelCreate').modal('hide');
-        notification({ message: " Branch Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Branch Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -247,7 +247,7 @@ window.updateBranch = async (id) => {
                 await getBranchList(); // Update the user list
             } else {
                 $('#BranchModelCreate').modal('hide');
-                notification({ message: " Branch Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Branch Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
         });
     }
@@ -280,7 +280,7 @@ window.deleteBranch = async (id) => {
 
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
         }
     });
 }

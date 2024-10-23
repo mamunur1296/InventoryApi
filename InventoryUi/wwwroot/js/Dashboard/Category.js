@@ -161,14 +161,14 @@ $('#CategorybtnSave').off('click').click(async () => {
                 notification({ message: "Category Created successfully !", type: "success", title: "Success" });
                 await getCategoryList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#CategoryModelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#CategoryModelCreate').modal('hide');
-        notification({ message: " Category Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Category Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -203,7 +203,7 @@ window.updateCategory = async (id) => {
                 await getCategoryList(); // Update the user list
             } else {
                 $('#CategoryModelCreate').modal('hide');
-                notification({ message: " Category Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Category Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
         });
     }
@@ -236,7 +236,7 @@ window.deleteCategory = async (id) => {
 
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
         }
     });
 }

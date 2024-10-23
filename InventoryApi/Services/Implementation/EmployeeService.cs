@@ -39,7 +39,7 @@ namespace InventoryApi.Services.Implementation
                 Title = string.IsNullOrWhiteSpace(entity.Title) ? null : entity.Title.Trim(),
                 TitleOfCourtesy = string.IsNullOrWhiteSpace(entity.TitleOfCourtesy) ? null : entity.TitleOfCourtesy.Trim(),
                 BirthDate = entity?.BirthDate,
-                HireDate = DateTime.Now,
+                HireDate = entity?.HireDate,
                 Address = string.IsNullOrWhiteSpace(entity?.Address) ? null : entity?.Address.Trim(),
                 City = string.IsNullOrWhiteSpace(entity?.City) ? null : entity.City.Trim(),
                 Region = string.IsNullOrWhiteSpace(entity?.Region) ? null : entity.Region.Trim(),

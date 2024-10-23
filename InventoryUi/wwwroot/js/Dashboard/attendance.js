@@ -174,14 +174,14 @@ $('#AttendanceBtnSave').off('click').click(async () => {
                 notification({ message: "Attendance Created successfully !", type: "success", title: "Success" });
                 await getAttendanceList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#AttendanceModelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#AttendanceModelCreate').modal('hide');
-        notification({ message: " Attendance Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Attendance Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -220,7 +220,7 @@ window.updateAttendance = async (id) => {
                 await getAttendanceList(); // Update the user list
             } else {
                 $('#AttendanceModelCreate').modal('hide');
-                notification({ message: " Attendance Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Attendance Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
         });
     }
@@ -253,7 +253,7 @@ window.deleteAttendance = async (id) => {
 
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
         }
     });
 }

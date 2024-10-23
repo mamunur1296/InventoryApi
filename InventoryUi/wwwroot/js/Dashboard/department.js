@@ -150,14 +150,14 @@ $('#DepartmentBtnSave').off('click').click(async () => {
                 notification({ message: "Department Created successfully !", type: "success", title: "Success" });
                 await getDepartmentList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#DepartmentModelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#DepartmentModelCreate').modal('hide');
-        notification({ message: " Department Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Department Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -195,7 +195,7 @@ window.updateDepartment = async (id) => {
                 await getDepartmentList(); // Update the user list
             } else {
                 $('#DepartmentModelCreate').modal('hide');
-                notification({ message: " Department Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Department Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
         });
     }
@@ -228,7 +228,7 @@ window.deleteDepartment = async (id) => {
 
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
         }
     });
 }

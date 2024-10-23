@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryUi.Controllers
 {
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+    [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
     public class CartItemController : Controller
     {
         private readonly IClientServices<CartItem> _cartItemServices;

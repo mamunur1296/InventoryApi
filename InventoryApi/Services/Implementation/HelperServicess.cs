@@ -132,7 +132,7 @@ namespace InventoryApi.Services.Implementation
                         Title = null,
                         TitleOfCourtesy = null,
                         BirthDate = null,
-                        HireDate = DateTime.Now,
+                        HireDate = null,
                         Address = null,
                         City = null,
                         Region = null,

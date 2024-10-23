@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryUi.Controllers
 {
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+    [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
     public class WarehouseController : Controller
     {
         private readonly IClientServices<Warehouse> _warehouseServices;

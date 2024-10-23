@@ -1,4 +1,4 @@
-﻿import { notification } from '../Utility/notification.js';
+﻿import { notification, notificationErrors } from '../Utility/notification.js';
 import { clearMessage, createActionButtons, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 import { isBranchValidae } from './Branch.js';
@@ -228,13 +228,13 @@ $('#btnSave').off('click').click(async () => {
                 await getUserList(); // Update the user list
             } else {
                 $('#modelCreate').modal('hide');
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#modelCreate').modal('hide');
-        notification({ message: " Registration failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Registration failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 });
 
@@ -305,7 +305,7 @@ window.updateUser = async (id) => {
                 await getUserList(); // Update the user list
             } else {
                 $('#modelCreate').modal('hide');
-                notification({ message: " User Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " User Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
         });
     }
@@ -330,10 +330,10 @@ window.addEmployee = async (id) => {
         // Check if the error message contains the specific registration error
         if (result.detail.includes("An error occurred during Employee registration:")) {
             // Display a custom error message for an existing customer
-            notification({ message: "This Employee is already registered!", type: "error", title: "Error" });
+            notificationErrors({ message: "This Employee is already registered!"});
         } else {
             // Display the default error message from the response if it's not a known case
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notificationErrors({ message: result.detail });
         }
     }
 };
@@ -353,7 +353,8 @@ window.deleteUser = async (id) => {
             await getUserList(); // Update the category list
         } else {
             // Display the error message in the modal
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notificationErrors({ message: result.detail});
+            $('#deleteAndDetailsModel').modal('hide');
         }
     });
 }
@@ -462,5 +463,5 @@ function clearPreviousMessages() {
 // Utility function to handle errors
 function handleError(modalId, errorMessage) {
     $(`#${modalId}`).modal('hide');
-    notification({ message: errorMessage, type: "error", title: "Error" });
+    notification({ message: errorMessage, type: "error", title: "Error", time: 0 });
 }

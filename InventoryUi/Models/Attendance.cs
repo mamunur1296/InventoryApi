@@ -1,5 +1,4 @@
 ﻿
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 
@@ -23,6 +22,6 @@ namespace InventoryUi.Models
         [DisplayName("Check Out Time")]
         public TimeSpan CheckOutTime { get; set; }
         [DisplayName("IsPresent")]
-        public bool IsPresent { get; set; }
+        public bool IsPresent { get; set; } = true;
     }
 }

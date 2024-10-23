@@ -3,12 +3,14 @@ using InventoryUi.Services.Interface;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace InventoryUi.Controllers
 {
-   
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+    [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
     public class DashboardController : Controller
     {
         private readonly IClientServices<User> _userServices;
@@ -30,6 +32,7 @@ namespace InventoryUi.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login(string? ReturnUrl = null)
         {
             ViewData["ReturnUrl"] = ReturnUrl;
@@ -39,9 +42,10 @@ namespace InventoryUi.Controllers
         {
             await HttpContext.SignOutAsync("AuthSchemeDashboard");
             _tokenService.ClearToken();
-            return RedirectToAction("Login");
+            return RedirectToAction("Index");
         }
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> LoginUser(Login model, string? ReturnUrl)
         {
             if (!ModelState.IsValid)
@@ -54,7 +58,7 @@ namespace InventoryUi.Controllers
 
             if (loginResponse?.Data?.token == null)
             {
-                ModelState.AddModelError("", "Invalid username or password.");
+                ModelState.AddModelError("", loginResponse?.Detail);
                 ViewData["ReturnUrl"] = ReturnUrl;
                 return View("Login", model);
             }

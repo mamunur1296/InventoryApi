@@ -12,7 +12,7 @@ namespace InventoryApi.Entities
         public string? Title { get; set; }
         public string? TitleOfCourtesy { get; set; }
         public DateTime? BirthDate { get; set; }
-        public DateTime HireDate { get; set; }
+        public DateTime? HireDate { get; set; }
         public string? Address { get; set; }
         public string? City { get; set; }
         public string? Region { get; set; }
@@ -34,10 +34,8 @@ namespace InventoryApi.Entities
         public Employee? Manager { get; set; }
         public ICollection<Employee> ?  Subordinates { get; set; }
         public ICollection<Order>? Orders { get; set; }
-        [Required(ErrorMessage = "Salary is required")]
-        [Range(1, int.MaxValue, ErrorMessage = "Salary must be positive")]
         [Precision(18, 2)]
-        public decimal Salary { get; set; }
+        public decimal? Salary { get; set; } 
         public string ?DepartmentId { get; set; }
         [ForeignKey("DepartmentId")]
         public Department ?Department { get; set; }

@@ -67,7 +67,7 @@ namespace InventoryApi.Middlewares
 
         }
 
-
+        
 
 
         private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
@@ -115,10 +115,49 @@ namespace InventoryApi.Middlewares
                         switch (sqlException.Number)
                         {
                             case 547: // Foreign key violation
-                                if (sqlException.Message.Contains("DELETE"))
+                                if (sqlException.Message.Contains("DELETE") && sqlException.Message.Contains("REFERENCE"))
                                 {
-                                    message = "Delete Failed: Unable to delete the item because it is referenced by another record. Please remove any related data before attempting to delete.";
+                                    // Set the default message and title
                                     title = "Foreign Key Violation - Delete Conflict";
+                                    message = "";
+                                    // Extract details from the error message
+                                    string errorMessage = sqlException.Message;
+
+                                    // Extract the foreign key constraint name
+                                    int fkStartIndex = errorMessage.IndexOf("constraint \"") + "constraint \"".Length;
+                                    int fkEndIndex = errorMessage.IndexOf("\"", fkStartIndex);
+                                    string fkConstraint = fkStartIndex >= 0 && fkEndIndex > fkStartIndex
+                                        ? errorMessage.Substring(fkStartIndex, fkEndIndex - fkStartIndex)
+                                        : string.Empty;
+
+                                    int tableStartIndex = errorMessage.IndexOf("table \"") + "table \"".Length;
+                                    int tableEndIndex = errorMessage.IndexOf("\", column", tableStartIndex);
+
+                                    string conflictTable = tableStartIndex >= 0 && tableEndIndex > tableStartIndex
+                                        ? errorMessage.Substring(tableStartIndex, tableEndIndex - tableStartIndex)
+                                        : string.Empty;
+
+                                    // If there's a period in the table name (e.g., "dbo.Employees"), split and take the last part
+                                    if (!string.IsNullOrEmpty(conflictTable) && conflictTable.Contains('.'))
+                                    {
+                                        conflictTable = conflictTable.Split('.').Last();
+                                    }
+
+
+                                    // Extract the column causing the conflict
+                                    int columnStartIndex = errorMessage.IndexOf("column '") + "column '".Length;
+                                    int columnEndIndex = errorMessage.IndexOf("'", columnStartIndex);
+                                    string conflictColumn = columnStartIndex >= 0 && columnEndIndex > columnStartIndex
+                                        ? errorMessage.Substring(columnStartIndex, columnEndIndex - columnStartIndex)
+                                        : string.Empty;
+                                    conflictColumn.Split('.').Last();
+                                    // Customize the message with the extracted details
+                                    if (!string.IsNullOrEmpty(fkConstraint) && !string.IsNullOrEmpty(conflictTable) && !string.IsNullOrEmpty(conflictColumn))
+                                    {
+                                        
+                                        message = $"Delete Failed: This record cannot be deleted because it is referenced by another record in the '{conflictTable}' table, specifically in the '{conflictColumn}' column.\n" +
+                                                   "Please remove or update any related records before attempting to delete this item.";
+                                    }
                                 }
                                 else if (sqlException.Message.Contains("INSERT"))
                                 {

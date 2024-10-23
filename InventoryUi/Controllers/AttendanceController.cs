@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryUi.Controllers
 {
-    
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+    [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
     public class AttendanceController : Controller
     {
         private readonly IClientServices<Attendance> _services;
@@ -14,7 +15,7 @@ namespace InventoryUi.Controllers
         {
             _services = services;
         }
-        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
+        
         public IActionResult Index()
         {
             return View();

@@ -169,14 +169,14 @@ $('#btnSave').off('click').click(async () => {
                 notification({ message: "Warehouse Created successfully !", type: "success", title: "Success" });
                 await getWarehouseList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#modelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#modelCreate').modal('hide');
-        notification({ message: " Warehouse Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Warehouse Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -210,7 +210,7 @@ window.updateWareHouse = async (id) => {
                 await getWarehouseList(); // Update the user list
             } else {
                 $('#modelCreate').modal('hide');
-                notification({ message: " Warehouse Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Warehouse Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
         });
     }
@@ -240,7 +240,7 @@ window.deleteWareHouse = async (id) => {
             await getWarehouseList(); // Update the category list
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
         }
     });
 }

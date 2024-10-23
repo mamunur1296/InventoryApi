@@ -12,21 +12,18 @@ namespace InventoryUi.Models
         [ForeignKey("EmployeeId")]
         public Employee Employee { get; set; }
 
-        [Required(ErrorMessage = "Base salary is required")]
         [DisplayName("Salary")]
         public decimal BaseSalary { get; set; }
         [DisplayName("Bonus")]
-        public decimal Bonus { get; set; }
+        public decimal? Bonus { get; set; }
 
         [DisplayName("Deductions")]
         public decimal ?Deductions { get; set; }
 
-        [Required(ErrorMessage = "Net salary is required")]
         [DisplayName("Net Salary")]
         public decimal NetSalary { get; set; }
 
-        [Required(ErrorMessage = "Payment date is required")]
         [DisplayName("Payment Date")]
-        public DateTime PaymentDate { get; set; }
+        public DateTime ? PaymentDate { get; set; } 
     }
 }

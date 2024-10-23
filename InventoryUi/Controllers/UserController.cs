@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace InventoryUi.Controllers
 {
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     [Authorize]
     public class UserController : Controller
     {

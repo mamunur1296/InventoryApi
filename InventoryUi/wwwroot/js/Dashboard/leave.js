@@ -190,14 +190,14 @@ $('#LeaveBtnSave').off('click').click(async () => {
                 notification({ message: "Leave Created successfully !", type: "success", title: "Success" });
                 await getLeaveList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#LeaveModelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#LeaveModelCreate').modal('hide');
-        notification({ message: " Leave Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Leave Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -238,7 +238,7 @@ window.updateLeave = async (id) => {
                 await getLeaveList(); // Update the user list
             } else {
                 $('#LeaveModelCreate').modal('hide');
-                notification({ message: " Leave Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Leave Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
         });
     }
@@ -271,7 +271,7 @@ window.deleteLeave = async (id) => {
 
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
         }
     });
 }

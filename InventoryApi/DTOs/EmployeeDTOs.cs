@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -31,12 +32,15 @@ namespace InventoryApi.DTOs
         public string? UserId { get; set; }
         public string? CompanyId { get; set; }
         public string? BranchId { get; set; }
-        [Required(ErrorMessage = "Salary is required")]
-        [Range(1, int.MaxValue, ErrorMessage = "Salary must be positive")]
         [Precision(18, 2)]
-        public decimal Salary { get; set; }
+        public decimal? Salary { get; set; } = null;
 
-        [ForeignKey("DepartmentId")]
+        public string UserName { get; set; }
+
+        public string Password { get; set; }
+  
+        public string Email { get; set; }
+  
         public string DepartmentId { get; set; }
         //public Department Department { get; set; }
 

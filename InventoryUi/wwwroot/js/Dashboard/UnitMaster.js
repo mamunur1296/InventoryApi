@@ -152,14 +152,14 @@ $('#UnitMasterbtnSave').off('click').click(async (e) => {
                 notification({ message: "Unit Master Created successfully !", type: "success", title: "Success" });
                 await getUnitMasterList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#UnitMasterModelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#UnitMasterModelCreate').modal('hide');
-        notification({ message: " Unit Master Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Unit Master Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -194,7 +194,7 @@ window.updateUnitMaster = async (id) => {
                 await getUnitMasterList(); // Update the user list
             } else {
                 $('#UnitMasterModelCreate').modal('hide');
-                notification({ message: " UnitMaster Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " UnitMaster Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
         });
     }
@@ -227,7 +227,7 @@ window.deleteUnitMaster = async (id) => {
 
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
         }
     });
 }

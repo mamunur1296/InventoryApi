@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryUi.Controllers
 {
+   
     public class ProductController : Controller
     {
         private readonly IClientServices<Product> _productServices;
@@ -26,6 +27,7 @@ namespace InventoryUi.Controllers
             _categoryServices = categoryServices;
             _supplierServices = supplierServices;
         }
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public IActionResult Index()
         {
@@ -42,7 +44,7 @@ namespace InventoryUi.Controllers
             var result = await _productServices.PostClientAsync("Product/Create", model);
             return Json(result);
         }
-       
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetById(string id)
         {
@@ -50,6 +52,7 @@ namespace InventoryUi.Controllers
             return Json(product);
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(string id)
         {
             var product = await _productServices.GetClientByIdAsync($"Product/get/{id}");
@@ -88,6 +91,7 @@ namespace InventoryUi.Controllers
             return Json(result);
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Getall()
         {
             var products = await _productServices.GetAllClientsAsync("Product/All");

@@ -176,14 +176,14 @@ $('#UnitChildbtnSave').off('click').click(async (e) => {
                 notification({ message: "UnitChild Created successfully !", type: "success", title: "Success" });
                 await getUnitChildList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#UnitChildModelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#UnitChildModelCreate').modal('hide');
-        notification({ message: " UnitChild Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " UnitChild Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -226,7 +226,7 @@ window.updateUnitChild = async (id) => {
                 await getUnitChildList(); // Update the user list
             } else {
                 $('#UnitChildModelCreate').modal('hide');
-                notification({ message: " UnitChild Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " UnitChild Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
         });
     }
@@ -259,7 +259,7 @@ window.deleteUnitChild = async (id) => {
 
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
         }
     });
 }

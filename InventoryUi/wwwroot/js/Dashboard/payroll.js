@@ -28,7 +28,7 @@ const onSuccessUsers = async (Payrolls, employee) => {
                 bonus: Payroll?.bonus ?? "Null",
                 deducation: Payroll?.deductions ?? "Null",
                 netSalary: Payroll?.netSalary ?? "Null",
-                paymentDate: Payroll?.PaymentDate ?? "Null",
+                paymentDate: Payroll?.paymentDate ?? "Null",
              
 
             };
@@ -119,11 +119,7 @@ export const isPayrollValidae = $('#PayrollForm').validate({
             required: true,
 
         }
-        ,
-        Bonus: {
-            required: true,
-
-        }
+       
         ,
         Deductionss: {
             required: true,
@@ -134,11 +130,7 @@ export const isPayrollValidae = $('#PayrollForm').validate({
             required: true,
 
         }
-        ,
-        PaymentDate: {
-            required: true,
-
-        }
+        
     },
     messages: {
         CategoryName: {
@@ -192,14 +184,14 @@ $('#PayrollBtnSave').off('click').click(async () => {
                 notification({ message: "Payroll Created successfully !", type: "success", title: "Success" });
                 await getPayrollList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", time: 0, title: "Error", time: 0 });
                 $('#PayrollModelCreate').modal('hide');
             }
-        }
+        } 
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#PayrollModelCreate').modal('hide');
-        notification({ message: " Payroll Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Payroll Created failed . Please try again. !", time: 0, type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -240,7 +232,7 @@ window.updatePayroll = async (id) => {
                 await getPayrollList(); // Update the user list
             } else {
                 $('#PayrollModelCreate').modal('hide');
-                notification({ message: " Payroll Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Payroll Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
         });
     }
@@ -273,7 +265,7 @@ window.deletePayroll = async (id) => {
 
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
         }
     });
 }

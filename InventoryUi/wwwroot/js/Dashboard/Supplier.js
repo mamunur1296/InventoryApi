@@ -211,14 +211,14 @@ $('#SupplierbtnSave').off('click').click(async (e) => {
                 notification({ message: "Supplier Created successfully !", type: "success", title: "Success" });
                 await getSupplierList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#SupplierModelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#SupplierModelCreate').modal('hide');
-        notification({ message: " Supplier Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Supplier Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -263,7 +263,7 @@ window.updateSupplier = async (id) => {
                 await getSupplierList(); // Update the user list
             } else {
                 $('#SupplierModelCreate').modal('hide');
-                notification({ message: " Supplier Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Supplier Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
 
         });
@@ -294,7 +294,7 @@ window.deleteSupplier = async (id) => {
             await getSupplierList(); // Update the category list
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
 
         }
 

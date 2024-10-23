@@ -66,526 +66,537 @@
         }
     }
 }
+@{
+    @if (User.Identity.IsAuthenticated)
+    {
+        <!DOCTYPE html>
 
-<!DOCTYPE html>
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width" />
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>@ViewBag.Title</title>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@ViewBag.Title</title>
-
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" asp-append-version="true">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="~/admin/plugins/fontawesome-free/css/all.min.css" asp-append-version="true" asp-append-version="true">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" asp-append-version="true">
-    <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet" href="~/admin/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css" asp-append-version="true">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="~/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css" asp-append-version="true">
-    <!-- JQVMap -->
-    <link rel="stylesheet" href="~/admin/plugins/jqvmap/jqvmap.min.css" asp-append-version="true">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="~/admin/dist/css/adminlte.min.css?v=1.0.0" asp-append-version="true">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="~/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" asp-append-version="true">
-    <!-- Daterange picker -->
-    <link rel="stylesheet" href="~/admin/plugins/daterangepicker/daterangepicker.css" asp-append-version="true">
-    <!-- summernote -->
-    <link rel="stylesheet" href="~/admin/plugins/summernote/summernote-bs4.min.css" asp-append-version="true">
-    <!-- Toastr CSS -->
-    <link href="~/lib/toastr.js/toastr.min.css" rel="stylesheet" asp-append-version="true" />
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" asp-append-version="true">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css" asp-append-version="true">
-    
-
-    <style>
-        .modal-body {
-            max-height: calc(100vh - 210px);
-            overflow-y: auto;
-        }
-
-    </style>
+            <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+            <!-- Google Font: Source Sans Pro -->
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" asp-append-version="true">
+            <!-- Font Awesome -->
+            <link rel="stylesheet" href="~/admin/plugins/fontawesome-free/css/all.min.css" asp-append-version="true" asp-append-version="true">
+            <!-- Ionicons -->
+            <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" asp-append-version="true">
+            <!-- Tempusdominus Bootstrap 4 -->
+            <link rel="stylesheet" href="~/admin/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css" asp-append-version="true">
+            <!-- iCheck -->
+            <link rel="stylesheet" href="~/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css" asp-append-version="true">
+            <!-- JQVMap -->
+            <link rel="stylesheet" href="~/admin/plugins/jqvmap/jqvmap.min.css" asp-append-version="true">
+            <!-- Theme style -->
+            <link rel="stylesheet" href="~/admin/dist/css/adminlte.min.css?v=1.0.0" asp-append-version="true">
+            <!-- overlayScrollbars -->
+            <link rel="stylesheet" href="~/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" asp-append-version="true">
+            <!-- Daterange picker -->
+            <link rel="stylesheet" href="~/admin/plugins/daterangepicker/daterangepicker.css" asp-append-version="true">
+            <!-- summernote -->
+            <link rel="stylesheet" href="~/admin/plugins/summernote/summernote-bs4.min.css" asp-append-version="true">
+            <!-- Toastr CSS -->
+            <link href="~/lib/toastr.js/toastr.min.css" rel="stylesheet" asp-append-version="true" />
+            <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" asp-append-version="true">
+            <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css" asp-append-version="true">
 
 
-</head>
-<body class="hold-transition sidebar-mini layout-fixed">
-    <div class="wrapper">
-        <!-- Preloader -->
-        <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="~/admin/dist/img/AdminLTELogo.png" alt="Logo" height="60" width="60">
-        </div>
+            <style>
+                .modal-body {
+                    max-height: calc(100vh - 210px);
+                    overflow-y: auto;
+                }
 
-        <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <!-- Left navbar links -->
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-                </li>
-                
-            </ul>
+            </style>
 
-            <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                        <i class="fas fa-expand-arrows-alt"></i>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
-                        <i class="fas fa-th-large"></i>
-                    </a>
-                </li>
-            </ul>
-        </nav>
 
-        
-
-        <!-- /.navbar -->
-        <!-- Main Sidebar Container -->
-        <aside class="main-sidebar  sidebar-dark-primary elevation-4">
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <div class="brand-link" id="company-info">
-                    <div class="user-panel  pb-3  d-flex align-items-center">
-                        <div id="company-logo"></div>
-                        <div class="info ">
-                            <p class="h6 mb-0" id="company-name"></p>
-                            <span class="d-block text-muted font-weight-bold" id="inventory-text"></span>
-                        </div>
-                    </div>
-                </div>
-                <!-- Sidebar user panel (optional) -->
-                <div class="user-panel  pb-3 mb-3 d-flex align-items-center">
-                    <div class="image">
-                        <img src="/images/User/@img"
-                             alt="Profile Image"
-                             class="img-circle elevation-2"
-                             style="height: 40px; width: 40px;"
-                             onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
-                    </div>
-                    <div class="info ">
-                        <a asp-action="index" asp-controller="Dashboard" class="d-block font-weight-bold">@fName @lName</a>
-                        <span class="d-block text-muted font-weight-bold">@userRole</span>
-                    </div>
-                        
-                </div>
-                
-
-                
-
-                <!-- SidebarSearch Form -->
-                <div class="form-inline">
-                    <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-                        <div class="input-group-append">
-                            <button class="btn btn-sidebar">
-                                <i class="fas fa-search fa-fw"></i>
-                            </button>
-                        </div>
-                    </div>
+        </head>
+        <body class="hold-transition sidebar-mini layout-fixed">
+            <div class="wrapper">
+                <!-- Preloader -->
+                <div class="preloader flex-column justify-content-center align-items-center">
+                    <img class="animation__shake" src="~/admin/dist/img/AdminLTELogo.png" alt="Logo" height="60" width="60">
                 </div>
 
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-                           with font-awesome or any other icon font library -->
-                        @{
-                            if (User.IsInRole("Admin"))
-                            {
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="nav-icon fas fa-laptop-code"></i>
-                                        <p>
-                                            Developers
-                                            <i class="right fas fa-angle-right"></i> <!-- Changed icon to fa-angle-right -->
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="Menu" class="nav-link">
-                                                <i class="fas fa-home nav-icon"></i>
-                                                <p>Menu</p>
-                                            </a>
-                                        </li>
-                                       
-
-                                    </ul>
-                                </li>
-                                
-
-                            }
-                            if (User.IsInRole("Admin"))
-                            {
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="nav-icon fas fa-user"></i> <!-- User Management icon -->
-                                        <p>
-                                            User Management
-                                            <i class="right fas fa-angle-right"></i> <!-- Submenu toggle icon -->
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="DashboardUser" class="nav-link">
-                                                <i class="fas fa-user-friends nav-icon"></i> <!-- Members icon -->
-                                                <p>Members</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="DashboardRole" class="nav-link">
-                                                <i class="fas fa-users-cog nav-icon"></i> <!-- User Roles icon -->
-                                                <p>User Roles</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="Customer" class="nav-link">
-                                                <i class="fas fa-users nav-icon"></i> <!-- Customer icon -->
-                                                <p>Customers</p>
-                                            </a>
-                                        </li>
-                                       
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="nav-icon fas fa-users-cog"></i> <!-- HRM Management icon -->
-                                        <p>
-                                            HRM
-                                            <i class="right fas fa-chevron-right"></i> <!-- Submenu toggle icon -->
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="Employee" class="nav-link">
-                                                <i class="fas fa-id-badge nav-icon"></i> <!-- Employee icon -->
-                                                <p>Employees</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="Attendance" class="nav-link">
-                                                <i class="fas fa-calendar-check nav-icon"></i> <!-- Attendance icon -->
-                                                <p>Attendance</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="Department" class="nav-link">
-                                                <i class="fas fa-building nav-icon"></i> <!-- Department icon -->
-                                                <p>Department</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="Holiday" class="nav-link">
-                                                <i class="fas fa-umbrella-beach nav-icon"></i> <!-- Holiday icon -->
-                                                <p>Holiday</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="Leave" class="nav-link">
-                                                <i class="fas fa-sign-out-alt nav-icon"></i> <!-- Leave icon -->
-                                                <p>Leave</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="Payroll" class="nav-link">
-                                                <i class="fas fa-money-check-alt nav-icon"></i> <!-- Payroll icon -->
-                                                <p>Payroll</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="Shift" class="nav-link">
-                                                <i class="fas fa-clock nav-icon"></i> <!-- Shift icon -->
-                                                <p>Shift</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="nav-icon fas fa-laptop-code"></i> <!-- Point of Sale icon -->
-                                        <p>
-                                            POS Management
-                                            <i class="right fas fa-chevron-right"></i> <!-- Submenu toggle icon -->
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="Poc" class="nav-link">
-                                                <i class="fas fa-cash-register nav-icon"></i> <!-- POS icon -->
-                                                <p>Point of Sale</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="PointOfPurchase" class="nav-link">
-                                                <i class="fas fa-box-open nav-icon"></i> <!-- Purchase icon -->
-                                                <p>Point of Purchase</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="nav-icon fas fa-laptop-code"></i> <!-- Sales Management icon -->
-                                        <p>
-                                            Sales Management
-                                            <i class="right fas fa-chevron-right"></i> <!-- Submenu toggle icon -->
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="Purchase" class="nav-link">
-                                                <i class="fas fa-shopping-cart nav-icon"></i> <!-- Purchase icon -->
-                                                <p>Purchases</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="Order" class="nav-link">
-                                                <i class="fas fa-box nav-icon"></i> <!-- Order icon -->
-                                                <p>Orders</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="OrderDetail" class="nav-link">
-                                                <i class="fas fa-list-alt nav-icon"></i> <!-- Order Detail icon -->
-                                                <p>Order Details</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="nav-icon fas fa-laptop-code"></i><!-- Business Management icon -->
-                                        <p>
-                                            Business Management
-                                            <i class="right fas fa-chevron-right"></i> <!-- Submenu toggle icon -->
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="Company" class="nav-link">
-                                                <i class="fas fa-building nav-icon"></i> <!-- Company icon -->
-                                                <p>Companies</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="Warehouse" class="nav-link">
-                                                <i class="fas fa-warehouse nav-icon"></i> <!-- Warehouse icon -->
-                                                <p>Warehouses</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="Branch" class="nav-link">
-                                                <i class="fas fa-network-wired nav-icon"></i> <!-- Branch icon -->
-                                                <p>Branches</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="nav-icon fas fa-laptop-code"></i> <!-- Inventory Management icon -->
-                                        <p>
-                                            Inventory Management
-                                            <i class="right fas fa-chevron-right"></i> <!-- Submenu toggle icon -->
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="Category" class="nav-link">
-                                                <i class="fas fa-tags nav-icon"></i> <!-- Category icon -->
-                                                <p>Categories</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="Product" class="nav-link">
-                                                <i class="fas fa-box-open nav-icon"></i> <!-- Product icon -->
-                                                <p>Products</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="Supplier" class="nav-link">
-                                                <i class="fas fa-truck nav-icon"></i> <!-- Supplier icon -->
-                                                <p>Suppliers</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="Stock" class="nav-link">
-                                                <i class="fas fa-warehouse nav-icon"></i> <!-- Stock icon -->
-                                                <p>Stock</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="UnitMaster" class="nav-link">
-                                                <i class="fas fa-cube nav-icon"></i> <!-- Unit Master icon -->
-                                                <p>Unit Master</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a asp-action="Index" asp-controller="UnitChild" class="nav-link">
-                                                <i class="fas fa-cubes nav-icon"></i> <!-- Unit Child icon -->
-                                                <p>Unit Child</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a asp-action="Index" asp-controller="Payment" class="nav-link">
-                                        <i class="fas fa-credit-card nav-icon"></i> <!-- Payment icon -->
-                                        <p>Payments</p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a asp-action="Index" asp-controller="DeliveryAddress" class="nav-link">
-                                        <i class="fas fa-map-marker-alt nav-icon"></i> <!-- Delivery Address icon -->
-                                        <p>Delivery Addresses</p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a asp-action="Index" asp-controller="ShoppingCart" class="nav-link">
-                                        <i class="fas fa-shopping-cart nav-icon"></i> <!-- Shopping Cart icon -->
-                                        <p>Shopping Cart</p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a asp-action="Index" asp-controller="Shipper" class="nav-link">
-                                        <i class="fas fa-shipping-fast nav-icon"></i> <!-- Shipper icon -->
-                                        <p>Shippers</p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a asp-action="Index" asp-controller="Review" class="nav-link">
-                                        <i class="fas fa-star nav-icon"></i> <!-- Review icon -->
-                                        <p>Reviews</p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a asp-action="Index" asp-controller="OrderProduct" class="nav-link">
-                                        <i class="fas fa-box nav-icon"></i> <!-- Order Product icon -->
-                                        <p>Order Products</p>
-                                    </a>
-                                </li>
-                            }
-                        }
+                <!-- Navbar -->
+                <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+                    <!-- Left navbar links -->
+                    <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a asp-action="LogOut" asp-controller="Dashboard" class="nav-link ">
-                                <i class="fas fa-sign-out-alt nav-icon"></i>
-                                <p>Log Out</p>
+                            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                        </li>
+
+                    </ul>
+
+                    <!-- Right navbar links -->
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                                <i class="fas fa-expand-arrows-alt"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
+                                <i class="fas fa-th-large"></i>
                             </a>
                         </li>
                     </ul>
                 </nav>
-                <!-- /.sidebar-menu -->
-            </div>
-            <!-- /.sidebar -->
-        </aside>
-        <div class="content-wrapper">
-            @{
-                // Check if the logged-in email matches the default admin email
-                string defaultAdminEmail = "admin@gmail.com"; // Corrected email domain
-                if (email == defaultAdminEmail)
-                {
-                    <div class="mt-4">
-                        <div class="alert alert-warning alert-dismissible fade show text-center fw-bold" role="alert">
-                            You are currently logged in with the default admin account. Please create a new admin account and delete the default admin account for better security!
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+
+
+
+                <!-- /.navbar -->
+                <!-- Main Sidebar Container -->
+                <aside class="main-sidebar  sidebar-dark-primary elevation-4">
+                    <!-- Sidebar -->
+                    <div class="sidebar">
+                        <div class="brand-link" id="company-info">
+                            <div class="user-panel  pb-3  d-flex align-items-center">
+                                <div id="company-logo"></div>
+                                <div class="info ">
+                                    <p class="h6 mb-0" id="company-name"></p>
+                                    <span class="d-block text-muted font-weight-bold" id="inventory-text"></span>
+                                </div>
+                            </div>
                         </div>
+                        <!-- Sidebar user panel (optional) -->
+                        <div class="user-panel  pb-3 mb-3 d-flex align-items-center">
+                            <div class="image">
+                                <img src="/images/User/@img"
+                                     alt="Profile Image"
+                                     class="img-circle elevation-2"
+                                     style="height: 40px; width: 40px;"
+                                     onerror="this.onerror=null;this.src='/ProjectRootImg/default-user.png';">
+                            </div>
+                            <div class="info ">
+                                <a asp-action="index" asp-controller="Dashboard" class="d-block font-weight-bold">@fName @lName</a>
+                                <span class="d-block text-muted font-weight-bold">@userRole</span>
+                            </div>
+
+                        </div>
+
+
+
+
+                        <!-- SidebarSearch Form -->
+                        <div class="form-inline">
+                            <div class="input-group" data-widget="sidebar-search">
+                                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-sidebar">
+                                        <i class="fas fa-search fa-fw"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sidebar Menu -->
+                        <nav class="mt-2">
+                            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                                <!-- Add icons to the links using the .nav-icon class
+                                   with font-awesome or any other icon font library -->
+                                @{
+                                    if (User.IsInRole("Admin"))
+                                    {
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon fas fa-laptop-code"></i>
+                                                <p>
+                                                    Developers
+                                                    <i class="right fas fa-angle-right"></i> <!-- Changed icon to fa-angle-right -->
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="Menu" class="nav-link">
+                                                        <i class="fas fa-home nav-icon"></i>
+                                                        <p>Menu</p>
+                                                    </a>
+                                                </li>
+
+
+                                            </ul>
+                                        </li>
+
+
+                                    }
+                                    if (User.IsInRole("Admin"))
+                                    {
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon fas fa-user"></i> <!-- User Management icon -->
+                                                <p>
+                                                    User Management
+                                                    <i class="right fas fa-angle-right"></i> <!-- Submenu toggle icon -->
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="DashboardUser" class="nav-link">
+                                                        <i class="fas fa-user-friends nav-icon"></i> <!-- Members icon -->
+                                                        <p>Members</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="DashboardRole" class="nav-link">
+                                                        <i class="fas fa-users-cog nav-icon"></i> <!-- User Roles icon -->
+                                                        <p>User Roles</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="Customer" class="nav-link">
+                                                        <i class="fas fa-users nav-icon"></i> <!-- Customer icon -->
+                                                        <p>Customers</p>
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon fas fa-users-cog"></i> <!-- HRM Management icon -->
+                                                <p>
+                                                    HRM
+                                                    <i class="right fas fa-chevron-right"></i> <!-- Submenu toggle icon -->
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="Employee" class="nav-link">
+                                                        <i class="fas fa-id-badge nav-icon"></i> <!-- Employee icon -->
+                                                        <p>Employees</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="Attendance" class="nav-link">
+                                                        <i class="fas fa-calendar-check nav-icon"></i> <!-- Attendance icon -->
+                                                        <p>Attendance</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="Department" class="nav-link">
+                                                        <i class="fas fa-building nav-icon"></i> <!-- Department icon -->
+                                                        <p>Department</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="Holiday" class="nav-link">
+                                                        <i class="fas fa-umbrella-beach nav-icon"></i> <!-- Holiday icon -->
+                                                        <p>Holiday</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="Leave" class="nav-link">
+                                                        <i class="fas fa-sign-out-alt nav-icon"></i> <!-- Leave icon -->
+                                                        <p>Leave</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="Payroll" class="nav-link">
+                                                        <i class="fas fa-money-check-alt nav-icon"></i> <!-- Payroll icon -->
+                                                        <p>Payroll</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="Shift" class="nav-link">
+                                                        <i class="fas fa-clock nav-icon"></i> <!-- Shift icon -->
+                                                        <p>Shift</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon fas fa-laptop-code"></i> <!-- Point of Sale icon -->
+                                                <p>
+                                                    POS Management
+                                                    <i class="right fas fa-chevron-right"></i> <!-- Submenu toggle icon -->
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="Poc" class="nav-link">
+                                                        <i class="fas fa-cash-register nav-icon"></i> <!-- POS icon -->
+                                                        <p>Point of Sale</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="PointOfPurchase" class="nav-link">
+                                                        <i class="fas fa-box-open nav-icon"></i> <!-- Purchase icon -->
+                                                        <p>Point of Purchase</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon fas fa-laptop-code"></i> <!-- Sales Management icon -->
+                                                <p>
+                                                    Sales Management
+                                                    <i class="right fas fa-chevron-right"></i> <!-- Submenu toggle icon -->
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="Purchase" class="nav-link">
+                                                        <i class="fas fa-shopping-cart nav-icon"></i> <!-- Purchase icon -->
+                                                        <p>Purchases</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="Order" class="nav-link">
+                                                        <i class="fas fa-box nav-icon"></i> <!-- Order icon -->
+                                                        <p>Orders</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="OrderDetail" class="nav-link">
+                                                        <i class="fas fa-list-alt nav-icon"></i> <!-- Order Detail icon -->
+                                                        <p>Order Details</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon fas fa-laptop-code"></i><!-- Business Management icon -->
+                                                <p>
+                                                    Business Management
+                                                    <i class="right fas fa-chevron-right"></i> <!-- Submenu toggle icon -->
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="Company" class="nav-link">
+                                                        <i class="fas fa-building nav-icon"></i> <!-- Company icon -->
+                                                        <p>Companies</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="Warehouse" class="nav-link">
+                                                        <i class="fas fa-warehouse nav-icon"></i> <!-- Warehouse icon -->
+                                                        <p>Warehouses</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="Branch" class="nav-link">
+                                                        <i class="fas fa-network-wired nav-icon"></i> <!-- Branch icon -->
+                                                        <p>Branches</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon fas fa-laptop-code"></i> <!-- Inventory Management icon -->
+                                                <p>
+                                                    Inventory Management
+                                                    <i class="right fas fa-chevron-right"></i> <!-- Submenu toggle icon -->
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="Category" class="nav-link">
+                                                        <i class="fas fa-tags nav-icon"></i> <!-- Category icon -->
+                                                        <p>Categories</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="Product" class="nav-link">
+                                                        <i class="fas fa-box-open nav-icon"></i> <!-- Product icon -->
+                                                        <p>Products</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="Supplier" class="nav-link">
+                                                        <i class="fas fa-truck nav-icon"></i> <!-- Supplier icon -->
+                                                        <p>Suppliers</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="Stock" class="nav-link">
+                                                        <i class="fas fa-warehouse nav-icon"></i> <!-- Stock icon -->
+                                                        <p>Stock</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="UnitMaster" class="nav-link">
+                                                        <i class="fas fa-cube nav-icon"></i> <!-- Unit Master icon -->
+                                                        <p>Unit Master</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a asp-action="Index" asp-controller="UnitChild" class="nav-link">
+                                                        <i class="fas fa-cubes nav-icon"></i> <!-- Unit Child icon -->
+                                                        <p>Unit Child</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a asp-action="Index" asp-controller="Payment" class="nav-link">
+                                                <i class="fas fa-credit-card nav-icon"></i> <!-- Payment icon -->
+                                                <p>Payments</p>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a asp-action="Index" asp-controller="DeliveryAddress" class="nav-link">
+                                                <i class="fas fa-map-marker-alt nav-icon"></i> <!-- Delivery Address icon -->
+                                                <p>Delivery Addresses</p>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a asp-action="Index" asp-controller="ShoppingCart" class="nav-link">
+                                                <i class="fas fa-shopping-cart nav-icon"></i> <!-- Shopping Cart icon -->
+                                                <p>Shopping Cart</p>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a asp-action="Index" asp-controller="Shipper" class="nav-link">
+                                                <i class="fas fa-shipping-fast nav-icon"></i> <!-- Shipper icon -->
+                                                <p>Shippers</p>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a asp-action="Index" asp-controller="Review" class="nav-link">
+                                                <i class="fas fa-star nav-icon"></i> <!-- Review icon -->
+                                                <p>Reviews</p>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a asp-action="Index" asp-controller="OrderProduct" class="nav-link">
+                                                <i class="fas fa-box nav-icon"></i> <!-- Order Product icon -->
+                                                <p>Order Products</p>
+                                            </a>
+                                        </li>
+                                    }
+                                }
+                                <li class="nav-item">
+                                    <a asp-action="LogOut" asp-controller="Dashboard" class="nav-link ">
+                                        <i class="fas fa-sign-out-alt nav-icon"></i>
+                                        <p>Log Out</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!-- /.sidebar-menu -->
                     </div>
+                    <!-- /.sidebar -->
+                </aside>
+                <div class="content-wrapper">
+                    @{
+                        // Check if the logged-in email matches the default admin email
+                        string defaultAdminEmail = "admin@gmail.com"; // Corrected email domain
+                        if (email == defaultAdminEmail)
+                        {
+                            <div class="mt-4">
+                                <div class="alert alert-warning alert-dismissible fade show text-center fw-bold" role="alert">
+                                    You are currently logged in with the default admin account. Please create a new admin account and delete the default admin account for better security!
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
 
-                }
-            }
-            @RenderBody()
-        </div>
-        <!-- /.content-wrapper -->
-        <footer class="main-footer">
-            <strong>Copyright &copy; 2024-2025 <a href="#">Inventory</a>.</strong>
-            All rights reserved.
-            <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 1.0.0
+                        }
+                    }
+                    @RenderBody()
+                </div>
+                <!-- /.content-wrapper -->
+                <footer class="main-footer">
+                    <strong>Copyright &copy; 2024-2025 <a href="#">Inventory</a>.</strong>
+                    All rights reserved.
+                    <div class="float-right d-none d-sm-inline-block">
+                        <b>Version</b> 1.0.0
+                    </div>
+                </footer>
+                <!-- Control Sidebar -->
+                <aside class="control-sidebar control-sidebar-dark">
+                    <!-- Control sidebar content goes here -->
+                </aside>
+                <!-- /.control-sidebar -->
             </div>
-        </footer>
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
-    </div>
 
 
 
 
 
 
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <!-- ./wrapper -->
-    <!-- jQuery -->
-    <script src="~/admin/plugins/jquery/jquery.min.js" asp-append-version="true"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="~/admin/plugins/jquery-ui/jquery-ui.min.js" asp-append-version="true"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <!-- Bootstrap 4 -->
-    <script src="~/admin/plugins/bootstrap/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
-    <!-- ChartJS -->
-    <script src="~/admin/plugins/chart.js/Chart.min.js" asp-append-version="true"></script>
-    <!-- Sparkline -->
-    <script src="~/admin/plugins/sparklines/sparkline.js" asp-append-version="true"></script>
-    <!-- JQVMap -->
-    <script src="~/admin/plugins/jqvmap/jquery.vmap.min.js" asp-append-version="true"></script>
-    <script src="~/admin/plugins/jqvmap/maps/jquery.vmap.usa.js" asp-append-version="true"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="~/admin/plugins/jquery-knob/jquery.knob.min.js" asp-append-version="true"></script>
-    <!-- daterangepicker -->
-    <script src="~/admin/plugins/moment/moment.min.js" asp-append-version="true"></script>
-    <script src="~/admin/plugins/daterangepicker/daterangepicker.js" asp-append-version="true"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="~/admin/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js" asp-append-version="true"></script>
-    <!-- Summernote -->
-    <script src="~/admin/plugins/summernote/summernote-bs4.min.js" asp-append-version="true"></script>
-    <!-- overlayScrollbars -->
-    <script src="~/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js" asp-append-version="true"></script>
-    <!-- AdminLTE App -->
-    <script src="~/admin/dist/js/adminlte.js" asp-append-version="true"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="~/admin/dist/js/pages/dashboard.js" asp-append-version="true"></script>
-    <!-- toastr  -->
-    <script src="~/lib/toastr.js/toastr.min.js" asp-append-version="true"></script>
-    <!-- DataTables JS -->
-
-    
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" asp-append-version="true"></script>
-    <script src="~/js/site.js?v=1.0.0" asp-append-version="true"></script>
- 
+            <script src="~/js/site.js" asp-append-version="true"></script>
+            <!-- ./wrapper -->
+            <!-- jQuery -->
+            <script src="~/admin/plugins/jquery/jquery.min.js" asp-append-version="true"></script>
+            <!-- jQuery UI 1.11.4 -->
+            <script src="~/admin/plugins/jquery-ui/jquery-ui.min.js" asp-append-version="true"></script>
+            <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+            <!-- Bootstrap 4 -->
+            <script src="~/admin/plugins/bootstrap/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+            <!-- ChartJS -->
+            <script src="~/admin/plugins/chart.js/Chart.min.js" asp-append-version="true"></script>
+            <!-- Sparkline -->
+            <script src="~/admin/plugins/sparklines/sparkline.js" asp-append-version="true"></script>
+            <!-- JQVMap -->
+            <script src="~/admin/plugins/jqvmap/jquery.vmap.min.js" asp-append-version="true"></script>
+            <script src="~/admin/plugins/jqvmap/maps/jquery.vmap.usa.js" asp-append-version="true"></script>
+            <!-- jQuery Knob Chart -->
+            <script src="~/admin/plugins/jquery-knob/jquery.knob.min.js" asp-append-version="true"></script>
+            <!-- daterangepicker -->
+            <script src="~/admin/plugins/moment/moment.min.js" asp-append-version="true"></script>
+            <script src="~/admin/plugins/daterangepicker/daterangepicker.js" asp-append-version="true"></script>
+            <!-- Tempusdominus Bootstrap 4 -->
+            <script src="~/admin/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js" asp-append-version="true"></script>
+            <!-- Summernote -->
+            <script src="~/admin/plugins/summernote/summernote-bs4.min.js" asp-append-version="true"></script>
+            <!-- overlayScrollbars -->
+            <script src="~/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js" asp-append-version="true"></script>
+            <!-- AdminLTE App -->
+            <script src="~/admin/dist/js/adminlte.js" asp-append-version="true"></script>
+            <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+            <script src="~/admin/dist/js/pages/dashboard.js" asp-append-version="true"></script>
+            <!-- toastr  -->
+            <script src="~/lib/toastr.js/toastr.min.js" asp-append-version="true"></script>
+            <!-- DataTables JS -->
 
 
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" asp-append-version="true"></script>
+            <script src="~/js/site.js?v=1.0.0" asp-append-version="true"></script>
 
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js" asp-append-version="true"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js" asp-append-version="true"></script>
-    <script type="module" asp-src-include="~/js/utility/helpers.js" asp-append-version="true"></script>
-    <script type="module" asp-src-include="~/js/utility/notification.js" asp-append-version="true"></script>
-    <script type="module" asp-src-include="~/js/utility/objectmaping.js" asp-append-version="true"></script>
-    <script type="module" asp-src-include="~/js/utility/sendrequestutility.js" asp-append-version="true"></script>
-    <script type="module" asp-src-include="~/js/utility/allvalidator.js" asp-append-version="true"></script>
-    <script type="module" src="~/js/layout/dashboirdlayout.js" asp-append-version="true"></script>
 
-    @await RenderSectionAsync("Scripts", required: false)
-   
-</body>
-</html>
+
+
+            <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js" asp-append-version="true"></script>
+            <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js" asp-append-version="true"></script>
+            <script type="module" asp-src-include="~/js/utility/helpers.js" asp-append-version="true"></script>
+            <script type="module" asp-src-include="~/js/utility/notification.js" asp-append-version="true"></script>
+            <script type="module" asp-src-include="~/js/utility/objectmaping.js" asp-append-version="true"></script>
+            <script type="module" asp-src-include="~/js/utility/sendrequestutility.js" asp-append-version="true"></script>
+            <script type="module" asp-src-include="~/js/utility/allvalidator.js" asp-append-version="true"></script>
+            <script type="module" src="~/js/layout/dashboirdlayout.js" asp-append-version="true"></script>
+
+            @await RenderSectionAsync("Scripts", required: false)
+
+        </body>
+        </html>
+
+    }
+    else
+    {
+        <script>
+            window.location.href = '@Url.Action("Login", "Dashboard")';
+        </script>
+    }
+}

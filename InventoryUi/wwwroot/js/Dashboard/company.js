@@ -181,13 +181,13 @@ $('#btnSaveCompany').off('click').click(async () => {
                 notification({ message: "Company Created successfully !", type: "success", title: "Success" });
                 await getCompanyList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#CompanyModelCreate').modal('hide');
             }
         }
     } catch (error) {
         $('#CompanyModelCreate').modal('hide');
-        notification({ message: " Company Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Company Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 });
 
@@ -230,7 +230,7 @@ window.updateCompany = async (id) => {
                 await getCompanyList(); // Update the user list
             } else {
                 $('#CompanyModelCreate').modal('hide');
-                notification({ message: " Company Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Company Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
         });
     }
@@ -260,7 +260,7 @@ window.deleteCompany = async (id) => {
             await getCompanyList(); // Update the category list
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
         }
     });
 }

@@ -70,10 +70,10 @@ window.isEmployee = async (id) => {
         // Check if the error message contains the specific registration error
         if (result.detail.includes("An error occurred during Employee registration:")) {
             // Display a custom error message for an existing customer
-            notification({ message: "This Employee is already registered!", type: "error", title: "Error" });
+            notification({ message: "This Employee is already registered!", type: "error", title: "Error", time: 0 });
         } else {
             // Display the default error message from the response if it's not a known case
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
         }
     }
 };
@@ -91,10 +91,10 @@ window.isCustomer = async (id) => {
         // Check if the error message contains the specific registration error
         if (result.detail.includes("An error occurred during customer registration:")) {
             // Display a custom error message for an existing customer
-            notification({ message: "This customer is already registered!", type: "error", title: "Error" });
+            notification({ message: "This customer is already registered!", type: "error", title: "Error", time: 0 });
         } else {
             // Display the default error message from the response if it's not a known case
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
         }
     }
 }

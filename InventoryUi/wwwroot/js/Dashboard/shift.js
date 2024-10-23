@@ -162,14 +162,14 @@ $('#ShiftBtnSave').off('click').click(async () => {
                 notification({ message: "Shift Created successfully !", type: "success", title: "Success" });
                 await getShiftList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#ShiftModelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#ShiftModelCreate').modal('hide');
-        notification({ message: " Shift Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Shift Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -208,7 +208,7 @@ window.updateShift = async (id) => {
                 await getShiftList(); // Update the user list
             } else {
                 $('#ShiftModelCreate').modal('hide');
-                notification({ message: " Shift Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Shift Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
         });
     }
@@ -241,7 +241,7 @@ window.deleteShift = async (id) => {
 
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
         }
     });
 }

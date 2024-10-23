@@ -43,7 +43,10 @@ namespace InventoryUi.Models
 
         [DisplayName("Fax")]
         public string ? Fax { get; set; }
-
+        [DisplayName("User Name")]
+        public string UserName { get; set; }
+        [DisplayName("Password")]
+        public string Password { get; set; }
 
         [EmailAddress(ErrorMessage = "Invalid email format.")]
         [DisplayName("Email")]

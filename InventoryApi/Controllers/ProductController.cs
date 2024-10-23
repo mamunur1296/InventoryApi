@@ -1,5 +1,6 @@
 ﻿using InventoryApi.DTOs;
 using InventoryApi.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -31,6 +32,7 @@ namespace InventoryApi.Controllers
             return StatusCode((int)HttpStatusCode.BadRequest, result);
         }
         [HttpGet("All")]
+        [AllowAnonymous]
         public async Task<IActionResult> getAll()
         {
             var result = await _service.GetAllAsync();

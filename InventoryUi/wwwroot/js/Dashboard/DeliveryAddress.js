@@ -185,13 +185,13 @@ $('#btnSave').off('click').click(async () => {
                 await getDeliveryAddressList(); // Update the user list
             } else {
                 $('#modelCreate').modal('hide');
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#modelCreate').modal('hide');
-        notification({ message: " Delivery Address Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Delivery Address Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -229,7 +229,7 @@ window.updateDeliveryAddress = async (id) => {
                 await getDeliveryAddressList(); // Update the user list
             } else {
                 $('#modelCreate').modal('hide');
-                notification({ message: " Delivery Address Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Delivery Address Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
         });
     }
@@ -259,7 +259,7 @@ window.deleteDeliveryAddress = async (id) => {
             await getDeliveryAddressList(); // Update the category list
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
             
         }
     });

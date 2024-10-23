@@ -73,31 +73,37 @@ const onSuccessUsers = async (customers, users) => {
     }
 }
 
-//// Fatch duplucate file 
+const createDuplicateCheckValidator = (endpoint, key, errorMessage) => {
+    return function (value, element) {
+        let isValid = false;
+        $.ajax({
+            type: "GET",
+            url: endpoint,
+            data: { key: key, val: value },
+            async: false,
+            success: function (response) {
+                isValid = !response;
+            },
+            error: function () {
+                isValid = false;
+            }
+        });
+        return isValid;
+    };
+}
 
-//const createDuplicateCheckValidator = (endpoint, key, errorMessage) => {
-//    return function (value, element) {
-//        let isValid = false;
-//        $.ajax({
-//            type: "GET",
-//            url: endpoint,
-//            data: { key: key, val: value },
-//            async: false,
-//            success: function (response) {
-//                isValid = !response;
-//            },
-//            error: function () {
-//                isValid = false;
-//            }
-//        });
-//        return isValid;
-//    };
-//}
+$.validator.addMethod("checkDuplicateUsername", createDuplicateCheckValidator(
+    "/DashboardUser/CheckDuplicate",
+    "UserName",
+    "Username already exists."
+));
 
-//$.validator.addMethod("checkDuplicateWarehouseName", createDuplicateCheckValidator(
-//    "/Warehouse/CheckDuplicate",
-//    "WarehouseName"
-//));
+
+$.validator.addMethod("checkDuplicateEmail", createDuplicateCheckValidator(
+    "/DashboardUser/CheckDuplicate",
+    "Email",
+    "Email already exists."
+));
 
 
 
@@ -111,20 +117,23 @@ const UsrValidae = $('#CustomerForm').validate({
     },
     rules: {
         CustomerName: {
+            required: true, 
+        },
+        UserName: {
             required: true,
-            
+            checkDuplicateUsername: true
+        },
+        Email: {
+            required: true,
+            checkDuplicateEmail: true
+        },
+        Password: {
+            required: true,
+            minlength: 6,
+            pwcheck: true
         },
         Phone: {
-            required: true,
-            
-        },
-        PasswordHash: {
-            required: true,
-          
-        }
-        ,
-        UserId: {
-            required: true,
+            required: true, 
         }
     },
     messages: {
@@ -132,57 +141,22 @@ const UsrValidae = $('#CustomerForm').validate({
             required: "Customer name is required.",
             maxlength: "Customer name cannot be longer than 255 characters."
         },
-        ContactName: {
-            required: "Contact name is required.",
-            maxlength: "Contact name cannot be longer than 255 characters."
+        UserName: {
+            required: "User Name is required.",
+            checkDuplicateUsername: "This username is already taken."
         },
-        ContactTitle: {
-            required: "Contact title is required.",
-            maxlength: "Contact title cannot be longer than 255 characters."
+        Email: {
+            required: "Email is required.",
+            checkDuplicateEmail: "This email is already registered."
         },
-        Address: {
-            required: "Address is required.",
-            maxlength: "Address cannot be longer than 255 characters."
-        },
-        City: {
-            required: "City is required.",
-            maxlength: "City cannot be longer than 255 characters."
-        },
-        Region: {
-            required: "Region is required.",
-            maxlength: "Region cannot be longer than 255 characters."
-        },
-        PostalCode: {
-            required: "Postal code is required.",
-            maxlength: "Postal code cannot be longer than 255 characters."
-        },
-        Country: {
-            required: "Country is required.",
-            maxlength: "Country cannot be longer than 255 characters."
+        Password: {
+            required: "Password is required.",
+            minlength: "Password must be at least 6 characters long.",
+            pwcheck: "Password must contain at least one lowercase letter (a-z)."
         },
         Phone: {
             required: "Phone number is required.",
             maxlength: "Phone number cannot be longer than 255 characters."
-        },
-        Fax: {
-            required: "Fax number is required.",
-            maxlength: "Fax number cannot be longer than 255 characters."
-        },
-        Email: {
-            required: "Email is required.",
-            email: "Invalid email format.",
-            maxlength: "Email cannot be longer than 255 characters."
-        },
-        PasswordHash: {
-            required: "Password is required.",
-            maxlength: "Password cannot be longer than 255 characters."
-        },
-        MedicalHistory: {
-            required: "Medical history is required."
-        },
-        DateOfBirth: {
-            required: "Birth date is required.",
-            date: "Please enter a valid date."
         }
     },
     errorElement: 'div',
@@ -198,7 +172,9 @@ const UsrValidae = $('#CustomerForm').validate({
     }
 });
 
-
+$.validator.addMethod("pwcheck", function (value) {
+    return /[a-z]/.test(value); // At least one lowercase letter
+});
 //Sow Create Model 
 $('#CreateBtn').off('click').click(async () => {
     resetFormValidation('#CustomerForm', UsrValidae);
@@ -229,14 +205,14 @@ $('#btnSave').off('click').click(async () => {
                 notification({ message: "Customer Created successfully !", type: "success", title: "Success" });
                 await getCustomerList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error" });
+                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
                 $('#modelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#modelCreate').modal('hide');
-        notification({ message: " Customer Created failed . Please try again. !", type: "error", title: "Error" });
+        notification({ message: " Customer Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
     }
 
 });
@@ -282,7 +258,7 @@ window.updateCustomer = async (id) => {
                 await getCustomerList(); // Update the user list
             } else {
                 $('#modelCreate').modal('hide');
-                notification({ message: " Customer Updated failed . Please try again. !", type: "error", title: "Error" });
+                notification({ message: " Customer Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
             }
 
         });
@@ -313,7 +289,7 @@ window.deleteCustomer = async (id) => {
             await getCustomerList(); // Update the category list
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error" });
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
         }
     });
 }

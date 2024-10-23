@@ -189,13 +189,23 @@ namespace InventoryApi.Services.Implementation
 
         public async Task<bool> SigninUserAsync(string userName, string password)
         {
-            var result = await _signInManager.PasswordSignInAsync(userName, password, true, false);
-            if (!result.Succeeded)
+            var existingUser = await _userManager.FindByNameAsync(userName);
+
+            if (existingUser == null)
             {
-                throw new ValidationException("Username or password does not match.");
+                throw new ValidationException("User does not exist. Please register before trying to sign in.");
             }
+
+            var signInResult = await _signInManager.PasswordSignInAsync(userName, password, isPersistent: true, lockoutOnFailure: false);
+
+            if (!signInResult.Succeeded)
+            {
+                throw new ValidationException("Invalid username or password. Please try again.");
+            }
+
             return true;
         }
+
 
 
         public async Task<bool> UpdateUserProfile(UserDTO model)
