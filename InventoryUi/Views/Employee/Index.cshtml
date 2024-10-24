@@ -96,6 +96,7 @@
                     <input type="hidden" asp-for="UpdatedBy" value="@userName" />
                     <input type="hidden" asp-for="Photo" value="Photo" />
                     <input type="hidden" asp-for="PhotoPath" value="PhotoPath" />
+                    <input type="hidden" asp-for="UserId" name="UserId" value="@Model?.UserId" />
                     <div class="card-body">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="row">
@@ -122,12 +123,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="BirthDate" class="control-label"></label>
-                                    <input asp-for="BirthDate" type="date" placeholder="Enter birth date (01/01/1990)" class="form-control" name="BirthDate" />
+                                    <input asp-for="BirthDate" type="date" placeholder="Enter birth date (01/01/1990)" class="form-control" id="BirthDate" name="BirthDate" />
                                     <span asp-validation-for="BirthDate" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="HireDate" class="control-label"></label>
-                                    <input asp-for="HireDate" type="date" placeholder="Enter Hire date (01/01/1990)" class="form-control" name="HireDate" />
+                                    <input asp-for="HireDate" type="date" placeholder="Enter Hire date (01/01/1990)" class="form-control" id="HireDate" name="HireDate" />
                                     <span asp-validation-for="HireDate" class="text-danger"></span>
                                 </div>
                                 

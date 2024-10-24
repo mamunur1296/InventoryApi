@@ -57,6 +57,9 @@ namespace InventoryApi.Services.Implementation
                 CompanyId=entity?.CompanyId,
                 Salary=entity.Salary,
                 DepartmentId=entity.DepartmentId,
+                UserName=entity.UserName,
+                Password=entity.Password,
+                Email=entity.Email,
 
             };
             if (entity.Id != Guid.Empty.ToString() && entity.Id != null)
@@ -117,13 +120,16 @@ namespace InventoryApi.Services.Implementation
             return result;
         }
 
+
         public async Task<EmployeeDTOs> GetByIdAsync(string id)
         {
             var item = await _unitOfWorkRepository.employeeRepository.GetByIdAsync(id);
+    
             if (item == null || item?.Id != id)
             {
                 throw new NotFoundException($"Employee with id = {id} not found");
             }
+           
             var result = _mapper.Map<EmployeeDTOs>(item);
             return result;
         }
@@ -160,6 +166,7 @@ namespace InventoryApi.Services.Implementation
             item.BranchId = entity?.BranchId?.Trim();
             item.DepartmentId = entity.DepartmentId;
             item.Salary = entity.Salary;
+            item.UserId = entity.UserId;
 
             // Set the UpdateDate to the current date and time
             item.UpdatedBy = _userContextService.UserName;

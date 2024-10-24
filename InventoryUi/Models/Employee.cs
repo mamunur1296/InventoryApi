@@ -17,9 +17,9 @@ namespace InventoryUi.Models
         [DisplayName("Title Of Courtesy")]
         public string? TitleOfCourtesy { get; set; }
         [DisplayName("Birth Date")]
-        public DateTime? BirthDate { get; set; } = null;
+        public DateTime? BirthDate { get; set; }
         [DisplayName("Hire Date")]
-        public DateTime HireDate { get; set; } 
+        public DateTime ?HireDate { get; set; } 
         [DisplayName("Address")]
         public string? Address { get; set; }
         [DisplayName("City")]
@@ -46,7 +46,7 @@ namespace InventoryUi.Models
         [DisplayName("Photo")]
          public List<IFormFile>? Files { get; set; } 
         [DisplayName("User")]
-        public string? UserId { get; set; }
+        public string ? UserId { get; set; }
         public User? User { get; set; }
         [DisplayName("Manager")]
         public string? ManagerId { get; set; }
@@ -62,11 +62,11 @@ namespace InventoryUi.Models
         public string? DepartmentId { get; set; }
         public Department? Department { get; set; }
         [DisplayName("User Name")]
-        public string UserName { get; set; }
+        public string ?UserName { get; set; }
         [DisplayName("Password")]
-        public string Password { get; set; }
+        public string ?Password { get; set; }
         [DisplayName("Email")]
-        public string Email { get; set; }
+        public string ?Email { get; set; }
         public ICollection<Attendance>? Attendances { get; set; }
         public ICollection<Payroll>? Payrolls { get; set; }
     }

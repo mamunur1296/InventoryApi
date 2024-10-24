@@ -30,6 +30,14 @@ namespace InventoryUi.Controllers
             var result = await _customerServices.PostClientAsync("Customer/Create", model);
             return Json(result);
         }
+        [HttpPost]
+        public async Task<IActionResult> CreateUserFirst(Customer model)
+        {
+            model.UpdatedBy = null;
+            model.PasswordHash = "PasswordHash";
+            var result = await _customerServices.PostClientAsync("Customer/CreateUserFirst", model);
+            return Json(result);
+        }
         [HttpGet]
         public async Task<IActionResult> CreateCustomer(string id)
         {

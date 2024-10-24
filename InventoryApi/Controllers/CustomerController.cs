@@ -33,6 +33,21 @@ namespace InventoryApi.Controllers
             }
             return StatusCode((int)HttpStatusCode.BadRequest, result);
         }
+        [HttpPost("CreateUserFirst")]
+        public async Task<IActionResult> CreateUserFirst(CustomerDTOs model)
+        {
+            var result = await _helperServicess.CreateCustomerFirstUserAsync(model);
+            if (result.isSucceed)
+            {
+                return StatusCode((int)HttpStatusCode.Created, new ResponseDTOs<string>
+                {
+                    Success = true,
+                    Status = HttpStatusCode.Created,
+                    Detail = "Customer Created  successfully !!."
+                });
+            }
+            return StatusCode((int)HttpStatusCode.BadRequest, result);
+        }
         [HttpGet("CreateByAdmin/{id}")]
         public async Task<IActionResult> CreateByAdmin(string id)
         {

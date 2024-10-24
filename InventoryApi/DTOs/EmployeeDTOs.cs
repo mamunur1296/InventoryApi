@@ -35,13 +35,13 @@ namespace InventoryApi.DTOs
         [Precision(18, 2)]
         public decimal? Salary { get; set; } = null;
 
-        public string UserName { get; set; }
+        public string ?UserName { get; set; }
 
-        public string Password { get; set; }
+        public string ?Password { get; set; }
   
-        public string Email { get; set; }
+        public string ?Email { get; set; }
   
-        public string DepartmentId { get; set; }
+        public string ?DepartmentId { get; set; }
         //public Department Department { get; set; }
 
         //public ICollection<Attendance> Attendances { get; set; }

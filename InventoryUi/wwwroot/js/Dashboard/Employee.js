@@ -8,9 +8,13 @@ $(document).ready(async function () {
 const getEmployeeList = async () => {
     debugger
     const employeees = await SendRequest({ endpoint: '/Employee/GetAll' });
+    debugger
     const company = await SendRequest({ endpoint: '/Company/GetAll' });
+    debugger
     const users = await SendRequest({ endpoint: '/DashboardUser/GetAll' });
+    debugger
     const branchs = await SendRequest({ endpoint: '/Branch/GetAll' });
+    debugger
     if (employeees.status === 200 && employeees.success) {
         debugger
         await onSuccessUsers(employeees.data, users.data, company.data, branchs.data);
@@ -268,7 +272,7 @@ $('#btnSave').off('click').click(async () => {
         if ($('#EmployeeForm').valid()) {
             //const formData = $('#EmployeeForm').serialize();
             const formData = new FormData($('#EmployeeForm')[0]);
-            const result = await SendRequest({ endpoint: '/Employee/Create', method: 'POST', data: formData });
+            const result = await SendRequest({ endpoint: '/Employee/CreateUserFirst', method: 'POST', data: formData });
             // Clear previous messages
             $('#successMessage').hide();
             $('#UserError').hide();
@@ -316,8 +320,6 @@ window.updateEmployee = async (id) => {
         $('#FirstName').val(result.data.firstName);
         $('#Title').val(result.data.title);
         $('#TitleOfCourtesy').val(result.data.titleOfCourtesy);
-        $('#BirthDate').val(result.data.birthDate);
-        $('#HireDate').val(result.data.hireDate);
         $('#Address').val(result.data.address);
         $('#City').val(result.data.city);
         $('#Region').val(result.data.region);
@@ -338,8 +340,26 @@ window.updateEmployee = async (id) => {
         $('#HireDate').val(result.data.hireDate);
         $('#Salary').val(result.data.salary);
         $('#DepartmentDropdown').val(result.data.departmentId);
-        
+        $('#Email').val(result.data.email);
+        $('#UserName').val(result.data.userName);
+        $('#UserId').val(result.data.userId);
+        $('#Password').val();
+        // Date handling for BirthDate and HireDate
+        const birthDate = new Date(result.data.birthDate);
+        const hireDate = new Date(result.data.hireDate);
 
+        // Convert the dates to YYYY-MM-DD format
+        const formattedBirthDate = birthDate.toISOString().split('T')[0];
+        const formattedHireDate = hireDate.toISOString().split('T')[0];
+
+        // Set the formatted dates in the input fields
+        $('#BirthDate').val(formattedBirthDate);
+        $('#HireDate').val(formattedHireDate);
+
+        
+        $("#Email").rules("remove");
+        $("#UserName").rules("remove");
+        $("#Password").rules("remove");
 
         $('#modelCreate').modal('show');
         resetValidation(UsrValidae, '#EmployeeForm');

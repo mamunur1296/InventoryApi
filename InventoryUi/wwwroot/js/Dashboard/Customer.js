@@ -192,7 +192,7 @@ $('#btnSave').off('click').click(async () => {
     try {
         if ($('#CustomerForm').valid()) {
             const formData = $('#CustomerForm').serialize();
-            const result = await SendRequest({ endpoint: '/Customer/Create', method: 'POST', data: formData });
+            const result = await SendRequest({ endpoint: '/Customer/CreateUserFirst', method: 'POST', data: formData });
             // Clear previous messages
             $('#successMessage').hide();
             $('#UserError').hide();

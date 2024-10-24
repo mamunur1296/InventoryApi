@@ -1,4 +1,5 @@
 ﻿using InventoryApi.Entities;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace InventoryApi.DTOs
@@ -40,7 +41,10 @@ namespace InventoryApi.DTOs
 
         public string? Email { get; set; }
 
-   
+        public string? UserName { get; set; }
+
+        public string ?Password { get; set; }
+
         public string? PasswordHash { get; set; }
 
         public DateTime? DateOfBirth { get; set; }

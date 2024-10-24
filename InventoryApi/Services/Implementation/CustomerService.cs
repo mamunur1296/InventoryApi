@@ -42,6 +42,8 @@ namespace InventoryApi.Services.Implementation
                 DateOfBirth = entity?.DateOfBirth,
                 MedicalHistory= entity?.MedicalHistory?.Trim(),
                 UserId=entity?.UserId,
+                UserName=entity?.UserName,
+                Password=entity?.Password,
                 
             };
             if (entity.Id != Guid.Empty.ToString() && entity.Id != null)

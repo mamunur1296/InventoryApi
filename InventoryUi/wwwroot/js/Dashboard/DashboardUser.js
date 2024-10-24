@@ -285,6 +285,27 @@ window.updateUser = async (id) => {
         debugger
         const isChecked = result.user.isEmployee;
         $('#IsEmployeeCheckbox').prop('checked', isChecked);
+        const isApproved = result.user.isApprovedByAdmin;
+        const checkbox = $('#IsEmployeeCheckbox');
+
+        // Handle enabling/disabling and checking/unchecking the checkbox
+        if (!isApproved) {
+            checkbox.prop('disabled', false).css('opacity', 1);  // Make it clickable
+            $('#isApprovedByAdmin').val(result.user.isApprovedByAdmin);
+        } else {
+            checkbox.prop('disabled', true).css('opacity', 0.5);  // Disable interaction
+            $('#isApprovedByAdmin').val(result.user.isApprovedByAdmin);
+        }
+
+        // Optional: Handle click prevention when disabled
+        checkbox.off("click").on('click', function (e) {
+            if ($(this).is(':disabled')) {
+                e.preventDefault();  // Prevent interaction if disabled
+            }
+        });
+
+
+
         isEmployee(isChecked);
         loger(isChecked);
         $('#modelCreate').modal('show');

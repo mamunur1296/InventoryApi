@@ -39,7 +39,11 @@ namespace InventoryApi.Entities
         public string ?DepartmentId { get; set; }
         [ForeignKey("DepartmentId")]
         public Department ?Department { get; set; }
+        public string? UserName { get; set; }
 
+        public string? Password { get; set; }
+
+        public string? Email { get; set; }
         public ICollection<Attendance>? Attendances { get; set; }
         public ICollection<Payroll>? Payrolls { get; set; }
     }

@@ -144,12 +144,7 @@ export const SendRequest = async ({ endpoint, method = 'GET', data = null, heade
         cache: cache ? 'default' : 'no-cache',
     };
 
-    // Perform fetch request
-    // Perform fetch request
-    // Perform fetch request
-    // Perform fetch request
-    // Perform fetch request
-    // Perform fetch request
+
     
     try {
         
@@ -172,7 +167,7 @@ export function handleError(message) {
 }
 
 export const populateDropdown = async (endpoint, dropdownSelector, valueField, textField, defaultOption = null) => {
-    debugger
+    
     try {
         
         const response = await SendRequest({ endpoint: endpoint });
@@ -190,7 +185,7 @@ export const populateDropdown = async (endpoint, dropdownSelector, valueField, t
            
             $(dropdownSelector).append(`<option value="">${defaultOption}</option>`);
         } 
-        debugger
+        
         // Check if data is null or empty
         if (!data || data.length === 0) {
           
@@ -201,7 +196,7 @@ export const populateDropdown = async (endpoint, dropdownSelector, valueField, t
 
         // Add options from the fetched data
         $.each(data, function (index, item) {
-            debugger
+            
             $(dropdownSelector).append(`<option value="${item[valueField]}">${item[textField]}</option>`);
         });
     } catch (error) {

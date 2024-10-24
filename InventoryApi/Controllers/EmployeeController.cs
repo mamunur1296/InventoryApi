@@ -33,6 +33,21 @@ namespace InventoryApi.Controllers
             }
             return StatusCode((int)HttpStatusCode.BadRequest, result);
         }
+        [HttpPost("CreateUserFirst")]
+        public async Task<IActionResult> CreateUserFirst(EmployeeDTOs model)
+        {
+            var result = await _helper.CreateEmployeeFirstUserAsync(model);
+            if (result.isSucceed)
+            {
+                return StatusCode((int)HttpStatusCode.Created, new ResponseDTOs<string>
+                {
+                    Success = true,
+                    Status = HttpStatusCode.Created,
+                    Detail = "Employee Created  successfully !!."
+                });
+            }
+            return StatusCode((int)HttpStatusCode.BadRequest, result);
+        }
         [HttpGet("CreateByAdmin/{id}")]
         public async Task<IActionResult> CreateByAdmin(string id)
         {
@@ -44,6 +59,21 @@ namespace InventoryApi.Controllers
                     Success = true,
                     Status = HttpStatusCode.Created,
                     Detail = "Employee Created  successfully !!."
+                });
+            }
+            return StatusCode((int)HttpStatusCode.BadRequest, result);
+        }
+        [HttpGet("NotApprovedByAdmin/{id}")]
+        public async Task<IActionResult> NotApprovedByAdmin(string id)
+        {
+            var result = await _helper.NotApprovedByAdmin(id);
+            if (result.isSucceed)
+            {
+                return StatusCode((int)HttpStatusCode.Created, new ResponseDTOs<string>
+                {
+                    Success = true,
+                    Status = HttpStatusCode.Created,
+                    Detail = " Delete  successfully !!."
                 });
             }
             return StatusCode((int)HttpStatusCode.BadRequest, result);

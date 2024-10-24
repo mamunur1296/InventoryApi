@@ -81,7 +81,7 @@ namespace InventoryApi.Services.Implementation
                     }
 
                     // Update the user details
-                    existingUser.isApprovedByAdmin = true; // Mark as approved by admin
+                    //existingUser.isApprovedByAdmin = true; // Mark as approved by admin
                     existingUser.isEmployee = false; // If the user is not an employee
 
                     var updateUserResult = await _userManager.UpdateAsync(existingUser);
@@ -100,6 +100,65 @@ namespace InventoryApi.Services.Implementation
                     // Rollback in case of an error and return the error message
                     await transaction.RollbackAsync();
                     throw new ValidationException($"An error occurred during customer registration: {ex.Message}");
+                }
+            }
+        }
+
+        public async Task<(bool isSucceed, string userId, string errorMessage)> CreateCustomerFirstUserAsync(CustomerDTOs model)
+        {
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+
+                    // Create user entity
+                    var user = new ApplicationUser()
+                    {
+                        FirstName = model?.CustomerName.Split(" ").First(),
+                        LastName = model.CustomerName.Split(" ").Last(),
+                        UserName = model.UserName,
+                        Email = model.Email,
+                        PhoneNumber = model.Phone,
+                        PasswordHash = model.Password,
+                        isApproved = true,
+                        isApprovedByAdmin = false,
+                        isEmployee = false,
+                    };
+
+                    // Create user
+                    var result = await _userManager.CreateAsync(user, model.Password);
+                    if (!result.Succeeded)
+                    {
+                        await transaction.RollbackAsync();
+                        // Create an error message from the result errors
+                        string errorMessage = string.Join("; ", result.Errors.Select(e => e.Description));
+                        return (false, null, errorMessage);
+                    }
+
+                    // Add user to roles
+                    var addUserRole = await _userManager.AddToRolesAsync(user, new[] { "User" });
+
+                    if (!addUserRole.Succeeded)
+                    {
+                        await transaction.RollbackAsync();
+                        return (false, null, string.Join("; ", addUserRole.Errors.Select(e => e.Description)));
+                    }
+                    model.UserId = user.Id;
+                    var customerResult = await _customer.CreateAsync(model);
+                    if (!customerResult)
+                    {
+                        await transaction.RollbackAsync();
+                        return (false, null, "Customer registration failed.");
+                    }
+
+                    // Commit the transaction
+                    await transaction.CommitAsync();
+                    return (true, user.Id, null);
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    return (false, null, $"An error occurred during registration: {ex.Message}");
                 }
             }
         }
@@ -131,8 +190,7 @@ namespace InventoryApi.Services.Implementation
                         LastName = existingUser.LastName.Trim(),
                         Title = null,
                         TitleOfCourtesy = null,
-                        BirthDate = null,
-                        HireDate = null,
+
                         Address = null,
                         City = null,
                         Region = null,
@@ -145,11 +203,15 @@ namespace InventoryApi.Services.Implementation
                         ReportsTo = null,
                         PhotoPath = null,
                         ManagerId = null,
-                        Salary = 100,
+                        Salary = null,
                         UserId = existingUser.Id,
                         Id = existingUser.Id,
                         CompanyId = existingUser.CompanyId,
                         BranchId = existingUser.BranchId,
+                        Email = existingUser.Email,
+                        UserName= existingUser.UserName,
+                        Password=existingUser.PasswordHash,
+                        DepartmentId=null,
                     };
 
                     // Attempt to create the customer
@@ -174,6 +236,68 @@ namespace InventoryApi.Services.Implementation
                     // Commit the transaction
                     await transaction.CommitAsync();
                     return (true, newEmployee?.UserId, null);
+                }
+                catch (Exception ex)
+                {
+                    // Rollback in case of an error and return the error message
+                    await transaction.RollbackAsync();
+                    throw new ValidationException($"An error occurred during Employee registration: {ex.Message}");
+                }
+            }
+        }
+
+        public async Task<(bool isSucceed, string userId, string errorMessage)> CreateEmployeeFirstUserAsync(EmployeeDTOs model)
+        {
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+
+                    // Create user entity
+                    var user = new ApplicationUser()
+                    {
+                        FirstName = model?.FirstName,
+                        LastName = model.LastName,
+                        UserName = model.UserName,
+                        Email = model.Email,
+                        PhoneNumber = model.HomePhone,
+                        PasswordHash = model.Password,
+                        isApproved = true,
+                        isApprovedByAdmin = true,
+                        isEmployee = false,
+                    };
+
+                    // Create user
+                    var result = await _userManager.CreateAsync(user, model.Password);
+                    if (!result.Succeeded)
+                    {
+                        await transaction.RollbackAsync();
+                        // Create an error message from the result errors
+                        string errorMessage = string.Join("; ", result.Errors.Select(e => e.Description));
+                        return (false, null, errorMessage);
+                    }
+
+                    // Add user to roles
+                    var addUserRole = await _userManager.AddToRolesAsync(user, new[] { "User" });
+
+                    if (!addUserRole.Succeeded)
+                    {
+                        await transaction.RollbackAsync();
+                        return (false, null, string.Join("; ", addUserRole.Errors.Select(e => e.Description)));
+                    }
+
+                    model.UserId = user.Id;
+                    // Attempt to create the customer
+                    var employeeResult = await _employee.CreateAsync(model);
+                    if (!employeeResult)
+                    {
+                        await transaction.RollbackAsync();
+                        return (false, null, "Failed to register the Employee.");
+                    }
+
+                    // Commit the transaction
+                    await transaction.CommitAsync();
+                    return (true, null , null);
                 }
                 catch (Exception ex)
                 {
@@ -281,5 +405,29 @@ namespace InventoryApi.Services.Implementation
             }
         }
 
+        public async Task<(bool isSucceed, string CustomerId, string errorMessage)> NotApprovedByAdmin(string id)
+        {
+            // Check if the provided ID is null
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new NotFoundException("User ID not found.");
+            }
+
+            // Check if the user exists
+            var existingUser = await _userManager.FindByIdAsync(id);
+            if (existingUser == null)
+            {
+                throw new NotFoundException("User does not exist.");
+            }
+            existingUser.isApprovedByAdmin = false;
+            existingUser.isEmployee = false;
+            var updateUserResult = await _userManager.UpdateAsync(existingUser);
+            if (!updateUserResult.Succeeded)
+            {
+                return (false, null, "Failed to update user information.");
+            }
+            return (true, existingUser?.Id, null);
+        }
     }
 }
+

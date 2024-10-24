@@ -48,7 +48,8 @@ const onSuccessUsers = async (employees) => {
             {
                 render: (data, type, row) => createActionButtons(row, [
                     { label: 'Approved', btnClass: 'btn-primary', callback: 'isEmployee' },
-                    { label: 'Not Approved', btnClass: 'btn-danger', callback: 'isCustomer'},
+                    { label: 'Add Cutomer', btnClass: 'btn-primary', callback: 'isCustomer'},
+                    { label: 'Not Approved', btnClass: 'btn-danger', callback: 'isNotApproved'},
                 ])
             }
         ];
@@ -79,6 +80,25 @@ window.isEmployee = async (id) => {
 };
 
 
+window.isNotApproved = async (id) => {
+    debugger;
+    const result = await SendRequest({ endpoint: '/Employee/NotApprovedEmployee/' + id });
+    loger(result);
+
+    if (result.success) {
+        notification({ message: result.detail, type: "success", title: "Success" });
+        await getemployeesList(); // Reload the employees list on success
+    } else {
+        // Check if the error message contains the specific registration error
+        if (result.detail.includes("An error occurred during customer registration:")) {
+            // Display a custom error message for an existing customer
+            notification({ message: "This customer is already registered!", type: "error", title: "Error", time: 0 });
+        } else {
+            // Display the default error message from the response if it's not a known case
+            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
+        }
+    }
+}
 window.isCustomer = async (id) => {
     debugger;
     const result = await SendRequest({ endpoint: '/Customer/CreateCustomer/' + id });
