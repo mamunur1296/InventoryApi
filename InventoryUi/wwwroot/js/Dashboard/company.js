@@ -4,6 +4,7 @@ import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js'
 
 $(document).ready(async function () {
     await getCompanyList();
+    await CreateCompanyBtn('#CreateCompanyBtn');
     
 });
 const getCompanyList = async () => {
@@ -154,11 +155,15 @@ export const isCompnayValidae = $('#CompanyForm').validate({
 });
 
 //Sow Create Model 
-$('#CreateCompanyBtn').off('click').click(async () => {
-    resetFormValidation('#CompanyForm', isCompnayValidae);
-    clearMessage('successMessage', 'globalErrorMessage');
-    showCreateModal('CompanyModelCreate', 'btnSaveCompany', 'btnUpdateCompany');
-});
+export const CreateCompanyBtn = async (CreateBtnId) => {
+    //Sow Create Model 
+    $(CreateBtnId).off('click').click(async (e) => {
+        e.preventDefault();
+        resetFormValidation('#CompanyForm', isCompnayValidae);
+        clearMessage('successMessage', 'globalErrorMessage');
+        showCreateModal('CompanyModelCreate', 'btnSaveCompany', 'btnUpdateCompany');
+    });
+}
 
 // Save Button
 $('#btnSaveCompany').off('click').click(async () => {

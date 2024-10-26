@@ -50,16 +50,16 @@ namespace InventoryUi.Controllers
             var result = await _employeeServices.PostClientAsync("Employee/CreateUserFirst", model);
             return Json(result);
         }
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> CreateEmployee(string id)
         {
-            var result = await _employeeServices.GetClientByIdAsync($"Employee/CreateByAdmin/{id}");
+            var result = await _employeeServices.PostClientAsync($"Employee/CreateByAdmin/{id}");
             return Json(result);
         }
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> NotApprovedEmployee(string id)
         {
-            var result = await _employeeServices.GetClientByIdAsync($"Employee/NotApprovedByAdmin/{id}");
+            var result = await _employeeServices.PostClientAsync($"Employee/NotApprovedByAdmin/{id}");
             return Json(result);
         }
         [HttpGet]

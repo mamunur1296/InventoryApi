@@ -88,7 +88,6 @@ const onSuccessUsers = async (Shifts) => {
 
 
 
-
 // Initialize validation
 export const isShiftValidae = $('#ShiftForm').validate({
     onkeyup: function (element) {
@@ -97,26 +96,27 @@ export const isShiftValidae = $('#ShiftForm').validate({
     rules: {
         ShiftName: {
             required: true,
-        }
-        ,
+        },
         StartTime: {
             required: true,
-
-        }
-        ,
+            checkTimeOrder: true // Apply custom rule for time validation
+        },
         EndTime: {
             required: true,
-
+            checkTimeOrder: true // Apply custom rule for time validation
         }
-       
     },
     messages: {
-        CategoryName: {
-            required: " Branch Name  is required.",
+        ShiftName: {
+            required: "Shift Name is required.",
         },
-        Description: {
-            required: " Description is required.",
-
+        StartTime: {
+            required: "Start Time is required.",
+            checkTimeOrder: "Start Time must be before End Time."
+        },
+        EndTime: {
+            required: "End Time is required.",
+            checkTimeOrder: "End Time must be after Start Time."
         }
     },
     errorElement: 'div',
@@ -132,9 +132,21 @@ export const isShiftValidae = $('#ShiftForm').validate({
     }
 });
 
+// Custom validation method to check StartTime and EndTime order
+$.validator.addMethod("checkTimeOrder", function (value, element) {
+    const startTime = $('#StartTime').val();
+    const endTime = $('#EndTime').val();
+
+    // Return true if either field is empty (handled by required rules), or if startTime < endTime
+    return (startTime === "" || endTime === "") || (startTime < endTime);
+}, "Start Time must be before End Time.");
+
+
 //Sow Create Model 
 $('#CreateShiftBtn').off('click').click(async () => {
     resetFormValidation('#ShiftForm', isShiftValidae);
+    $('#myModalLabelUpdateBranch').hide();
+    $('#myModalLabelAddBranch').show();
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     showCreateModal('ShiftModelCreate', 'ShiftBtnSave', 'ShiftBtnUpdate');
@@ -148,6 +160,14 @@ $('#ShiftBtnSave').off('click').click(async () => {
     debugger
     try {
         if ($('#ShiftForm').valid()) {
+            const startTime = $('#StartTime').val();
+            const endTime = $('#EndTime').val();
+
+            // Validate Check-Out time is after Check-In time
+            if (startTime >= endTime) {
+                notification({ message: "End Time must be after Start Time.", type: "error", title: "Time Error" });
+                return; // Prevent submission if validation fails
+            }
             const formData = $('#ShiftForm').serialize();
             const result = await SendRequest({ endpoint: '/Shift/Create', method: 'POST', data: formData });
             // Clear previous messages
@@ -198,6 +218,14 @@ window.updateShift = async (id) => {
         $('#ShiftModelCreate').modal('show');
         resetValidation(isShiftValidae, '#ShiftForm');
         $('#ShiftBtnUpdate').off('click').on('click', async () => {
+            const startTime = $('#StartTime').val();
+            const endTime = $('#EndTime').val();
+
+            // Validate Check-Out time is after Check-In time
+            if (startTime >= endTime) {
+                notification({ message: "End Time must be after Start Time.", type: "error", title: "Time Error" });
+                return; // Prevent submission if validation fails
+            }
             debugger
             const formData = $('#ShiftForm').serialize();
             const result = await SendRequest({ endpoint: '/Shift/Update/' + id, method: "PUT", data: formData });

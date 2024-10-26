@@ -48,7 +48,7 @@ namespace InventoryApi.Controllers
             }
             return StatusCode((int)HttpStatusCode.BadRequest, result);
         }
-        [HttpGet("CreateByAdmin/{id}")]
+        [HttpPost("CreateByAdmin/{id}")]
         public async Task<IActionResult> CreateByAdmin(string id)
         {
             var result = await _helperServicess.CreateCustomerByAdmin(id);

@@ -65,9 +65,9 @@ namespace InventoryApi.Services.Implementation
                         Country = string.Empty,
                         Phone = existingUser.PhoneNumber,
                         Fax = string.Empty,
-                        Email = existingUser.Email, // Ensure email is provided
-                        PasswordHash = existingUser.PasswordHash, // Use hashed password
-                        DateOfBirth = DateTime.Now, // Adjust as needed
+                        Email = existingUser.Email, 
+                        PasswordHash = existingUser.PasswordHash,
+                        DateOfBirth = null, 
                         MedicalHistory = string.Empty,
                         Id = existingUser.Id,
                     };
@@ -185,12 +185,12 @@ namespace InventoryApi.Services.Implementation
                     // Create the customer DTO
                     var newEmployee = new EmployeeDTOs
                     {
+                        CreatedBy= _userContextService.UserName,
                         CreationDate = DateTime.Now, // Set CreationDate here
                         FirstName = existingUser.FirstName.Trim(),
                         LastName = existingUser.LastName.Trim(),
                         Title = null,
                         TitleOfCourtesy = null,
-
                         Address = null,
                         City = null,
                         Region = null,
@@ -363,24 +363,16 @@ namespace InventoryApi.Services.Implementation
                     }
 
                     // Conditional customer creation
-                    if (model.isApproved == true && model.isEmployee == false)
+                    if ( model.isEmployee == false)
                     {
                         var customer = new CustomerDTOs
                         {
+                            CreatedBy = _userContextService.UserName,
+                            CreationDate= DateTime.Now,
                             CustomerName = $"{model.FirstName} {model.LastName}",
-                            ContactName = null,
-                            ContactTitle = null,
-                            Address = null,
-                            City = null,
-                            Region = null,
-                            PostalCode = null,
-                            Country = null,
                             Phone = model.PhoneNumber,
-                            Fax = null,
-                            Email = model.Email, // Ensure this is provided as it's required
-                            PasswordHash = model.Password, // Hash the password
-                            DateOfBirth = DateTime.Now, // Adjust as needed
-                            MedicalHistory = null,
+                            Email = model.Email, 
+                            PasswordHash = model.Password, 
                             Id = user.Id,
                             UserId = user.Id,
                         };

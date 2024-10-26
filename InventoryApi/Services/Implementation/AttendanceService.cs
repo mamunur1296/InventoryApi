@@ -52,7 +52,7 @@ namespace InventoryApi.Services.Implementation
             item.EmployeeId=entity.EmployeeId;
             item.Date=entity.Date;
             item.CheckInTime=entity.CheckInTime;
-            item.CheckOutTime = entity.CheckInTime;
+            item.CheckOutTime = entity.CheckOutTime;
             item.IsPresent=entity.IsPresent;
             
             // Set the UpdateDate to the current date and time

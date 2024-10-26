@@ -43,30 +43,35 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="BaseSalary" class="control-label"></label>
-                                    <input  asp-for="BaseSalary" placeholder="Enter check-in time (e.g., 09:00 AM)" class="form-control" name="BaseSalary" />
-                                    <span asp-validation-for="BaseSalary" class="text-danger"></span>
+                                    <label asp-for="Deductions" class="control-label"></label>
+                                    <input asp-for="Deductions" placeholder="Enter Deductions" class="form-control" name="Deductions" />
+                                    <span asp-validation-for="Deductions" class="text-danger"></span>
                                 </div>
-                                <div class="form-group">
-                                    <label asp-for="Bonus" class="control-label"></label>
-                                    <input asp-for="Bonus" placeholder="Enter check-in time (e.g., 09:00 AM)" class="form-control" name="Bonus" />
-                                    <span asp-validation-for="Bonus" class="text-danger"></span>
-                                </div>
+                               
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label asp-for="Deductions" class="control-label"></label>
-                                    <input  asp-for="Deductions" placeholder="Enter check-in time (e.g., 09:00 AM)" class="form-control" name="Deductions" />
-                                    <span asp-validation-for="Deductions" class="text-danger"></span>
+                                    <label asp-for="BaseSalary" class="control-label"></label>
+                                    <input asp-for="BaseSalary" placeholder="Enter Base Salary" class="form-control" name="BaseSalary" />
+                                    <span asp-validation-for="BaseSalary" class="text-danger"></span>
                                 </div>
+                               
                                 <div class="form-group">
                                     <label asp-for="NetSalary" class="control-label"></label>
-                                    <input  asp-for="NetSalary" placeholder="Enter check-in time (e.g., 09:00 AM)" class="form-control" name="NetSalary" />
+                                    <input  asp-for="NetSalary" placeholder="Enter Net Salary" class="form-control" name="NetSalary" />
                                     <span asp-validation-for="NetSalary" class="text-danger"></span>
+                                </div>
+                               
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="Bonus" class="control-label"></label>
+                                    <input asp-for="Bonus" placeholder="Enter Bonus" class="form-control" name="Bonus" />
+                                    <span asp-validation-for="Bonus" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="PaymentDate" class="control-label"></label>
-                                    <input  asp-for="PaymentDate" placeholder="Enter check-in time (e.g., 09:00 AM)" class="form-control" name="PaymentDate" />
+                                    <input type="date" asp-for="PaymentDate" placeholder="Enter Payment Date" class="form-control" name="PaymentDate" />
                                     <span asp-validation-for="PaymentDate" class="text-danger"></span>
                                 </div>
                             </div>

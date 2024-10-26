@@ -147,8 +147,8 @@ namespace InventoryApi.Services.Implementation
             item.LastName = entity.LastName.Trim();
             item.Title =  entity?.Title?.Trim();
             item.TitleOfCourtesy =  entity?.TitleOfCourtesy?.Trim();
-            item.BirthDate =    item.BirthDate;
-            item.HireDate = item.HireDate;
+            item.BirthDate = entity.BirthDate;
+            item.HireDate = entity.HireDate;
             item.Address =  entity?.Address?.Trim();
             item.City =  entity?.City?.Trim();
             item.Region = entity?.Region?.Trim();

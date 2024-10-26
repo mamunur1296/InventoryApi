@@ -38,9 +38,11 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label asp-for="ShiftName" class="control-label"></label>
-                                    <input asp-for="ShiftName" placeholder="Enter check-in time (e.g., 09:00 AM)" class="form-control" name="ShiftName" />
+                                    <input asp-for="ShiftName" placeholder="Enter Shift" class="form-control" name="ShiftName" />
                                     <span asp-validation-for="ShiftName" class="text-danger"></span>
                                 </div>
+                            </div>
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label asp-for="StartTime" class="control-label"></label>
                                     <input type="time" asp-for="StartTime" placeholder="Enter check-out time (e.g., 06:00 PM)" class="form-control" name="StartTime" />
@@ -54,6 +56,7 @@
                                     <span asp-validation-for="EndTime" class="text-danger"></span>
                                 </div>
                             </div>
+                            
                         </div>
                     </div>
                 </form>

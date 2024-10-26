@@ -342,8 +342,9 @@ window.showDetails = async (id) => {
 
 
 window.addEmployee = async (id) => {
+    debugger
     loger(id);
-    const result = await SendRequest({ endpoint: '/Employee/CreateEmployee/' + id });
+    const result = await SendRequest({ endpoint: '/Employee/CreateEmployee/' + id, method:"POST" });
     if (result.success) {
         notification({ message: result.detail, type: "success", title: "Success" });
         await getUserList(); // Reload the employees list on success

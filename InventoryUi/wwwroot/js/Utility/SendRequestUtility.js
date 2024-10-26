@@ -167,7 +167,6 @@ export function handleError(message) {
 }
 
 export const populateDropdown = async (endpoint, dropdownSelector, valueField, textField, defaultOption = null) => {
-    
     try {
         
         const response = await SendRequest({ endpoint: endpoint });
@@ -193,11 +192,11 @@ export const populateDropdown = async (endpoint, dropdownSelector, valueField, t
             //$(dropdownSelector).append('<option value=""></option>');
             return;
         }
-
+        const textFields = textField.split(',').map(field => field.trim());
         // Add options from the fetched data
         $.each(data, function (index, item) {
-            
-            $(dropdownSelector).append(`<option value="${item[valueField]}">${item[textField]}</option>`);
+            const displayText = textFields.map(field => item[field] || '').join(' ');
+            $(dropdownSelector).append(`<option value="${item[valueField]}">${displayText}</option>`);
         });
     } catch (error) {
         

@@ -23,7 +23,7 @@ const onSuccessUsers = async (holidays) => {
                 id: holiday?.id,
                 name: holiday?.holidayName ?? "Null",
                 dis: holiday?.description ?? "Null",
-                dat: holiday?.date ?? "Null",
+                dat: holiday?.date.split("T")[0] ?? "Null",
 
             };
         }
@@ -34,13 +34,13 @@ const onSuccessUsers = async (holidays) => {
         debugger
         const userSchema = [
             {
-                render: (data, type, row) => row?.name ?? "N/A"
+                render: (data, type, row) => row?.name 
             },
             {
-                render: (data, type, row) => row?.dis ?? "N/A"
+                render: (data, type, row) => row?.dis 
             },
             {
-                render: (data, type, row) => row?.dat ?? "N/A"
+                render: (data, type, row) => row?.dat 
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
@@ -98,9 +98,8 @@ export const isHolidayValidae = $('#HolidayForm').validate({
     rules: {
         HolidayName: {
             required: true,
-        }
+        },
        
-        ,
         Date: {
             required: true,
 
@@ -188,7 +187,13 @@ window.updateHoliday = async (id) => {
         //buind item
         $('#HolidayName').val(result.data.holidayName);
         $('#Description').val(result.data.description);
-        $('#Date').val(result.data.date);
+        // Set date safely
+        const date = new Date(result.data.date);
+        if (!isNaN(date.getTime())) { // Check if the date is valid
+            $('#Date').val(date.toISOString().split('T')[0]); // Format date for input
+        } else {
+            $('#Date').val(''); // Set empty if invalid
+        }
        
 
         $('#HolidayModelCreate').modal('show');

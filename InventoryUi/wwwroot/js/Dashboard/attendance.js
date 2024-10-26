@@ -23,10 +23,11 @@ const onSuccessUsers = async (attendances, employee) => {
             const employee = employeeMap[attendance.employeeId];
             return {
                 id: attendance?.id,
-                empName: employee?.firstName + " " + employee?.lastName ?? "N/A",
-                ispresent: attendance?.isPresent == true ? "Present" : attendance?.isPresent == false ? "Absent" : "N/A",
-                checkintime: attendance?.checkInTime ?? "N/A",
-                checkOuttime: attendance?.checkOutTime ?? "N/A",
+                empName: employee?.firstName + " " + employee?.lastName ?? "null",
+                ispresent: attendance?.isPresent == true ? "Present" : attendance?.isPresent == false ? "Absent" : "null",
+                checkintime: attendance?.checkInTime ?? "null",
+                checkOuttime: attendance?.checkOutTime ?? "null",
+                date : attendance?.date ? attendance.date.split("T")[0] : null
                
             };
         }
@@ -37,21 +38,24 @@ const onSuccessUsers = async (attendances, employee) => {
         debugger
         const userSchema = [
             {
-                render: (data, type, row) => row?.empName ?? "N/A"
+                render: (data, type, row) => row?.empName 
+            },
+            {
+                render: (data, type, row) => row?.date 
+            }, 
+            {
+                render: (data, type, row) => row?.checkintime 
+            },
+            {
+                render: (data, type, row) => row?.checkOuttime 
             },
             {
                 render: (data, type, row) => {
-                    const isPresentText = row?.ispresent ?? "N/A";
+                    const isPresentText = row?.ispresent;
                     const colorClass = isPresentText === "Present" ? "text-success" :
                         isPresentText === "Absent" ? "text-danger" : "text-muted";
                     return `<span class="${colorClass}">${isPresentText}</span>`;
                 }
-            },
-            {
-                render: (data, type, row) => row?.checkintime ?? "N/A"
-            },
-            {
-                render: (data, type, row) => row?.checkOuttime ?? "N/A"
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
@@ -109,26 +113,33 @@ export const isAttendanceValidae = $('#AttendanceForm').validate({
     rules: {
         EmployeeId: {
             required: true,
-        }
-        ,
+        },
         CheckInTime: {
             required: true,
-
-        }
-        ,
+            checkTimeOrder: true
+           
+        },
         CheckOutTime: {
             required: true,
-
+            checkTimeOrder: true
+           
+        },
+        Date: {
+            required: true,
+            
         }
-        
     },
     messages: {
-        CategoryName: {
-            required: " Branch Name  is required.",
+        EmployeeId: {
+            required: "Employee selection is required."
         },
-        Description: {
-            required: " Description is required.",
-
+        CheckInTime: {
+            required: "Check-in time is required.",
+            checkTimeOrder: "Check-in time must be before check-out time."
+        },
+        CheckOutTime: {
+            required: "Check-out time is required.",
+            checkTimeOrder: "Check-out time must be after check-in time."
         }
     },
     errorElement: 'div',
@@ -144,13 +155,23 @@ export const isAttendanceValidae = $('#AttendanceForm').validate({
     }
 });
 
+$.validator.addMethod("checkTimeOrder", function (value, element) {
+    const checkInTime = $('#CheckInTime').val();
+    const checkOutTime = $('#CheckOutTime').val();
+
+    // Return true if either field is empty (handled by required rules), or if checkInTime < checkOutTime
+    return (checkInTime === "" || checkOutTime === "") || (checkInTime < checkOutTime);
+}, "Check-in time must be before check-out time.");
+
+
 //Sow Create Model 
 $('#CreateAttendanceBtn').off('click').click(async () => {
     resetFormValidation('#AttendanceForm', isAttendanceValidae);
     clearMessage('successMessage', 'globalErrorMessage');
+    $('#IsPresentCheckbox').prop("checked", true);
     debugger
     showCreateModal('AttendanceModelCreate', 'AttendanceBtnSave', 'AttendanceBtnUpdate');
-    await populateDropdown('/Employee/GetAll', '#EmployeeDropdown', 'id', 'firstName', "Select Employee");
+    await populateDropdown('/Employee/GetAll', '#EmployeeDropdown', 'id', 'firstName ,lastName', "Select Employee");
 });
 
 // Save Button
@@ -160,6 +181,14 @@ $('#AttendanceBtnSave').off('click').click(async () => {
     debugger
     try {
         if ($('#AttendanceForm').valid()) {
+            const checkInTime = $('#CheckInTime').val();
+            const checkOutTime = $('#CheckOutTime').val();
+
+            // Validate Check-Out time is after Check-In time
+            if (checkInTime >= checkOutTime) {
+                notification({ message: "Check-Out time must be after Check-In time.", type: "error", title: "Error" });
+                return; // Prevent submission if validation fails
+            }
             const formData = $('#AttendanceForm').serialize();
             const result = await SendRequest({ endpoint: '/Attendance/Create', method: 'POST', data: formData });
             // Clear previous messages
@@ -191,41 +220,58 @@ $('#AttendanceBtnSave').off('click').click(async () => {
 window.updateAttendance = async (id) => {
     resetFormValidation('#AttendanceForm', isAttendanceValidae);
     clearMessage('successMessage', 'globalErrorMessage');
-    debugger
     $('#myModalLabelUpdateBranch').show();
     $('#myModalLabelAddBranch').hide();
     $('#AttendanceForm')[0].reset();
-    await populateDropdown('/Employee/GetAll', '#EmployeeDropdown', 'id', 'firstName', "Select Employee");
+    await populateDropdown('/Employee/GetAll', '#EmployeeDropdown', 'id', 'firstName ,lastName', "Select Employee");
 
     const result = await SendRequest({ endpoint: '/Attendance/GetById/' + id });
     if (result.success) {
         $('#AttendanceBtnSave').hide();
         $('#AttendanceBtnUpdate').show();
-        //buind item
+
+        // Bind item
         $('#EmployeeDropdown').val(result.data.employeeId);
         $('#CheckInTime').val(result.data.checkInTime);
-        $('#IsPresent').val(result.data.isPresent);
         $('#CheckOutTime').val(result.data.checkOutTime);
+        $('#IsPresentCheckbox').prop("checked", result.data.isPresent);
+
+        // Set date safely
+        const date = new Date(result.data.date);
+        if (!isNaN(date.getTime())) { // Check if the date is valid
+            $('#Date').val(date.toISOString().split('T')[0]); // Format date for input
+        } else {
+            $('#Date').val(''); // Set empty if invalid
+        }
 
         $('#AttendanceModelCreate').modal('show');
         resetValidation(isAttendanceValidae, '#AttendanceForm');
-        $('#AttendanceBtnUpdate').off('click').on('click', async () => {
-            debugger
-            const formData = $('#AttendanceForm').serialize();
-            const result = await SendRequest({ endpoint: '/Attendance/Update/' + id, method: "PUT", data: formData });
-            if (result.success) {
-                $('#AttendanceModelCreate').modal('hide');
-                notification({ message: "Attendance Updated successfully !", type: "success", title: "Success" });
 
-                await getAttendanceList(); // Update the user list
+        $('#AttendanceBtnUpdate').off('click').on('click', async () => {
+            const checkInTime = $('#CheckInTime').val();
+            const checkOutTime = $('#CheckOutTime').val();
+
+            // Validate Check-Out time is after Check-In time
+            if (checkInTime >= checkOutTime) {
+                notification({ message: "Check-Out time must be after Check-In time.", type: "error", title: "Error" });
+                return; // Prevent submission if validation fails
+            }
+
+            const formData = $('#AttendanceForm').serialize();
+            const updateResult = await SendRequest({ endpoint: '/Attendance/Update/' + id, method: "PUT", data: formData });
+            if (updateResult.success) {
+                $('#AttendanceModelCreate').modal('hide');
+                notification({ message: "Attendance updated successfully!", type: "success", title: "Success" });
+                await getAttendanceList(); // Update the attendance list
             } else {
                 $('#AttendanceModelCreate').modal('hide');
-                notification({ message: " Attendance Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
+                notification({ message: "Attendance update failed. Please try again.", type: "error", title: "Error", time: 0 });
             }
         });
     }
     loger(result);
 }
+
 
 
 

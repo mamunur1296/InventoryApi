@@ -48,7 +48,7 @@ namespace InventoryApi.Controllers
             }
             return StatusCode((int)HttpStatusCode.BadRequest, result);
         }
-        [HttpGet("CreateByAdmin/{id}")]
+        [HttpPost("CreateByAdmin/{id}")]
         public async Task<IActionResult> CreateByAdmin(string id)
         {
             var result = await _helper.CreateEmployeeByAdmin(id);
@@ -63,7 +63,7 @@ namespace InventoryApi.Controllers
             }
             return StatusCode((int)HttpStatusCode.BadRequest, result);
         }
-        [HttpGet("NotApprovedByAdmin/{id}")]
+        [HttpPost("NotApprovedByAdmin/{id}")]
         public async Task<IActionResult> NotApprovedByAdmin(string id)
         {
             var result = await _helper.NotApprovedByAdmin(id);

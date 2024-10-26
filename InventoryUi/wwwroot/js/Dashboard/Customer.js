@@ -242,9 +242,34 @@ window.updateCustomer = async (id) => {
         $('#Fax').val(result.data.fax);
         $('#Email').val(result.data.email);
         $('#PasswordHash').val(result.data.passwordHash);
-        $('#DateOfBirth').val(result.data.dateOfBirth);
         $('#MedicalHistory').val(result.data.medicalHistory);
         $('#UserDropdown').val(result.data.userId);
+
+
+
+        const birthDate = new Date(result.data.dateOfBirth);
+        const defaultDate = new Date('1970-01-01');
+
+        // Check if birthDate is not the default date
+        if (birthDate.getTime() !== defaultDate.getTime()) {
+            const formattedBirthDate = birthDate.toISOString().split('T')[0];
+            $('#DateOfBirth').val(formattedBirthDate); 
+        } else {
+            $('#DateOfBirth').val('');
+        }
+
+       
+
+
+
+
+
+
+
+
+
+
+
         $('#modelCreate').modal('show');
         resetValidation(UsrValidae, '#CustomerForm');
         $('#btnUpdate').off('click').on('click', async () => {

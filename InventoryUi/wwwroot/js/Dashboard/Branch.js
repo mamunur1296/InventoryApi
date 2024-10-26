@@ -4,6 +4,8 @@ import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js'
 
 $(document).ready(async function () {
     await getBranchList();
+    await CreateBranchBtn('#CreateBranchBtn');
+    await initializeBranchDropdown();
 });
 const getBranchList = async () => {
     debugger
@@ -164,15 +166,21 @@ export const isBranchValidae = $('#BranchForm').validate({
     }
 });
 
-//Sow Create Model 
-$('#CreateBranchBtn').off('click').click(async () => {
-    resetFormValidation('#BranchForm', isBranchValidae);
-    clearMessage('successMessage', 'globalErrorMessage');
-    debugger
-    showCreateModal('BranchModelCreate', 'BranchBtnSave', 'BranchBtnUpdate');
+export const initializeBranchDropdown = async () => {
     await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'name', "Select Company");
-});
+};
 
+export const CreateBranchBtn = async (CreateBtnId) => {
+    //Sow Create Model 
+    $(CreateBtnId).off('click').click(async (e) => {
+        e.preventDefault();
+        resetFormValidation('#BranchForm', isBranchValidae);
+        clearMessage('successMessage', 'globalErrorMessage');
+        debugger
+        await initializeBranchDropdown();
+        showCreateModal('BranchModelCreate', 'BranchBtnSave', 'BranchBtnUpdate');
+    });
+}
 // Save Button
 
 $('#BranchBtnSave').off('click').click(async () => {
@@ -215,7 +223,7 @@ window.updateBranch = async (id) => {
     $('#myModalLabelUpdateBranch').show();
     $('#myModalLabelAddBranch').hide();
     $('#BranchForm')[0].reset();
-    await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'name', "Select Company");
+    await initializeBranchDropdown();
 
     const result = await SendRequest({ endpoint: '/Branch/GetById/' + id });
     if (result.success) {

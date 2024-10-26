@@ -38,10 +38,10 @@ namespace InventoryUi.Controllers
             var result = await _customerServices.PostClientAsync("Customer/CreateUserFirst", model);
             return Json(result);
         }
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> CreateCustomer(string id)
         {
-            var result = await _customerServices.GetClientByIdAsync($"Customer/CreateByAdmin/{id}");
+            var result = await _customerServices.PostClientAsync($"Customer/CreateByAdmin/{id}");
             return Json(result);
         }
         [HttpGet]

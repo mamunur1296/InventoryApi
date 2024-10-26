@@ -4,6 +4,7 @@ import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js'
 
 $(document).ready(async function () {
     await getDepartmentList();
+    await CreateDepartmentBtn('#CreateDepartmentBtn');
 });
 const getDepartmentList = async () => {
     debugger
@@ -121,14 +122,17 @@ export const isDepartmentValidae = $('#DepartmentForm').validate({
 });
 
 //Sow Create Model 
-$('#CreateDepartmentBtn').off('click').click(async () => {
-    resetFormValidation('#DepartmentForm', isDepartmentValidae);
-    clearMessage('successMessage', 'globalErrorMessage');
-    debugger
-    showCreateModal('DepartmentModelCreate', 'DepartmentBtnSave', 'DepartmentBtnUpdate');
-  
-});
 
+export const CreateDepartmentBtn = async (CreateBtnId) => {
+    //Sow Create Model 
+    $(CreateBtnId).off('click').click(async (e) => {
+        e.preventDefault();
+        resetFormValidation('#DepartmentForm', isDepartmentValidae);
+        clearMessage('successMessage', 'globalErrorMessage');
+        debugger
+        showCreateModal('DepartmentModelCreate', 'DepartmentBtnSave', 'DepartmentBtnUpdate');
+    });
+}
 // Save Button
 
 $('#DepartmentBtnSave').off('click').click(async () => {

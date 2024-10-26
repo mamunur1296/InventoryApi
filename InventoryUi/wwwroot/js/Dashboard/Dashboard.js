@@ -63,7 +63,7 @@ const onSuccessUsers = async (employees) => {
 
 window.isEmployee = async (id) => {
     loger(id);
-    const result = await SendRequest({ endpoint: '/Employee/CreateEmployee/' + id });
+    const result = await SendRequest({ endpoint: '/Employee/CreateEmployee/' + id, method: "POST" });
     if (result.success) {
         notification({ message: result.detail, type: "success", title: "Success" });
         await getemployeesList(); // Reload the employees list on success
@@ -82,7 +82,7 @@ window.isEmployee = async (id) => {
 
 window.isNotApproved = async (id) => {
     debugger;
-    const result = await SendRequest({ endpoint: '/Employee/NotApprovedEmployee/' + id });
+    const result = await SendRequest({ endpoint: '/Employee/NotApprovedEmployee/' + id, method: "POST" });
     loger(result);
 
     if (result.success) {
@@ -101,7 +101,7 @@ window.isNotApproved = async (id) => {
 }
 window.isCustomer = async (id) => {
     debugger;
-    const result = await SendRequest({ endpoint: '/Customer/CreateCustomer/' + id });
+    const result = await SendRequest({ endpoint: '/Customer/CreateCustomer/' + id, method: "POST" });
     loger(result);
 
     if (result.success) {

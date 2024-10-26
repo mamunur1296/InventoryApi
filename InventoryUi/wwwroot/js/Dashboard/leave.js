@@ -27,8 +27,8 @@ const onSuccessUsers = async (Leaves, employee) => {
                 ispresent: Leave?.isApproved == true ? "Approved" : Leave?.isApproved == false ? "Not Approved" : "Null",
                 livetype: Leave?.leaveType ?? "Null",
                 reson: Leave?.reason ?? "Null",
-                edate: Leave?.endDate ?? "Null",
-                sdate: Leave?.startDate ?? "Null",
+                edate: Leave?.endDate.split("T")[0] ?? "Null",
+                sdate: Leave?.startDate.split("T")[0] ?? "Null",
 
             };
         }
@@ -133,7 +133,7 @@ export const isLeaveValidae = $('#LeaveForm').validate({
             required: true,
 
         },
-        Reasosn: {
+        Reason: {
             required: true,
 
         }
@@ -163,10 +163,12 @@ export const isLeaveValidae = $('#LeaveForm').validate({
 //Sow Create Model 
 $('#CreateLeaveBtn').off('click').click(async () => {
     resetFormValidation('#LeaveForm', isLeaveValidae);
+    $('#myModalLabelUpdateLeave').hide();
+    $('#myModalLabelAddLeave').show();
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     showCreateModal('LeaveModelCreate', 'LeaveBtnSave', 'LeaveBtnUpdate');
-    await populateDropdown('/Employee/GetAll', '#EmployeeDropdown', 'id', 'firstName', "Select Employee");
+    await populateDropdown('/Employee/GetAll', '#EmployeeDropdown', 'id', 'firstName ,lastName', "Select Employee");
 });
 
 // Save Button
@@ -208,10 +210,10 @@ window.updateLeave = async (id) => {
     resetFormValidation('#LeaveForm', isLeaveValidae);
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
-    $('#myModalLabelUpdateBranch').show();
-    $('#myModalLabelAddBranch').hide();
+    $('#myModalLabelUpdateLeave').show();
+    $('#myModalLabelAddLeave').hide();
     $('#LeaveForm')[0].reset();
-    await populateDropdown('/Employee/GetAll', '#EmployeeDropdown', 'id', 'firstName', "Select Employee");
+    await populateDropdown('/Employee/GetAll', '#EmployeeDropdown', 'id', 'firstName ,lastName', "Select Employee");
 
     const result = await SendRequest({ endpoint: '/Leave/GetById/' + id });
     if (result.success) {
@@ -220,10 +222,28 @@ window.updateLeave = async (id) => {
         //buind item
         $('#EmployeeDropdown').val(result.data.employeeId);
         $('#LeaveType').val(result.data.leaveType);
-        $('#StartDate').val(result.data.startDate);
-        $('#EndDate').val(result.data.endDate);
         $('#Reason').val(result.data.reason);
         $('#IsApproved').val(result.data.isApproved);
+
+
+        const sdate = new Date(result.data.startDate);
+        if (!isNaN(sdate.getTime())) { // Check if the date is valid
+            $('#StartDate').val(sdate.toISOString().split('T')[0]); // Format date for input
+        } else {
+            $('#StartDate').val(''); // Set empty if invalid
+        }
+        const edate = new Date(result.data.endDate);
+        if (!isNaN(edate.getTime())) { // Check if the date is valid
+            $('#EndDate').val(edate.toISOString().split('T')[0]); // Format date for input
+        } else {
+            $('#EndDate').val(''); // Set empty if invalid
+        }
+
+
+
+
+
+
 
         $('#LeaveModelCreate').modal('show');
         resetValidation(isLeaveValidae, '#LeaveForm');

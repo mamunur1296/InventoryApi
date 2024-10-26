@@ -28,7 +28,7 @@ const onSuccessUsers = async (Payrolls, employee) => {
                 bonus: Payroll?.bonus ?? "Null",
                 deducation: Payroll?.deductions ?? "Null",
                 netSalary: Payroll?.netSalary ?? "Null",
-                paymentDate: Payroll?.paymentDate ?? "Null",
+                paymentDate: Payroll?.paymentDate.split('T')[0] ?? "Null",
              
 
             };
@@ -40,22 +40,22 @@ const onSuccessUsers = async (Payrolls, employee) => {
         debugger
         const userSchema = [
             {
-                render: (data, type, row) => row?.empName ?? "N/A"
+                render: (data, type, row) => row?.empName 
             },
             {
-                render: (data, type, row) => row?.baseSalary ?? "N/A"
+                render: (data, type, row) => row?.baseSalary 
             },
             {
-                render: (data, type, row) => row?.bonus ?? "N/A"
+                render: (data, type, row) => row?.bonus 
             },
             {
-                render: (data, type, row) => row?.deducation ?? "N/A"
+                render: (data, type, row) => row?.deducation 
             },
             {
-                render: (data, type, row) => row?.netSalary ?? "N/A"
+                render: (data, type, row) => row?.netSalary 
             },
             {
-                render: (data, type, row) => row?.paymentDate ?? "N/A"
+                render: (data, type, row) => row?.paymentDate 
             },
             {
                 render: (data, type, row) => createActionButtons(row, [
@@ -157,10 +157,12 @@ export const isPayrollValidae = $('#PayrollForm').validate({
 //Sow Create Model 
 $('#CreatePayrollBtn').off('click').click(async () => {
     resetFormValidation('#PayrollForm', isPayrollValidae);
+    $('#myModalLabelUpdateBranch').hide();
+    $('#myModalLabelAddBranch').show();
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
     showCreateModal('PayrollModelCreate', 'PayrollBtnSave', 'PayrollBtnUpdate');
-    await populateDropdown('/Employee/GetAll', '#EmployeeDropdown', 'id', 'firstName', "Select Employee");
+    await populateDropdown('/Employee/GetAll', '#EmployeeDropdown', 'id', 'firstName ,lastName', "Select Employee");
 });
 
 // Save Button
@@ -205,7 +207,7 @@ window.updatePayroll = async (id) => {
     $('#myModalLabelUpdateBranch').show();
     $('#myModalLabelAddBranch').hide();
     $('#PayrollForm')[0].reset();
-    await populateDropdown('/Employee/GetAll', '#EmployeeDropdown', 'id', 'firstName', "Select Employee");
+    await populateDropdown('/Employee/GetAll', '#EmployeeDropdown', 'id', 'firstName ,lastName', "Select Employee");
 
     const result = await SendRequest({ endpoint: '/Payroll/GetById/' + id });
     if (result.success) {
@@ -217,7 +219,23 @@ window.updatePayroll = async (id) => {
         $('#Bonus').val(result.data.bonus);
         $('#Deductions').val(result.data.deductions);
         $('#NetSalary').val(result.data.netSalary);
-        $('#PaymentDate').val(result.data.paymentDate);
+
+
+        const date = new Date(result.data.paymentDate);
+        const defaultDate = new Date('1970-01-01');
+
+        // Check if birthDate is not the default date
+        if (date.getTime() !== defaultDate.getTime()) {
+            const formattedDate = date.toISOString().split('T')[0];
+            $('#PaymentDate').val(formattedDate);
+        } else {
+            $('#PaymentDate').val('');
+        }
+
+
+
+
+
 
         $('#PayrollModelCreate').modal('show');
         resetValidation(isPayrollValidae, '#PayrollForm');

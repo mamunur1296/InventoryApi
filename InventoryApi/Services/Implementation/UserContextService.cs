@@ -49,35 +49,6 @@ public class UserContextService : IUserContextService
         _httpContextAccessor.HttpContext.Items["UserId"] = userId;
         _httpContextAccessor.HttpContext.Items["UserRole"] = userRole;
     }
-
-    // Check if the current route is public (no token required)
-    private bool IsPublicRoute()
-    {
-        var path = _httpContextAccessor.HttpContext?.Request.Path.ToString().ToLower();
-
-        // Define public URL patterns, allowing for dynamic product IDs (GUID)
-        var publicPaths = new List<string>
-        {
-            "/api/product/all",
-            "/api/product/get/"
-        };
-
-        // Check static public paths
-        if (publicPaths.Any(p => path.Contains(p)))
-        {
-            return true;
-        }
-
-        // Define dynamic path pattern for GUIDs
-        var dynamicPathPatterns = new List<string>
-        {
-            @"^/api/product/get/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
-        };
-
-        // Check if the path matches any of the dynamic patterns (like GUID paths)
-        return dynamicPathPatterns.Any(pattern => System.Text.RegularExpressions.Regex.IsMatch(path, pattern));
-    }
-
     // Check if the current HTTP method is for Create or Update
     private bool IsCreateOrUpdateMethod()
     {

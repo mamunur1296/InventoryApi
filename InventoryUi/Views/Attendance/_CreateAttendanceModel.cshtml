@@ -47,18 +47,40 @@
                                     <input type="time" asp-for="CheckInTime" placeholder="Enter check-in time (e.g., 09:00 AM)" class="form-control" name="CheckInTime" />
                                     <span asp-validation-for="CheckInTime" class="text-danger"></span>
                                 </div>
+                               
                             </div>
                             <div class="col-md-4">
-                                <div class="form-group mt-5 mx-5 d-flex align-items-center">
-                                    <input asp-for="IsPresent" type="checkbox" class="form-check-input" id="IsPresentCheckbox" />
-                                    <label asp-for="IsPresent" class="form-check-label ms-2" for="IsPresentCheckbox">Is Present</label>
-                                    <span asp-validation-for="IsPresent" class="text-danger ms-3"></span>
+                                <div class="form-group">
+                                    <label asp-for="Date" class="control-label"></label>
+                                    <input type="date" asp-for="Date" placeholder="Enter check-in time (e.g., 09:00 AM)" class="form-control" name="Date" />
+                                    <span asp-validation-for="Date" class="text-danger"></span>
                                 </div>
+                               
                                 <div class="form-group">
                                     <label asp-for="CheckOutTime" class="control-label"></label>
                                     <input type="time" asp-for="CheckOutTime" placeholder="Enter check-out time (e.g., 06:00 PM)" class="form-control" name="CheckOutTime" />
                                     <span asp-validation-for="CheckOutTime" class="text-danger"></span>
                                 </div>
+                            </div>
+                            <div class="col-md-4 ">
+                                <div class="form-group mx-5 mb-3 d-flex align-items-center" style="margin-top: 2.3rem;">
+                                    <input asp-for="IsPresent"
+                                           type="checkbox"
+                                           class="form-check-input"
+                                           id="IsPresentCheckbox"
+                                           style="transform: scale(1.3); margin-right: 10px;" />
+
+                                    <label asp-for="IsPresent"
+                                           class="form-check-label  ms-2 fw-bold"
+                                           for="IsPresentCheckbox"
+                                           style="font-size: 1.1rem;">
+                                        Is Present
+                                    </label>
+
+                                    <span asp-validation-for="IsPresent" class="text-danger ms-3" style="align-self: center;"></span>
+                                </div>
+
+
                             </div>
                         </div>
                     </div>

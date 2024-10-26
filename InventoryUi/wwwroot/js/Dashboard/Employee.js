@@ -1,9 +1,15 @@
 ﻿import { notification } from '../Utility/notification.js';
 import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
+import { CreateBranchBtn } from './Branch.js';
+import { CreateCompanyBtn } from './company.js';
+import { CreateDepartmentBtn } from './department.js';
 
 $(document).ready(async function () {
     await getEmployeeList();
+    await CreateCompanyBtn('#addNewCompanyButton');
+    await CreateBranchBtn('#addNewBranchButton');
+    await CreateDepartmentBtn('#addNewDepartmentButton');
 });
 const getEmployeeList = async () => {
     debugger
@@ -255,14 +261,26 @@ $('#CreateBtn').off('click').click(async () => {
     resetFormValidation('#EmployeeForm', UsrValidae);
     clearMessage('successMessage', 'globalErrorMessage');
     debugger
+    
     showCreateModal('modelCreate', 'btnSave', 'btnUpdate');
-    await populateDropdown('/Employee/GetAll', '#ManagerDropdown', 'id', 'firstName', "Select Manager");
-    await populateDropdown('/DashboardUser/GetAll', '#UserDropdown', 'id', 'userName', "Select User");
-    await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'name', "Select Company");
+    await populateDropdown('/Employee/GetAll', '#ManagerDropdown', 'id', 'firstName , lastName', "Select Manager");
+    await populateDropdown('/Company/GetAll', '#EmpCompanyDropdown', 'id', 'name', "Select Company");
     await populateDropdown('/Branch/GetAll', '#BranchDropdown', 'id', 'name', "Select Branch");
     await populateDropdown('/Department/GetAll', '#DepartmentDropdown', 'id', 'departmentName', "Select Department");
-});
 
+});
+$('#EmpCompanyDropdown').off("focus").on("focus", async function (e) {
+    e.preventDefault();
+    await populateDropdown('/Company/GetAll', '#EmpCompanyDropdown', 'id', 'name', "Select Company");
+});
+$('#BranchDropdown').off("focus").on("focus", async function (e) {
+    e.preventDefault();
+    await populateDropdown('/Branch/GetAll', '#BranchDropdown', 'id', 'name', "Select Branch");
+});
+$('#DepartmentDropdown').off("focus").on("focus", async function (e) {
+    e.preventDefault();
+    await populateDropdown('/Department/GetAll', '#DepartmentDropdown', 'id', 'departmentName', "Select Department");
+});
 // Save Button
 
 $('#btnSave').off('click').click(async () => {
@@ -305,9 +323,8 @@ window.updateEmployee = async (id) => {
     debugger
     $('#myModalLabelUpdateEmployee').show();
     $('#myModalLabelAddEmployee').hide();
-    await populateDropdown('/Employee/GetAll', '#ManagerDropdown', 'id', 'firstName', "Select Manager");
-    await populateDropdown('/DashboardUser/GetAll', '#UserDropdown', 'id', 'userName', "Select User");
-    await populateDropdown('/Company/GetAll', '#CompanyDropdown', 'id', 'name', "Select Company");
+    await populateDropdown('/Employee/GetAll', '#ManagerDropdown', 'id', 'firstName , lastName', "Select Manager");
+    await populateDropdown('/Company/GetAll', '#EmpCompanyDropdown', 'id', 'name', "Select Company");
     await populateDropdown('/Branch/GetAll', '#BranchDropdown', 'id', 'name', "Select Branch");
     await populateDropdown('/Department/GetAll', '#DepartmentDropdown', 'id', 'departmentName', "Select Department");
     const result = await SendRequest({ endpoint: '/Employee/GetById/' + id });
@@ -344,17 +361,29 @@ window.updateEmployee = async (id) => {
         $('#UserName').val(result.data.userName);
         $('#UserId').val(result.data.userId);
         $('#Password').val();
+
         // Date handling for BirthDate and HireDate
         const birthDate = new Date(result.data.birthDate);
         const hireDate = new Date(result.data.hireDate);
+        const defaultDate = new Date('1970-01-01');
 
-        // Convert the dates to YYYY-MM-DD format
-        const formattedBirthDate = birthDate.toISOString().split('T')[0];
-        const formattedHireDate = hireDate.toISOString().split('T')[0];
+        // Function to check if a date is the default date
+        function isDefaultDate(date) {
+            return date.getTime() === defaultDate.getTime();
+        }
+        if (!isDefaultDate(birthDate)) {
+            const formattedBirthDate = birthDate.toISOString().split('T')[0];
+            $('#BirthDate').val(formattedBirthDate); 
+        } else {
+            $('#BirthDate').val(''); 
+        }
+        if (!isDefaultDate(hireDate)) {
+            const formattedHireDate = hireDate.toISOString().split('T')[0];
+            $('#HireDate').val(formattedHireDate);
+        } else {
+            $('#HireDate').val('');
+        }
 
-        // Set the formatted dates in the input fields
-        $('#BirthDate').val(formattedBirthDate);
-        $('#HireDate').val(formattedHireDate);
 
         
         $("#Email").rules("remove");
