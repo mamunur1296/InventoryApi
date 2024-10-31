@@ -1,17 +1,17 @@
 ﻿import { CreateCategoryBtn } from "../Dashboard/Category.js";
 import { ProductCreateBtn } from "../Dashboard/Product.js";
-import { UnitChildCreateBtn } from "../Dashboard/UnitChild.js";
+import {  UnitChildCreateBtnForPurchase } from "../Dashboard/UnitChild.js";
 import { UnitMasteCreateBtn } from "../Dashboard/UnitMaster.js";
 import { CreateSupplierBtn} from "../dashboard/supplier.js";
-import { clearMessage, loger, resetFormValidation, showCreateModal } from "../utility/helpers.js";
 import { notification } from "../utility/notification.js";
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
 // Initialize the purchase functionality when the document is ready
 $(document).ready(async function () {
-    loger("This is new purchase");
+
     await searchProducts();
     await searchSupplair();
+    await initializeGlobalData();
     loadProductsFromLocalStorage();
     PurchaseProductVawserControler();
     loadSupplierFromLocalStorage();
@@ -21,12 +21,33 @@ $(document).ready(async function () {
     await CreateSupplierBtn('#addNewSupplirButton');
     await CreateSupplierBtn('#addNewSupplirButton2');
     await UnitMasteCreateBtn('#MasterUnitButton');
-    await UnitChildCreateBtn('#ChildUnitButton');
+    await UnitChildCreateBtnForPurchase('#ChildUnitButton2');
 });  
 
+// Global variables
+let globalUser = null;
+let globalCompany = null;
+let globalBranch = null;
 
+// Function to initialize User, Company, and Branch data
+const initializeGlobalData = async () => {
+    try {
+        // Fetch User data
+        globalUser = await SendRequest({ endpoint: '/NewPurchase/GetLoginUser' });
 
-
+        if (globalUser && globalUser.data) {
+            // Fetch Company and Branch data based on User's companyId and branchId
+            [globalCompany, globalBranch] = await Promise.all([
+                SendRequest({ endpoint: `/Company/GetById/${globalUser.data.companyId}` }),
+                SendRequest({ endpoint: `/Branch/GetById/${globalUser.data.branchId}` })
+            ]);
+        } else {
+            console.error("User data is not available.");
+        }
+    } catch (error) {
+        console.error("Failed to initialize global data:", error);
+    }
+};
 
 
 
@@ -48,8 +69,8 @@ const searchProducts = () => {
         },
         select: function (event, ui) {
             event.preventDefault(); // Prevent default behavior on select
-            loger("Selected product:", ui);
 
+          
             // Open modal and populate fields
             const purchaseProductList = JSON.parse(localStorage.getItem("purchaseProductList")) || {};
             const existingProduct = purchaseProductList[ui.item.productid];
@@ -69,11 +90,13 @@ const searchProducts = () => {
 const searchSupplair = () => {
     $("#phoneNumber").autocomplete({
         source: async function (request, response) {
+            debugger
             try {
                 // Send request to search suppliers based on user input
                 const res = await SendRequest({ endpoint: `/NewPurchase/SearchSupplair?term=${request.term}` });
                 response(res); // Return the response to autocomplete
             } catch (error) {
+                debugger
                 console.error("Failed to fetch suppliers:", error);
             }
         },
@@ -99,12 +122,12 @@ const searchSupplair = () => {
 // Function to display supplier details dynamically
 const displaySupplierDetails = async (supplier) => {
     if (supplier) {
-        $('#supplierName').text(supplier.label || 'N/A');
-        $('#supplierPhone').text(supplier.phone || 'N/A');
+        $('#supplierName').text(supplier.label || 'Null');
+        $('#supplierPhone').text(supplier.phone || 'Null');
         togglePurchaseButton();
     } else {
-        $('#supplierName').text('N/A');
-        $('#supplierPhone').text('N/A');
+        $('#supplierName').text('Null');
+        $('#supplierPhone').text('Null');
     }
    
 };
@@ -232,8 +255,14 @@ $(document).on('click', '.delete-item-btn', function () {
 const PurchaseProductVawserControler = async () => {
     // Fetch the purchase product list from local storage
     let purchaseProductList = JSON.parse(localStorage.getItem("purchaseProductList")) || {};
-   
+    debugger
+    if (!globalUser || !globalCompany || !globalBranch) {
+        console.error("Global data is not initialized.");
+        return;
+    }
 
+    const ViewCompany = globalCompany?.data?.name || "Null";
+    const ViewBranch = globalBranch?.data?.name || "Null";
     // Clear existing content
     $('#PurchaseProductVawser').empty();
 
@@ -244,11 +273,11 @@ const PurchaseProductVawserControler = async () => {
                 <!-- Company and Branch Details -->
                 <div class="d-flex justify-content-between">
                     <p class="mb-0">Name Of Company:</p>
-                    <p class="mb-0">Sample Company</p>
+                    <p class="mb-0">${ViewCompany }</p>
                 </div>
                 <div class="d-flex justify-content-between">
                     <p class="mb-0">Name Of Branch:</p>
-                    <p class="mb-0">Sample Branch</p>
+                    <p class="mb-0">${ViewBranch }</p>
                 </div>
                 <hr style="border: 1px solid;" />
 

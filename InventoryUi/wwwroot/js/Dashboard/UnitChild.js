@@ -149,7 +149,18 @@ export const UnitChildCreateBtn = async (createBtnId) => {
         clearMessage('successMessage', 'globalErrorMessage');
         debugger
         showCreateModal('UnitChildModelCreate', 'UnitChildbtnSave', 'UnitChildbtnUpdate');
-        await populateDropdown('/UnitMaster/GetAll', '#UnitMasterDropdown', 'id', 'name', "Select Master Unit");
+        await populateDropdown('/UnitMaster/GetAll', '#ChildUnitMasterDropdown', 'id', 'name', "Select Master Unit");
+    });
+}
+export const UnitChildCreateBtnForPurchase = async (createBtnId) => {
+    //Sow Create Model 
+    $(createBtnId).off('click').click(async (e) => {
+        e.preventDefault();
+        resetFormValidation('#UnitChildForm', UsrValidae);
+        clearMessage('successMessage', 'globalErrorMessage');
+        debugger
+        showCreateModal('UnitChildModelCreate', 'UnitChildbtnSave', 'UnitChildbtnUpdate');
+        await populateDropdown('/UnitMaster/GetAll', '#ChildUnitMasterDropdown', 'id', 'name', "Select Master Unit");
     });
 }
 
@@ -198,7 +209,7 @@ window.updateUnitChild = async (id) => {
     $('#myModalLabelAddEmployee').hide();
     $('#UnitChildForm')[0].reset();
 
-    await populateDropdown('/UnitMaster/GetAll', '#UnitMasterDropdown', 'id', 'name', "Select Master Unit");
+    await populateDropdown('/UnitMaster/GetAll', '#ChildUnitMasterDropdown', 'id', 'name', "Select Master Unit");
 
     const result = await SendRequest({ endpoint: '/UnitChild/GetById/' + id });
     if (result.success) {

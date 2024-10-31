@@ -6,9 +6,37 @@ import { UnitChildCreateBtn } from "../Dashboard/UnitChild.js";
 import { UnitMasteCreateBtn } from "../Dashboard/UnitMaster.js";
 import { CatagoryValidae, ProductValidator, SupplierValidate, validateUnitChildForm, validateUnitMasterForm } from "../utility/allvalidator.js";
 import { notification } from "../Utility/notification.js";
+import { SendRequest } from "../utility/sendrequestutility.js";
+// Global variables
+let globalUser = null;
+let globalCompany = null;
+let globalBranch = null;
 
+const initializeGlobalData = async () => {
+    debugger
+    try {
+        // Fetch User data
+        globalUser = await SendRequest({ endpoint: '/NewPurchase/GetLoginUser' });
+
+        if (globalUser && globalUser.data) {
+            // Fetch Company and Branch data based on User's companyId and branchId
+            [globalCompany, globalBranch] = await Promise.all([
+                SendRequest({ endpoint: `/Company/GetById/${globalUser.data.companyId}` }),
+                SendRequest({ endpoint: `/Branch/GetById/${globalUser.data.branchId}` })
+            ]);
+
+            // After initialization, update the HTML content
+            updateCompanyAndBranchInfo();
+        } else {
+            console.error("User data is not available.");
+        }
+    } catch (error) {
+        console.error("Failed to initialize global data:", error);
+    }
+};
 $(document).ready(async function () {
     initializeFunctions();
+    await initializeGlobalData();
     await ProductCreateBtn('#CreateProductBtn');
     await CreateCategoryBtn(`#addNewCatagoryButton`);
     await CreateSupplierBtn('#addNewSupplirButton2');
@@ -31,6 +59,18 @@ const initializeFunctions = () => {
     newUnitChildModalHandling();
 
 };
+
+
+// Function to update HTML with Company and Branch names
+const updateCompanyAndBranchInfo = () => {
+    const ViewCompany = globalCompany?.data?.name || "Null";
+    const ViewBranch = globalBranch?.data?.name || "Null";
+
+    // Update the HTML elements
+    $('#OrderCompanyName').text(ViewCompany);
+    $('#OrderBranchName').text(ViewBranch);
+};
+
 
 const SearchProduct = () => {
     $("#tags").autocomplete({

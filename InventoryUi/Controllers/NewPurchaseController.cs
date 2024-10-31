@@ -3,6 +3,7 @@ using InventoryUi.Models;
 using InventoryUi.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace InventoryUi.Controllers
 {
@@ -13,12 +14,14 @@ namespace InventoryUi.Controllers
         private readonly IClientServices<Product> _productService;
         private readonly IClientServices<Supplier> _supplierServices;
         private readonly IClientServices<PurchaseItem> _purchaseServices;
+        private readonly IClientServices<User> _userServices;
 
-        public NewPurchaseController(IClientServices<Product> productServices, IClientServices<Supplier> supplierServices, IClientServices<PurchaseItem> purchaseServices)
+        public NewPurchaseController(IClientServices<Product> productServices, IClientServices<Supplier> supplierServices, IClientServices<PurchaseItem> purchaseServices, IClientServices<User> userServices)
         {
             _productService = productServices;
             _supplierServices = supplierServices;
             _purchaseServices = purchaseServices;
+            _userServices = userServices;
         }
         [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public IActionResult Index()
@@ -64,7 +67,7 @@ namespace InventoryUi.Controllers
 
             // Filter suppliers based on the search term (ignoring case)
             var filteredSuppliers = suppliers.Data
-                .Where(s => s.Phone.Contains(term, StringComparison.OrdinalIgnoreCase))
+                .Where(s => s.SupplierName.Contains(term, StringComparison.OrdinalIgnoreCase))
                 .Select(s => new
                 {
                     label = s.SupplierName, // Display name for the autocomplete dropdown
@@ -94,7 +97,30 @@ namespace InventoryUi.Controllers
 
             return Json(false); // or return a specific result
         }
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
+        public async Task<IActionResult> GetLoginUser()
+        {
+            var userId = string.Empty;
 
-
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var claimsIdentity = User.Identity as ClaimsIdentity;
+                if (claimsIdentity != null)
+                {
+                    var userIdClaim = claimsIdentity.FindFirst("UserId") ?? claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+                    if (userIdClaim != null)
+                    {
+                        userId = userIdClaim.Value;
+                    }
+                }
+            }
+            var ExjUser =  await _userServices.GetClientByIdAsync($"User/{userId}");
+            if (ExjUser == null)
+            {
+                return View();
+            }
+            return Json(ExjUser); // Corrected return statement
+        }
     }
 }
