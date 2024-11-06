@@ -186,6 +186,7 @@ export const ProductFormValidae = $('#ProductForm').validate({
 
 
 export const selectChildUnit = async (selectedChildId = null) => {
+    debugger
     $('#UnitMasterDropdown').off('change').on('change', async function (e) {
         e.preventDefault(); 
         var id = $(this).val();
@@ -236,6 +237,7 @@ export const ProductCreateBtn = async (CreateBtnId) => {
 
 $('#CategoryDropdown').off("focus").on("focus", async function (e) {
     e.preventDefault(); 
+    debugger
     await populateDropdown('/Category/GetallSubCatagory', '#CategoryDropdown', 'id', 'categoryName', "Select Catagory");
 });
 $('#SupplierDropdown').off("focus").on("focus", async function (e) {
@@ -244,7 +246,13 @@ $('#SupplierDropdown').off("focus").on("focus", async function (e) {
 });
 $('#UnitMasterDropdown').off("focus").on("focus", async function (e) {
     e.preventDefault();
+    debugger
     await populateDropdown('/UnitMaster/GetAll', '#UnitMasterDropdown', 'id', 'name', "Select Master Unit");
+    await selectChildUnit();
+});
+$('#UnitChildDropdown').off("focus").on("focus", async function (e) {
+    debugger
+    e.preventDefault();
     await selectChildUnit();
 });
 
