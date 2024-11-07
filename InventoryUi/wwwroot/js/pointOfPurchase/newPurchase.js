@@ -35,19 +35,24 @@ const initializeGlobalData = async () => {
         // Fetch User data
         globalUser = await SendRequest({ endpoint: '/NewPurchase/GetLoginUser' });
 
-        if (globalUser && globalUser.data) {
+        if (globalUser) {
             // Fetch Company and Branch data based on User's companyId and branchId
             [globalCompany, globalBranch] = await Promise.all([
-                SendRequest({ endpoint: `/Company/GetById/${globalUser.data.companyId}` }),
-                SendRequest({ endpoint: `/Branch/GetById/${globalUser.data.branchId}` })
+                SendRequest({ endpoint: `/Company/GetById/${globalUser.companyId}` }),
+                SendRequest({ endpoint: `/Branch/GetById/${globalUser.branchId}` })
             ]);
+
+            console.log(globalCompany);
+            console.log(globalBranch);
         } else {
             console.error("User data is not available.");
         }
+
     } catch (error) {
         console.error("Failed to initialize global data:", error);
     }
 };
+
 
 
 

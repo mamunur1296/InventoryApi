@@ -15,13 +15,15 @@ namespace InventoryUi.Controllers
         private readonly IClientServices<Supplier> _supplierServices;
         private readonly IClientServices<PurchaseItem> _purchaseServices;
         private readonly IClientServices<User> _userServices;
+        private readonly IClientServices<Employee> _employeeServices;
 
-        public NewPurchaseController(IClientServices<Product> productServices, IClientServices<Supplier> supplierServices, IClientServices<PurchaseItem> purchaseServices, IClientServices<User> userServices)
+        public NewPurchaseController(IClientServices<Product> productServices, IClientServices<Supplier> supplierServices, IClientServices<PurchaseItem> purchaseServices, IClientServices<User> userServices, IClientServices<Employee> employeeServices)
         {
             _productService = productServices;
             _supplierServices = supplierServices;
             _purchaseServices = purchaseServices;
             _userServices = userServices;
+            _employeeServices = employeeServices;
         }
         [Authorize(AuthenticationSchemes = "AuthSchemeDashboard")]
         public IActionResult Index()
@@ -115,12 +117,25 @@ namespace InventoryUi.Controllers
                     }
                 }
             }
-            var ExjUser =  await _userServices.GetClientByIdAsync($"User/{userId}");
-            if (ExjUser == null)
+
+            var employees = await _employeeServices.GetAllClientsAsync("Employee/All");
+            var employee = employees.Data.FirstOrDefault(em => em.UserId == userId);
+
+            var companyAndBranch = employee != null
+                ? new
+                {
+                    companyId = employee.CompanyId,
+                    branchId = employee.BranchId
+                }
+                : null;
+
+            if (companyAndBranch == null)
             {
-                return View();
+                return View(); // Or return an appropriate error response
             }
-            return Json(ExjUser); // Corrected return statement
+
+            return Json(companyAndBranch);
         }
+
     }
 }
