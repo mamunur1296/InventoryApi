@@ -1,4 +1,4 @@
-﻿import { notification } from '../Utility/notification.js';
+﻿import { notification, notificationErrors } from '../Utility/notification.js';
 import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
@@ -205,14 +205,14 @@ $('#btnSave').off('click').click(async () => {
                 notification({ message: "Customer Created successfully !", type: "success", title: "Success" });
                 await getCustomerList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
+                notificationErrors({ message: result.detail });
                 $('#modelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#modelCreate').modal('hide');
-        notification({ message: " Customer Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
+        notificationErrors({ message: " Customer Created failed . Please try again. !" });
     }
 
 });
@@ -283,7 +283,7 @@ window.updateCustomer = async (id) => {
                 await getCustomerList(); // Update the user list
             } else {
                 $('#modelCreate').modal('hide');
-                notification({ message: " Customer Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
+                notificationErrors({ message: " Customer Updated failed . Please try again. !" });
             }
 
         });
@@ -314,7 +314,7 @@ window.deleteCustomer = async (id) => {
             await getCustomerList(); // Update the category list
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
+            notificationErrors({ message: result.detail});
         }
     });
 }

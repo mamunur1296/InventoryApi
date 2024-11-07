@@ -102,12 +102,18 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label asp-for="FirstName" class="control-label"></label>
+                                    <label asp-for="FirstName" class="control-label">
+                                        First Name
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="FirstName" placeholder="Enter first name " class="form-control" name="FirstName" />
                                     <span asp-validation-for="FirstName" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="LastName" class="control-label"></label>
+                                    <label asp-for="LastName" class="control-label">
+                                        Last Name
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="LastName" placeholder="Enter last name " class="form-control" name="LastName" />
                                     <span asp-validation-for="LastName" class="text-danger"></span>
                                 </div>
@@ -122,12 +128,18 @@
                                     <span asp-validation-for="TitleOfCourtesy" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="BirthDate" class="control-label"></label>
+                                    <label asp-for="BirthDate" class="control-label">
+                                        Birth Date
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="BirthDate" type="date" placeholder="Enter birth date (01/01/1990)" class="form-control" id="BirthDate" name="BirthDate" />
                                     <span asp-validation-for="BirthDate" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="HireDate" class="control-label"></label>
+                                    <label asp-for="HireDate" class="control-label">
+                                        Hire Date
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="HireDate" type="date" placeholder="Enter Hire date (01/01/1990)" class="form-control" id="HireDate" name="HireDate" />
                                     <span asp-validation-for="HireDate" class="text-danger"></span>
                                 </div>
@@ -135,7 +147,10 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label asp-for="Address" class="control-label"></label>
+                                    <label asp-for="Address" class="control-label">
+                                        Address
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="Address" placeholder="Enter address (123 Main St)" class="form-control" name="Address" />
                                     <span asp-validation-for="Address" class="text-danger"></span>
                                 </div>
@@ -160,7 +175,10 @@
                                     <span asp-validation-for="Country" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="HomePhone" class="control-label"></label>
+                                    <label asp-for="HomePhone" class="control-label">
+                                        Phone
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="HomePhone" placeholder="Enter home phone (555-1234)" class="form-control" name="HomePhone" />
                                     <span asp-validation-for="HomePhone" class="text-danger"></span>
                                 </div>
@@ -202,7 +220,10 @@
                             </div>
                             <div class="col-md-3">
                                 <div class=" form-group ">
-                                    <label class="control-label" asp-for="CompanyId"></label>
+                                    <label class="control-label" asp-for="CompanyId">
+                                        Company
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <div class="d-flex" id="SelectorCompany">
                                         <select class="form-control" asp-for="CompanyId" name="CompanyId" id="EmpCompanyDropdown">
                                             <option value="">Select Company</option>
@@ -212,7 +233,10 @@
                                     
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" asp-for="BranchId"></label>
+                                    <label class="control-label" asp-for="BranchId">
+                                        Branch
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     
                                     <div class="d-flex" id="SelectorBranch">
                                         <select class="form-control" asp-for="BranchId" name="BranchId" id="BranchDropdown">
@@ -222,7 +246,10 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" asp-for="DepartmentId"></label>
+                                    <label class="control-label" asp-for="DepartmentId">
+                                        Department
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
 
                                     <div class="d-flex" id="SelectorDepartment">
                                          <select class="form-control" asp-for="DepartmentId" name="DepartmentId" id="DepartmentDropdown">
@@ -232,18 +259,27 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="Email" class="control-label"></label>
-                                    <input asp-for="Email" placeholder="Enter User Name" class="form-control" name="Email" />
+                                    <label asp-for="Email" class="control-label">
+                                        Email
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
+                                    <input asp-for="Email" type="email" placeholder="Enter Valid Email" class="form-control" name="Email" />
                                     <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
                                  <div class="form-group">
-                                    <label asp-for="UserName" class="control-label"></label>
+                                    <label asp-for="UserName" class="control-label">
+                                        User Name
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="UserName" placeholder="Enter User Name" class="form-control" name="UserName" />
                                     <span asp-validation-for="UserName" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="Password" class="control-label"></label>
-                                    <input asp-for="Password" placeholder="Enter Password" class="form-control" name="Password" />
+                                    <label asp-for="Password" class="control-label">
+                                        Password
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
+                                    <input asp-for="Password" type="password" placeholder="Enter Password" class="form-control" name="Password" />
                                     <span asp-validation-for="Password" class="text-danger"></span>
                                 </div>
                                 

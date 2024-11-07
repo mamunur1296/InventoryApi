@@ -37,7 +37,10 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="control-label" asp-for="EmployeeId"></label>
+                                    <label class="control-label" asp-for="EmployeeId">
+                                        Employee
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <select class="form-control" asp-for="EmployeeId" id="EmployeeDropdown">
                                         <option value="">Select Employee</option>
                                     </select>
@@ -51,13 +54,19 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label asp-for="BaseSalary" class="control-label"></label>
+                                    <label asp-for="BaseSalary" class="control-label">
+                                        Salary
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="BaseSalary" placeholder="Enter Base Salary" class="form-control" name="BaseSalary" />
                                     <span asp-validation-for="BaseSalary" class="text-danger"></span>
                                 </div>
                                
                                 <div class="form-group">
-                                    <label asp-for="NetSalary" class="control-label"></label>
+                                    <label asp-for="NetSalary" class="control-label">
+                                        Net Salary
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input  asp-for="NetSalary" placeholder="Enter Net Salary" class="form-control" name="NetSalary" />
                                     <span asp-validation-for="NetSalary" class="text-danger"></span>
                                 </div>

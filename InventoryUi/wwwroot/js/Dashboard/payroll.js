@@ -21,6 +21,7 @@ const onSuccessUsers = async (Payrolls, employee) => {
         if (Payroll) {
             debugger
             const employee = employeeMap[Payroll.employeeId];
+            debugger
             return {
                 id: Payroll?.id,
                 empName: employee?.firstName + " " + employee?.lastName ?? "Null",
@@ -28,10 +29,11 @@ const onSuccessUsers = async (Payrolls, employee) => {
                 bonus: Payroll?.bonus ?? "Null",
                 deducation: Payroll?.deductions ?? "Null",
                 netSalary: Payroll?.netSalary ?? "Null",
-                paymentDate: Payroll?.paymentDate.split('T')[0] ?? "Null",
+                paymentDate: Payroll?.paymentDate ? Payroll.paymentDate.split('T')[0] : "",
              
 
             };
+            debugger
         }
         return null;
     }).filter(Boolean);
@@ -191,6 +193,7 @@ $('#PayrollBtnSave').off('click').click(async () => {
             }
         } 
     } catch (error) {
+        debugger
         console.error('Error in click handler:', error);
         $('#PayrollModelCreate').modal('hide');
         notification({ message: " Payroll Created failed . Please try again. !", time: 0, type: "error", title: "Error", time: 0 });

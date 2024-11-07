@@ -485,5 +485,5 @@ function clearPreviousMessages() {
 // Utility function to handle errors
 function handleError(modalId, errorMessage) {
     $(`#${modalId}`).modal('hide');
-    notification({ message: errorMessage, type: "error", title: "Error", time: 0 });
+    notificationErrors({ message: errorMessage });
 }

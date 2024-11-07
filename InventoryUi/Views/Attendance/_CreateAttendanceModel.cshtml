@@ -37,13 +37,19 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="control-label" asp-for="EmployeeId"></label>
+                                    <label class="control-label" asp-for="EmployeeId">
+                                        Employee
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <select class="form-control" asp-for="EmployeeId" id="EmployeeDropdown">
                                         <option value="">Select Employee</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="CheckInTime" class="control-label"></label>
+                                    <label asp-for="CheckInTime" class="control-label">
+                                        Check In Time
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input type="time" asp-for="CheckInTime" placeholder="Enter check-in time (e.g., 09:00 AM)" class="form-control" name="CheckInTime" />
                                     <span asp-validation-for="CheckInTime" class="text-danger"></span>
                                 </div>
@@ -51,13 +57,19 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label asp-for="Date" class="control-label"></label>
+                                    <label asp-for="Date" class="control-label">
+                                        Date
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input type="date" asp-for="Date" placeholder="Enter check-in time (e.g., 09:00 AM)" class="form-control" name="Date" />
                                     <span asp-validation-for="Date" class="text-danger"></span>
                                 </div>
                                
                                 <div class="form-group">
-                                    <label asp-for="CheckOutTime" class="control-label"></label>
+                                    <label asp-for="CheckOutTime" class="control-label">
+                                        Check Out Time
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input type="time" asp-for="CheckOutTime" placeholder="Enter check-out time (e.g., 06:00 PM)" class="form-control" name="CheckOutTime" />
                                     <span asp-validation-for="CheckOutTime" class="text-danger"></span>
                                 </div>

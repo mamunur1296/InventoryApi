@@ -1,4 +1,4 @@
-﻿import { notification } from '../Utility/notification.js';
+﻿import { notification, notificationErrors } from '../Utility/notification.js';
 import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
@@ -211,14 +211,14 @@ $('#SupplierbtnSave').off('click').click(async (e) => {
                 notification({ message: "Supplier Created successfully !", type: "success", title: "Success" });
                 await getSupplierList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
+                notification({ message: result.detail });
                 $('#SupplierModelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#SupplierModelCreate').modal('hide');
-        notification({ message: " Supplier Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
+        notificationErrors({ message: " Supplier Created failed . Please try again. !" });
     }
 
 });
@@ -263,12 +263,12 @@ window.updateSupplier = async (id) => {
                 await getSupplierList(); // Update the user list
             } else {
                 $('#SupplierModelCreate').modal('hide');
-                notification({ message: " Supplier Updated failed . Please try again. !", type: "error", title: "Error", time: 0 });
+                notificationErrors({ message: " Supplier Updated failed . Please try again. !" });
             }
 
         });
     }
-    loger(result);
+    
 }
 
 
@@ -294,7 +294,7 @@ window.deleteSupplier = async (id) => {
             await getSupplierList(); // Update the category list
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
+            notificationErrors({ message: result.detail });
 
         }
 

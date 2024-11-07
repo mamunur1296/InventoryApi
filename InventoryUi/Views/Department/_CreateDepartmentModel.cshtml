@@ -37,7 +37,10 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label asp-for="DepartmentName" class="control-label"></label>
+                                    <label asp-for="DepartmentName" class="control-label">
+                                        Name
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="DepartmentName" placeholder="Enter  Department Name " class="form-control" name="DepartmentName" />
                                     <span asp-validation-for="DepartmentName" class="text-danger"></span>
                                 </div>

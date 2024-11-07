@@ -38,7 +38,10 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label asp-for="ProductName" class="control-label"></label>
+                                    <label asp-for="ProductName" class="control-label">
+                                        Name
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="ProductName" placeholder="Enter product name" class="form-control" name="ProductName" />
                                     <span asp-validation-for="ProductName" class="text-danger"></span>
                                 </div>
@@ -48,7 +51,10 @@
                                     <span asp-validation-for="Description" class="text-danger"></span>
                                 </div>
                                 <div class=" form-group ">
-                                    <label class="control-label" asp-for="CategoryID"></label>
+                                    <label class="control-label" asp-for="CategoryID">
+                                        Category
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <div class="d-flex" id="SelectorCatagory">
                                         <select class="form-control" asp-for="CategoryID" id="CategoryDropdown">
                                             <option value="">Select category</option>
@@ -58,7 +64,10 @@
                                     
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" asp-for="SupplierID"></label>
+                                    <label class="control-label" asp-for="SupplierID">
+                                        Supplier
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <div class="d-flex">
                                         <select class="form-control" asp-for="SupplierID" id="SupplierDropdown">
                                             <option value="">Select supplier</option>
@@ -74,14 +83,12 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label asp-for="UnitPrice" class="control-label"></label>
-                                    <input asp-for="UnitPrice" placeholder="Enter unit price (e.g., 25.00)" class="form-control" name="UnitPrice" />
+                                    <label asp-for="UnitPrice" class="control-label">
+                                        Sales Price
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
+                                    <input asp-for="UnitPrice" placeholder="Enter unit price " class="form-control" name="UnitPrice" />
                                     <span asp-validation-for="UnitPrice" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="UnitsInStock" class="control-label"></label>
-                                    <input asp-for="UnitsInStock" placeholder="Enter units in stock (e.g., 100)" class="form-control" name="UnitsInStock" />
-                                    <span asp-validation-for="UnitsInStock" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="ReorderLevel" class="control-label"></label>
@@ -99,6 +106,11 @@
                                     <input asp-for="Files" class="form-control" name="Files" />
                                     <span asp-validation-for="Files" class="text-danger"></span>
                                 </div>
+                                <div class="form-group">
+                                    <label asp-for="Weight" class="control-label"></label>
+                                    <input asp-for="Weight" placeholder="Enter weight (e.g., 1.5 kg)" class="form-control" name="Weight" />
+                                    <span asp-validation-for="Weight" class="text-danger"></span>
+                                </div>
                             </div>
                             <div class="col-md-4">
 
@@ -114,7 +126,10 @@
                                     <span asp-validation-for="Dimensions" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" asp-for="UnitMasterId"></label>
+                                    <label class="control-label" asp-for="UnitMasterId">
+                                        Unit Master
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <div class="d-flex">
                                         <select class="form-control" asp-for="UnitMasterId" id="UnitMasterDropdown">
                                             <option value="">Select category</option>
@@ -124,7 +139,10 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" asp-for="UnitChildId"></label>
+                                    <label class="control-label" asp-for="UnitChildId">
+                                        Unit Child
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <div class="d-flex">
                                         <select class="form-control" asp-for="UnitChildId" id="UnitChildDropdown">
                                             <option value="">Select supplier</option>

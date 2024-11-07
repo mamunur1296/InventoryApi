@@ -37,14 +37,20 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label asp-for="HolidayName" class="control-label"></label>
+                                    <label asp-for="HolidayName" class="control-label">
+                                        Name
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="HolidayName" placeholder="Enter  Holiday Name " class="form-control" name="HolidayName" />
                                     <span asp-validation-for="HolidayName" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label asp-for="Date" class="control-label"></label>
+                                    <label asp-for="Date" class="control-label">
+                                        Date
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input type="date" asp-for="Date" placeholder="Select   Date " class="form-control" name="Date" />
                                     <span asp-validation-for="Date" class="text-danger"></span>
                                 </div>

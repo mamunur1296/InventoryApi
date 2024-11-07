@@ -37,12 +37,18 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label asp-for="Name" class="control-label"></label>
+                                    <label asp-for="Name" class="control-label">
+                                        Name
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="Name" placeholder="Enter Unit Name (e.g., Kilogram)" class="form-control" name="Name" />
                                     <span asp-validation-for="Name" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="UnitShortCode" class="control-label"></label>
+                                    <label asp-for="UnitShortCode" class="control-label">
+                                        Code
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="UnitShortCode" placeholder="Enter Short Code (e.g., KG)" class="form-control" name="UnitShortCode" />
                                     <span asp-validation-for="UnitShortCode" class="text-danger"></span>
                                 </div>
@@ -55,11 +61,14 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="UnitDescription" class="control-label"></label>
-                                    <input asp-for="UnitDescription" placeholder="Enter Unit Description (e.g., Measurement for mass)" class="form-control" name="UnitDescription" />
+                                    <input asp-for="UnitDescription" placeholder="Enter Child Unit Description " class="form-control" name="UnitDescription" />
                                     <span asp-validation-for="UnitDescription" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" asp-for="UnitMasterId"></label>
+                                    <label class="control-label" asp-for="UnitMasterId">
+                                        Master Unit
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <select class="form-control" asp-for="UnitMasterId" id="ChildUnitMasterDropdown">
                                         <option value="">Select Master Unit</option>
                                     </select>

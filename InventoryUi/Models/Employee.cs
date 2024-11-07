@@ -59,6 +59,7 @@ namespace InventoryUi.Models
         public ICollection<Employee>? Subordinates { get; set; }
         public ICollection<Order>? Orders { get; set; }
         public decimal? Salary { get; set; } = null;
+        [DisplayName("Department")]
         public string? DepartmentId { get; set; }
         public Department? Department { get; set; }
         [DisplayName("User Name")]

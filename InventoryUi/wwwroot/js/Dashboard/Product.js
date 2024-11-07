@@ -1,11 +1,18 @@
 ﻿import { notification } from '../Utility/notification.js';
 import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown, setupDropdownChange } from '../utility/sendrequestutility.js';
+import { CreateCategoryBtn } from './Category.js';
+import { UnitChildCreateBtnForPurchase } from './UnitChild.js';
+import { UnitMasteCreateBtn } from './UnitMaster.js';
+import { CreateSupplierBtn } from './supplier.js';
 
 $(document).ready(async function () {
     await getProductList();
     await ProductCreateBtn('#CreateProductBtn'); 
-    
+    await CreateCategoryBtn(`#addNewCatagoryButton`);
+    await CreateSupplierBtn('#addNewSupplirButton2');
+    await UnitMasteCreateBtn('#MasterUnitButton');
+    await UnitChildCreateBtnForPurchase('#ChildUnitButton2');
 });
 
 const getProductList = async () => {

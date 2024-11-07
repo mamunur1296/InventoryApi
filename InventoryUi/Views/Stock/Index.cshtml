@@ -94,13 +94,19 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="control-label" asp-for="ProductID"></label>
+                                    <label class="control-label" asp-for="ProductID">
+                                        Product
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <select class="form-control" asp-for="ProductID" id="ProductDropdown">
                                         <option value="">Select product</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" asp-for="WarehouseID"></label>
+                                    <label class="control-label" asp-for="WarehouseID">
+                                        Warehouse
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <select class="form-control" asp-for="WarehouseID" id="WarehouseDropdown">
                                         <option value="">Select warehouse</option>
                                     </select>
@@ -108,7 +114,10 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label asp-for="Quantity" class="control-label"></label>
+                                    <label asp-for="Quantity" class="control-label">
+                                        Quantity
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="Quantity" placeholder="Enter quantity (e.g., 100)" class="form-control" name="Quantity" />
                                     <span asp-validation-for="Quantity" class="text-danger"></span>
                                 </div>

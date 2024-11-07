@@ -22,11 +22,13 @@
                 @foreach (var product in Model.ProductsListFromSession)
                 {
                     <div class="d-flex justify-content-between">
-                        <p class="mb-0 col-6">@product.ProductName</p> <!-- Column for Product Name -->
-                        <p class="mb-0 col-2">@product.UnitPrice</p>   <!-- Column for Unit Price -->
-                        <p class="mb-0 col-1">@product.Quentity</p>    <!-- Column for Quantity -->
-                        <p class="mb-0 col-3">= @product.TotalPrice Tk</p> <!-- Column for Total Price -->
+                        <p class="mb-0 col-7" style="font-size: 0.70em;">@product.ProductName</p>
+                        <p class="mb-0 col-5" style="font-size: 0.70em;">
+                            (@product.UnitPrice * @product.Quentity) = @product.TotalPrice Tk
+                        </p>
                     </div>
+
+
 
                 }
             }

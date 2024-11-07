@@ -5,7 +5,7 @@ import { CreateSupplierBtn } from "../dashboard/supplier.js";
 import { UnitChildCreateBtn } from "../Dashboard/UnitChild.js";
 import { UnitMasteCreateBtn } from "../Dashboard/UnitMaster.js";
 import { CatagoryValidae, ProductValidator, SupplierValidate, validateUnitChildForm, validateUnitMasterForm } from "../utility/allvalidator.js";
-import { notification } from "../Utility/notification.js";
+import { notification, notificationErrors } from "../Utility/notification.js";
 import { SendRequest } from "../utility/sendrequestutility.js";
 // Global variables
 let globalUser = null;
@@ -45,6 +45,7 @@ $(document).ready(async function () {
 });
 
 const initializeFunctions = () => {
+    initializeGlobalData()
     SearchProduct();
     SearchCustomer();
     AddCustomer();
@@ -541,18 +542,16 @@ window.processPayment = function () {
                 } else {
                     debugger
                     // Trigger error notification if JSON response indicates failure
-                    notification({
+                    notificationErrors({
                         message: response.message,
-                        type: "error",
-                        title: "error"
+                        
                     });
                 }
             } else {
                 // Handle unexpected response
-                notification({
+                notificationErrors({
                     message: "Unexpected response format.",
-                    type: "error",
-                    title: "error"
+                   
                 });
             }
         },
@@ -561,10 +560,9 @@ window.processPayment = function () {
             console.log('An error occurred while processing the payment: ', error);
 
             // Trigger error notification for AJAX errors
-            notification({
+            notificationErrors({
                 message: "An error occurred while processing the payment. Please try again.",
-                type: "error",
-                title: "error"
+                
             });
         }
     });

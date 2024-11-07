@@ -37,7 +37,10 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label asp-for="Name" class="control-label"></label>
+                                    <label asp-for="Name" class="control-label">
+                                        Name
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="Name" placeholder="Enter Branch  Name " class="form-control" name="Name" />
                                     <span asp-validation-for="Name" class="text-danger"></span>
                                 </div>
@@ -54,12 +57,18 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label asp-for="Address" class="control-label"></label>
+                                    <label asp-for="Address" class="control-label">
+                                        Address
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="Address" placeholder="Enter Branch Address " class="form-control" name="Address" />
                                     <span asp-validation-for="Address" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="PhoneNo" class="control-label"></label>
+                                    <label asp-for="PhoneNo" class="control-label">
+                                        Phone
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="PhoneNo" placeholder="Enter Branch Phone Number" class="form-control" name="PhoneNo" />
                                     <span asp-validation-for="PhoneNo" class="text-danger"></span>
                                 </div>
@@ -71,13 +80,19 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label asp-for="EmailNo" class="control-label"></label>
+                                    <label asp-for="EmailNo" class="control-label">
+                                        Email
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="EmailNo" placeholder="Enter Branch Email" class="form-control" name="EmailNo" />
                                     <span asp-validation-for="EmailNo" class="text-danger"></span>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label" asp-for="CompanyId"></label>
+                                    <label class="control-label" asp-for="CompanyId">
+                                        Company
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <select class="form-control" asp-for="CompanyId" id="CompanyDropdown">
                                         <option value="">Select Company</option>
                                     </select>

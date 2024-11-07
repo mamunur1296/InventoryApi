@@ -1,4 +1,4 @@
-﻿import { notification } from '../Utility/notification.js';
+﻿import { notification, notificationErrors } from '../Utility/notification.js';
 import { clearMessage, createActionButtons, dataToMap, displayNotification, initializeDataTable, loger, resetFormValidation, resetValidation, showCreateModal, showExceptionMessage } from '../utility/helpers.js';
 import { SendRequest, populateDropdown } from '../utility/sendrequestutility.js';
 
@@ -203,14 +203,14 @@ $('#AttendanceBtnSave').off('click').click(async () => {
                 notification({ message: "Attendance Created successfully !", type: "success", title: "Success" });
                 await getAttendanceList(); // Update the user list
             } else {
-                notification({ message: result.detail, type: "error", title: "Error", time: 0 });
+                notificationErrors({ message: result.detail});
                 $('#AttendanceModelCreate').modal('hide');
             }
         }
     } catch (error) {
         console.error('Error in click handler:', error);
         $('#AttendanceModelCreate').modal('hide');
-        notification({ message: " Attendance Created failed . Please try again. !", type: "error", title: "Error", time: 0 });
+        notificationErrors({ message: error.message });
     }
 
 });
@@ -265,7 +265,7 @@ window.updateAttendance = async (id) => {
                 await getAttendanceList(); // Update the attendance list
             } else {
                 $('#AttendanceModelCreate').modal('hide');
-                notification({ message: "Attendance update failed. Please try again.", type: "error", title: "Error", time: 0 });
+                notificationErrors({ message: "Attendance update failed. Please try again." });
             }
         });
     }
@@ -299,7 +299,7 @@ window.deleteAttendance = async (id) => {
 
         } else {
             $('#deleteAndDetailsModel').modal('hide');
-            notification({ message: result.detail, type: "error", title: "Error", time: 0 });
+            notificationErrors({ message: result.detail });
         }
     });
 }

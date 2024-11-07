@@ -39,22 +39,28 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label asp-for="Customer.CustomerName" class="control-label"></label>
-                                    <input asp-for="Customer.CustomerName" placeholder="Enter Customer Name (e.g., Acme Corp)" class="form-control" name="CustomerName" />
+                                    <label asp-for="Customer.CustomerName" class="control-label">
+                                        Name
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
+                                    <input asp-for="Customer.CustomerName" placeholder="Enter Customer Name )" required class="form-control" name="CustomerName" />
                                     <span asp-validation-for="Customer.CustomerName" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label asp-for="Customer.Phone" class="control-label"></label>
-                                    <input asp-for="Customer.Phone" placeholder="Enter Customer Phone (e.g., +1234567890)" class="form-control" name="Phone" />
+                                    <label asp-for="Customer.Phone" class="control-label">
+                                        Phone
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
+                                    <input asp-for="Customer.Phone" placeholder="Enter Customer Phone" required class="form-control" name="Phone" />
                                     <span asp-validation-for="Customer.Phone" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label asp-for="Customer.Email" class="control-label"></label>
-                                    <input asp-for="Customer.Email" placeholder="Enter Customer Email (e.g., example@domain.com)" class="form-control" name="Email" />
+                                    <input asp-for="Customer.Email" placeholder="Enter Customer Email " class="form-control" name="Email" />
                                     <span asp-validation-for="Customer.Email" class="text-danger"></span>
                                 </div>
                             </div>

@@ -176,7 +176,15 @@ const UsrValidae = $('#EmployeeForm').validate({
             minlength: 6,
             pwcheck: true
         }
+        ,
+        HomePhone: {
+            required: true,
+        },
+        Address: {
+            required: true,
+        }
     },
+    
     messages: {
         LastName: {
             required: "Last Name is required.",
@@ -238,6 +246,9 @@ const UsrValidae = $('#EmployeeForm').validate({
             required: "Password is required.",
             minlength: "Password must be at least 6 characters long.",
             pwcheck: "Password must contain at least one lowercase letter (a-z)."
+        },
+        HomePhone: {
+            required: "Phone Number is required.",
         }
     },
     errorElement: 'div',

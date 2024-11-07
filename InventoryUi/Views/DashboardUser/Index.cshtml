@@ -78,20 +78,29 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label asp-for="User.FirstName" class="control-label"></label>
+                                    <label asp-for="User.FirstName" class="control-label">
+                                        First Name
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="User.FirstName" placeholder="Enter first Name" class="form-control"  id="FirstName" />
                                     <span asp-validation-for="User.FirstName" id="FirstName" class="text-danger"></span>
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label asp-for="User.LastName" class="control-label"></label>
+                                    <label asp-for="User.LastName" class="control-label">
+                                        Last Name
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="User.LastName" placeholder="Enter Last Name " class="form-control" id="LastName"  />
                                     <span asp-validation-for="User.LastName" class="text-danger"></span>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label asp-for="User.UserName" class="control-label"></label>
+                                            <label asp-for="User.UserName" class="control-label">
+                                                User Name
+                                                <span class="text-danger font-weight-bold">*</span>
+                                            </label>
                                             <input asp-for="User.UserName" placeholder="Enter User Name" class="form-control" id="UserName" />
                                             <span asp-validation-for="User.UserName" class="text-danger"></span>
                                             <div id="UserError" class="text-danger" role="alert" style="display: none;"></div>
@@ -120,20 +129,29 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label asp-for="User.Email" class="control-label"></label>
+                                    <label asp-for="User.Email" class="control-label">
+                                        Email
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="User.Email" placeholder="Enter Email" class="form-control" id="Email" />
                                     <span asp-validation-for="User.Email" class="text-danger"></span>
                                     <div id="EmailError" class="text-danger" role="alert" style="display: none;"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="User.PhoneNumber" class="control-label"></label>
+                                    <label asp-for="User.PhoneNumber" class="control-label">
+                                        Phone
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <input asp-for="User.PhoneNumber" placeholder="Enter Phone Number" id="PhoneNumber" class="form-control"  />
                                     <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label asp-for="User.Password" class="control-label"></label>
+                                            <label asp-for="User.Password" class="control-label">
+                                                Password
+                                                <span class="text-danger font-weight-bold">*</span>
+                                            </label>
                                             <input asp-for="User.Password" type="password" placeholder="Enter Password" id="Password" class="form-control"  />
                                             <span asp-validation-for="User.Password" class="text-danger"></span>
                                             <div id="PasswordError" class="text-danger" role="alert" style="display: none;"></div>
@@ -141,7 +159,10 @@
                                     </div>
                                     <div class="col-md-6  ">
                                         <div class="form-group">
-                                            <label asp-for="User.ConfirmationPassword" class="control-label"></label>
+                                            <label asp-for="User.ConfirmationPassword" class="control-label">
+                                                Confirmation Password
+                                                <span class="text-danger font-weight-bold">*</span>
+                                            </label>
                                             <input asp-for="User.ConfirmationPassword" type="password" id="ConfirmationPassword" placeholder="Confirm your Password" class="form-control"  />
                                             <span asp-validation-for="User.ConfirmationPassword" class="text-danger"></span>
                                         </div>
@@ -149,7 +170,10 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label asp-for="User.RoleName"></label>
+                                    <label asp-for="User.RoleName">
+                                        Role
+                                        <span class="text-danger font-weight-bold">*</span>
+                                    </label>
                                     <select class="form-control" asp-for="User.RoleName" id="RolesDropdown">
                                         <option value="">Select role</option>
                                     </select>
