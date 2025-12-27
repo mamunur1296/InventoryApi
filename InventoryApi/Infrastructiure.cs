@@ -17,7 +17,7 @@ namespace ProjectApi
         {
             services.AddDbContext<ApplicationDbContext>(option =>
             {
-                option.UseSqlServer(configuration.GetConnectionString("dbcs"));
+                option.UseNpgsql(configuration.GetConnectionString("dbcs"));
             });
             services.Configure<IdentityOptions>(options =>
             {

@@ -2,10 +2,9 @@
 using InventoryApi.Entities;
 using InventoryApi.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using System.Net;
-using System.Text.RegularExpressions;
 
 namespace InventoryApi.Middlewares
 {
@@ -67,7 +66,7 @@ namespace InventoryApi.Middlewares
 
         }
 
-        
+
 
 
         private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
@@ -110,158 +109,42 @@ namespace InventoryApi.Middlewares
                     break;
                 // SQL-related Exception Cases
                 case DbUpdateException dbUpdateException:
-                    if (dbUpdateException.InnerException is SqlException sqlException)
+                    if (dbUpdateException.InnerException is NpgsqlException npgsqlEx)
                     {
-                        switch (sqlException.Number)
+                        switch (npgsqlEx.SqlState)
                         {
-                            case 547: // Foreign key violation
-                                if (sqlException.Message.Contains("DELETE") && sqlException.Message.Contains("REFERENCE"))
-                                {
-                                    // Set the default message and title
-                                    title = "Foreign Key Violation - Delete Conflict";
-                                    message = "";
-                                    // Extract details from the error message
-                                    string errorMessage = sqlException.Message;
-
-                                    // Extract the foreign key constraint name
-                                    int fkStartIndex = errorMessage.IndexOf("constraint \"") + "constraint \"".Length;
-                                    int fkEndIndex = errorMessage.IndexOf("\"", fkStartIndex);
-                                    string fkConstraint = fkStartIndex >= 0 && fkEndIndex > fkStartIndex
-                                        ? errorMessage.Substring(fkStartIndex, fkEndIndex - fkStartIndex)
-                                        : string.Empty;
-
-                                    int tableStartIndex = errorMessage.IndexOf("table \"") + "table \"".Length;
-                                    int tableEndIndex = errorMessage.IndexOf("\", column", tableStartIndex);
-
-                                    string conflictTable = tableStartIndex >= 0 && tableEndIndex > tableStartIndex
-                                        ? errorMessage.Substring(tableStartIndex, tableEndIndex - tableStartIndex)
-                                        : string.Empty;
-
-                                    // If there's a period in the table name (e.g., "dbo.Employees"), split and take the last part
-                                    if (!string.IsNullOrEmpty(conflictTable) && conflictTable.Contains('.'))
-                                    {
-                                        conflictTable = conflictTable.Split('.').Last();
-                                    }
-
-
-                                    // Extract the column causing the conflict
-                                    int columnStartIndex = errorMessage.IndexOf("column '") + "column '".Length;
-                                    int columnEndIndex = errorMessage.IndexOf("'", columnStartIndex);
-                                    string conflictColumn = columnStartIndex >= 0 && columnEndIndex > columnStartIndex
-                                        ? errorMessage.Substring(columnStartIndex, columnEndIndex - columnStartIndex)
-                                        : string.Empty;
-                                    conflictColumn.Split('.').Last();
-                                    // Customize the message with the extracted details
-                                    if (!string.IsNullOrEmpty(fkConstraint) && !string.IsNullOrEmpty(conflictTable) && !string.IsNullOrEmpty(conflictColumn))
-                                    {
-                                        
-                                        message = $"Delete Failed: This record cannot be deleted because it is referenced by another record in the '{conflictTable}' table, specifically in the '{conflictColumn}' column.\n" +
-                                                   "Please remove or update any related records before attempting to delete this item.";
-                                    }
-                                }
-                                else if (sqlException.Message.Contains("INSERT"))
-                                {
-                                    string sourceTableName = "the source table";
-                                    string sourceColumnName = "the source column";
-                                    string targetTableName = "the target table";
-                                    string targetColumnName = "the target column";
-
-                                    // Pattern to match the foreign key constraint and extract the source table, source column, and target table
-                                    var match = Regex.Match(sqlException.Message, @"constraint \""FK_(\w+)_(\w+)_(\w+)\""");
-
-                                    if (match.Success)
-                                    {
-                                        sourceTableName = match.Groups[1].Value;   // "CartItems"
-                                        sourceColumnName = match.Groups[3].Value;  // "ProductID"
-                                        targetTableName = match.Groups[2].Value;   // "Products"
-                                    }
-
-                                    // Extract target column from the error message
-                                    var matchTargetColumn = Regex.Match(sqlException.Message, @"column '(\w+)'");
-
-                                    if (matchTargetColumn.Success)
-                                    {
-                                        targetColumnName = matchTargetColumn.Groups[1].Value;
-                                    }
-
-                                    // Custom error message
-                                    message = $"Creation Failed: The operation could not be completed because the record you are attempting to add to the '{sourceTableName}' table (column: '{sourceColumnName}') references a non-existing item in the '{targetTableName}' table (column: '{targetColumnName}'). Please ensure that the referenced item exists in the related table before retrying.";
-                                    title = "Foreign Key Violation - Insert Conflict";
-                                }
-
-
-
-                                else if (sqlException.Message.Contains("UPDATE"))
-                                {
-                                    message = "Update Failed: The record you are trying to update references a non-existing item. Ensure all related data exists before proceeding.";
-                                    title = "Foreign Key Violation - Update Conflict";
-                                }
-                                else
-                                {
-                                    message = "Operation Failed: A foreign key constraint violation occurred. Please check your data and try again.";
-                                    title = "Foreign Key Violation";
-                                }
+                            case "23503": // Foreign key violation
+                                message = "Operation Failed: This record cannot be deleted or updated because it is referenced by another record in the database.";
+                                title = "Foreign Key Violation";
                                 status = HttpStatusCode.Conflict;
                                 break;
 
-                            case 2601: // Unique index violation
-                            case 2627: // Violation of primary key constraint
-                                if (sqlException.Message.Contains("INSERT"))
-                                {
-                                    var regex = new Regex(@"'([^']*)'");
-                                    var matches = regex.Matches(sqlException.Message);
-
-                                    string column = matches[0].Groups[1].Value;  
-                                    string table = matches[1].Groups[1].Value;   
-                                    message = $"Save Failed: The '{column}' field in the '{table}' table cannot be null. Please provide a value and try again.";
-                                    title = "Null Constraint Violation";
-                                    status = HttpStatusCode.BadRequest;
-                                }
-                                else
-                                {
-                                    message = "Save Failed: The data you are trying to save already exists. Duplicate entries are not allowed. Please ensure the data is unique and try again.";
-                                    title = "Duplicate Key Violation";
-                                    status = HttpStatusCode.Conflict;
-                                }
-
+                            case "23505": // Unique constraint violation
+                                message = "Operation Failed: Duplicate entry detected. The data you are trying to save already exists.";
+                                title = "Unique Constraint Violation";
+                                status = HttpStatusCode.Conflict;
                                 break;
 
-                            case 515: // Cannot insert null into a non-nullable column
-                                if (sqlException.Message.Contains("INSERT"))
-                                {
-                                    var regex = new Regex(@"'([^']*)'");
-                                    var matches = regex.Matches(sqlException.Message);
-
-                                    string column = matches[0].Groups[1].Value;
-                                    string fullTableName = matches[1].Groups[1].Value;
-                                    string table = fullTableName.Split('.').Last();
-                                    message = $"Save Failed: The '{column}' field in the '{table}' table cannot be null. Please provide a value and try again.";
-                                    title = "Null Constraint Violation";
-                                    status = HttpStatusCode.BadRequest;
-                                }
-                                else
-                                {
-                                    message = "Save Failed: The data you are trying to save already exists. Duplicate entries are not allowed. Please ensure the data is unique and try again.";
-                                    title = "Duplicate Key Violation";
-                                    status = HttpStatusCode.Conflict;
-                                }
+                            case "23502": // Not-null violation
+                                message = "Operation Failed: A required field is missing. Please provide all necessary values.";
+                                title = "Not-Null Constraint Violation";
+                                status = HttpStatusCode.BadRequest;
                                 break;
 
-                            case 208: // Invalid object name
-                                message = "Operation Failed: The specified table or object does not exist in the database. Please verify the database schema and try again.";
-                                title = "Invalid Object Name";
+                            case "42P01": // Undefined table
+                                message = "Operation Failed: The specified table does not exist in the database.";
+                                title = "Invalid Table Name";
                                 status = HttpStatusCode.InternalServerError;
                                 break;
 
-                            case 1205: // Deadlock victim
-                                message = "Operation Failed: The database is experiencing high contention, and your request was selected as a deadlock victim. Please try the operation again.";
-                                title = "Deadlock Occurred";
+                            case "40001": // Serialization failure / deadlock
+                                message = "Operation Failed: The database is busy or a deadlock occurred. Please try the operation again.";
+                                title = "Database Deadlock / Concurrency Error";
                                 status = HttpStatusCode.InternalServerError;
                                 break;
 
                             default:
-                                // General SQL exception handling
-                                message = $"Operation Failed: A database error occurred. Error Code: {sqlException.Number}. Please contact support if the issue persists.";
+                                message = $"A PostgreSQL database error occurred. Code: {npgsqlEx.SqlState}, Message: {npgsqlEx.Message}";
                                 title = "Database Error";
                                 status = HttpStatusCode.InternalServerError;
                                 break;
@@ -270,16 +153,17 @@ namespace InventoryApi.Middlewares
                     else
                     {
                         // General database update error
-                        message = "Save Failed: An unexpected error occurred while processing your request. Please try again or contact support.";
+                        message = "An unexpected database error occurred. Please contact support.";
                         title = "Database Update Error";
-                        status = HttpStatusCode.Conflict;
+                        status = HttpStatusCode.InternalServerError;
                     }
                     break;
 
 
 
 
-                case SqlException sqlExceptio:
+
+                case NpgsqlException sqlExceptio:
                     message = $"A SQL database error occurred: {sqlExceptio.Message}";
                     status = HttpStatusCode.InternalServerError;
                     title = "SQL Database Error Occurred";
